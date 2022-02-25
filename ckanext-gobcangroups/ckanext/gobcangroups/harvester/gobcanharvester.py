@@ -1,18 +1,24 @@
 import json
 import uuid
 import logging
+import hashlib
 import traceback
+
+import six
 
 import ckan.plugins as p
 import ckan.model as model
 import ckan.lib.plugins as lib_plugins
 
-from ckanext.harvest.model import HarvestObject
+from ckanext.harvest.model import HarvestObject, HarvestObjectExtra
+
+from ckanext.dcat.processors import RDFParserException, RDFParser
 
 from ckanext.dcat.harvesters.rdf import DCATRDFHarvester
 
 from ckanext.dcat.interfaces import IDCATRDFHarvester
 
+from icecream import ic
 
 log = logging.getLogger(__name__)
 
@@ -76,9 +82,64 @@ class GOBCANHarvester(DCATRDFHarvester):
         if organization is not None:
             dataset['owner_org'] = organization
 
+    def _mark_datasets_for_deletion(self, guids_in_source, harvest_job, guids_delinked_datasets):
+        '''
+        Given a list of guids in the remote source, checks which in the DB
+        need to be deleted
+
+        To do so it queries all guids in the DB for this source and calculates
+        the difference.
+
+        For each of these creates a HarvestObject with the dataset id, marked
+        for deletion.
+
+        Returns a list with the ids of the Harvest Objects to delete.
+        '''
+
+        object_ids = []
+
+        # Get all previous current guids and dataset ids for this source
+        query = model.Session.query(HarvestObject.guid, HarvestObject.package_id) \
+                             .filter(HarvestObject.current == True) \
+                             .filter(HarvestObject.harvest_source_id == harvest_job.source.id)
+
+        guid_to_package_id = {}
+        ic(query)
+        for guid, package_id in query:
+            guid_to_package_id[guid] = package_id
+
+        guids_in_db = list(guid_to_package_id.keys())
+        ic(guid_to_package_id)
+        ic(guids_in_db)
+
+        # Get objects/datasets to delete (ie in the DB but not in the source)
+        if guids_delinked_datasets:
+            guids_to_delete = set(
+                guids_in_db) - set(guids_in_source) - set(guids_delinked_datasets)
+        else:
+            guids_to_delete = set(guids_in_db) - set(guids_in_source)
+
+        ic(guids_to_delete)
+
+        # Create a harvest object for each of them, flagged for deletion
+        for guid in guids_to_delete:
+            obj = HarvestObject(guid=guid, job=harvest_job,
+                                package_id=guid_to_package_id[guid],
+                                extras=[HarvestObjectExtra(key='status',
+                                                           value='delete')])
+
+            # Mark the rest of objects for this guid as not current
+            model.Session.query(HarvestObject) \
+                         .filter_by(guid=guid) \
+                         .update({'current': False}, False)
+            obj.save()
+            object_ids.append(obj.id)
+
+        return object_ids
+
     def gather_stage(self, harvest_job):
 
-        log.debug('In DCATRDFHarvester gather_stage')
+        log.debug('In GOBCANHarvester gather_stage')
 
         rdf_format = None
         if harvest_job.source.config:
@@ -90,6 +151,7 @@ class GOBCANHarvester(DCATRDFHarvester):
 
         guids_in_source = []
         object_ids = []
+        guids_delinked_datasets = []
         last_content_hash = None
         self._names_taken = []
 
@@ -182,14 +244,26 @@ class GOBCANHarvester(DCATRDFHarvester):
                                                 harvest_job)
                         continue
 
-                    dataset['extras'].append({'key': 'guid', 'value': guid})
-                    guids_in_source.append(guid)
+                    # Select the Manual ones
+                    tags_in_dataset = set(map(
+                        lambda tag: tag['name'], self._get_dict_value(dataset, 'tags')))
 
-                    obj = HarvestObject(guid=guid, job=harvest_job,
-                                        content=json.dumps(dataset))
+                    manual = 'Manual'
+                    if manual in tags_in_dataset:
+                        guids_delinked_datasets.append(guid)
+                    else:
+                        # Normal loop
+                        dataset['extras'].append(
+                            {'key': 'guid', 'value': guid})
+                        guids_in_source.append(guid)
+                        obj = HarvestObject(guid=guid, job=harvest_job,
+                                            content=json.dumps(dataset))
 
-                    obj.save()
-                    object_ids.append(obj.id)
+                        obj.save()
+                        object_ids.append(obj.id)
+
+                    ic(object_ids)
+
             except Exception as e:
                 self._save_gather_error('Error when processsing dataset: %r / %s' % (e, traceback.format_exc()),
                                         harvest_job)
@@ -198,10 +272,15 @@ class GOBCANHarvester(DCATRDFHarvester):
             # get the next page
             next_page_url = parser.next_page()
 
+        ic(guids_delinked_datasets)
+        ic(guids_in_source)
+
         # Check if some datasets need to be deleted
         object_ids_to_delete = self._mark_datasets_for_deletion(
-            guids_in_source, harvest_job)
+            guids_in_source, harvest_job, guids_delinked_datasets)
 
+        ic(object_ids)
+        ic(object_ids_to_delete)
         object_ids.extend(object_ids_to_delete)
 
         return object_ids
