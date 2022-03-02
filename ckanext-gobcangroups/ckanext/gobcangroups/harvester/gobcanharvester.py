@@ -20,7 +20,6 @@ from ckanext.dcat.harvesters.rdf import DCATRDFHarvester
 
 from ckanext.dcat.interfaces import IDCATRDFHarvester
 
-from icecream import ic
 
 log = logging.getLogger(__name__)
 
@@ -117,7 +116,6 @@ class GOBCANHarvester(DCATRDFHarvester):
         for guid, package_id in q:
             guid_to_package_id[guid] = package_id
         guids_in_db_to_delink = list(guid_to_package_id.keys())
-        ic(guids_in_db_to_delink)
 
         return guids_in_db_to_delink
 
@@ -147,8 +145,6 @@ class GOBCANHarvester(DCATRDFHarvester):
             guid_to_package_id[guid] = package_id
 
         guids_in_db = list(guid_to_package_id.keys())
-        ic(guid_to_package_id)
-        ic(guids_in_db)
 
         # Get objects/datasets to delete (ie in the DB but not in the source)
         if guids_delinked_datasets:
@@ -156,8 +152,6 @@ class GOBCANHarvester(DCATRDFHarvester):
                 guids_in_db) - set(guids_in_source) - set(guids_delinked_datasets)
         else:
             guids_to_delete = set(guids_in_db) - set(guids_in_source)
-
-        ic(guids_to_delete)
 
         # Create a harvest object for each of them, flagged for deletion
         for guid in guids_to_delete:
@@ -295,8 +289,6 @@ class GOBCANHarvester(DCATRDFHarvester):
                         obj.save()
                         object_ids.append(obj.id)
 
-                    ic(object_ids)
-
             except Exception as e:
                 self._save_gather_error('Error when processsing dataset: %r / %s' % (e, traceback.format_exc()),
                                         harvest_job)
@@ -305,15 +297,10 @@ class GOBCANHarvester(DCATRDFHarvester):
             # get the next page
             next_page_url = parser.next_page()
 
-        ic(guids_delinked_datasets)
-        ic(guids_in_source)
-
         # Check if some datasets need to be deleted
         object_ids_to_delete = self._mark_datasets_for_deletion(
             guids_in_source, harvest_job, guids_delinked_datasets)
 
-        ic(object_ids)
-        ic(object_ids_to_delete)
         object_ids.extend(object_ids_to_delete)
 
         return object_ids
