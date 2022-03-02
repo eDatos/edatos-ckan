@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from setuptools import setup, find_packages  # Always prefer setuptools over distutils
+# Always prefer setuptools over distutils
+from setuptools import setup, find_packages
 from codecs import open  # To use a consistent encoding
 from os import path
 
@@ -15,7 +16,7 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # http://packaging.python.org/en/latest/tutorial.html#version
-    version='0.0.1',
+    version='1.0.0',
 
     description='''DCAT RDF modification for GOBCAN to auto add datasets to groups''',
     long_description=long_description,
@@ -56,10 +57,10 @@ setup(
     namespace_packages=['ckanext'],
 
     install_requires=[
-      # CKAN extensions should not list dependencies here, but in a separate
-      # ``requirements.txt`` file.
-      #
-      # http://docs.ckan.org/en/latest/extensions/best-practices.html#add-third-party-libraries-to-requirements-txt
+        # CKAN extensions should not list dependencies here, but in a separate
+        # ``requirements.txt`` file.
+        #
+        # http://docs.ckan.org/en/latest/extensions/best-practices.html#add-third-party-libraries-to-requirements-txt
     ],
 
     # If there are data files included in your packages that need to be

@@ -1,3 +1,4 @@
+from email.utils import quote
 import json
 import uuid
 import logging
@@ -10,6 +11,7 @@ import ckan.plugins as p
 import ckan.model as model
 import ckan.lib.plugins as lib_plugins
 
+from ckan.model import Package, PackageTag, Tag
 from ckanext.harvest.model import HarvestObject, HarvestObjectExtra
 
 from ckanext.dcat.processors import RDFParserException, RDFParser
@@ -82,6 +84,43 @@ class GOBCANHarvester(DCATRDFHarvester):
         if organization is not None:
             dataset['owner_org'] = organization
 
+    def _get_flagged_datasets_to_ignore(self):
+        '''
+        Given the conf of the ckan property, checks in the DB the datasets 
+        needed to sent back to delete from the datasets from the harvest source
+
+        Returns a list with the guids of the Harvest Objests to remove from the 
+        list 
+        '''
+
+        tag = ''
+        gcg_plugin = p.get_plugin('gobcangroups')
+        # Get Tag ID search by name
+        query_tag_id = model.Session.query(model.Tag) \
+                                    .filter(model.Tag.name == gcg_plugin.FLAG_PROPERTY) \
+                                    .one()
+
+        if query_tag_id:
+            tag = query_tag_id
+
+        if tag:
+            # Get the Packages equivalents to HarvestObject guid and id search
+            # with the tag id through PackageTag
+            q = model.Session.query(HarvestObject.guid, HarvestObject.package_id) \
+                .join(Package) \
+                .join(PackageTag) \
+                .filter(PackageTag.tag_id == tag.id) \
+                .filter(HarvestObject.current == True) \
+                .all()
+
+        guid_to_package_id = {}
+        for guid, package_id in q:
+            guid_to_package_id[guid] = package_id
+        guids_in_db_to_delink = list(guid_to_package_id.keys())
+        ic(guids_in_db_to_delink)
+
+        return guids_in_db_to_delink
+
     def _mark_datasets_for_deletion(self, guids_in_source, harvest_job, guids_delinked_datasets):
         '''
         Given a list of guids in the remote source, checks which in the DB
@@ -104,7 +143,6 @@ class GOBCANHarvester(DCATRDFHarvester):
                              .filter(HarvestObject.harvest_source_id == harvest_job.source.id)
 
         guid_to_package_id = {}
-        ic(query)
         for guid, package_id in query:
             guid_to_package_id[guid] = package_id
 
@@ -219,6 +257,8 @@ class GOBCANHarvester(DCATRDFHarvester):
 
                 source_dataset = model.Package.get(harvest_job.source.id)
 
+                guids_delinked_datasets = self._get_flagged_datasets_to_ignore()
+
                 for dataset in parser.datasets():
                     if not dataset.get('name'):
                         dataset['name'] = self._gen_new_name(dataset['title'])
@@ -244,14 +284,7 @@ class GOBCANHarvester(DCATRDFHarvester):
                                                 harvest_job)
                         continue
 
-                    # Select the Manual ones
-                    tags_in_dataset = set(map(
-                        lambda tag: tag['name'], self._get_dict_value(dataset, 'tags')))
-
-                    manual = 'Manual'
-                    if manual in tags_in_dataset:
-                        guids_delinked_datasets.append(guid)
-                    else:
+                    if guid not in guids_delinked_datasets:
                         # Normal loop
                         dataset['extras'].append(
                             {'key': 'guid', 'value': guid})
