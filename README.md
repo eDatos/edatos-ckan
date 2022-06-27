@@ -13,9 +13,14 @@ Se han esarrollado las siguientes extensiones de CKAN:
 - ckanext-istac_theme: contiene el código de la extensión creada para modificar los estilos del CKAN
 - fichero ckan-license.json: contiene las licencias necesarias para realizar el mapeado en el ckan en los procesos de federación.
 - ckanext-istactranslation (Deprecated): Las traducciones se han vuelto a implementar en la extensión istac_theme <s>contiene las traducciones de la extensión de theme y se implementan en esta extensión para solventar un comportamiento por defecto de CKAN que toma las traducciones siempre de la última extensión en la lista de configuración, por lo tanto deberá estar siempre en última posición en esta.</s>
+- ckanext-gobcangroups: Se ha implementado una mejora para desvincular datasets del catálogo RDF federado de GPE
 
 ## Instalación
 ---------------------------------------------------------------
 
 El proceso de instalación y configuración de las extensiones se explica en los manuales de configuración del proyecto.
+
+## Configuración
+---------------------------------------------------------------
+- ckanext-gobcangroups: Es necesario para su funcionamiento que la etiqueta (Tag) exista en la base de datos o sea creado, por defecto se usa la etiqueta "Manual" pero puede ser configurada con la propiedad "ckanext.gobcangroups.flag.for.delink = Manual"
 
