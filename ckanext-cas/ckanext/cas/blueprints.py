@@ -152,6 +152,9 @@ def cas_saml_callback(**kwargs):
 
 def _authenticate_user(username, email, fullname, is_superuser=False):
     log.debug('Invoked "_authenticate_user" method.')
+    log.debug(type(username))
+    log.debug(type(email))
+    log.debug(type(fullname))
 
     g.user = None
     g.userobj = None
@@ -166,7 +169,7 @@ def _authenticate_user(username, email, fullname, is_superuser=False):
         is_superuser = False
     else:
         abort(
-            403, 'Solo se pueden autenticar los usuarios pertenecientes al equipo de OpenData')
+            403, 'Solo se pueden autenticar los usuarios pertenecientes al equipo ISTAC')
 
     resp = h.redirect_to(u'user.me')
 
@@ -231,23 +234,25 @@ def cas_callback(**kwargs):
         q = rq.get(cas_plugin.SERVICE_VALIDATION_URL,
                    params={cas_plugin.TICKET_KEY: ticket,
                            cas_plugin.SERVICE_KEY: cas_plugin.CAS_APP_URL + '/cas/callback'}, verify=cas_plugin.VERIFY_CERTIFICATE)
+        log.debug('TICKET_KEY: ' + ticket)
+        log.debug('cas_plugin.SERVICE_KEY: ' +
+                  cas_plugin.CAS_APP_URL + '/cas/callback')
         log.debug(b'' + q.content)
         root = objectify.fromstring(b'' + q.content)
-        isMemberOf = None
-        if hasattr(root.authenticationSuccess.attributes, 'isMemberOf'):
-            log.debug('Cantidad de isMemberOf :')
+        acl = None
+        if hasattr(root.authenticationSuccess.attributes, 'acl'):
+            log.debug('Cantidad de acl :')
             log.debug(
-                len(list(root.authenticationSuccess.attributes.isMemberOf)))
-            log.debug(list(root.authenticationSuccess.attributes.isMemberOf))
-            isMemberOfList = list(
-                root.authenticationSuccess.attributes.isMemberOf)
-            for attr in isMemberOfList:
+                len(list(root.authenticationSuccess.attributes.acl)))
+            log.debug(list(root.authenticationSuccess.attributes.acl))
+            acl = list(
+                root.authenticationSuccess.attributes.acl)
+            for attr in acl:
                 log.debug(attr)
                 if (attr.text.find(cas_plugin.CAS_BASE_PROPERTY) != -1):
-                    isMemberOf = attr
-                    print(('Set up isMemberOf', isMemberOf))
-                    log.debug('Valor de isMemberOf :')
-                    log.debug(isMemberOf)
+                    acl = attr
+                    log.debug('Valor de acl :')
+                    log.debug(acl)
         log.debug(type(b'' + q.content))
         try:
             if hasattr(root.authenticationSuccess, 'user'):
@@ -276,35 +281,52 @@ def cas_callback(**kwargs):
             ticket, username.text))
         attrs = root.authenticationSuccess.attributes.__dict__
 
-        if isMemberOf is not None:
-            attrs.update(isMemberOf=isMemberOf)
+        if acl is not None:
+            attrs.update(acl=acl)
         log.debug('Validated with attrs')
+
+        # Simular email y nombne de usuario
+        #attrs["mail"] = "admin@arte-consultores.com"
+        #attrs["givenName"] = "Admin"
+        #attrs["sn"] = "Arte Consultores"
+        # Fin simular
+
         log.debug(attrs)
         data_dict = {}
         for key, val in list(cas_plugin.USER_ATTR_MAP.items()):
             if type(val) == list:
-                data_dict[key] = ' '.join([attrs.get(x).text for x in val])
+                # data_dict[key] = ' '.join([attrs.get(x).text for x in val]) # Se comenta por simulacion
+                data_dict[key] = ' '.join([attrs.get(x) for x in val])
             else:
                 log.debug(
                     '-->Obteniendo el parámetro [{0}] con clave [{1}]'.format(key, val))
                 if attrs.get(val) is not None:
-                    data_dict[key] = attrs.get(val).text
+                    # data_dict[key] = attrs.get(val).text Se comenta por simulacion
+                    data_dict[key] = attrs.get(val)
 
-        fullname = data_dict['fullname']
-        email = data_dict['email']
+        fullname = str(data_dict['fullname'])
+        email = str(data_dict['email'])
         username = str(root.authenticationSuccess.user)
         sysadmin = False
 
-        sysadmin_check = data_dict.get('sysadmin')
-        if sysadmin_check and sysadmin_check.strip():
-            cn = data_dict['sysadmin'].partition(
-                "cn=")[2].partition(",o=")[0]
-            sysadmin = cn
-            log.debug('CN filtrado :')
+        sysadmin_check = data_dict.get('sysadmin').text
+        log.debug('Despues de bucle for data_dict')
+        log.debug(data_dict)
+        log.debug(sysadmin_check)
+        log.debug(type(sysadmin_check))
+
+        if sysadmin_check:
+            separador = '#'
+            posicion_rol = 1
+            sysadmin_check = sysadmin_check.strip(separador)
+            sysadmin_check = sysadmin_check.split(separador)
+            rol = sysadmin_check[posicion_rol]
+            sysadmin = rol
+            log.debug('Rol filtrado :')
             log.debug(sysadmin)
         else:
             abort(
-                403, 'Solo se pueden autenticar los usuarios pertenecientes al equipo de OpenData')
+                403, 'Solo se pueden autenticar los usuarios pertenecientes al equipo de ISTAC')
 
         username = _authenticate_user(
             username, email, fullname, sysadmin)
@@ -343,3 +365,4 @@ for rule in rules:
 if config.get('ckanext.cas.register_url', None):
     cas.add_url_rule('/user/register',
                      'register_url_redirect', register_url_redirect)
+
