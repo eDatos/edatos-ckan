@@ -152,9 +152,6 @@ def cas_saml_callback(**kwargs):
 
 def _authenticate_user(username, email, fullname, is_superuser=False):
     log.debug('Invoked "_authenticate_user" method.')
-    log.debug(type(username))
-    log.debug(type(email))
-    log.debug(type(fullname))
 
     g.user = None
     g.userobj = None
@@ -234,9 +231,6 @@ def cas_callback(**kwargs):
         q = rq.get(cas_plugin.SERVICE_VALIDATION_URL,
                    params={cas_plugin.TICKET_KEY: ticket,
                            cas_plugin.SERVICE_KEY: cas_plugin.CAS_APP_URL + '/cas/callback'}, verify=cas_plugin.VERIFY_CERTIFICATE)
-        log.debug('TICKET_KEY: ' + ticket)
-        log.debug('cas_plugin.SERVICE_KEY: ' +
-                  cas_plugin.CAS_APP_URL + '/cas/callback')
         log.debug(b'' + q.content)
         root = objectify.fromstring(b'' + q.content)
         acl = None
@@ -285,23 +279,15 @@ def cas_callback(**kwargs):
             attrs.update(acl=acl)
         log.debug('Validated with attrs')
 
-        # Simular email y nombne de usuario
-        #attrs["mail"] = "admin@arte-consultores.com"
-        #attrs["givenName"] = "Admin"
-        #attrs["sn"] = "Arte Consultores"
-        # Fin simular
-
         log.debug(attrs)
         data_dict = {}
         for key, val in list(cas_plugin.USER_ATTR_MAP.items()):
             if type(val) == list:
-                # data_dict[key] = ' '.join([attrs.get(x).text for x in val]) # Se comenta por simulacion
                 data_dict[key] = ' '.join([attrs.get(x) for x in val])
             else:
                 log.debug(
                     '-->Obteniendo el parámetro [{0}] con clave [{1}]'.format(key, val))
                 if attrs.get(val) is not None:
-                    # data_dict[key] = attrs.get(val).text Se comenta por simulacion
                     data_dict[key] = attrs.get(val)
 
         fullname = str(data_dict['fullname'])
@@ -311,9 +297,6 @@ def cas_callback(**kwargs):
 
         sysadmin_check = data_dict.get('sysadmin').text
         log.debug('Despues de bucle for data_dict')
-        log.debug(data_dict)
-        log.debug(sysadmin_check)
-        log.debug(type(sysadmin_check))
 
         if sysadmin_check:
             separador = '#'
@@ -365,4 +348,3 @@ for rule in rules:
 if config.get('ckanext.cas.register_url', None):
     cas.add_url_rule('/user/register',
                      'register_url_redirect', register_url_redirect)
-
