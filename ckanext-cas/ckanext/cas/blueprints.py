@@ -309,7 +309,7 @@ def cas_callback(**kwargs):
             log.debug(sysadmin)
         else:
             abort(
-                403, 'Solo se pueden autenticar los usuarios pertenecientes al equipo de ISTAC')
+                403, 'Solo se pueden autenticar los usuarios pertenecientes al equipo de EDATOS')
 
         username = _authenticate_user(
             username, email, fullname, sysadmin)

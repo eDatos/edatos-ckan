@@ -15,11 +15,12 @@ Se han desarrollado las siguientes extensiones de CKAN:
 - fichero ckan-license.json: contiene las licencias necesarias para realizar el mapeado en el ckan en los procesos de federación.
 - ckanext-istactranslation (Deprecated): Las traducciones se han vuelto a implementar en la extensión istac_theme <s>contiene las traducciones de la extensión de theme y se implementan en esta extensión para solventar un comportamiento por defecto de CKAN que toma las traducciones siempre de la última extensión en la lista de configuración, por lo tanto deberá estar siempre en última posición en esta.</s>
 - ckanext-gobcangroups: Se ha implementado una mejora para desvincular datasets del catálogo RDF federado de GPE
+- Carpeta etc: Contiene los ficheros de configuración para cada entorno, ademas de los ficheros comunes en todos los entornos; gobcan_profile, fichero correspondiente al custom profile de DCAT; ckan-licenses, fichero correspondiente a las licencias configuradas en el CKAN.
 
 ## Instalación
 ---------------------------------------------------------------
 
-El proceso de instalación y configuración de las extensiones se explica en los manuales de configuración del proyecto.
+El proceso de instalación y configuración de las extensiones y ficheros de configuración se explica en los manuales de configuración del proyecto.
 
 ## Configuración
 ---------------------------------------------------------------
