@@ -277,8 +277,6 @@ def cas_callback(**kwargs):
 
         if acl is not None:
             attrs.update(acl=acl)
-        else:
-            attrs.update(acl=None)
         log.debug('Validated with attrs')
 
         log.debug(attrs)
