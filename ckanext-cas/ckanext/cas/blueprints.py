@@ -96,7 +96,6 @@ def cas_saml_callback(**kwargs):
         q = rq.post(cas_plugin.SAML_VALIDATION_URL + '?TARGET={0}/cas/saml_callback'.format(cas_plugin.CAS_APP_URL),
                     data=_generate_saml_request(ticket),
                     verify=cas_plugin.VERIFY_CERTIFICATE)
-
         root = objectify.fromstring(q.content)
         failure = False
         try:
@@ -105,10 +104,10 @@ def cas_saml_callback(**kwargs):
                 user_attrs = cas_plugin.USER_ATTR_MAP
                 cas_attributes = [x for x in root['Body']['{urn:oasis:names:tc:SAML:1.0:protocol}Response'][
                     '{urn:oasis:names:tc:SAML:1.0:assertion}Assertion']['AttributeStatement']['Attribute']]
+
                 data_dict = {}
                 attributes = {
                     key.get('AttributeName'): key['AttributeValue'].text for key in cas_attributes}
-
                 for key, val in list(user_attrs.items()):
                     if type(val) == list:
                         data_dict[key] = ' '.join(
@@ -166,7 +165,7 @@ def _authenticate_user(username, email, fullname, is_superuser=False):
         is_superuser = False
     else:
         abort(
-            403, 'Solo se pueden autenticar los usuarios pertenecientes al equipo ISTAC')
+            403, 'Solo se pueden autenticar los usuarios pertenecientes al equipo EDATOS')
 
     resp = h.redirect_to(u'user.me')
 
@@ -175,6 +174,7 @@ def _authenticate_user(username, email, fullname, is_superuser=False):
                      'email': email,
                      'fullname': fullname,
                      'password': uuid4().hex}
+
         try:
             user_obj = l.get_action('user_create')(
                 {'ignore_auth': True}, data_dict)
@@ -295,10 +295,11 @@ def cas_callback(**kwargs):
         username = str(root.authenticationSuccess.user)
         sysadmin = False
 
-        sysadmin_check = data_dict.get('sysadmin').text
+        sysadmin_check = data_dict.get('sysadmin')
         log.debug('Despues de bucle for data_dict')
 
-        if sysadmin_check:
+        if sysadmin_check and not isinstance(sysadmin_check, list):
+            sysadmin_check = sysadmin_check.text
             separador = '#'
             posicion_rol = 1
             sysadmin_check = sysadmin_check.strip(separador)
