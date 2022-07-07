@@ -29,8 +29,6 @@ from ckan.views.user import set_repoze_user
 from ckanext.cas.db import delete_entry, delete_user_entry, insert_entry
 from lxml import etree, objectify
 
-from icecream import ic
-
 log = logging.getLogger(__name__)
 
 render = base.render
@@ -98,11 +96,6 @@ def cas_saml_callback(**kwargs):
         q = rq.post(cas_plugin.SAML_VALIDATION_URL + '?TARGET={0}/cas/saml_callback'.format(cas_plugin.CAS_APP_URL),
                     data=_generate_saml_request(ticket),
                     verify=cas_plugin.VERIFY_CERTIFICATE)
-        # IECREAM
-        # IECREAM
-        ic(q)
-        # IECREAM
-        # IECREAM
         root = objectify.fromstring(q.content)
         failure = False
         try:
@@ -112,19 +105,9 @@ def cas_saml_callback(**kwargs):
                 cas_attributes = [x for x in root['Body']['{urn:oasis:names:tc:SAML:1.0:protocol}Response'][
                     '{urn:oasis:names:tc:SAML:1.0:assertion}Assertion']['AttributeStatement']['Attribute']]
 
-                # IECREAM
-                # IECREAM
-                ic(cas_attributes)
-                # IECREAM
-                # IECREAM
                 data_dict = {}
                 attributes = {
                     key.get('AttributeName'): key['AttributeValue'].text for key in cas_attributes}
-                # IECREAM
-                # IECREAM
-                ic(attributes)
-                # IECREAM
-                # IECREAM
                 for key, val in list(user_attrs.items()):
                     if type(val) == list:
                         data_dict[key] = ' '.join(
@@ -148,11 +131,6 @@ def cas_saml_callback(**kwargs):
             abort(401, msg)
 
         log.debug('Validation of ticket {0} succeeded.'.format(ticket))
-        # IECREAM
-        # IECREAM
-        ic(data_dict)
-        # IECREAM
-        # IECREAM
         username = data_dict['user']
         email = data_dict['email']
         fullname = data_dict['fullname']
@@ -179,24 +157,6 @@ def _authenticate_user(username, email, fullname, is_superuser=False):
 
     user = m.User.get(username)
 
-    # IECREAM
-    # IECREAM
-    ic("__________")
-    ic("__________")
-    ic()
-    ic("__________")
-    ic(m)
-    ic("__________")
-    ic(m.User)
-    ic("__________")
-    ic(user)
-    ic("__________")
-    ic(is_superuser)
-    ic("__________")
-    ic("__________")
-    # IECREAM
-    # IECREAM
-
     cas_plugin = p.get_plugin('cas')
 
     if is_superuser and is_superuser == cas_plugin.CAS_ADMIN_PROPERTY:
@@ -210,39 +170,15 @@ def _authenticate_user(username, email, fullname, is_superuser=False):
     resp = h.redirect_to(u'user.me')
 
     if user is None:
-        # IECREAM
-        # IECREAM
-        ic("Dentro del IF")
-        # IECREAM
-        # IECREAM
         data_dict = {'name': str(username),
                      'email': email,
                      'fullname': fullname,
                      'password': uuid4().hex}
 
-        # IECREAM
-        # IECREAM
-        ic("__________")
-        ic("__________")
-        ic(data_dict)
-        ic("__________")
-        ic("__________")
-        # IECREAM
-        # IECREAM
         try:
             user_obj = l.get_action('user_create')(
                 {'ignore_auth': True}, data_dict)
         except Exception as e:
-            # IECREAM
-            # IECREAM
-            ic("__________")
-            ic("__________")
-            ic()
-            ic(e)
-            ic("__________")
-            ic("__________")
-            # IECREAM
-            # IECREAM
             log.error(e)
             abort(500, str(e))
 
@@ -252,25 +188,11 @@ def _authenticate_user(username, email, fullname, is_superuser=False):
                 l.get_action('user_update')(
                     {'ignore_auth': True}, user_obj)
             except Exception as e:
-                # IECREAM
-                # IECREAM
-                ic("__________")
-                ic("__________")
-                ic()
-                ic("__________")
-                ic("__________")
-                # IECREAM
-                # IECREAM
                 log.error(e)
         set_repoze_user(user_obj['name'], resp)
         delete_user_entry(user_obj['name'])
         return user_obj['name']
     else:
-        # IECREAM
-        # IECREAM
-        ic("Dentro del ELSE")
-        # IECREAM
-        # IECREAM
         if user.name != username \
                 or user.email != email \
                 or user.fullname != fullname \
@@ -280,27 +202,9 @@ def _authenticate_user(username, email, fullname, is_superuser=False):
                             'email': email,
                             'fullname': fullname,
                             'sysadmin': is_superuser}
-                # IECREAM
-                # IECREAM
-                ic("__________")
-                ic("__________")
-                ic(user_obj)
-                ic("__________")
-                ic("__________")
-                # IECREAM
-                # IECREAM
                 l.get_action('user_update')(
                     {'ignore_auth': True}, user_obj)
             except Exception as e:
-                # IECREAM
-                # IECREAM
-                ic("__________")
-                ic("__________")
-                ic(user_obj)
-                ic("__________")
-                ic("__________")
-                # IECREAM
-                # IECREAM
                 log.error(e)
                 abort(500, str(e))
 
@@ -348,26 +252,8 @@ def cas_callback(**kwargs):
             if hasattr(root.authenticationSuccess, 'user'):
                 username = root.authenticationSuccess.user
                 success = True
-                # IECREAM
-                # IECREAM
-                ic("_____authenticationSuccess_____")
-                ic("__________")
-                ic(username)
-                ic("__________")
-                ic("__________")
-                # IECREAM
-                # IECREAM
         except AttributeError:
             success, username = False, None
-            # IECREAM
-            # IECREAM
-            ic("_____AttributeError_____")
-            ic("__________")
-            ic(username)
-            ic("__________")
-            ic("__________")
-            # IECREAM
-            # IECREAM
 
         try:
             failure = root.authenticationFailure
