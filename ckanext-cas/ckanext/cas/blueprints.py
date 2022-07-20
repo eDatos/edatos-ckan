@@ -29,6 +29,8 @@ from ckan.views.user import set_repoze_user
 from ckanext.cas.db import delete_entry, delete_user_entry, insert_entry
 from lxml import etree, objectify
 
+from icecream import ic
+
 log = logging.getLogger(__name__)
 
 render = base.render
@@ -157,6 +159,15 @@ def _authenticate_user(username, email, fullname, is_superuser=False):
 
     user = m.User.get(username)
 
+    if user:
+        ic(user)
+        ic("-----------------------------------------------------")
+
+    userEmail = m.User.by_email(email)
+
+    if userEmail:
+        ic(userEmail)
+
     cas_plugin = p.get_plugin('cas')
 
     if is_superuser and is_superuser == cas_plugin.CAS_ADMIN_PROPERTY:
@@ -170,6 +181,7 @@ def _authenticate_user(username, email, fullname, is_superuser=False):
     resp = h.redirect_to(u'user.me')
 
     if user is None:
+        ic("Entrando en el if")
         data_dict = {'name': str(username),
                      'email': email,
                      'fullname': fullname,
@@ -193,12 +205,29 @@ def _authenticate_user(username, email, fullname, is_superuser=False):
         delete_user_entry(user_obj['name'])
         return user_obj['name']
     else:
+        ic("Entrando en el else")
+        ic("--------")
+        ic(user.name)
+        ic(username)
+        ic("--------")
+        ic("--------")
+        ic(user.email)
+        ic(email)
+        ic("--------")
+        ic("--------")
+        ic(user.fullname)
+        ic(fullname)
+        ic("--------")
+        ic("--------")
+        ic(user.sysadmin)
+        ic(is_superuser)
+        ic("--------")
         if user.name != username \
                 or user.email != email \
                 or user.fullname != fullname \
                 or user.sysadmin != is_superuser:
             try:
-                user_obj = {'id': username,
+                user_obj = {'id': user.id,
                             'email': email,
                             'fullname': fullname,
                             'sysadmin': is_superuser}
