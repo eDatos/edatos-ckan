@@ -198,7 +198,7 @@ def _authenticate_user(username, email, fullname, is_superuser=False):
                 or user.fullname != fullname \
                 or user.sysadmin != is_superuser:
             try:
-                user_obj = {'id': username,
+                user_obj = {'id': user.id,
                             'email': email,
                             'fullname': fullname,
                             'sysadmin': is_superuser}
