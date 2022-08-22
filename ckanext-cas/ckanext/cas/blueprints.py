@@ -290,15 +290,16 @@ def cas_callback(**kwargs):
                 if attrs.get(val) is not None:
                     data_dict[key] = attrs.get(val)
 
-        fullname = str(data_dict['fullname'])
-        email = str(data_dict['email'])
-        username = str(root.authenticationSuccess.user)
-        sysadmin = False
+        sysadmin_check = None
 
-        sysadmin_check = data_dict.get('sysadmin')
-        log.debug('Despues de bucle for data_dict')
+        if data_dict.keys() >= {'fullname', 'email', 'sysadmin'} and hasattr(root.authenticationSuccess, 'user'):
+            fullname = str(data_dict['fullname'])
+            email = str(data_dict['email'])
+            username = str(root.authenticationSuccess.user)
+            sysadmin = False
+            sysadmin_check = data_dict.get('sysadmin')
 
-        if sysadmin_check and not isinstance(sysadmin_check, list):
+        elif sysadmin_check and not isinstance(sysadmin_check, list):
             sysadmin_check = sysadmin_check.text
             separador = '#'
             posicion_rol = 1
