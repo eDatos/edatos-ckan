@@ -299,16 +299,16 @@ def cas_callback(**kwargs):
             sysadmin = False
             sysadmin_check = data_dict.get('sysadmin')
 
-        elif sysadmin_check and not isinstance(sysadmin_check, list):
-            sysadmin_check = sysadmin_check.text
-            separador = '#'
-            posicion_rol = 1
-            sysadmin_check = sysadmin_check.strip(separador)
-            sysadmin_check = sysadmin_check.split(separador)
-            rol = sysadmin_check[posicion_rol]
-            sysadmin = rol
-            log.debug('Rol filtrado :')
-            log.debug(sysadmin)
+            if sysadmin_check and not isinstance(sysadmin_check, list):
+                sysadmin_check = sysadmin_check.text
+                separador = '#'
+                posicion_rol = 1
+                sysadmin_check = sysadmin_check.strip(separador)
+                sysadmin_check = sysadmin_check.split(separador)
+                rol = sysadmin_check[posicion_rol]
+                sysadmin = rol
+                log.debug('Rol filtrado :')
+                log.debug(sysadmin)
         else:
             abort(
                 403, 'Solo se pueden autenticar los usuarios pertenecientes al equipo de EDATOS')
