@@ -1,8 +1,14 @@
 from datetime import datetime
+
 from rdflib.namespace import Namespace, XSD, RDF, RDFS
-from ckanext.dcat.profiles import RDFProfile
-from ckan.model.license import LicenseRegister
 from rdflib import Literal, URIRef, BNode
+
+from ckanext.dcat.profiles import RDFProfile, CleanedURIRef, URIRefOrLiteral
+from ckanext.dcat.utils import resource_uri
+
+from ckan.model.license import LicenseRegister
+from ckan.lib import helpers as h
+
 from ckantoolkit import config
 
 DCT = Namespace("http://purl.org/dc/terms/")
@@ -16,6 +22,8 @@ class GobCanProfile(RDFProfile):
 
     It requires the European DCAT-AP profile (`euro_dcat_ap`)
     '''
+
+    RESOURCE_FORMATS = None
 
     def _license_new(self, dataset_ref):
         '''
@@ -150,6 +158,9 @@ class GobCanProfile(RDFProfile):
         }
         return frequencies.get(frequency.lower(), (TIME.years, 'Anual', '0'))
 
+    def _set_resource_formats(self):
+        self.RESOURCE_FORMATS = h.resource_formats()
+
     def parse_dataset(self, dataset_dict, dataset_ref):
         # License
         if 'license_id' not in dataset_dict:
@@ -197,6 +208,30 @@ class GobCanProfile(RDFProfile):
             g.add((duration_desc_node, RDFS.label, Literal(frec)))
             g.add((duration_desc_node, label, Literal(times)))
 
+        # Resources
+        for resource_dict in dataset_dict.get('resources', []):
+
+            # Format and media type
+
+            mimetype = resource_dict.get('mimetype')
+            fmt = resource_dict.get('format')
+            if not mimetype and '/' not in fmt:
+
+                # Add distribution
+                distribution = CleanedURIRef(resource_uri(resource_dict))
+                g.add((dataset_ref, DCAT.distribution, distribution))
+                g.add((distribution, RDF.type, DCAT.Distribution))
+
+                resource_format_list = self.RESOURCE_FORMATS.get(fmt.lower())
+                imt_index = 0
+                if resource_format_list:
+                    mimetype = resource_format_list[imt_index]
+
+                # Add mimeType
+                if mimetype:
+                    g.add((distribution, DCAT.mediaType,
+                           URIRefOrLiteral(mimetype)))
+
     def graph_from_catalog(self, catalog_dict, catalog_ref):
         g = self.g
 
@@ -218,4 +253,3 @@ class GobCanProfile(RDFProfile):
         date = datetime.now()
         self._add_date_triple(catalog_ref, DCT.issued, Literal(date.isoformat(),
                                                                datatype=XSD.dateTime))
-
