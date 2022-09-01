@@ -22,8 +22,30 @@ class GobCanProfile(RDFProfile):
 
     It requires the European DCAT-AP profile (`euro_dcat_ap`)
     '''
-
+    CATALOG_PUBLISHER = None
     RESOURCE_FORMATS = None
+
+    def __init__(self, graph, compatibility_mode=False):
+        '''Class constructor
+
+        '''
+
+        # Set graph catalog properties for fullfill the 'Norma Tecnica
+        # de Interoperabilidad de Reutilizacion de recursos de la informacion'.
+        self._set_catalog_properties()
+
+        # Set the resource formats list
+        self._set_resource_formats()
+
+        super(GobCanProfile, self).__init__(graph, compatibility_mode=False)
+
+    def _set_catalog_properties(self):
+
+        if not config.get('ckan.publisher', None):
+            raise RuntimeError(
+                '"ckan.publisher" is required for plugin: {0}'.format(self.name))
+
+        self.CATALOG_PUBLISHER = config.get('ckan.publisher')
 
     def _license_new(self, dataset_ref):
         '''
@@ -207,6 +229,16 @@ class GobCanProfile(RDFProfile):
             g.add((duration_desc_node, RDF.type,  TIME.DurationDescription))
             g.add((duration_desc_node, RDFS.label, Literal(frec)))
             g.add((duration_desc_node, label, Literal(times)))
+
+        # Publisher
+
+        publisher = self._get_dataset_value(dataset_dict, 'publisher')
+        if publisher is None:
+
+            # Create new publisher node
+            publisher_details = URIRef(self.CATALOG_PUBLISHER)
+            g.add((publisher_details, RDF.type, FOAF.Organization))
+            g.add((dataset_ref, DCT.publisher, publisher_details))
 
         # Resources
         for resource_dict in dataset_dict.get('resources', []):
