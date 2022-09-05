@@ -14,6 +14,7 @@ from ckantoolkit import config
 DCT = Namespace("http://purl.org/dc/terms/")
 DCAT = Namespace("http://www.w3.org/ns/dcat#")
 TIME = Namespace("http://www.w3.org/2006/time#")
+FOAF = Namespace("http://xmlns.com/foaf/0.1/")
 
 
 class GobCanProfile(RDFProfile):
@@ -22,7 +23,10 @@ class GobCanProfile(RDFProfile):
 
     It requires the European DCAT-AP profile (`euro_dcat_ap`)
     '''
+    CATALOG_TAXONOMY = None
     CATALOG_PUBLISHER = None
+    CATALOG_PUBLISHER_NAME = None
+    CATALOG_LICENSE = None
     RESOURCE_FORMATS = None
 
     def __init__(self, graph, compatibility_mode=False):
@@ -41,11 +45,26 @@ class GobCanProfile(RDFProfile):
 
     def _set_catalog_properties(self):
 
+        if not config.get('ckan.theme_taxonomy', None):
+            raise RuntimeError(
+                '"ckan.theme_taxonomy" is required for plugin: {0}'.format(self.name))
+
         if not config.get('ckan.publisher', None):
             raise RuntimeError(
                 '"ckan.publisher" is required for plugin: {0}'.format(self.name))
 
+        if not config.get('ckan.publisher_name', None):
+            raise RuntimeError(
+                '"ckan.publisher_name" is required for plugin: {0}'.format(self.name))
+
+        if not config.get('ckan.license', None):
+            raise RuntimeError(
+                '"ckan.license" is required for plugin: {0}'.format(self.name))
+
+        self.CATALOG_TAXONOMY = config.get('ckan.theme_taxonomy')
         self.CATALOG_PUBLISHER = config.get('ckan.publisher')
+        self.CATALOG_PUBLISHER_NAME = config.get('ckan.publisher_name')
+        self.CATALOG_LICENSE = config.get('ckan.license')
 
     def _license_new(self, dataset_ref):
         '''
@@ -231,13 +250,23 @@ class GobCanProfile(RDFProfile):
             g.add((duration_desc_node, label, Literal(times)))
 
         # Publisher
+        if any([
+            self._get_dataset_value(dataset_dict, 'publisher_uri'),
+            self._get_dataset_value(dataset_dict, 'publisher_name'),
+            dataset_dict.get('organization'),
+        ]):
 
-        publisher = self._get_dataset_value(dataset_dict, 'publisher')
-        if publisher is None:
+            # Remove EuropeanDCATProfile publisher node
+            # g.remove((dataset_ref, DCT.publisher, None))
+
+            # Se debe configuar el publisher a nivel de dataset
+            # En caso de no haber se debe mostrar y siempre inyectar el name
 
             # Create new publisher node
             publisher_details = URIRef(self.CATALOG_PUBLISHER)
             g.add((publisher_details, RDF.type, FOAF.Organization))
+            g.add((publisher_details, FOAF.name,
+                   Literal(self.CATALOG_PUBLISHER_NAME)))
             g.add((dataset_ref, DCT.publisher, publisher_details))
 
         # Resources
@@ -268,10 +297,9 @@ class GobCanProfile(RDFProfile):
         g = self.g
 
         items = [
-            ('themeTaxonomy', DCAT.themeTaxonomy,
-             config.get('ckan.theme_taxonomy'), URIRef),
-            ('publisher', DCT.publisher, config.get('ckan.publisher'), URIRef),
-            ('license', DCT.license, config.get('ckan.license'), URIRef),
+            ('themeTaxonomy', DCAT.themeTaxonomy, self.CATALOG_TAXONOMY, URIRef),
+            ('publisher', DCT.publisher, self.CATALOG_PUBLISHER, URIRef),
+            ('license', DCT.license, self.CATALOG_LICENSE, URIRef),
         ]
         for item in items:
             key, predicate, fallback, _type = item
