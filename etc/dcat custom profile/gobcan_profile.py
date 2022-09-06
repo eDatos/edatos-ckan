@@ -15,7 +15,6 @@ DCT = Namespace("http://purl.org/dc/terms/")
 DCAT = Namespace("http://www.w3.org/ns/dcat#")
 TIME = Namespace("http://www.w3.org/2006/time#")
 FOAF = Namespace("http://xmlns.com/foaf/0.1/")
-SCHEMA = Namespace("http://schema.org")
 
 
 class GobCanProfile(RDFProfile):
@@ -266,12 +265,13 @@ class GobCanProfile(RDFProfile):
             # Remove EuropeanDCATProfile publisher node
             g.remove((dataset_ref, DCT.publisher, None))
 
-            # Create new publisher node with publisher name
+            # Create new publisher node
             publisher_details = CleanedURIRef(publisher_details)
 
             g.add((publisher_details, RDF.type, FOAF.Organization))
             g.add((dataset_ref, DCT.publisher, publisher_details))
 
+            # Create new publisher name node
             g.add((publisher_details, FOAF.name, Literal(publisher_name)))
 
         # Resources
