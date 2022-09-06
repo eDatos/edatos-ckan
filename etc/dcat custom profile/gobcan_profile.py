@@ -15,6 +15,7 @@ DCT = Namespace("http://purl.org/dc/terms/")
 DCAT = Namespace("http://www.w3.org/ns/dcat#")
 TIME = Namespace("http://www.w3.org/2006/time#")
 FOAF = Namespace("http://xmlns.com/foaf/0.1/")
+SCHEMA = Namespace("http://schema.org")
 
 
 class GobCanProfile(RDFProfile):
@@ -26,6 +27,7 @@ class GobCanProfile(RDFProfile):
     CATALOG_TAXONOMY = None
     CATALOG_PUBLISHER = None
     CATALOG_PUBLISHER_NAME = None
+    DATASET_PUBLISHER = None
     CATALOG_LICENSE = None
     RESOURCE_FORMATS = None
 
@@ -57,6 +59,10 @@ class GobCanProfile(RDFProfile):
             raise RuntimeError(
                 '"ckan.publisher_name" is required for plugin: {0}'.format(self.name))
 
+        if not config.get('ckan.dataset_publisher', None):
+            raise RuntimeError(
+                '"ckan.dataset_publisher" is required for plugin: {0}'.format(self.name))
+
         if not config.get('ckan.license', None):
             raise RuntimeError(
                 '"ckan.license" is required for plugin: {0}'.format(self.name))
@@ -64,6 +70,7 @@ class GobCanProfile(RDFProfile):
         self.CATALOG_TAXONOMY = config.get('ckan.theme_taxonomy')
         self.CATALOG_PUBLISHER = config.get('ckan.publisher')
         self.CATALOG_PUBLISHER_NAME = config.get('ckan.publisher_name')
+        self.DATASET_PUBLISHER = config.get('ckan.dataset_publisher')
         self.CATALOG_LICENSE = config.get('ckan.license')
 
     def _license_new(self, dataset_ref):
@@ -250,24 +257,22 @@ class GobCanProfile(RDFProfile):
             g.add((duration_desc_node, label, Literal(times)))
 
         # Publisher
-        if any([
-            self._get_dataset_value(dataset_dict, 'publisher_uri'),
-            self._get_dataset_value(dataset_dict, 'publisher_name'),
-            dataset_dict.get('organization'),
-        ]):
+
+        publisher_name = self.CATALOG_PUBLISHER_NAME
+        publisher_details = self.DATASET_PUBLISHER
+
+        if publisher_details:
 
             # Remove EuropeanDCATProfile publisher node
-            # g.remove((dataset_ref, DCT.publisher, None))
+            g.remove((dataset_ref, DCT.publisher, None))
 
-            # Se debe configuar el publisher a nivel de dataset
-            # En caso de no haber se debe mostrar y siempre inyectar el name
+            # Create new publisher node with publisher name
+            publisher_details = CleanedURIRef(publisher_details)
 
-            # Create new publisher node
-            publisher_details = URIRef(self.CATALOG_PUBLISHER)
             g.add((publisher_details, RDF.type, FOAF.Organization))
-            g.add((publisher_details, FOAF.name,
-                   Literal(self.CATALOG_PUBLISHER_NAME)))
             g.add((dataset_ref, DCT.publisher, publisher_details))
+
+            g.add((publisher_details, FOAF.name, Literal(publisher_name)))
 
         # Resources
         for resource_dict in dataset_dict.get('resources', []):
