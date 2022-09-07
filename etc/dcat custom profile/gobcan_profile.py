@@ -1,13 +1,20 @@
 from datetime import datetime
+
 from rdflib.namespace import Namespace, XSD, RDF, RDFS
-from ckanext.dcat.profiles import RDFProfile
-from ckan.model.license import LicenseRegister
 from rdflib import Literal, URIRef, BNode
+
+from ckanext.dcat.profiles import RDFProfile, CleanedURIRef, URIRefOrLiteral
+from ckanext.dcat.utils import resource_uri
+
+from ckan.model.license import LicenseRegister
+from ckan.lib import helpers as h
+
 from ckantoolkit import config
 
 DCT = Namespace("http://purl.org/dc/terms/")
 DCAT = Namespace("http://www.w3.org/ns/dcat#")
 TIME = Namespace("http://www.w3.org/2006/time#")
+FOAF = Namespace("http://xmlns.com/foaf/0.1/")
 
 
 class GobCanProfile(RDFProfile):
@@ -16,6 +23,54 @@ class GobCanProfile(RDFProfile):
 
     It requires the European DCAT-AP profile (`euro_dcat_ap`)
     '''
+    CATALOG_TAXONOMY = None
+    CATALOG_PUBLISHER = None
+    CATALOG_PUBLISHER_NAME = None
+    DATASET_PUBLISHER = None
+    CATALOG_LICENSE = None
+    RESOURCE_FORMATS = None
+
+    def __init__(self, graph, compatibility_mode=False):
+        '''Class constructor
+
+        '''
+
+        # Set graph catalog properties for fullfill the 'Norma Tecnica
+        # de Interoperabilidad de Reutilizacion de recursos de la informacion'.
+        self._set_catalog_properties()
+
+        # Set the resource formats list
+        self._set_resource_formats()
+
+        super(GobCanProfile, self).__init__(graph, compatibility_mode=False)
+
+    def _set_catalog_properties(self):
+
+        if not config.get('ckan.theme_taxonomy', None):
+            raise RuntimeError(
+                '"ckan.theme_taxonomy" is required for plugin: {0}'.format(self.name))
+
+        if not config.get('ckan.publisher', None):
+            raise RuntimeError(
+                '"ckan.publisher" is required for plugin: {0}'.format(self.name))
+
+        if not config.get('ckan.publisher_name', None):
+            raise RuntimeError(
+                '"ckan.publisher_name" is required for plugin: {0}'.format(self.name))
+
+        if not config.get('ckan.dataset_publisher', None):
+            raise RuntimeError(
+                '"ckan.dataset_publisher" is required for plugin: {0}'.format(self.name))
+
+        if not config.get('ckan.license', None):
+            raise RuntimeError(
+                '"ckan.license" is required for plugin: {0}'.format(self.name))
+
+        self.CATALOG_TAXONOMY = config.get('ckan.theme_taxonomy')
+        self.CATALOG_PUBLISHER = config.get('ckan.publisher')
+        self.CATALOG_PUBLISHER_NAME = config.get('ckan.publisher_name')
+        self.DATASET_PUBLISHER = config.get('ckan.dataset_publisher')
+        self.CATALOG_LICENSE = config.get('ckan.license')
 
     def _license_new(self, dataset_ref):
         '''
@@ -150,6 +205,9 @@ class GobCanProfile(RDFProfile):
         }
         return frequencies.get(frequency.lower(), (TIME.years, 'Anual', '0'))
 
+    def _set_resource_formats(self):
+        self.RESOURCE_FORMATS = h.resource_formats()
+
     def parse_dataset(self, dataset_dict, dataset_ref):
         # License
         if 'license_id' not in dataset_dict:
@@ -197,14 +255,56 @@ class GobCanProfile(RDFProfile):
             g.add((duration_desc_node, RDFS.label, Literal(frec)))
             g.add((duration_desc_node, label, Literal(times)))
 
+        # Publisher
+
+        publisher_name = self.CATALOG_PUBLISHER_NAME
+        publisher_details = self.DATASET_PUBLISHER
+
+        if publisher_details:
+
+            # Remove EuropeanDCATProfile publisher node
+            g.remove((dataset_ref, DCT.publisher, None))
+
+            # Create new publisher node
+            publisher_details = CleanedURIRef(publisher_details)
+
+            g.add((publisher_details, RDF.type, FOAF.Organization))
+            g.add((dataset_ref, DCT.publisher, publisher_details))
+
+            # Create new publisher name node
+            g.add((publisher_details, FOAF.name, Literal(publisher_name)))
+
+        # Resources
+        for resource_dict in dataset_dict.get('resources', []):
+
+            # Format and media type
+
+            mimetype = resource_dict.get('mimetype')
+            fmt = resource_dict.get('format')
+            if not mimetype and '/' not in fmt:
+
+                # Add distribution
+                distribution = CleanedURIRef(resource_uri(resource_dict))
+                g.add((dataset_ref, DCAT.distribution, distribution))
+                g.add((distribution, RDF.type, DCAT.Distribution))
+
+                resource_format_list = self.RESOURCE_FORMATS.get(fmt.lower())
+                imt_index = 0
+                if resource_format_list:
+                    mimetype = resource_format_list[imt_index]
+
+                # Add mimeType
+                if mimetype:
+                    g.add((distribution, DCAT.mediaType,
+                           URIRefOrLiteral(mimetype)))
+
     def graph_from_catalog(self, catalog_dict, catalog_ref):
         g = self.g
 
         items = [
-            ('themeTaxonomy', DCAT.themeTaxonomy,
-             config.get('ckan.theme_taxonomy'), URIRef),
-            ('publisher', DCT.publisher, config.get('ckan.publisher'), URIRef),
-            ('license', DCT.license, config.get('ckan.license'), URIRef),
+            ('themeTaxonomy', DCAT.themeTaxonomy, self.CATALOG_TAXONOMY, URIRef),
+            ('publisher', DCT.publisher, self.CATALOG_PUBLISHER, URIRef),
+            ('license', DCT.license, self.CATALOG_LICENSE, URIRef),
         ]
         for item in items:
             key, predicate, fallback, _type = item
@@ -218,4 +318,3 @@ class GobCanProfile(RDFProfile):
         date = datetime.now()
         self._add_date_triple(catalog_ref, DCT.issued, Literal(date.isoformat(),
                                                                datatype=XSD.dateTime))
-
