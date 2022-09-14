@@ -265,6 +265,40 @@ class GobCanProfile(RDFProfile):
             # Remove EuropeanDCATProfile publisher node
             g.remove((dataset_ref, DCT.publisher, None))
 
+            # Remove EuropeanDCATProfile None
+
+            none_publisher = URIRef(publisher_details)
+            # if (none_publisher, RDF.type, FOAF.Organization) in g:
+            #     print('SE ENCUENTRA TIPLEEEEEEEEEEEEEEEEEEEEEEEEE')
+            for r in g.triples((None, None, None)):
+                # g.triples((none_publisher, RDF.type, FOAF.Organization
+                if (none_publisher, None, None) == r:
+                    print(r)
+
+            # Original
+            # for triple in g.triples((none_publisher, FOAF.name, None)):
+            #     print(triple)
+            #     print(type(triple))
+                # (subject0, predicate0, object0),
+                # (rdflib.term.URIRef('http://datos.gob.es/recurso/sector-publico/org/Organismo/A05003423'),
+                # rdflib.term.URIRef('http://xmlns.com/foaf/0.1/name'), rdflib.term.Literal('None'))
+                # (rdflib.term.URIRef('http://datos.gob.es/recurso/sector-publico/org/Organismo/A05003423'),
+                #  rdflib.term.URIRef('http://xmlns.com/foaf/0.1/name'), rdflib.term.Literal('ISTAC'))
+
+            for triple in g.triples((none_publisher, FOAF.name, None)):
+                if (none_publisher, FOAF.name, Literal('None')) == triple:
+                    print('XXXXXXXXXXXXXXXXXXX')
+                    print('Elimnando nodo None')
+                    g.remove(triple)
+
+            # print(g.predicate_objects(none_publisher))
+            # print('SEPARADOR')
+            # print(g.objects(none_publisher, FOAF.Organization))
+            # for s, p , o in g:
+            #     if (none_publisher, RDF.type, FOAF.Organization):
+
+            # g.remove((dataset_ref, FOAF.Organization, none_publisher))
+
             # Create new publisher node
             publisher_details = CleanedURIRef(publisher_details)
 
@@ -318,3 +352,12 @@ class GobCanProfile(RDFProfile):
         date = datetime.now()
         self._add_date_triple(catalog_ref, DCT.issued, Literal(date.isoformat(),
                                                                datatype=XSD.dateTime))
+
+        # Remove EuropeanDCATProfile None
+        # g.remove((catalog_ref, FOAF.Organization,
+        #           CleanedURIRef(self.DATASET_PUBLISHER)))
+        # g.remove((catalog_ref, FOAF.Organization, None))
+        # none_publisher = URIRef(self.DATASET_PUBLISHER)
+        # if (none_publisher, None, None) in g:
+        #     print('SE ENCUENTRA TIPLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
+        # g.remove((dataset_ref, FOAF.Organization, none_publisher))
