@@ -265,6 +265,13 @@ class GobCanProfile(RDFProfile):
             # Remove EuropeanDCATProfile publisher node
             g.remove((dataset_ref, DCT.publisher, None))
 
+            # Remove EuropeanDCATProfile name:None Literal node
+            publisher_ref = URIRef(publisher_details)
+            none_triple = ((publisher_ref, FOAF.name, Literal('None')))
+
+            if none_triple in g.triples((None, None, None)):
+                g.remove(none_triple)
+
             # Create new publisher node
             publisher_details = CleanedURIRef(publisher_details)
 
