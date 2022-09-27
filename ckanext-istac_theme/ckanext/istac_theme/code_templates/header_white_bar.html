@@ -16,7 +16,7 @@
                         <li>
                             <a href="{{ h.url_for('user.read', id=c.userobj.name) }}" class="image"
                                 title="{{ _('View profile') }}">
-                                {{ h.gravatar((c.userobj.email_hash if c and c.userobj else ''), size=22) }}
+                                <i class="fa fa-user" aria-hidden="true"></i>
                                 <span class="username">{{ c.userobj.display_name }}</span>
                             </a>
                         </li>
