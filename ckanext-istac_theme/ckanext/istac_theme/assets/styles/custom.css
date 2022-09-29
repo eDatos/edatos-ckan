@@ -58,7 +58,7 @@ a.logo img.logo-corto {
 }
 
 body {
-	background-image: url("/catalogos/estadisticas/fondo_portal_datos_abiertos.jpg");
+	background-image: None;
 	background-color: #eeeeee !important;
 	background-size: cover;
 	background-position: center center;
