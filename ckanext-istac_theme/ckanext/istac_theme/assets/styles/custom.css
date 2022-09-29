@@ -490,12 +490,6 @@ button.btn.btn-navbar {
     padding-left: 1rem;
 }
 
-i.fa.fa-istac-home {
-    position: relative;
-    top: -0.2rem;
-}
-
-
 .istac-title-bar a h1 {
     position: relative;
     top: 0.6rem;
@@ -537,6 +531,9 @@ i.fa.fa-istac-home {
 }
 
 .istac-title-bar .istac-app-header-title {
+	display: flex;
+    align-items: center;
+    column-gap: 0.2em;
     padding-top: 10px;
 }
 
