@@ -1,4 +1,6 @@
 # -*- coding: UTF-8 -*-
+from ckantoolkit import config
+
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 from ckan.lib.plugins import DefaultTranslation
@@ -59,6 +61,12 @@ def package_showcase_list(context):
             'ckanext_showcase_show')({}, {'id': package['id']})
         showcase_list.append(showcase_dict)
     return showcase_list
+
+
+def get_delink_value():
+    '''Returns the delink value
+    '''
+    return config.get('ckanext.istac_theme.delink', 'load_manual')
 
 
 dirname = os.path.dirname(__file__)
@@ -206,6 +214,7 @@ class IstacThemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             'istac_theme_get_all_groups': get_all_groups,
             'istac_theme_get_count_all_datasets': get_count_all_datasets,
             'package_showcase_list': package_showcase_list,
+            'istac_theme_get_delink_value': get_delink_value,
         }
 
     # ITranslation
