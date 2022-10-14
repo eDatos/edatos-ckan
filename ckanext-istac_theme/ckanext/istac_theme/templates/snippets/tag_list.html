@@ -13,7 +13,7 @@
 {% block tag_list %}
   <ul class="{{ _class }}">
     {% for tag in tags %}
-      {% if tag.display_name != 'Manual' %}
+      {% if tag.display_name != delink %}
         <li>
             <a class="{% block tag_list_item_class %}tag{% endblock %}" href="{% url_for 'dataset.search', tags=tag.name %}">{{ h.truncate(tag.display_name, 22) }}</a>
         </li>

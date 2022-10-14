@@ -66,7 +66,7 @@ def package_showcase_list(context):
 def get_delink_value():
     '''Returns the delink value
     '''
-    return config.get('ckanext.istac_theme.delink', 'load_manual')
+    return config.get('ckanext.gobcangroups.flag.for.delink', 'load_manual')
 
 
 dirname = os.path.dirname(__file__)
