@@ -20,5 +20,4 @@ class GobcangroupsPlugin(plugins.SingletonPlugin):
         if not config.get('ckanext.gobcangroups.flag.for.delink', 'Manual'):
             raise RuntimeError(
                 '"ckanext.gobcangroups.flag.for.delink: {0}'.format(self.name))
-        # self.FLAG_PROPERTY = config.get('ckanext.gobcangroups.flag.for.delink')
-        self.FLAG_PROPERTY = 'Histórico'
+        self.FLAG_PROPERTY = config.get('ckanext.gobcangroups.flag.for.delink')
