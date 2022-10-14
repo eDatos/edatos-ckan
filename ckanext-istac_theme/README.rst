@@ -39,7 +39,7 @@ Es recomendable realizar la instalación explicada en los pasos ``Development in
      * chmod 777 chmod 777 /servers/catalogo/ckan/default/src/ckanext-istac_theme/ckanext/istac_theme/templates/footer.html
 
 
-6. Verificar si la extensión ckanext-gobcangroups tiene configurada la propiedad ``ckanext.gobcangroups.flag.for.delink`` , de lo contrario no se ocultarán los tags usados para desvincular los datasets, si la propiedad se encuentra vacía su valor por defecto es ``load_manual``.
+6. La propiedad ``ckanext.gobcangroups.flag.for.delink`` de la extensión ckanext-gobcangroups es usada para ocultar de las plantillas las etiquetas para los datasets desvinculados del GPE.
 
 7. Reiniciar el servicio Apache estando como root::
 
