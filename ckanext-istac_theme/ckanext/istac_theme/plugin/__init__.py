@@ -6,12 +6,17 @@ import ckan.plugins.toolkit as toolkit
 from ckan.lib.plugins import DefaultTranslation
 from ckan.common import request
 import ckan.lib.helpers as h
+import ckan.lib.base as base
 
 import json
 import codecs
 import requests
 import os
 from bs4 import BeautifulSoup
+
+from flask import Blueprint
+
+abort = base.abort
 
 
 def get_group_pagination_limit():
@@ -69,6 +74,10 @@ def get_delink_value():
     return config.get('ckanext.gobcangroups.flag.for.delink', 'load_manual')
 
 
+def abort_redirect():
+    abort(403, _(u'Not authorized to see this page'))
+
+
 dirname = os.path.dirname(__file__)
 CONFIG_FILE_PATH = os.path.join(dirname, '../etc/config.json')
 FOOTER_PATH = os.path.join(dirname, '../templates/footer.html')
@@ -81,9 +90,16 @@ BURGER_BUTTON_PATH = os.path.join(
 HERE = os.path.abspath(os.path.dirname(__file__))
 I18N_DIR = os.path.join(HERE, "../i18n")
 
+# Map de vistas que se quieren restringir acceso
+REDIRECT_VIEWS = (
+    #route, view, function
+    ('/user/register', 'abort_redirect', abort_redirect),
+)
+
 
 class IstacThemePlugin(plugins.SingletonPlugin, DefaultTranslation):
     plugins.implements(plugins.ITranslation)
+    plugins.implements(plugins.IBlueprint)
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.ITemplateHelpers)
 
@@ -204,6 +220,16 @@ class IstacThemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         toolkit.add_template_directory(config_, '../templates')
         toolkit.add_public_directory(config_, '../public')
         toolkit.add_resource('../assets', 'ckanext-istac_theme')
+
+    # IBlueprint
+    def get_blueprint(self):
+        edatos = Blueprint('istac_theme', self.__module__)
+
+        if REDIRECT_VIEWS:
+            for route_, view_, function_ in REDIRECT_VIEWS:
+                edatos.add_url_rule(route_, view_, function_)
+
+        return [edatos]
 
     # ITemplateHelpers
 
