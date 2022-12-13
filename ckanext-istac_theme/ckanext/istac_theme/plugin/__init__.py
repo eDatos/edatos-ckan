@@ -9,7 +9,7 @@ import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 import requests
 from bs4 import BeautifulSoup
-from ckan.common import request
+from ckan.common import _, request
 from ckan.lib.plugins import DefaultTranslation
 from ckantoolkit import config
 from flask import Blueprint
