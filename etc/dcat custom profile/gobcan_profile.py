@@ -29,7 +29,6 @@ class GobCanProfile(RDFProfile):
     DATASET_PUBLISHER = None
     CATALOG_LICENSE = None
     RESOURCE_FORMATS = None
-    DELINK_FLAG = None
 
     def __init__(self, graph, compatibility_mode=False):
         '''Class constructor
