@@ -29,6 +29,7 @@ class GobCanProfile(RDFProfile):
     DATASET_PUBLISHER = None
     CATALOG_LICENSE = None
     RESOURCE_FORMATS = None
+    DELINK_FLAG = None
 
     def __init__(self, graph, compatibility_mode=False):
         '''Class constructor
@@ -233,7 +234,15 @@ class GobCanProfile(RDFProfile):
         if license_id:
             g.add((dataset_ref, DCT.license, Literal(license_id)))
 
-        # Frequency
+        # Tag: Delink
+        delink_tag = config.get(
+            'ckanext.gobcangroups.flag.for.delink', 'Manual')
+
+        for tag in dataset_dict.get('tags', []):
+            if tag["name"] == delink_tag:
+                g.remove((dataset_ref, DCAT.keyword, Literal(delink_tag)))
+
+            # Frequency
         frequency = self._get_dataset_value(dataset_dict, 'frequency')
         if frequency is not None:
             label, frec, times = self._get_frequency_details(frequency)
