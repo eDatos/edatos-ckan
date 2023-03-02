@@ -1,0 +1,14 @@
+# edatostheme-js:
+#   filter: rjsmin
+#   output: ckanext-edatostheme/%(version)s-edatostheme.js
+#   contents:
+#     - js/edatostheme.js
+#   extra:
+#     preload:
+#       - base/main
+
+# edatostheme-css:
+#   filter: cssrewrite
+#   output: ckanext-edatostheme/%(version)s-edatostheme.css
+#   contents:
+#     - css/edatostheme.css
