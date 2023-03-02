@@ -1,0 +1,32 @@
+<script>
+    let abierto = false;
+    const menus = document.getElementsByClassName("collapsable-menu");
+
+    function abrir_menu() {
+        for (let menu of menus) {
+            menu.classList.add("abrir");
+        }
+        abierto = true;
+    }
+
+    function cerrar_menu() {
+        for (let menu of menus) {
+            menu.classList.remove("abrir");
+        }
+        abierto = false;
+    }
+
+    function toggle_collapsable_menu() {
+        if (abierto) {
+            cerrar_menu();
+            return;
+        } else {
+            abrir_menu();
+            return;
+        }
+    }
+</script>
+
+<button onclick="toggle_collapsable_menu()" class="btn btn-navbar" type="button">
+    <span class="fa fa-bars"></span>
+</button>
