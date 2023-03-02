@@ -1,0 +1,165 @@
+{% block header_wrapper %}
+<header class="navbar navbar-static-top masthead">
+  {% block header_debug %}
+    {% if g.debug and not g.debug_supress_header %}
+      <div class="debug">Controller : {{ c.controller }}<br/>Action : {{ c.action }}</div>
+    {% endif %}
+  {% endblock %}
+  <div class="container">
+    <button data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar" type="button">
+      <span class="fa fa-bars"></span>
+    </button>
+    {# The .header-image class hides the main text and uses image replacement for the title #}
+    <hgroup class="{{ g.header_class }} pull-left">
+
+      {% block header_logo %}
+        {% if g.site_logo %}
+          <a class="logo hidden-lg-down" href="http://datos.canarias.es/"><img src="/catalogos/estadisticas/istac_logo.png" alt="{{ g.site_title }}" title="{{ g.site_title }}" /></a>
+          <a class="logo hidden-xl-up" href="http://datos.canarias.es/"><img class="logo-corto" src="/catalogos/estadisticas/istac_logo_corto.png" alt="{{ g.site_title }}" title="{{ g.site_title }}" /></a>
+        {% else %}
+          <h1>
+            <a href="{{ h.url_for('home') }}">{{ g.site_title }}</a>
+          </h1>
+          {% if g.site_description %}<h2>{{ g.site_description }}</h2>{% endif %}
+        {% endif %}
+      {% endblock %}
+
+    </hgroup>
+
+    <hgroup class="{{ g.header_class }} pull-right">
+
+	<header class="inicio-masthead">
+		<nav class="">
+      <div class="">
+        <ul class="">
+          {% block header_option_s %}
+            <li>
+              <a class="" href="http://www.gobiernodecanarias.org/aplicaciones/appsistac/">
+              <span>INICIO</span>
+              </a>
+            </li>
+          {% endblock %}
+      </ul>
+      </div>
+		</nav>
+	</header>
+
+    </hgroup>
+  </div>
+</header>
+{% block header_account %}
+  <header class="masthead navbar-static-top account-masthead">
+    <div class="container">
+      {% block header_account_container_content %}
+        {% if c.userobj %}
+          {% block header_home_navigation_logueado %}
+            <a class="home-app pull-left" href="{{ h.url_for('home') }}"	>
+                  <span class="title-icon">
+                    <i class="fa fa-home" aria-hidden="true"></i>
+                  </span>
+              {{ g.site_title  }}
+            </a>
+          {% endblock %}
+          <nav class="navigation">
+            <div class="nav-collapse collapse account avatar authed" data-module="me" data-me="{{ c.userobj.id }}">
+              <ul class="">
+                {% block header_account_logged %}
+                {% if c.userobj.sysadmin %}
+                  <li>
+                    <a href="{{ h.url_for('admin.index') }}" title="{{ _('Sysadmin settings') }}">
+                      <i class="fa fa-gavel" aria-hidden="true"></i>
+                      <span class="text">{{ _('Admin') }}</span>
+                    </a>
+                  </li>
+                {% endif %}
+                <li>
+                  <a href="{{ h.url_for('user.read', id=c.userobj.name) }}" class="image" title="{{ _('View profile') }}">
+                    {{ h.gravatar((c.userobj.email_hash if c and c.userobj else ''), size=22) }}
+                    <span class="username">{{ c.userobj.display_name }}</span>
+                  </a>
+                </li>
+                {% set new_activities = h.new_activities() %}
+                <li class="notifications {% if new_activities > 0 %}notifications-important{% endif %}">
+                  {% set notifications_tooltip = ngettext('Dashboard (%(num)d new item)', 'Dashboard (%(num)d new items)', new_activities) %}
+                  <a href="{{ h.url_for('dashboard.index') }}" title="{{ notifications_tooltip }}">
+                    <i class="fa fa-tachometer" aria-hidden="true"></i>
+                    <span class="text">{{ _('Dashboard') }}</span>
+                    <span class="badge">{{ new_activities }}</span>
+                  </a>
+                </li>
+                {% block header_account_settings_link %}
+                  <li>
+                    <a href="{{ h.url_for('user.edit', id=c.userobj.name) }}" title="{{ _('Edit settings') }}">
+                      <i class="fa fa-cog" aria-hidden="true"></i>
+                      <span class="text">{{ _('Settings') }}</span>
+                    </a>
+                  </li>
+                {% endblock %}
+              {% block header_site_navigation_tabs_3 %}
+                <li>
+                  <a class="btn-datasets" href="{{ h.url_for('dataset.search') }}" title="{{ _('Datasets') }}">
+                  {{ _('Datasets-home') }}
+                  </a>
+                </li>
+                <li>
+                  <a class="btn-datasets" href="{{ h.url_for('/showcase') }}" title="{{ _('Showcases') }}">
+                  {{ _('Showcases') }}
+                  </a>
+                </li>
+              {% endblock %}
+                {% block header_account_log_out_link %}
+                  <li>
+                    <a href="{{ h.url_for('/user/_logout') }}" title="{{ _('Log out') }}">
+                      <i class="fa fa-sign-out" aria-hidden="true"></i>
+                      <span class="text">{{ _('Log out') }}</span>
+                    </a>
+                  </li>
+                {% endblock %}
+                {% endblock %}
+              </ul>
+            </div>
+          </nav>
+        {% else %}
+          {% block header_home_navigation %}
+
+            <a class="home-app pull-left" href="{{ h.url_for('home') }}">
+                    <span class="title-icon">
+                    <i class="fa fa-home" aria-hidden="true"></i>
+                    </span>
+                {{ g.site_title  }}
+            </a>
+
+          {% endblock %}
+            {% block header_site_navigation %}
+              <nav class="navigation">
+                <div class="nav-collapse collapse account avata account avatar">
+                  <ul class="">
+                    {% block header_site_navigation_tabs_2 %}
+                      <li>
+                        <a class="btn-datasets" href="{{ h.url_for('dataset.search') }}" title="{{ _('Datasets') }}">
+                        {{ _('Datasets-home') }}
+                        </a>
+                      </li>
+                      <li>
+                        <a class="btn-datasets" href="{{ h.url_for('/showcase') }}" title="{{ _('Showcases') }}">
+                        {{ _('Showcases') }}
+                        </a>
+                      </li>
+                        {% endblock %}
+                          {% block header_account_log_out_link_2 %}
+                      <li>
+                        <a href="{{ h.url_for('/user/login') }}" title="{{ _('Log in') }}">
+                          <i class="fa fa-sign-in" aria-hidden="true"></i>
+                        </a>
+                      </li>
+                      {% endblock %}
+                  </ul>
+                </div>
+              </nav>
+            {% endblock %}
+        {% endif %}
+      {% endblock %}
+    </div>
+  </header>
+{% endblock %}
+{% endblock %}
