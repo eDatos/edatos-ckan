@@ -1,5 +1,5 @@
   {% block groups_list %}
-  {% set groups = h.istac_theme_get_all_groups() %}
+  {% set groups = h.edatostheme_get_all_groups() %}
     {% if groups %}
       {% snippet "home/snippets/groups_list.html", groups=groups %}
     {% else %}
@@ -15,7 +15,7 @@
   {% endblock %}
 
   {% block search_title %}
-  {% set count = h.istac_theme_get_count_all_datasets() %}
+  {% set count = h.edatostheme_get_count_all_datasets() %}
     <div class="counter-box">
      <div class="box">
       <div class="count-all-datasets">

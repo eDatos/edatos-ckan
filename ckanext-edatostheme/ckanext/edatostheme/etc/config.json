@@ -1,0 +1,11 @@
+{
+    "metadata": {
+        "endpoint": "FILL ME",
+        "navbarPathKey": "metamac.app.style.header.url",
+        "footerPathKey": "metamac.app.style.footer.url",
+        "appName": "FILL ME",
+        "siteURL": "FILL ME",
+        "htmlCodeClass": "istac-app-header-content",
+        "groupPaginationLimit": 24
+    }
+}

@@ -82,7 +82,7 @@ HERE = os.path.abspath(os.path.dirname(__file__))
 I18N_DIR = os.path.join(HERE, "../i18n")
 
 
-class IstacThemePlugin(plugins.SingletonPlugin, DefaultTranslation):
+class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
     plugins.implements(plugins.ITranslation)
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.ITemplateHelpers)
@@ -203,7 +203,7 @@ class IstacThemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         self._load_header_footer()
         toolkit.add_template_directory(config_, '../templates')
         toolkit.add_public_directory(config_, '../public')
-        toolkit.add_resource('../assets', 'ckanext-istac_theme')
+        toolkit.add_resource('../assets', 'ckanext-edatostheme')
 
     # ITemplateHelpers
 
@@ -211,10 +211,10 @@ class IstacThemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         '''Register the get_all_groups function as a template helper function.
         '''
         return {
-            'istac_theme_get_all_groups': get_all_groups,
-            'istac_theme_get_count_all_datasets': get_count_all_datasets,
+            'edatostheme_get_all_groups': get_all_groups,
+            'edatostheme_get_count_all_datasets': get_count_all_datasets,
             'package_showcase_list': package_showcase_list,
-            'istac_theme_get_delink_value': get_delink_value,
+            'edatostheme_get_delink_value': get_delink_value,
         }
 
     # ITranslation

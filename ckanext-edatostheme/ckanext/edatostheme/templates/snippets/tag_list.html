@@ -9,7 +9,7 @@
 
 #}
 {% set _class = _class or 'tag-list' %}
-{% set delink = h.istac_theme_get_delink_value() %}
+{% set delink = h.edatostheme_get_delink_value() %}
 {% block tag_list %}
   <ul class="{{ _class }}">
     {% for tag in tags %}
