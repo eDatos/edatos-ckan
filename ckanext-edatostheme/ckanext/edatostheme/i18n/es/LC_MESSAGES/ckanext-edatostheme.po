@@ -3202,8 +3202,8 @@ msgid "Log Message"
 msgstr "Mensaje de registro"
 
 #: ckan/templates/home/index.html:4
-msgid "EDATOS"
-msgstr "EDATOS"
+msgid "ISTAC"
+msgstr "ISTAC"
 
 #: ckan/templates/home/snippets/about_text.html:1
 msgid ""
