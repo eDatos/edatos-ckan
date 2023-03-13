@@ -2,122 +2,69 @@
 
 # ckanext-edatostheme
 
-**TODO:** Put a description of your extension here:  What does it do? What features does it have? Consider including some screenshots or embedding a video!
+Extensión que contiene la capa de estilos del portal de datos abiertos 
+
 
 
 ## Requirements
 
-**TODO:** For example, you might want to mention here which versions of CKAN this
-extension works with.
+Extensión creada para la versión 2.9.0 de CKAN y superiores
 
-If your extension works across different versions you can add the following table:
-
-Compatibility with core CKAN versions:
-
-| CKAN version    | Compatible?   |
-| --------------- | ------------- |
-| 2.6 and earlier | not tested    |
-| 2.7             | not tested    |
-| 2.8             | not tested    |
-| 2.9             | not tested    |
-
-Suggested values:
-
-* "yes"
-* "not tested" - I can't think of a reason why it wouldn't work
-* "not yet" - there is an intention to get it working
-* "no"
 
 
 ## Installation
 
-**TODO:** Add any additional install steps to the list below.
-   For example installing any non-Python dependencies or adding any required
-   config settings.
 
-To install ckanext-edatostheme:
+Para instalar la extensión ckanext-edatostheme:
 
-1. Activate your CKAN virtual environment, for example:
+1. Activar el entorno Python del CKAN estando como el usuario ckan::
 
-     . /usr/lib/ckan/default/bin/activate
+     . default/bin/activate
 
-2. Clone the source and install it on the virtualenv
+2. Instalar la extensión ckanext-edatostheme en el entorno virtual de Python::
 
-    git clone https://github.com//ckanext-edatostheme.git
-    cd ckanext-edatostheme
-    pip install -e .
-	pip install -r requirements.txt
+     pip install ckanext-edatostheme
 
-3. Add `edatostheme` to the `ckan.plugins` setting in your CKAN
-   config file (by default the config file is located at
-   `/etc/ckan/default/ckan.ini`).
+Es recomendable realizar la instalación explicada en los pasos ``Development installation``.
 
-4. Restart CKAN. For example if you've deployed CKAN with Apache on Ubuntu:
+3. Añadir la extensión en la lista de plugins de CKAN  en el fichero de configuración
+   ``/servers/opendata/ckan/default/development.ini`` en la propiedad ``ckan.plugins`` añadir ``edatostheme``
 
-     sudo service apache2 reload
 
+4. Rellenar las URL y propiedades de configuración del fichero ``/ckanext/edatostheme/etc/config.json``
+
+5. Modificar los permisos de los ficheros header y footer
+
+     * chmod 777 chmod 777 /servers/catalogo/ckan/default/src/ckanext-edatostheme/ckanext/edatostheme/templates/header.html
+     * chmod 777 chmod 777 /servers/catalogo/ckan/default/src/ckanext-edatostheme/ckanext/edatostheme/templates/footer.html
+
+
+6. La propiedad ``ckanext.gobcangroups.flag.for.delink`` de la extensión ckanext-gobcangroups es usada para ocultar de las plantillas las etiquetas para los datasets desvinculados del GPE.
+
+7. Reiniciar el servicio Apache estando como root::
+
+     systemctl restart httpd
+
+---
+
+* NOTA:
+
+Para visualizar los posibles cambios efectuados en componentes-apps, en el header y en el footer, es necesario realizar una reload del servicio Apache, ya que los recursos necesarios son consultados, obtenidos y almacenados únicamente en la fase de arranque del CKAN:
+
+
+     systemctl reload httpd 
 
 ## Config settings
 
-None at present
-
-**TODO:** Document any optional config settings here. For example:
-
-	# The minimum number of hours to wait before re-checking a resource
-	# (optional, default: 24).
-	ckanext.edatostheme.some_setting = some_default_value
+Ver el manual de instalación para obtener las configuraciones.
 
 
 ## Developer installation
 
-To install ckanext-edatostheme for development, activate your CKAN virtualenv and
-do:
+Para instalar la extensión ckanext-edatostheme en Desarrollo hacer lo siguiente 
+estando dentro del entorno virtual de Python::
 
-    git clone https://github.com//ckanext-edatostheme.git
-    cd ckanext-edatostheme
-    python setup.py develop
-    pip install -r dev-requirements.txt
-
-
-## Tests
-
-To run the tests, do:
-
-    pytest --ckan-ini=test.ini
-
-
-## Releasing a new version of ckanext-edatostheme
-
-If ckanext-edatostheme should be available on PyPI you can follow these steps to publish a new version:
-
-1. Update the version number in the `setup.py` file. See [PEP 440](http://legacy.python.org/dev/peps/pep-0440/#public-version-identifiers) for how to choose version numbers.
-
-2. Make sure you have the latest version of necessary packages:
-
-    pip install --upgrade setuptools wheel twine
-
-3. Create a source and binary distributions of the new version:
-
-       python setup.py sdist bdist_wheel && twine check dist/*
-
-   Fix any errors you get.
-
-4. Upload the source distribution to PyPI:
-
-       twine upload dist/*
-
-5. Commit any outstanding changes:
-
-       git commit -a
-       git push
-
-6. Tag the new release of the project on GitHub with the version number from
-   the `setup.py` file. For example if the version number in `setup.py` is
-   0.0.1 then do:
-
-       git tag 0.0.1
-       git push --tags
-
-## License
-
-[AGPL](https://www.gnu.org/licenses/agpl-3.0.en.html)
+     Subir el directorio al servidor en la ruta ``/servers/catalogo/ckan/default/src/``
+     cd ckanext-edatostheme
+     pip install -r dev-requirements.txt
+     pip install -e .
