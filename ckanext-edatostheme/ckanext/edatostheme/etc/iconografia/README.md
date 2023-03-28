@@ -13,13 +13,6 @@ Los iconos en la aplicación son cargados como fuentes, se usa un fichero CSS pa
 
 ---
 
-El siguiente texto es el que se envía con los SVG por porte del ISTAC:
-Originalmente se guardaron en el Drive de Arte:
-
-* Enlace, https://drive.google.com/drive/folders/1sPC_c2nhhCEgcs3BXtDiLJCewXhqYQ9K?usp=share_link
-
-* Ruta en Drive, Arte:Proyectos:ISTAC:XXXX-General:01-Imagen-corporativa:Iconos:Temas
-
 ``` Adjunto archivo comprimido, hay 2 carpetas, en una están los png y en otra los svg todos están en azul y en gris.
 
 En cuanto a los nombres de los iconos:
