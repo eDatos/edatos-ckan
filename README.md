@@ -34,3 +34,5 @@ Las propiedades a configurar son las siguientes:
     - ckanext.cas.admin_property = ADMINISTRADOR
     - ckanext.cas.member_property = GESTOR
     - ckanext.cas.base_property = CATALOGO_DATOS
+
+- Fichero db/01-edatos-publisher-import-data.sql : La propiedad FILLME corresponde a la concatenación de las propiedades de configuración de CKAN site_url y root_path .
