@@ -13,9 +13,9 @@ Los iconos en la aplicación son cargados como fuentes, se usa un fichero CSS pa
 
 ---
 
-``` 
+``` Adjunto archivo comprimido, hay 2 carpetas, en una están los png y en otra los svg todos están en azul y en gris.
 
-Nos nombres de los iconos:
+En cuanto a los nombres de los iconos:
 
 La estructura sería <color>_<tema>_1_<tema>_2:
 	Ej:           
