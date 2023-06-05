@@ -9,13 +9,16 @@ Este repositorio contiene el código fuente de las extensiones del proyecto CKAN
 
 Se han desarrollado las siguientes extensiones de CKAN:
 
-- ckanext-cas: contiene el código para trabajar con el CAS del ISTAC, el cual ahora consulta las propiedades y roles necesarios de éste. 
-
-- ckanext-istac_theme: contiene el código de la extensión creada para modificar los estilos del CKAN
+- ckanext-cas: contiene el código para trabajar con el CAS del ISTAC, el cual ahora consulta las propiedades y roles necesarios de éste.
+- ckanext-edatostheme: contiene el código de la extensión creada para modificar los estilos del CKAN. Es la nueva versión. 
 - fichero ckan-license.json: contiene las licencias necesarias para realizar el mapeado en el ckan en los procesos de federación.
-- ckanext-istactranslation (Deprecated): Las traducciones se han vuelto a implementar en la extensión istac_theme <s>contiene las traducciones de la extensión de theme y se implementan en esta extensión para solventar un comportamiento por defecto de CKAN que toma las traducciones siempre de la última extensión en la lista de configuración, por lo tanto deberá estar siempre en última posición en esta.</s>
 - ckanext-gobcangroups: Se ha implementado una mejora para desvincular datasets del catálogo RDF federado de GPE
-- Carpeta etc: Contiene los ficheros de configuración para cada entorno, ademas de los ficheros comunes en todos los entornos; gobcan_profile, fichero correspondiente al custom profile de DCAT; ckan-licenses, fichero correspondiente a las licencias configuradas en el CKAN.
+- Carpeta /etc: Contiene los ficheros de configuración para cada entorno, ademas de los ficheros comunes en todos los entornos; gobcan_profile, fichero correspondiente al custom profile de DCAT; ckan-licenses, fichero correspondiente a las licencias configuradas en el CKAN.
+
+### Deprecated
+- ckanext-istac_theme(Deprecated): vieja versión que contiene el código de la extensión creada para modificar los estilos del CKAN, se sigue el desarrollo en ckanext-edatostheme.
+- ckanext-istactranslation (Deprecated): Las traducciones se han vuelto a implementar en la extensión istac_theme <s>contiene las traducciones de la extensión de theme y se implementan en esta extensión para solventar un comportamiento por defecto de CKAN que toma las traducciones siempre de la última extensión en la lista de configuración, por lo tanto deberá estar siempre en última posición en esta.</s>
+
 
 ## Instalación
 ---------------------------------------------------------------
