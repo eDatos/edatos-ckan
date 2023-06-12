@@ -482,3 +482,8 @@ button.btn.btn-navbar {
 		padding: 20px 36px 10px 36px !important;
 	}
 }
+
+.modal.fade.in {
+	margin-top: 0px !important;
+	top: 0% !important;
+}
