@@ -487,3 +487,7 @@ button.btn.btn-navbar {
 	margin-top: 0px !important;
 	top: 0% !important;
 }
+
+div.ckanext-showcase-image-container {
+	margin: 20px;
+}
