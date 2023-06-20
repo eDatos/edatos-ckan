@@ -40,6 +40,7 @@ search_facets
 Dictionary with search facets(or `c.search_facets` if not provided)
 
 #}
+{% set delink = h.edatostheme_get_delink_value() %}
 {% block facet_list %}
     {% set hide_empty = hide_empty or false %}
     {% with items = items or h.get_facet_items_dict(name, search_facets or c.search_facets) %}
@@ -48,7 +49,6 @@ Dictionary with search facets(or `c.search_facets` if not provided)
 		{% set nav_class = 'nav nav-pills nav-stacked' %}
 		{% set nav_item_class = ' ' %}
 		{% set wrapper_class = 'nav-facet nav-facet-tertiary' %}
-        {% set delink = h.edatostheme_get_delink_value() %}
 	    {% endif %}
 	    {% block facet_list_item %}
 		<section class="{{ wrapper_class or 'module module-narrow module-shallow' }}">
