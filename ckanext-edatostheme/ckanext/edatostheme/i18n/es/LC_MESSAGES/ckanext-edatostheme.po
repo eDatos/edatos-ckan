@@ -4832,3 +4832,8 @@ msgstr "Buscando colecciones..."
 
 msgid "Datasets-home"
 msgstr "Datos"
+
+#: ckan/logic/validators.py:364 ckan/logic/validators.py:651
+#, python-format
+msgid "Name must be a maximum of %i characters long"
+msgstr "El nombre no puede tener más de %i caracteres de largo"
