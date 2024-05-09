@@ -8,6 +8,7 @@ import ckan.lib.helpers as h
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 import requests
+import shutil
 from bs4 import BeautifulSoup
 from ckan.common import _, request
 from ckan.lib.plugins import DefaultTranslation
@@ -80,6 +81,7 @@ dirname = os.path.dirname(__file__)
 CONFIG_FILE_PATH = os.path.join(dirname, '../etc/config.json')
 FOOTER_PATH = os.path.join(dirname, '../templates/footer.html')
 HEADER_PATH = os.path.join(dirname, '../templates/header.html')
+FAVICON_PATH = os.path.join(dirname, '../public/favicon.ico')
 HEADER_WHITE_BAR_PATH = os.path.join(
     dirname, '../code_templates/header_white_bar.html')
 BURGER_BUTTON_PATH = os.path.join(
@@ -174,6 +176,19 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         return "%s?appName=%s&appUrl=%s" % (self.__get_url(endpoint, footer_key),
                                             json_config['metadata']['appName'],
                                             json_config['metadata']['siteURL'])
+        
+    def __get_favicon_url(self, json_config):
+        """
+        Metodo que devuelve la URL del favicon
+        :param
+            json_config: Fichero de configuracion cargado como diccionario JSON 
+        """
+        favicon_key = json_config['metadata']['favicon']
+        endpoint = json_config['metadata']['endpoint']
+        return "%s?appName=%s&appUrl=%s" % (self.__get_url(endpoint, favicon_key),
+                                            json_config['metadata']['appName'],
+                                            json_config['metadata']['siteURL'])
+        pass
 
     def __save_footer(self, footer):
         """
@@ -192,6 +207,17 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         """
         with codecs.open(HEADER_PATH, 'w', encoding='utf8') as header_file:
             header_file.write(header)
+    
+    def __save_favicon(self, favicon):
+        """
+        Metodo para guardar el favicon
+
+        :param favicon: Imagen descargada a guardar en la extension
+        """
+        with open(FAVICON_PATH,'wb') as favicon_file:
+            favicon_file.write(favicon)
+            # shutil.copyfileobj(favicon.raw, f)
+        
 
     def _load_header_footer(self):
         """
@@ -210,11 +236,22 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
 
             self.__save_header(header=header)
             self.__save_footer(footer=footer)
+        
+    def _load_favicon(self):
+        """
+        Metodo que carga el favicon
+        """
+        with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
+            json_config = json.loads(config_file.read())
+            favicon = requests.get(
+                url = self.__get_favicon_url(json_config)).content
+            self.__save_favicon(favicon=favicon)
 
     # IConfigurer
 
     def update_config(self, config_):
         self._load_header_footer()
+        self._load_favicon()
         toolkit.add_template_directory(config_, '../templates')
         toolkit.add_public_directory(config_, '../public')
         toolkit.add_resource('../assets', 'ckanext-edatostheme')
