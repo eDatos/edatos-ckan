@@ -8,7 +8,7 @@ import ckan.lib.helpers as h
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 import requests
-import shutil
+
 from bs4 import BeautifulSoup
 from ckan.common import _, request
 from ckan.lib.plugins import DefaultTranslation
@@ -82,10 +82,12 @@ CONFIG_FILE_PATH = os.path.join(dirname, '../etc/config.json')
 FOOTER_PATH = os.path.join(dirname, '../templates/footer.html')
 HEADER_PATH = os.path.join(dirname, '../templates/header.html')
 FAVICON_PATH = os.path.join(dirname, '../public/favicon.ico')
+SCRIPT_PATH = os.path.join(dirname, '../assets/js/i18n.js')
 HEADER_WHITE_BAR_PATH = os.path.join(
     dirname, '../code_templates/header_white_bar.html')
 BURGER_BUTTON_PATH = os.path.join(
     dirname, '../code_templates/burger_button.html')
+SCRIPT_TEMPLATE= os.path.join(dirname, '../code_templates/i18n.js')
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 I18N_DIR = os.path.join(HERE, "../i18n")
@@ -218,6 +220,22 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             favicon_file.write(favicon)
             # shutil.copyfileobj(favicon.raw, f)
         
+    def __config_properties_filler(self, script_contect):
+        """
+        _summary_
+        """
+        
+        SITE_URL = config.get('ckan.site_url')
+        
+        ROOT_PATH = config.get('ckan.root_path')
+        ROOT_PATH = ROOT_PATH.replace('{{LANG}}','')
+        
+        SITE_URL = '%s%s' % (SITE_URL, ROOT_PATH)
+        
+        updated_script = script_contect.replace('FILL_SITE_URL', SITE_URL)
+        
+        return updated_script
+        
 
     def _load_header_footer(self):
         """
@@ -246,12 +264,30 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             favicon = requests.get(
                 url = self.__get_favicon_url(json_config)).content
             self.__save_favicon(favicon=favicon)
+            
+    def _i18n_script_filler(self):
+        """
+        Metodo que incrusta en el script de i18n los valores de la config 
+        necesarias para su funcionamiento
+        """
+        with codecs.open(SCRIPT_TEMPLATE, 'r+', encoding='utf8') as script_template:
+            script_contect = script_template.read()
+            # script_template.seek(0)
+            # script_template.truncate()
+            self.__save_script()
+            script_template.write(
+                        self.__config_properties_filler(
+                            script_contect=script_contect
+                            )
+                        )
+            
 
     # IConfigurer
 
     def update_config(self, config_):
         self._load_header_footer()
         self._load_favicon()
+        self._i18n_script_filler()
         toolkit.add_template_directory(config_, '../templates')
         toolkit.add_public_directory(config_, '../public')
         toolkit.add_resource('../assets', 'ckanext-edatostheme')
