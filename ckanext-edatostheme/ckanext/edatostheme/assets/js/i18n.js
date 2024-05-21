@@ -1,13 +1,13 @@
 
 window.addEventListener("load",function () {
 
-    const SITE_URL = FILL_SITE_URL;
+    const SITE_URL = "FILL_SITE_URL";
     const I18N_COOKIE = "chosenLocale";
 
     function getObjectCookie() {
         console.log('DEBUG ~ getObjectCookie ~ getObjectCookie:',getObjectCookie)
         const separador = '; ';
-        let cookies = document.cookie
+        let cookies = document.cookie;
         let objCookies = Object.fromEntries(
             cookies
                 .split(separador)
@@ -36,6 +36,8 @@ window.addEventListener("load",function () {
         if (!(formatedLanguage.test(currentUrl))) {
             let languageUrl = SITE_URL.concat(language);
             window.location.href = languageUrl;
+        } else {
+            window.location.href = 'bing.es';
         }
     };
 

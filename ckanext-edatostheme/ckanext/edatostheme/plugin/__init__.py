@@ -218,23 +218,28 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         """
         with open(FAVICON_PATH,'wb') as favicon_file:
             favicon_file.write(favicon)
-            # shutil.copyfileobj(favicon.raw, f)
+            
+    def __save_script(self, script_contect):
+        """
+        Metodo para guardad el script 
+        
+        :param script: Script 
+        """
+        with codecs.open(SCRIPT_PATH, 'w', encoding='utf8') as script_file:
+            script_file.write(self.__config_properties_filler(
+                            script_contect=script_contect
+                            ))
         
     def __config_properties_filler(self, script_contect):
         """
-        _summary_
+        Metodo que rellena las variables
         """
-        
-        SITE_URL = config.get('ckan.site_url')
-        
-        ROOT_PATH = config.get('ckan.root_path')
-        ROOT_PATH = ROOT_PATH.replace('{{LANG}}','')
-        
-        SITE_URL = '%s%s' % (SITE_URL, ROOT_PATH)
-        
-        updated_script = script_contect.replace('FILL_SITE_URL', SITE_URL)
-        
-        return updated_script
+        with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
+            json_config = json.loads(config_file.read())
+            site_url = json_config['metadata']['siteURL']
+            updated_script = script_contect.replace('FILL_SITE_URL', site_url)
+
+            return updated_script
         
 
     def _load_header_footer(self):
@@ -270,16 +275,9 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         Metodo que incrusta en el script de i18n los valores de la config 
         necesarias para su funcionamiento
         """
-        with codecs.open(SCRIPT_TEMPLATE, 'r+', encoding='utf8') as script_template:
+        with codecs.open(SCRIPT_TEMPLATE, 'r', encoding='utf8') as script_template:
             script_contect = script_template.read()
-            # script_template.seek(0)
-            # script_template.truncate()
-            self.__save_script()
-            script_template.write(
-                        self.__config_properties_filler(
-                            script_contect=script_contect
-                            )
-                        )
+            self.__save_script(script_contect)
             
 
     # IConfigurer

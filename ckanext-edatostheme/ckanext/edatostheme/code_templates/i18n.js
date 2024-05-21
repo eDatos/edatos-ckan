@@ -1,7 +1,7 @@
 
-window.addEventListener("load",function () {
+window.ready = function () {
 
-    const SITE_URL = FILL_SITE_URL;
+    const SITE_URL = "FILL_SITE_URL";
     const I18N_COOKIE = "chosenLocale";
 
     function getObjectCookie() {
@@ -30,10 +30,10 @@ window.addEventListener("load",function () {
 
     function redirectChosenLanguage(language = 'es') {
         console.log('DEBUG ~ redirectChosenLanguage ~ redirectChosenLanguage:',redirectChosenLanguage)
-        const language = getLocalLanguage();
-        const formatedLanguage = `/${language}/`
+        language = getLocalLanguage();
+        const regexLang = new RegExp(`/${language}`);
         const currentUrl = (window.location.href);
-        if (!(formatedLanguage.test(currentUrl))) {
+        if (!(regexLang.test(currentUrl))) {
             let languageUrl = SITE_URL.concat(language);
             window.location.href = languageUrl;
         }
@@ -41,4 +41,4 @@ window.addEventListener("load",function () {
 
     redirectChosenLanguage();
 
-});
+};
