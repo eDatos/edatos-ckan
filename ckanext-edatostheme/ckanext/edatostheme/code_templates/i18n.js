@@ -1,4 +1,4 @@
-(function () {
+window.onload = function () {
 
     const SITE_URL = "FILL_SITE_URL";
     const REGEXP_SITE_URL = "FILL_REGEXP_SITE_URL";
@@ -26,8 +26,8 @@
             console.log('DEBUG ~ getLocalLanguage ~ getObjectCookie.chosenLocale:',cookieObject.chosenLocale);
             return cookieObject.chosenLocale;
         }
-        return 'es';
-        // return typeof Edatos !== 'undefined' && typeof Edatos.i18n.getDefaultLanguage !== 'undefined' ? Edatos.i18n.getDefaultLanguage() : 'es';
+        // return 'es';
+        return typeof Edatos !== 'undefined' && typeof Edatos.i18n.getDefaultLanguage !== 'undefined' ? Edatos.i18n.getDefaultLanguage() : 'es';
     };
 
     function redirectChosenLanguage(language = 'es') {
@@ -47,7 +47,7 @@
         // REGEXP_SITE_URL = "https:\/\/estadisticas\.arte-consultores\.com\/catalogo\/ru"
 
         // let regexLang = new RegExp(`^${REGEXP_SITE_URL}(${language}(\/.*|$))([^\/.]+)?$`);
-        let regexLang = `^${REGEXP_SITE_URL}(${language}(\/.*|$))$`;
+        let regexLang = `/^${REGEXP_SITE_URL}(${language}(\/.*|$))([^/.]+)?$/`;
         regexLang = new RegExp(regexLang,'i');
         const currentUrl = new URL(window.location.href);
         console.log('DEBUG ~ redirectChosenLanguage ~ currentUrl:',currentUrl);
@@ -55,8 +55,8 @@
         const path = currentUrl.href;
         console.log('DEBUG ~ redirectChosenLanguage ~ path:',path);
         let languageUrl = SITE_URL.concat(language);
-        console.log('DEBUG ~ redirectChosenLanguage ~ regexLang.test(regexLang):',regexLang.test(languageUrl));
-        if (!regexLang.test(path)) {
+        console.log('DEBUG ~ redirectChosenLanguage ~ regexLang.test(regexLang):',regexLang.test(path));
+        if (regexLang.test(path) !== true) {
             // if (!path.indexOf(regexLang)) {
             // console.log('DEBUG ~ redirectChosenLanguage ~ path.indexOf(regexLang:',path.indexOf(regexLang));
             console.log('DEBUG ~ redirectChosenLanguage ~ languageUrl:',languageUrl);
@@ -67,4 +67,4 @@
 
     redirectChosenLanguage();
 
-}());
+};
