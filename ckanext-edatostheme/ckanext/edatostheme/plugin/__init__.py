@@ -87,14 +87,14 @@ HEADER_WHITE_BAR_PATH = os.path.join(
     dirname, '../code_templates/header_white_bar.html')
 BURGER_BUTTON_PATH = os.path.join(
     dirname, '../code_templates/burger_button.html')
-SCRIPT_TEMPLATE= os.path.join(dirname, '../code_templates/i18n.js')
+SCRIPT_TEMPLATE = os.path.join(dirname, '../code_templates/i18n.js')
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 I18N_DIR = os.path.join(HERE, "../i18n")
 
 # Map de vistas que se quieren restringir acceso
 REDIRECT_VIEWS = (
-    #route, view, function
+    # route, view, function
     ('/user/register', 'abort_redirect', abort_redirect),
 )
 
@@ -178,7 +178,7 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         return "%s?appName=%s&appUrl=%s" % (self.__get_url(endpoint, footer_key),
                                             json_config['metadata']['appName'],
                                             json_config['metadata']['siteURL'])
-        
+
     def __get_favicon_url(self, json_config):
         """
         Metodo que devuelve la URL del favicon
@@ -209,38 +209,42 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         """
         with codecs.open(HEADER_PATH, 'w', encoding='utf8') as header_file:
             header_file.write(header)
-    
+
     def __save_favicon(self, favicon):
         """
         Metodo para guardar el favicon
 
         :param favicon: Imagen descargada a guardar en la extension
         """
-        with open(FAVICON_PATH,'wb') as favicon_file:
+        with open(FAVICON_PATH, 'wb') as favicon_file:
             favicon_file.write(favicon)
-            
-    def __save_script(self, script_contect):
+
+    def __save_script(self, script_content):
         """
         Metodo para guardad el script 
-        
+
         :param script: Script 
         """
         with codecs.open(SCRIPT_PATH, 'w', encoding='utf8') as script_file:
             script_file.write(self.__config_properties_filler(
-                            script_contect=script_contect
-                            ))
-        
-    def __config_properties_filler(self, script_contect):
+                script_content=script_content
+            ))
+
+    def __config_properties_filler(self, script_content):
         """
         Metodo que rellena las variables
         """
         with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
             json_config = json.loads(config_file.read())
+
             site_url = json_config['metadata']['siteURL']
-            updated_script = script_contect.replace('FILL_SITE_URL', site_url)
+            regexp_site_url = site_url.replace('/', '\/').replace('.', '\.')
+
+            updated_script = script_content.replace(
+                'FILL_SITE_URL', site_url).replace(
+                'FILL_REGEXP_SITE_URL', regexp_site_url)
 
             return updated_script
-        
 
     def _load_header_footer(self):
         """
@@ -259,7 +263,7 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
 
             self.__save_header(header=header)
             self.__save_footer(footer=footer)
-        
+
     def _load_favicon(self):
         """
         Metodo que carga el favicon
@@ -267,18 +271,17 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
             json_config = json.loads(config_file.read())
             favicon = requests.get(
-                url = self.__get_favicon_url(json_config)).content
+                url=self.__get_favicon_url(json_config)).content
             self.__save_favicon(favicon=favicon)
-            
+
     def _i18n_script_filler(self):
         """
         Metodo que incrusta en el script de i18n los valores de la config 
         necesarias para su funcionamiento
         """
         with codecs.open(SCRIPT_TEMPLATE, 'r', encoding='utf8') as script_template:
-            script_contect = script_template.read()
-            self.__save_script(script_contect)
-            
+            script_content = script_template.read()
+            self.__save_script(script_content)
 
     # IConfigurer
 
