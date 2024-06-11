@@ -252,6 +252,17 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         """
         with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
             json_config = json.loads(config_file.read())
+            # cookieI18n = requests.cookies('chosenLocate')
+            # params = {'chosenLocate': cookieI18n}
+            
+            session = requests.Session()
+            print(session.cookies.get_dict())
+            # //MAndar por parametro el valor de la cookieI18n
+            # El cookieID es el nombre de la variable a traer del metacoso si funciona
+            # al hacer el hardcoding en la peticion
+            # header = requests.get(
+            #     url=self.__get_header_url(json_config),
+            #     params=params).content
             header = requests.get(
                 url=self.__get_header_url(json_config)).content
             header = self.__get_altered_header(
@@ -286,7 +297,7 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
     # IConfigurer
 
     def update_config(self, config_):
-        self._load_header_footer()
+        # self._load_header_footer()
         self._load_favicon()
         self._i18n_script_filler()
         toolkit.add_template_directory(config_, '../templates')
@@ -313,6 +324,7 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             'edatostheme_get_count_all_datasets': get_count_all_datasets,
             'package_showcase_list': package_showcase_list,
             'edatostheme_get_delink_value': get_delink_value,
+            'edatostheme_get_header_footer': self._load_header_footer,
         }
 
     # ITranslation
