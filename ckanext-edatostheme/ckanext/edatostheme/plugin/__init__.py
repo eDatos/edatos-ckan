@@ -16,6 +16,26 @@ from ckantoolkit import config
 from flask import Blueprint
 
 abort = base.abort
+dirname = os.path.dirname(__file__)
+CONFIG_FILE_PATH = os.path.join(dirname, '../etc/config.json')
+FOOTER_PATH = os.path.join(dirname, '../templates/footer.html')
+HEADER_PATH = os.path.join(dirname, '../templates/_meta.html')
+FAVICON_PATH = os.path.join(dirname, '../public/favicon.ico')
+SCRIPT_PATH = os.path.join(dirname, '../assets/js/i18n.js')
+HEADER_WHITE_BAR_PATH = os.path.join(
+    dirname, '../code_templates/header_white_bar.html')
+BURGER_BUTTON_PATH = os.path.join(
+    dirname, '../code_templates/burger_button.html')
+SCRIPT_TEMPLATE = os.path.join(dirname, '../code_templates/i18n.js')
+
+HERE = os.path.abspath(os.path.dirname(__file__))
+I18N_DIR = os.path.join(HERE, "../i18n")
+
+# Map de vistas que se quieren restringir acceso
+REDIRECT_VIEWS = (
+    # route, view, function
+    ('/user/register', 'abort_redirect', abort_redirect),
+)
 
 
 def get_group_pagination_limit():
@@ -77,26 +97,76 @@ def abort_redirect():
     abort(403, _(u'Not authorized to see this page'))
 
 
-dirname = os.path.dirname(__file__)
-CONFIG_FILE_PATH = os.path.join(dirname, '../etc/config.json')
-FOOTER_PATH = os.path.join(dirname, '../templates/footer.html')
-HEADER_PATH = os.path.join(dirname, '../templates/header.html')
-FAVICON_PATH = os.path.join(dirname, '../public/favicon.ico')
-SCRIPT_PATH = os.path.join(dirname, '../assets/js/i18n.js')
-HEADER_WHITE_BAR_PATH = os.path.join(
-    dirname, '../code_templates/header_white_bar.html')
-BURGER_BUTTON_PATH = os.path.join(
-    dirname, '../code_templates/burger_button.html')
-SCRIPT_TEMPLATE = os.path.join(dirname, '../code_templates/i18n.js')
+def save_header(self, header):
+    """
+    Metodo que guarda el header como template
 
-HERE = os.path.abspath(os.path.dirname(__file__))
-I18N_DIR = os.path.join(HERE, "../i18n")
+    :param header: Codigo del header en formato string que se va a guardar
+    """
+    with codecs.open(HEADER_PATH, 'w', encoding='utf8') as header_file:
+        header_file.write(header)
 
-# Map de vistas que se quieren restringir acceso
-REDIRECT_VIEWS = (
-    # route, view, function
-    ('/user/register', 'abort_redirect', abort_redirect),
-)
+
+def get_header_url(self, json_config):
+    """
+    Metodo que devuelve la URL del header
+    :param json_config: Fichero de configuracion cargado como un diccionario JSON
+    """
+    header_key = json_config['metadata']['navbarPathKey']
+    endpoint = json_config['metadata']['endpoint']
+    return "%s?appName=%s&appUrl=%s" % (self.__get_url(endpoint, header_key),
+                                        json_config['metadata']['appName'],
+                                        json_config['metadata']['siteURL'])
+
+
+def get_altered_header(self, header, json_config):
+    """
+    Metodo que modifica el header para hacer que contenga los botones
+    dinamicos que se generan para esta aplicacion en concreto.
+
+    :param header: Codigo HTML del Header que se va a modificar
+    :param json_config: Fichero de configuracion cargado como
+                        un diccionario JSON
+    """
+    container_class = json_config['metadata']['htmlCodeClass']
+    # "htmlCodeClass": "istac-app-header-content"
+    alteredHeader = header
+
+    with codecs.open(HEADER_WHITE_BAR_PATH, 'r', encoding='utf8') as white_bar_file:
+        code = white_bar_file.read()
+        # Annadimos los botones en la barra blanca
+        soup = BeautifulSoup(alteredHeader, 'html.parser')
+        container = soup.find(id=container_class)
+        container.append(BeautifulSoup(code, 'html.parser'))
+        alteredHeader = soup.prettify('utf-8')
+
+        # Annadimos el boton hamburguesa
+        soup = BeautifulSoup(alteredHeader, 'html.parser')
+        container = soup.find(
+            class_='d-flex justify-content-end align-items-center')
+
+    if container is not None:
+        with codecs.open(BURGER_BUTTON_PATH, 'r', encoding='utf8') as burger_button_file:
+            code = burger_button_file.read()
+            container.append(BeautifulSoup(code, 'html.parser'))
+            alteredHeader = soup.prettify('utf-8')
+
+    alteredHeader = alteredHeader.replace(b'&gt;', b'>').decode('utf8')
+    return "{% block header_wrapper %}" + alteredHeader + "{% endblock %}"
+
+
+def load_header(self):
+    """
+    Metodo que carga las templates para HEADER
+    """
+    with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
+        json_config = json.loads(config_file.read())
+        header = requests.get(
+            url=get_header_url(json_config)).content
+        header = get_altered_header(
+            header=header, json_config=json_config)
+
+        save_header(header=header)
 
 
 class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
@@ -106,40 +176,6 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
     plugins.implements(plugins.ITemplateHelpers)
 
     # IConfigurer
-
-    def __get_altered_header(self, header, json_config):
-        """
-        Metodo que modifica el header para hacer que contenga los botones 
-        dinamicos que se generan para esta aplicacion en concreto.
-
-        :param header: Codigo HTML del Header que se va a modificar
-        :param json_config: Fichero de configuracion cargado como 
-                            un diccionario JSON
-        """
-        container_class = json_config['metadata']['htmlCodeClass']
-        alteredHeader = header
-
-        with codecs.open(HEADER_WHITE_BAR_PATH, 'r', encoding='utf8') as white_bar_file:
-            code = white_bar_file.read()
-            # Annadimos los botones en la barra blanca
-            soup = BeautifulSoup(alteredHeader, 'html.parser')
-            container = soup.find(id=container_class)
-            container.append(BeautifulSoup(code, 'html.parser'))
-            alteredHeader = soup.prettify('utf-8')
-
-            # Annadimos el boton hamburguesa
-            soup = BeautifulSoup(alteredHeader, 'html.parser')
-            container = soup.find(
-                class_='d-flex justify-content-end align-items-center')
-
-        if container is not None:
-            with codecs.open(BURGER_BUTTON_PATH, 'r', encoding='utf8') as burger_button_file:
-                code = burger_button_file.read()
-                container.append(BeautifulSoup(code, 'html.parser'))
-                alteredHeader = soup.prettify('utf-8')
-
-        alteredHeader = alteredHeader.replace(b'&gt;', b'>').decode('utf8')
-        return "{% block header_wrapper %}" + alteredHeader + "{% endblock %}"
 
     def __get_url(self, endpoint, key):
         """
@@ -156,17 +192,6 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         json_header_request = json.loads(header_request)
 
         return json_header_request['value']
-
-    def __get_header_url(self, json_config):
-        """
-        Metodo que devuelve la URL del header
-        :param json_config: Fichero de configuracion cargado como un diccionario JSON
-        """
-        header_key = json_config['metadata']['navbarPathKey']
-        endpoint = json_config['metadata']['endpoint']
-        return "%s?appName=%s&appUrl=%s" % (self.__get_url(endpoint, header_key),
-                                            json_config['metadata']['appName'],
-                                            json_config['metadata']['siteURL'])
 
     def __get_footer_ulr(self, json_config):
         """
@@ -200,15 +225,6 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         """
         with codecs.open(FOOTER_PATH, 'w', encoding='utf8') as footer_file:
             footer_file.write(footer)
-
-    def __save_header(self, header):
-        """
-        Metodo que guarda el header como template
-
-        :param header: Codigo del header en formato string que se va a guardar
-        """
-        with codecs.open(HEADER_PATH, 'w', encoding='utf8') as header_file:
-            header_file.write(header)
 
     def __save_favicon(self, favicon):
         """
@@ -246,22 +262,19 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
 
             return updated_script
 
-    def _load_header_footer(self):
+    # def _load_header_footer(self):
+
+    def _load_footer(self):
         """
-        Metodo que carga las templates para HEADER y FOOTER
+        Metodo que carga las templates para FOOTER
         """
         with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
             json_config = json.loads(config_file.read())
-            header = requests.get(
-                url=self.__get_header_url(json_config)).content
-            header = self.__get_altered_header(
-                header=header, json_config=json_config)
             footer = requests.get(
                 url=self.__get_footer_ulr(json_config)).content
 
             footer = footer.decode('utf-8')
 
-            self.__save_header(header=header)
             self.__save_footer(footer=footer)
 
     def _load_favicon(self):
@@ -286,7 +299,8 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
     # IConfigurer
 
     def update_config(self, config_):
-        self._load_header_footer()
+        # self._load_header_footer()
+        self._load_footer()
         self._load_favicon()
         self._i18n_script_filler()
         toolkit.add_template_directory(config_, '../templates')
@@ -313,6 +327,7 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             'edatostheme_get_count_all_datasets': get_count_all_datasets,
             'package_showcase_list': package_showcase_list,
             'edatostheme_get_delink_value': get_delink_value,
+            'edatos_get_header': load_header
         }
 
     # ITranslation
