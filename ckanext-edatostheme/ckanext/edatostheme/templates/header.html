@@ -1,5 +1,11 @@
-{% block header %}
+{% set header = h.edatos_get_header() %}
 
-{% set delink = h.edatostheme_get_header_footer() %}
+{% block header_meta_menu %}
+    {% snippet "header_meta.html", header=header %}
+{% endblock header_meta_menu %}
 
-{% endblock header %}
+{% snippet "showcase/snippets/tags.html", tags=pkg.tags %}
+
+{% block header_white_bar_menu %}
+    {% snippet "header_white_bar.html" %}
+{% endblock header_white_bar_menu %}
