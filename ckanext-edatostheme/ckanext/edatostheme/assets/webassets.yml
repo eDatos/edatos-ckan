@@ -10,6 +10,6 @@ edatostheme-fonts:
     - fonts/glyphter/css/Glyphter.css
 
 edatostheme-js:
-  output: ckanext-edatostheme/%(verion)s-edatostheme_js.js
+  output: ckanext-edatostheme/%(version)s-edatostheme_js.js
   contents: 
     - js/i18n.js

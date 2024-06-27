@@ -47,7 +47,7 @@ window.onload = function () {
         // REGEXP_SITE_URL = "https:\/\/estadisticas\.arte-consultores\.com\/catalogo\/ru"
 
         // let regexLang = new RegExp(`^${REGEXP_SITE_URL}(${language}(\/.*|$))([^\/.]+)?$`);
-        let regexLang = `/^${REGEXP_SITE_URL}(${language}(\/.*|$))([^/.]+)?$/`;
+        let regexLang = `^${REGEXP_SITE_URL}(${language}(\/.*|$))([^/.]+)?$`;
         regexLang = new RegExp(regexLang,'i');
         const currentUrl = new URL(window.location.href);
         console.log('DEBUG ~ redirectChosenLanguage ~ currentUrl:',currentUrl);
