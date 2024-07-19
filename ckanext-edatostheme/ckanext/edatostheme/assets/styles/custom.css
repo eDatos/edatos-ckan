@@ -414,14 +414,16 @@ textarea {
 }
 
 nav.navigation li a.btn-datasets {
-	background-color: #BBC8D0;
+	background-color: #004678;
 	color: white;
+	padding: 3px;
+	gap: 5px;
+	border-radius: 5px;
 }
 
 nav.navigation div ul li {
 	border-left: 1px solid #DDDDDD;
 	display: block;
-	float: left;
 	color: white;
 
 }
@@ -433,14 +435,6 @@ button.btn.btn-navbar {
 	padding-left: 1rem;
 }
 
-.istac-title-bar a h1 {
-	position: relative;
-	top: 0.6rem;
-}
-
-#title-bar {
-	padding-top: 6.5rem;
-}
 
 .collapsable-menu.abrir {
 	-webkit-transition: 0.1s;
@@ -464,13 +458,6 @@ button.btn.btn-navbar {
 	padding-top: 8px;
 }
 
-.istac-title-bar .istac-app-header-title {
-	display: flex;
-	align-items: center;
-	column-gap: 0.2em;
-	padding-top: 10px;
-}
-
 .istac-navbar .navbar-brand.logo {
 	padding: 20px 36px 10px 36px;
 }
@@ -490,4 +477,14 @@ button.btn.btn-navbar {
 
 div.ckanext-showcase-image-container {
 	margin: 20px;
+}
+
+.collapsable-menu ul {
+	display: flex;
+	gap: 5px;
+	margin-bottom: 0;
+}
+
+selector#language-selector {
+	padding: 4px;
 }
