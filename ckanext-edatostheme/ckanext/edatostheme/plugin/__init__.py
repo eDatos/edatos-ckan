@@ -92,7 +92,7 @@ I18N_DIR = os.path.join(HERE, "../i18n")
 
 # Map de vistas que se quieren restringir acceso
 REDIRECT_VIEWS = (
-    #route, view, function
+    # route, view, function
     ('/user/register', 'abort_redirect', abort_redirect),
 )
 
@@ -162,9 +162,12 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         """
         header_key = json_config['metadata']['navbarPathKey']
         endpoint = json_config['metadata']['endpoint']
-        return "%s?appName=%s&appUrl=%s" % (self.__get_url(endpoint, header_key),
-                                            json_config['metadata']['appName'],
-                                            json_config['metadata']['siteURL'])
+        return "%s?appName=%s&appUrl=%s&appId=%s" % (
+            self.__get_url(endpoint, header_key),
+            json_config['metadata']['appName'],
+            json_config['metadata']['siteURL'],
+            json_config['metadata']['appId']
+        )
 
     def __get_footer_ulr(self, json_config):
         """
@@ -176,7 +179,7 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         return "%s?appName=%s&appUrl=%s" % (self.__get_url(endpoint, footer_key),
                                             json_config['metadata']['appName'],
                                             json_config['metadata']['siteURL'])
-        
+
     def __get_favicon_url(self, json_config):
         """
         Metodo que devuelve la URL del favicon
@@ -207,17 +210,16 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         """
         with codecs.open(HEADER_PATH, 'w', encoding='utf8') as header_file:
             header_file.write(header)
-    
+
     def __save_favicon(self, favicon):
         """
         Metodo para guardar el favicon
 
         :param favicon: Imagen descargada a guardar en la extension
         """
-        with open(FAVICON_PATH,'wb') as favicon_file:
+        with open(FAVICON_PATH, 'wb') as favicon_file:
             favicon_file.write(favicon)
             # shutil.copyfileobj(favicon.raw, f)
-        
 
     def _load_header_footer(self):
         """
@@ -236,7 +238,7 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
 
             self.__save_header(header=header)
             self.__save_footer(footer=footer)
-        
+
     def _load_favicon(self):
         """
         Metodo que carga el favicon
@@ -244,7 +246,7 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
             json_config = json.loads(config_file.read())
             favicon = requests.get(
-                url = self.__get_favicon_url(json_config)).content
+                url=self.__get_favicon_url(json_config)).content
             self.__save_favicon(favicon=favicon)
 
     # IConfigurer
