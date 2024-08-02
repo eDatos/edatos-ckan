@@ -7,7 +7,6 @@
         "siteURL": "FILL ME",
         "htmlCodeClass": "istac-app-header-content",
         "groupPaginationLimit": 24,
-        "favicon": "metamac.app.style.favicon.url",
-        "appId": "FILL ME"
+        "favicon": "metamac.app.style.favicon.url"
     }
 }
