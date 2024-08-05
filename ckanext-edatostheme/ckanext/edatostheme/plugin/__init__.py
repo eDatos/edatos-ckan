@@ -89,7 +89,7 @@ BURGER_BUTTON_PATH = os.path.join(
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 I18N_DIR = os.path.join(HERE, "../i18n")
-MATOMO_ID = 'ckan-catalog'
+APP_ID_FOR_ANALYTICS = 'ckan-catalog'
 
 # Map de vistas que se quieren restringir acceso
 REDIRECT_VIEWS = (
@@ -167,7 +167,7 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             self.__get_url(endpoint, header_key),
             json_config['metadata']['appName'],
             json_config['metadata']['siteURL'],
-            MATOMO_ID
+            APP_ID_FOR_ANALYTICS 
         )
 
     def __get_footer_ulr(self, json_config):
