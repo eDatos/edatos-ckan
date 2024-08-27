@@ -350,8 +350,8 @@ textarea {
 		transition: 0.5s;
 		transition-property: height;
 	}
-	
-	.dropdown-menu ul{
+
+	.dropdown-menu ul {
 		flex-flow: column;
 	}
 
@@ -431,23 +431,23 @@ button.btn.btn-navbar {
 
 .dropdown-menu {
 	position: absolute;
-  	top: 100%;
-  	z-index: 1000;
-  	display: none;
-  	float: right;
-  	min-width: 160px;
+	top: 100%;
+	z-index: 1000;
+	display: none;
+	float: right;
+	min-width: 160px;
 	margin-top: -3px !important;
 	padding-top: 10px;
-  	padding-bottom: 10px;
-  	font-size: 14px;
-  	text-align: right;
-  	list-style: none;
-  	background-color: #004678;
-  	-webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-  	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-  	right: 0;
+	padding-bottom: 10px;
+	font-size: 14px;
+	text-align: right;
+	list-style: none;
+	background-color: #004678;
+	-webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+	right: 0;
 	left: unset;
-  	border-radius: 5px 0px 5px 5px !important;
+	border-radius: 5px 0px 5px 5px !important;
 	border: unset;
 }
 
@@ -459,13 +459,13 @@ button.btn.btn-navbar {
 	transition: 0.1s;
 	transition-property: height;
 	visibility: visible;
-  	opacity: 1;
-  	display: flex;
+	opacity: 1;
+	display: flex;
 	flex-flow: column;
-  	-webkit-transform: translateY(0px);
+	-webkit-transform: translateY(0px);
 	-ms-transform: translateY(0px);
-  	transform: translateY(0px);
-  	pointer-events: initial;
+	transform: translateY(0px);
+	pointer-events: initial;
 	text-align: left;
 }
 
@@ -503,21 +503,20 @@ div.ckanext-showcase-image-container {
 }
 
 .collapsable-menu ul {
-    display: flex;
-    gap: 5px;
-    margin-bottom: 0;
+	display: flex;
+	gap: 5px;
+	margin-bottom: 0;
 }
 
 selector#language-selector {
-    padding: 4px;
+	padding: 4px;
 }
 
 .edatos-custom-app-header {
 	background-color: white;
- 	display: flex;
-  	flex-direction: row-reverse;
-  	flex-grow: ;
- 	padding: 0.5rem 0.5rem 0.5rem 0px;
+	display: flex;
+	flex-direction: row-reverse;
+	padding: 0.5rem 0.5rem 0.5rem 0px;
 }
 
 #edatos-custom-header {
@@ -529,5 +528,3 @@ selector#language-selector {
 	font-family: "Font Awesome 6 Pro" !important;
 	font-weight: 100 !important;
 }
-
-

@@ -4832,3 +4832,6 @@ msgstr "Buscando colecciones..."
 
 msgid "Datasets-home"
 msgstr "Datos"
+
+msgid "Options"
+msgstr "Opciones"
