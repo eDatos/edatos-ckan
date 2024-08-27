@@ -57,7 +57,7 @@ body {
 
 .navigation .nav-pills li a,
 .navigation .nav-pills li.active a {
-	background-color: #008bd0;
+	background-color: transparent;
 	color: #ffffff;
 }
 
@@ -342,20 +342,18 @@ textarea {
 		padding-top: 0px !important;
 	}
 
-	.collapsable-menu {
+	.dropdown-menu {
 		-webkit-transition: 0.5s;
 		-moz-transition: 0.5s;
 		-ms-transition: 0.5s;
 		-o-transition: 0.5s;
 		transition: 0.5s;
 		transition-property: height;
-		height: 0px;
-
-		padding-top: 1rem;
-		overflow: hidden;
-		margin-right: 36px;
 	}
-
+	
+	.dropdown-menu ul{
+		flex-flow: column;
+	}
 
 	.nav-collapse,
 	.nav-collapse.collapse {
@@ -388,13 +386,14 @@ textarea {
 	}
 
 	.btn.btn-navbar {
-		display: none !important;
+		display: block;
 	}
 }
 
 .btn.btn-navbar {
-	background-color: transparent !important;
-	font-size: 21px;
+	background-color: #004678;
+	font-size: 14px;
+	color: #ffffff
 }
 
 #dataset-resources li.resource-item {
@@ -416,16 +415,10 @@ textarea {
 nav.navigation li a.btn-datasets {
 	background-color: #004678;
 	color: white;
-	padding: 3px;
-	gap: 5px;
-	border-radius: 5px;
 }
 
 nav.navigation div ul li {
-	border-left: 1px solid #DDDDDD;
-	display: block;
-	color: white;
-
+	border-left: unset;
 }
 
 button.btn.btn-navbar {
@@ -436,14 +429,44 @@ button.btn.btn-navbar {
 }
 
 
-.collapsable-menu.abrir {
+.dropdown-menu {
+	position: absolute;
+  	top: 100%;
+  	z-index: 1000;
+  	display: none;
+  	float: right;
+  	min-width: 160px;
+	margin-top: -3px !important;
+	padding-top: 10px;
+  	padding-bottom: 10px;
+  	font-size: 14px;
+  	text-align: right;
+  	list-style: none;
+  	background-color: #004678;
+  	-webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  	right: 0;
+	left: unset;
+  	border-radius: 5px 0px 5px 5px !important;
+	border: unset;
+}
+
+.dropdown-menu.abrir {
 	-webkit-transition: 0.1s;
 	-moz-transition: 0.1s;
 	-ms-transition: 0.1s;
 	-o-transition: 0.1s;
 	transition: 0.1s;
 	transition-property: height;
-	height: 100%;
+	visibility: visible;
+  	opacity: 1;
+  	display: flex;
+	flex-flow: column;
+  	-webkit-transform: translateY(0px);
+	-ms-transform: translateY(0px);
+  	transform: translateY(0px);
+  	pointer-events: initial;
+	text-align: left;
 }
 
 .badge {
@@ -480,11 +503,31 @@ div.ckanext-showcase-image-container {
 }
 
 .collapsable-menu ul {
-	display: flex;
-	gap: 5px;
-	margin-bottom: 0;
+    display: flex;
+    gap: 5px;
+    margin-bottom: 0;
 }
 
 selector#language-selector {
-	padding: 4px;
+    padding: 4px;
 }
+
+.edatos-custom-app-header {
+	background-color: white;
+ 	display: flex;
+  	flex-direction: row-reverse;
+  	flex-grow: ;
+ 	padding: 0.5rem 0.5rem 0.5rem 0px;
+}
+
+#edatos-custom-header {
+	align-items: end !important;
+	flex-flow: column !important;
+}
+
+.fa {
+	font-family: "Font Awesome 6 Pro" !important;
+	font-weight: 100 !important;
+}
+
+

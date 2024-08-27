@@ -105,34 +105,25 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
 
     # IConfigurer
 
-    def __get_altered_header(self, header, json_config):
+    def __get_altered_header(self,header, json_config):
         """
-        Metodo que modifica el header para hacer que contenga los botones 
+        Metodo que modifica el header para hacer que contenga los botones
         dinamicos que se generan para esta aplicacion en concreto.
 
         :param header: Codigo HTML del Header que se va a modificar
-        :param json_config: Fichero de configuracion cargado como 
+        :param json_config: Fichero de configuracion cargado como
                             un diccionario JSON
         """
         container_class = json_config['metadata']['htmlCodeClass']
         alteredHeader = header
 
-        with codecs.open(HEADER_WHITE_BAR_PATH, 'r', encoding='utf8') as white_bar_file:
-            code = white_bar_file.read()
-            # Annadimos los botones en la barra blanca
-            soup = BeautifulSoup(alteredHeader, 'html.parser')
-            container = soup.find(id=container_class)
-            container.append(BeautifulSoup(code, 'html.parser'))
-            alteredHeader = soup.prettify('utf-8')
-
-            # Annadimos el boton hamburguesa
-            soup = BeautifulSoup(alteredHeader, 'html.parser')
-            container = soup.find(
-                class_='d-flex justify-content-end align-items-center')
+        soup = BeautifulSoup(alteredHeader, 'html.parser')
+        container = soup.find(id=container_class)
 
         if container is not None:
-            with codecs.open(BURGER_BUTTON_PATH, 'r', encoding='utf8') as burger_button_file:
-                code = burger_button_file.read()
+            with codecs.open(HEADER_WHITE_BAR_PATH, 'r', encoding='utf8') as white_bar_file:
+                code = white_bar_file.read()
+                # Annadimos los botones en la barra blanca
                 container.append(BeautifulSoup(code, 'html.parser'))
                 alteredHeader = soup.prettify('utf-8')
 
