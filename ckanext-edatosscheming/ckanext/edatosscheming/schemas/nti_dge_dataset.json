@@ -12,7 +12,7 @@
         "ca": "Nom",
         "gl": "Nome",
         "eu": "Izena"
-     },
+      },
       "preset": "fluent_core_translated",
       "display_snippet": "multilanguage_text.html",
       "form_snippet": "multiple_required_language_text.html",
@@ -26,7 +26,7 @@
           "gl": "Nombre o t\u00EDtulo del conjunto de datos en ingl\u00E9s.",
           "eu": "Nombre o t\u00EDtulo del conjunto de datos en ingl\u00E9s."
         },
-       "es": {
+        "es": {
           "en": "Nombre o t\u00EDtulo del conjunto de datos en espa\u00F1ol.",
           "es": "Nombre o t\u00EDtulo del conjunto de datos en espa\u00F1ol.",
           "ca": "Nombre o t\u00EDtulo del conjunto de datos en espa\u00F1ol.",
@@ -1657,138 +1657,6 @@
       },
       "preset": "multiple_uri_text",
       "is_url": true
-    },
-    {
-      "field_name": "rate",
-      "label": {
-        "en": "Rate",
-        "es": "Tarifa",
-        "ca": "Tarifa",
-        "gl": "Tarifa",
-        "eu": "Tarifa"
-      },
-      "preset": "select",
-      "choices": [
-        {
-          "value": "0",
-          "label": {
-            "en": "None",
-            "ca": "Ninguno",
-            "gl": "Ninguno",
-            "eu": "Ninguno",
-            "es": "Ninguno"
-          }
-        },
-        {
-          "value": "1",
-          "label": {
-            "en": "Free",
-            "ca": "Gratuita",
-            "gl": "Gratuita",
-            "eu": "Gratuita",
-            "es": "Gratuita"
-          }
-        },
-        {
-          "value": "2",
-          "label": {
-            "en": "Depending on rate",
-            "ca": "Seg\u00FAn tarifa",
-            "gl": "Seg\u00FAn tarifa",
-            "eu": "Seg\u00FAn tarifa",
-            "es": "Seg\u00FAn tarifa"
-          }
-        }
-      ]
-    },
-    {
-      "field_name": "rate_info",
-      "label": {
-        "en": "Rate information",
-        "es": "Informaci\u00F3n de la tarifa",
-        "ca": "Informaci\u00F3 de la tarifa",
-        "gl": "Informaci\u00F3n da tarifa",
-        "eu": "Tarifari buruzko informazioa"
-      },
-      "preset": "fluent_markdown",
-      "display_snippet": "multilanguage_markdown.html",
-      "form_snippet": "multilanguage_markdown.html",
-      "validators": "multiple_required_language fluent_text",
-      "required_language": "es",
-      "fluent_form_placeholder": {
-        "en": {
-          "en": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en ingl\u00E9s.",
-          "es": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en ingl\u00E9s.",
-          "ca": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en ingl\u00E9s.",
-          "gl": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en ingl\u00E9s.",
-          "eu": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en ingl\u00E9s."
-        },
-        "es": {
-          "en": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en espa\u00F1ol.",
-          "es": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en espa\u00F1ol.",
-          "ca": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en espa\u00F1ol.",
-          "gl": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en espa\u00F1ol.",
-          "eu": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en espa\u00F1ol."
-        },
-        "ca": {
-          "en": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en catal\u00E1n.",
-          "es": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en catal\u00E1n.",
-          "ca": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en catal\u00E1n.",
-          "gl": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en catal\u00E1n.",
-          "eu": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en catal\u00E1n."
-        },
-        "gl": {
-          "en": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en gallego.",
-          "es": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en gallego.",
-          "ca": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en gallego.",
-          "gl": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en gallego.",
-          "eu": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en gallego."
-        },
-        "eu": {
-          "en": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en euskera.",
-          "es": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en euskera.",
-          "ca": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en euskera.",
-          "gl": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en euskera.",
-          "eu": "Si se aplica una tarifa, incluir aqu\u00ED el detalle de tasas y precios p\u00FAblicos que sean de aplicaci\u00F3n, as\u00ED como la base de c\u00E1lculo utilizada para la determinaci\u00F3n de los de los mismos en euskera."
-        }
-      },
-      "fluent_help_text": {
-        "en": {
-          "en": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "es": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "ca": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "gl": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "eu": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022."
-        },
-        "es": {
-          "en": "Campo opcional. Si se completa, debe incluirse al menos en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "es": "Campo opcional. Si se completa, debe incluirse al menos en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "ca": "Campo opcional. Si se completa, debe incluirse al menos en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "gl": "Campo opcional. Si se completa, debe incluirse al menos en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "eu": "Campo opcional. Si se completa, debe incluirse al menos en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022."
-        },
-        "ca": {
-          "en": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "es": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "ca": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "gl": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "eu": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022."
-        },
-        "gl": {
-          "en": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "es": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "ca": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "gl": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "eu": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022."
-        },
-        "eu": {
-          "en": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "es": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "ca": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "gl": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "eu": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022."
-        }
-      }
     },
     {
       "field_name": "publisher",
