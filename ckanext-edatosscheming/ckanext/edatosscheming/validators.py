@@ -336,18 +336,19 @@ def multilanguage_url(field, schema):
 
         value = data[key]
         if value is not missing:
-            dir3 = _get_dir3(data, key)
-            print("DIR3 ENCONTRADO >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-            print(dir3)
+            # REMOVE. se comenta porque nose enviara el dir3 en los nombres
+            # dir3 = _get_dir3(data, key)
+            #print("DIR3 ENCONTRADO >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+            #print(dir3)
             if value:
                 # Se elimina el posible dir3 que exista al inicio del name
                 # para que no se concatenen dir3 si hay cambio de dir3 del organismo
-                dir3_history = _get_dir3_history(data, key)
-                if dir3:
-                    for item in dir3_history:
-                        nitem = item + '-'
-                        if value.startswith(nitem):
-                            value = value.replace(nitem, '')
+                #dir3_history = _get_dir3_history(data, key)
+                #if dir3:
+                #    for item in dir3_history:
+                #        nitem = item + '-'
+                #        if value.startswith(nitem):
+                #            value = value.replace(nitem, '')
 
                 #if not dir3 in value:
                 #    data[key] = munge.munge_title_to_name(dir3 + '-' + value)
@@ -390,9 +391,10 @@ def multilanguage_url(field, schema):
                         dataset_title = extras[title_lang]
 
                         # Generate title prefix
-                        dir3 = _get_dir3(data)
-                        if dir3:
-                            dataset_title = dir3 + '-' + dataset_title
+                        # Se comenta, no se usa DIR3
+                        #dir3 = _get_dir3(data)
+                        #if dir3:
+                        #    dataset_title = dir3 + '-' + dataset_title
 
                         data[key] = munge.munge_title_to_name(dataset_title)
 

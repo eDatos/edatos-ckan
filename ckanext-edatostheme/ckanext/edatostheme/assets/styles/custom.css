@@ -491,3 +491,8 @@ button.btn.btn-navbar {
 div.ckanext-showcase-image-container {
 	margin: 20px;
 }
+
+.js .image-upload #field-image-upload {
+	position: inherit;
+	opacity: 1;
+}

@@ -52,10 +52,13 @@ window.onload = function () {
         const currentUrl = new URL(window.location.href);
         console.log('DEBUG ~ redirectChosenLanguage ~ currentUrl:',currentUrl);
         console.log('DEBUG ~ redirectChosenLanguage ~ regexLang:',regexLang);
+
         const path = currentUrl.href;
         console.log('DEBUG ~ redirectChosenLanguage ~ path:',path);
+
         let languageUrl = SITE_URL.concat(language);
         console.log('DEBUG ~ redirectChosenLanguage ~ regexLang.test(regexLang):',regexLang.test(path));
+
         if (regexLang.test(path) !== true) {
             // if (!path.indexOf(regexLang)) {
             // console.log('DEBUG ~ redirectChosenLanguage ~ path.indexOf(regexLang:',path.indexOf(regexLang));

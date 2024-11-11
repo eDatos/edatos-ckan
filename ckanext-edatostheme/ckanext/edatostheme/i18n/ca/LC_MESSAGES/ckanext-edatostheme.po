@@ -126,7 +126,7 @@ msgstr "Acció no implementada."
 #: ckan/views/user.py:110 ckan/views/user.py:579
 #: ckanext/datapusher/blueprint.py:56
 msgid "Not authorized to see this page"
-msgstr "No esteu autoritzats a editar aquesta pàgina"
+msgstr "No esteu autoritzats a visualitzar aquesta pàgina"
 
 #: ckan/controllers/api.py:124 ckan/controllers/api.py:215
 #: ckan/views/api.py:117 ckan/views/api.py:306
@@ -295,7 +295,7 @@ msgstr "Heu esborrat el grup"
 #: ckan/controllers/group.py:637 ckan/views/group.py:1034
 #, python-format
 msgid "%s has been deleted."
-msgstr "%s ha sigut esborrat."
+msgstr "%s ha estat esborrat."
 
 #: ckan/controllers/group.py:661 ckan/views/group.py:543
 #, python-format
@@ -348,7 +348,7 @@ msgstr "No esteu seguint {0}"
 #: ckan/controllers/user.py:743 ckan/views/dataset.py:950
 #: ckan/views/group.py:639 ckan/views/user.py:808
 msgid "You are no longer following {0}"
-msgstr "No seguiràs {0} a partir d'ara"
+msgstr "Ja no esteu seguint {0}"
 
 #: ckan/controllers/group.py:915 ckan/controllers/user.py:583
 #: ckan/views/group.py:659 ckan/views/user.py:832
@@ -373,7 +373,7 @@ msgstr ""
 #, python-format
 msgid "%s uses your email address if you need to reset your password."
 msgstr ""
-"%s usa el vostre correu electrònic si mai necessiteu restaurar la "
+"%s usa el vostre correu electrònic si necessiteu restaurar la "
 "contrasenya."
 
 #: ckan/controllers/package.py:304 ckan/views/dataset.py:336
@@ -439,7 +439,7 @@ msgstr "No autoritzat a crear un paquet"
 
 #: ckan/controllers/package.py:597 ckan/views/resource.py:383
 msgid "Unauthorized to edit this resource"
-msgstr "No teniu autorització per a modificar aquest recurs"
+msgstr "No autoritzat per a modificar aquest recurs"
 
 #: ckan/controllers/package.py:612 ckan/controllers/package.py:1079
 #: ckan/controllers/package.py:1099 ckan/controllers/package.py:1165
@@ -458,7 +458,7 @@ msgstr "Recurs no trobat"
 
 #: ckan/controllers/package.py:665 ckan/views/resource.py:225
 msgid "Unauthorized to update dataset"
-msgstr "No teniu autorització per a modificar aquest conjunt de dades"
+msgstr "No autoritzat per a modificar aquest conjunt de dades"
 
 #: ckan/controllers/package.py:667 ckan/controllers/package.py:708
 #: ckan/controllers/package.py:734 ckan/views/resource.py:229
@@ -482,7 +482,7 @@ msgstr "No teniu autorització per a crear un recurs"
 #: ckan/controllers/package.py:739 ckan/views/resource.py:312
 msgid "Unauthorized to create a resource for this package"
 msgstr ""
-"No teniu autorització per a afegir un recurs a aquest conjunt de dades"
+"No teniu autorització per a afegir un recurs a aquest paquet"
 
 #: ckan/controllers/package.py:953 ckan/views/dataset.py:615
 msgid "Unable to add package to search index."
@@ -573,7 +573,7 @@ msgstr "Usuari no trobat"
 
 #: ckan/controllers/user.py:157 ckan/views/user.py:379
 msgid "Unauthorized to register as a user."
-msgstr "No autoritzat a crear un usuari."
+msgstr "No està autoritzat a registrar-se com a usuari."
 
 #: ckan/controllers/user.py:175
 msgid "Unauthorized to create a user"
@@ -616,7 +616,7 @@ msgid ""
 "User \"%s\" is now registered but you are still logged in as \"%s\" from "
 "before"
 msgstr ""
-"L'usuari \"%s\" ha estat registrat, pero encara teniu la sessió iniciada com"
+"L'usuari \"%s\" ha estat registrat, però encara teniu la sessió iniciada com"
 " a \"%s\""
 
 #: ckan/controllers/user.py:289 ckan/views/user.py:258
@@ -1010,7 +1010,7 @@ msgstr "La longitud de l'etiqueta \"%s\" és menor al mínim (%s)"
 #: ckan/logic/validators.py:449
 #, python-format
 msgid "Tag \"%s\" length is more than maximum %i"
-msgstr "La longitud de l'etiqueta \"%s\" és més gran que el permès %i"
+msgstr "La longitud de l'etiqueta \"%s\" és més gran que el màxim permès %i"
 
 #: ckan/logic/validators.py:457
 #, python-format
@@ -1028,7 +1028,7 @@ msgstr "Els noms d'usuari han de ser cadenes de text"
 
 #: ckan/logic/validators.py:588
 msgid "That login name is not available."
-msgstr "Aquest nom de registre no es troba disponible."
+msgstr "Aquest nom d'usuari no es troba disponible."
 
 #: ckan/logic/validators.py:592
 msgid "That login name can not be modified."
@@ -1198,10 +1198,10 @@ msgstr "La valoració ha d'estar entre %i i %i."
 
 #: ckan/logic/action/create.py:1183
 msgid ""
-"Error sending the invite email,                 the user was not created: "
+"Error sending the invite email, the user was not created: "
 "{0}"
 msgstr ""
-
+"Error en enviar el correu electrònic d'invitació, no s'ha creat l'usuari: "
 #: ckan/logic/action/create.py:1358 ckan/logic/action/create.py:1365
 msgid "You must be logged in to follow users"
 msgstr "Cal que us identifiqueu per a seguir usuaris"
@@ -1253,7 +1253,7 @@ msgstr "No s'ha trobat l'etiqueta \"%s\""
 
 #: ckan/logic/action/delete.py:683 ckan/logic/action/delete.py:687
 msgid "You must be logged in to unfollow something."
-msgstr "Cal que us identifiqueu per a seguir qualsevol cosa."
+msgstr "Cal que us identifiqueu per a deixar de seguir qualsevol cosa."
 
 #: ckan/logic/action/delete.py:698
 msgid "You are not following {0}."
@@ -1870,7 +1870,7 @@ msgstr "Selecciona un camp"
 #: ckan/public/base/javascript/modules/resource-view-reorder.js:40
 #: ckan/public/base/javascript/modules/resource-view-reorder.min.js:1
 msgid "Reorder resource view"
-msgstr ""
+msgstr "Reordenar la vista del recurs"
 
 #: ckan/public/base/javascript/modules/slug-preview.js:57
 #: ckan/public/base/javascript/modules/slug-preview.min.js:2
@@ -1964,7 +1964,7 @@ msgstr "Registrar-se"
 
 #: ckan/templates/header.html:69
 msgid "Toggle navigation"
-msgstr ""
+msgstr "Commuta la navegació"
 
 #: ckan/templates/group/read_base.html:17
 #: ckan/templates/group/snippets/info.html:38 ckan/templates/header.html:90
@@ -2254,7 +2254,7 @@ msgstr "Textarea"
 
 #: ckan/templates/development/snippets/form.html:24
 msgid "Select"
-msgstr "Desplegable"
+msgstr "Seleccioneu"
 
 #: ckan/templates/emails/invite_user.txt:1
 #, python-format
@@ -2266,11 +2266,16 @@ msgid ""
 "password at: %(reset_link)s Have a nice day. -- Message sent by "
 "%(site_title)s (%(site_url)s)"
 msgstr ""
-
+"Estimat %(user_name)s, Heu estat convidat a %(site_title)s. L'usuari ha "
+"estat creat per vostè amb le nom d'usuari %(user_name)s. Podeu canviar-ho"
+" posteriorment. Heu estat afegit al grup %(group_type)s %(group_title)s amb "
+"el rol següent: %(role_name)s. Per a acceptar, per favor reset la vostra "
+"contrasenya a: %(reset_link)s Passeu un bon dia. -- Message sent by "
+"%(site_title)s (%(site_url)s)"
 #: ckan/templates/emails/invite_user_subject.txt:1
 #, python-format
 msgid "Invite for %(site_title)s"
-msgstr ""
+msgstr "Convida a %(site_title)s"
 
 #: ckan/templates/emails/reset_password.txt:1
 #, python-format
@@ -2280,11 +2285,14 @@ msgid ""
 "%(reset_link)s Have a nice day. -- Message sent by %(site_title)s "
 "(%(site_url)s)"
 msgstr ""
-
+"Estimat %(user_name)s, Heu sol·licitat la contrasenya a %(site_title)s per a"
+" reiniciar. Feu clic al següent enllaç per confirmar aquesta sol·licitud: "
+"%(reset_link)s Passeu un bon dia. -- Message sent by %(site_title)s "
+"(%(site_url)s)"
 #: ckan/templates/emails/reset_password_subject.txt:1
 #, python-format
 msgid "Reset your password - %(site_title)s"
-msgstr ""
+msgstr "Restableix la contrasenya - %(site_title)s"
 
 #: ckan/templates/group/activity_stream.html:3
 #: ckan/templates/group/activity_stream.html:8
@@ -2500,9 +2508,9 @@ msgid ""
 "organization members.</p> <p><strong>Member:</strong> Can add/remove "
 "datasets from groups</p>"
 msgstr ""
-" <p><strong>Admin:</strong> Pot editer informació del grup, així com "
-"gestionar els membres del grup</p> <p><strong>Membre:</strong> Pot afegir i "
-"treure conjunts  de dades del grup</p> "
+" <p><strong>Admin:</strong> Podeu editar informació del grup, així com "
+"gestionar els membres del grup</p> <p><strong>Membre:</strong> Podeu afegir i "
+"treure conjunts de dades del grup</p> "
 
 #: ckan/templates/group/new.html:3 ckan/templates/group/new.html:5
 #: ckan/templates/group/new.html:7
@@ -2670,13 +2678,13 @@ msgstr ""
 "dades.</p> <p>CKAN és una solució completa i a punt per a ser usada, que fa "
 "les dades accessibles i usables - proporcionant eines per a la publicació "
 "continuada, compartició, llocalització i ús de les dades (incloent "
-"l'emmagatzematge de dades i la provisió de robustes APIs). CKAN es dirigeix "
+"l'emmagatzematge de dades i la provisió de robustes APIs de dades). CKAN es dirigeix "
 "als publicadors de dades (governs regionals i nacionals, companyies i "
 "organitzacions) que volen fer que les seves dades estiguin obertes i "
 "disponibles.</p> <p>CKAN l'usen governs i grups d'usuaris arreu del món i "
 "potencia una varietat de portals de dades oficials i comunitaris, incloent "
 "portals per a governs locals, nacionals i internacionals, tals com el "
-"d'Anglaterra such<a href=\"http://data.gov.uk\">data.gov.uk</a> i el de la "
+"d'Anglaterra <a href=\"http://data.gov.uk\">data.gov.uk</a> i el de la "
 "Unió Europea <a href=\"http://publicdata.eu/\">publicdata.eu</a>, el "
 "brasileny <a href=\"http://dados.gov.br/\">dados.gov.br</a>, El govern "
 "holandès, com també de ciutats d'Anglaterra, Estats Units, Argentina, "
@@ -2830,7 +2838,7 @@ msgstr "Privat"
 
 #: ckan/templates/organization/bulk_process.html:98
 msgid "This organization has no datasets associated to it"
-msgstr "Aquesta organització no té conjunts de dades associats"
+msgstr "Aquesta organització no té conjunts de dades associades"
 
 #: ckan/templates/organization/confirm_delete.html:11
 msgid "Are you sure you want to delete organization - {name}?"
@@ -2882,16 +2890,16 @@ msgid ""
 "<p><strong>Member:</strong> Can view the organization's private datasets, "
 "but not add new datasets.</p>"
 msgstr ""
-" <p><strong>Admin:</strong> Pot crear/modificar i esborrar conjunts de "
+" <p><strong>Admin:</strong> Podeu crear/modificar i esborrar conjunts de "
 "dades, i gestionar membres de les organitzacions.</p> "
-"<p><strong>Editor:</strong> Pot afegir i editar conjunts de dades, però no "
-"pot gestionar membres de les organitzacions.</p> <p><strong>Member:</strong>"
-" Pot veure els conjunts de dades privats de l'organització, però no pot "
+"<p><strong>Editor:</strong> Podeu afegir i editar conjunts de dades, però no "
+"podeu gestionar membres de les organitzacions.</p> <p><strong>Member:</strong>"
+" Podeu veure els conjunts de dades privats de l'organització, però no podeu "
 "afegir-ne de nous.</p>"
 
 #: ckan/templates/organization/members.html:14
 msgid "{count} member"
-msgid_plural "{count} members"
+msgid_plural "{count} member"
 msgstr[0] "{count} membre"
 msgstr[1] "{count} membres"
 
@@ -2941,7 +2949,7 @@ msgid ""
 "datasets. Users can have different roles within an Organization, depending "
 "on their level of authorisation to create, edit and publish."
 msgstr ""
-"Les organitzacions de CKAN s'uses per crear, gestionar i publicar "
+"Les organitzacions s'usen per crear, gestionar i publicar "
 "col·leccions de conjunts de dades. Els usuaris poden tenir diferents rols "
 "dins de la organització, depenent del seu nivell d'autorització per crear, "
 "editar i publicar conjunts de dades."
@@ -3104,7 +3112,7 @@ msgid ""
 "version, click <a href=\"%(url)s\">here</a>."
 msgstr ""
 "Esteu veient una versió antiga d'aquest conjunt de dades. Per veure la "
-"versió actual, feu clic <a href=\"%(url)s\">aquí</a>."
+"versió actual, feu clic a <a href=\"%(url)s\">aquí</a>."
 
 #: ckan/templates/package/resource_edit_base.html:17
 msgid "All resources"
@@ -3260,7 +3268,7 @@ msgstr "Documentació de la API"
 
 #: ckan/templates/package/search.html:55
 msgid "full {format} dump"
-msgstr "bolcat complert en {format}"
+msgstr "bolcat complet en {format}"
 
 #: ckan/templates/package/search.html:56
 #, python-format
@@ -3434,7 +3442,7 @@ msgstr "ex. economia, salut mental, govern"
 
 #: ckan/templates/package/snippets/package_basic_fields.html:36
 msgid "Please select the license"
-msgstr ""
+msgstr "Seleccioneu la llicència"
 
 #: ckan/templates/package/snippets/package_basic_fields.html:47
 msgid ""
@@ -3518,7 +3526,7 @@ msgstr "Email del mantenidor"
 
 #: ckan/templates/package/snippets/resource_edit_form.html:12
 msgid "Update Resource"
-msgstr "Modifica el recurs"
+msgstr "Actualitza el recurs"
 
 #: ckan/templates/package/snippets/resource_form.html:26
 msgid "Data"
@@ -3804,8 +3812,8 @@ msgstr "No s'ha trobat cap grup"
 #: ckan/templates/snippets/search_result_text.html:27
 msgid "{number} organization found for \"{query}\""
 msgid_plural "{number} organizations found for \"{query}\""
-msgstr[0] "S'ha trobat {number} per  \"{query}\""
-msgstr[1] "S'ha trobat {number} organizacions per \"{query}\""
+msgstr[0] "S'ha trobat {number} organizacions per  \"{query}\""
+msgstr[1] "S'han trobat {number} organizacions per \"{query}\""
 
 #: ckan/templates/snippets/search_result_text.html:28
 msgid "No organizations found for \"{query}\""
@@ -3929,15 +3937,15 @@ msgstr "{actor} ha esborrat el tag {tag} del conjunt de dades {dataset}"
 
 #: ckan/templates/snippets/changes/author.html:5
 msgid "Set author of {pkg_link} to {new_author} (previously {old_author})"
-msgstr ""
+msgstr "Assignat l'autor de {pkg_link} a {new_author} (anteriorment {old_author})"
 
 #: ckan/templates/snippets/changes/author.html:13
 msgid "Set author of {pkg_link} to {new_author}"
-msgstr ""
+msgstr "Assignat l'autor de {pkg_link} a {new_author}"
 
 #: ckan/templates/snippets/changes/author.html:20
 msgid "Removed author from {pkg_link}"
-msgstr ""
+msgstr "Eliminat l'autor de {pkg_link}"
 
 #: ckan/templates/snippets/changes/author.html:26
 #: ckan/templates/snippets/changes/author_email.html:26
@@ -3954,133 +3962,137 @@ msgstr ""
 #: ckan/templates/snippets/changes/url.html:26
 #: ckan/templates/snippets/changes/version.html:26
 msgid "No fields were updated. See the metadata diff for more details."
-msgstr ""
+msgstr "No s'ha actualitzat cap camp. Vegeu la metadada diff per a més detalls."
 
 #: ckan/templates/snippets/changes/author_email.html:5
 msgid ""
 "Set author email of {pkg_link} to {new_author_email} (previously "
 "{old_author_email})"
-msgstr ""
-
+msgstr "Estableix el correu electrònic de l'autor de {pkg_link} a {new_author_email} (anteriorment"
+"{old_author_email})"
 #: ckan/templates/snippets/changes/author_email.html:13
 msgid "Set author email of {pkg_link} to {new_author_email}"
-msgstr ""
+msgstr "Estableix el correu electrònic de l'autor de {pkg_link} a {new_author_email}"
 
 #: ckan/templates/snippets/changes/author_email.html:20
 msgid "Removed author email from {pkg_link}"
-msgstr ""
+msgstr "S'ha suprimit el correu electrònic de l'autor de {pkg_link}}"
 
 #: ckan/templates/snippets/changes/delete_resource.html:3
 msgid "Deleted resource {resource_link} from {pkg_link}"
-msgstr ""
+msgstr "S'ha suprimit el recurs {resource_link} de {pkg_link}}"
 
 #: ckan/templates/snippets/changes/extension_fields.html:3
 msgid "Changed value of field <q>{key}</q> to <q>{value}</q> in {pkg_link}"
-msgstr ""
+msgstr "S'ha canviat el valor del camp <q>{key}</q> a <q>{value}</q> a {pkg_link}}"
 
 #: ckan/templates/snippets/changes/extra_fields.html:5
 msgid "Added field <q>{key}</q> with value <q>{value}</q> to {pkg_link}"
-msgstr ""
+msgstr "S'ha afegit el camp <q>{key}</q> amb valor <q>{value}</q> a {pkg_link}}"
 
 #: ckan/templates/snippets/changes/extra_fields.html:13
 msgid "Added field <q>{key}</q> to {pkg_link}"
-msgstr ""
+msgstr "S'ha afegit el camp <q>{key}</q> a {pkg_link}}"
 
 #: ckan/templates/snippets/changes/extra_fields.html:20
 msgid "Added the following fields to {pkg_link}"
-msgstr ""
+msgstr "S'han afegit els camps següents a {pkg_link}"
 
 #: ckan/templates/snippets/changes/extra_fields.html:27
 #: ckan/templates/snippets/changes/resource_extras.html:35
 msgid "{key} with value {value}"
-msgstr ""
+msgstr "{key} amb valor {value}"
 
 #: ckan/templates/snippets/changes/extra_fields.html:32
 #: ckan/templates/snippets/changes/resource_extras.html:40
 #: ckan/templates/snippets/changes/resource_extras.html:67
 msgid "{key}"
-msgstr ""
+msgstr "{key}"
 
 #: ckan/templates/snippets/changes/extra_fields.html:42
 msgid ""
 "Changed value of field <q>{key}</q> to <q>{new_val}</q> (previously "
 "<q>{old_val}</q>) in {pkg_link}"
-msgstr ""
+msgstr "S'ha canviat el valor del camp <q>{key}</q> a <q>{new_val}</q> (anteriorment "
+"<q>{old_val}</q>) a {pkg_link}"
 
 #: ckan/templates/snippets/changes/extra_fields.html:51
 msgid "Changed value of field <q>{key}</q> to <q>{new_val}</q> in {pkg_link}"
-msgstr ""
+msgstr "S'ha canviat el valor del camp <q>{key}</q> a <q>{new_val}</q> a {pkg_link}"
 
 #: ckan/templates/snippets/changes/extra_fields.html:59
 msgid "Removed field <q>{key}</q> from {pkg_link}"
-msgstr ""
+msgstr "S'ha suprimit el camp <q>{key}</q> de {pkg_link}"
 
 #: ckan/templates/snippets/changes/extra_fields.html:66
 msgid "Removed the following fields from {pkg_link}"
-msgstr ""
+msgstr "S'han suprimit el camp següents de {pkg_link}"
 
 #: ckan/templates/snippets/changes/extra_fields.html:72
 msgid "<q>{key}</q>"
-msgstr ""
+msgstr "<q>{key}</q>"
 
 #: ckan/templates/snippets/changes/license.html:6
 msgid ""
 "Changed the license of {pkg_link} to {new_link} (previously {old_link})"
-msgstr ""
+msgstr "S'ha canviat la llicència de {pkg_link} a {new_link} (anteriorment {old_link})"
 
 #: ckan/templates/snippets/changes/license.html:16
 msgid ""
 "Changed the license of {pkg_link} to {new_link} (previously {old_title})"
 msgstr ""
-
+"S'ha canviat la llicència de {pkg_link} a {new_link} (anteriorment {old_title})"
 #: ckan/templates/snippets/changes/license.html:25
 msgid ""
 "Changed the license of {pkg_link} to {new_title} (previously {old_link})"
-msgstr ""
+msgstr "S'ha canviat la llicència de {pkg_link} a {new_title} (anteriorment {old_link})"
 
 #: ckan/templates/snippets/changes/license.html:35
 msgid ""
 "Changed the license of {pkg_link} to {new_title} (previously {old_title})"
 msgstr ""
+"S'ha canviat la llicència de {pkg_link} a {new_title} (anteriorment {old_title})"
 
 #: ckan/templates/snippets/changes/maintainer.html:5
 msgid ""
 "Set maintainer of {pkg_link} to {new_maintainer} (previously "
 "{old_maintainer})"
 msgstr ""
+"Estableix el mantenidor de {pkg_link} a {new_maintainer} (anteriorment "
+"{old_maintainer})"
 
 #: ckan/templates/snippets/changes/maintainer.html:13
 msgid "Set maintainer of {pkg_link} to {new_maintainer}"
-msgstr ""
+msgstr "Estableix el mantenidor de {pkg_link} a {new_maintainer}"
 
 #: ckan/templates/snippets/changes/maintainer.html:20
 msgid "Removed maintainer from {pkg_link}"
-msgstr ""
+msgstr "S'ha suprimit el mantenidor de {pkg_link}"
 
 #: ckan/templates/snippets/changes/maintainer_email.html:5
 msgid ""
 "Set maintainer email of {pkg_link} to {new_email} (previously {old_email})"
-msgstr ""
+msgstr "Estableix el correu electrònic del mantenidor de {pkg_link} a {new_email} (abans {old_email})"
 
 #: ckan/templates/snippets/changes/maintainer_email.html:13
 msgid "Set maintainer email of {pkg_link} to {new_email}"
-msgstr ""
+msgstr "Estableix el correu electrònic del mantenidor de {pkg_link} a {new_email}"
 
 #: ckan/templates/snippets/changes/maintainer_email.html:20
 msgid "Removed maintainer email from {pkg_link}"
-msgstr ""
+msgstr "S'ha suprimit el correu electrònic del mantenidor de {pkg_link}"
 
 #: ckan/templates/snippets/changes/name.html:6
 msgid "Moved {pkg_link} from {old_link} to {new_link}"
-msgstr ""
+msgstr "S'ha mogut {pkg_link} de {old_link} a {new_link}"
 
 #: ckan/templates/snippets/changes/new_file.html:3
 msgid "Uploaded a new file to resource {resource_link} in {pkg_link}"
-msgstr ""
+msgstr "S'ha pujat un fitxer nou al recurs {resource_link} a {pkg_link}"
 
 #: ckan/templates/snippets/changes/new_resource.html:15
 msgid "Added resource {resource_link} to {pkg_link}"
-msgstr ""
+msgstr "S'ha afegit el recurs {resource_link} a {pkg_link}"
 
 #: ckan/templates/snippets/changes/notes.html:5
 msgid ""
@@ -4088,44 +4100,49 @@ msgid ""
 "height2\"><blockquote>{old_notes}</blockquote> to <br class=\"line-"
 "height2\"><blockquote>{new_notes}</blockquote>"
 msgstr ""
-
+"Descripció actualitzada de {pkg_link} des de <br class=\"line-"
+"height2\"><blockquote>{old_notes}</blockquote> a <br class=\"line-"
+"height2\"><blockquote>{new_notes}</blockquote>"
 #: ckan/templates/snippets/changes/notes.html:13
 msgid ""
 "Updated description of {pkg_link} to <br class=\"line-"
 "height2\"><blockquote>{new_notes}</blockquote>"
 msgstr ""
-
+"Descripció actualitzada de {pkg_link} a <br class=\"line-"
+"height2\"><blockquote>{new_notes}</blockquote>"
 #: ckan/templates/snippets/changes/notes.html:20
 msgid "Removed description from {pkg_link}"
-msgstr ""
+msgstr "S'ha suprimit la descripció des de {pkg_link}"
 
 #: ckan/templates/snippets/changes/org.html:5
 msgid ""
 "Moved {pkg_link} from organization {old_org_link} to organization "
 "{new_org_link}"
 msgstr ""
-
+"S'ha mogut {pkg_link} des de l'organització {old_org_link} a organització "
+"{new_org_link}"
 #: ckan/templates/snippets/changes/org.html:13
 msgid "Removed {pkg_link} from organization {old_org_link}"
-msgstr ""
+msgstr "S'ha eliminat {pkg_link} des de l'organització {old_org_link}"
 
 #: ckan/templates/snippets/changes/org.html:20
 msgid "Added {pkg_link} to organization {new_org_link}"
-msgstr ""
+msgstr "S'ha afegit {pkg_link} a l'organització {new_org_link}"
 
 #: ckan/templates/snippets/changes/private.html:3
 msgid "Set visibility of {pkg_link} to {visibility}"
-msgstr ""
+msgstr "Estableix la visibilitat de {pkg_link} a {visibility}"
 
 #: ckan/templates/snippets/changes/resource_desc.html:5
 msgid ""
 "Updated description of resource {resource_link} in {pkg_link} to <br "
 "class=\"line-height2\"><blockquote>{new_desc}</blockquote>"
 msgstr ""
-
+"Descripció actualitzada del recurs {resource_link} a {pkg_link} a <br "
+"class=\"line-height2\"><blockquote>{new_desc}</blockquote>"
 #: ckan/templates/snippets/changes/resource_desc.html:15
 msgid "Removed description from resource {resource_link} in {pkg_link}"
-msgstr ""
+msgstr "S'ha suprimit la descripció del recurs {resource_link} a {pkg_link}"
 
 #: ckan/templates/snippets/changes/resource_desc.html:24
 msgid ""
@@ -4133,113 +4150,121 @@ msgid ""
 "class=\"line-height2\"><blockquote>{old_desc}</blockquote> to <br "
 "class=\"line-height2\"><blockquote>{new_desc}</blockquote>"
 msgstr ""
-
+"Descripció actualitzada del recurs {resource_link} a {pkg_link} des de <br "
+"class=\"line-height2\"><blockquote>{old_desc}</blockquote> to <br "
+"class=\"line-height2\"><blockquote>{new_desc}</blockquote>"
 #: ckan/templates/snippets/changes/resource_extras.html:5
 msgid ""
 "Added field <q>{key}</q> with value <q>{value}</q> to resource "
 "{resource_link} in {pkg_link}"
-msgstr ""
+msgstr "S'ha afegit el camp <q>{key}</q> amb valor <q>{value}</q> al recurs {resource_link} a {pkg_link}"
 
 #: ckan/templates/snippets/changes/resource_extras.html:16
 msgid "Added field <q>{key}</q> to resource {resource_link} in {pkg_link}"
-msgstr ""
+msgstr "S'ha afegit el camp <q>{key}</q> al recurs {resource_link} a {pkg_link}"
 
 #: ckan/templates/snippets/changes/resource_extras.html:26
 msgid "Added the following fields to resource {resource_link} in {pkg_link}"
-msgstr ""
+msgstr "S'han afegit els camps següents al recurs {resource_link} a {pkg_link}"
 
 #: ckan/templates/snippets/changes/resource_extras.html:49
 msgid "Removed field <q>{key}</q> from resource {resource_link} in {pkg_link}"
-msgstr ""
+msgstr "S'ha eliminat el camp <q>{key}</q> des del recurs {resource_link} a {pkg_link}"
 
 #: ckan/templates/snippets/changes/resource_extras.html:59
 msgid ""
 "Removed the following fields from resource {resource_link} in {pkg_link}"
-msgstr ""
+msgstr "S'han eliminat els camps des del recurs {resource_link} a {pkg_link}"
 
 #: ckan/templates/snippets/changes/resource_extras.html:75
 msgid ""
 "Changed value of field <q>{key}</q> of resource {resource_link} to "
 "<q>{new_val}</q> (previously <q>{old_val}</q>) in {pkg_link}"
 msgstr ""
+"S'ha canviat el valor del camp <q>{key}</q> del recurs {resource_link} a "
+"<q>{new_val}</q> (anteriorment <q>{old_val}</q>) a {pkg_link}"
 
 #: ckan/templates/snippets/changes/resource_extras.html:87
 msgid ""
 "Changed value of field <q>{key}</q> to <q>{new_val}</q> in resource "
 "{resource_link} in {pkg_link}"
 msgstr ""
+"S'ha canviat el valor del camp <q>{key}</q> a <q>{new_val}</q> al recurs "
+"{resource_link} a {pkg_link}"
 
 #: ckan/templates/snippets/changes/resource_extras.html:98
 msgid ""
 "Removed the value of field <q>{key}</q> in resource {resource_link} in "
 "{pkg_link}"
 msgstr ""
+"S'ha eliminat el valor del camp <q>{key}</q> al recurs {resource_link} a "
+"{pkg_link}"
 
 #: ckan/templates/snippets/changes/resource_format.html:10
 msgid "Set format of resource {resource_link} to {format_link} in {pkg_link}"
-msgstr ""
+msgstr "Estableix el format del recurs {resource_link} a {format_link} a {pkg_link}"
 
 #: ckan/templates/snippets/changes/resource_format.html:20
 msgid ""
 "Set format of resource {resource_link} to {new_format_link} (previously "
 "{old_format_link}) in {pkg_link}"
-msgstr ""
+msgstr "Estableix el format del recurs {resource_link} a {new_format_link} (anteriorment "
+"{old_format_link}) a {pkg_link}"
 
 #: ckan/templates/snippets/changes/resource_name.html:3
 msgid ""
 "Renamed resource {old_resource_link} to {new_resource_link} in {pkg_link}"
 msgstr ""
-
+"Reanomenat recurs {old_resource_link} a {new_resource_link} a {pkg_link}"
 #: ckan/templates/snippets/changes/tags.html:5
 msgid "Removed tag {tag_link} from {pkg_link}"
-msgstr ""
-
+msgstr "S'ha eliminat l'etiqueta {tag_link} de {pkg_link}"
 #: ckan/templates/snippets/changes/tags.html:16
 msgid "Removed the following tags from {pkg_link}"
-msgstr ""
+msgstr "S'han eliminat les etiquetes següents de {pkg_link}"
 
 #: ckan/templates/snippets/changes/tags.html:23
 #: ckan/templates/snippets/changes/tags.html:46
 msgid "{tag_link}"
-msgstr ""
+msgstr "{tag_link}"
 
 #: ckan/templates/snippets/changes/tags.html:32
 msgid "Added tag {tag_link} to {pkg_link}"
-msgstr ""
+msgstr "S'ha afegit l'etiqueta {tag_link} a {pkg_link}"
 
 #: ckan/templates/snippets/changes/tags.html:39
 msgid "Added the following tags to {pkg_link}"
-msgstr ""
+msgstr "S'han afegit les etiquetes següents a {pkg_link}"
 
 #: ckan/templates/snippets/changes/title.html:3
 msgid "Changed title to {title_link} (previously {old_title})"
-msgstr ""
+msgstr "S'ha canviat el títol a {title_link} (abans {old_title})"
 
 #: ckan/templates/snippets/changes/url.html:5
 msgid "Changed the source URL of {pkg_link} from {old_link} to {new_link}"
-msgstr ""
+msgstr "S'ha canviat l'URL d'origen de {pkg_link} de {old_link} a {new_link}"
 
 #: ckan/templates/snippets/changes/url.html:13
 msgid "Removed the source URL from {pkg_link}"
-msgstr ""
+msgstr "S'ha eliminat l'URL d'origen de {pkg_thelink}"
 
 #: ckan/templates/snippets/changes/url.html:19
 msgid "Changed the source URL of {pkg_link} to {new_link}"
-msgstr ""
+msgstr "S'ha canviat l'URL d'origen de {pkg_link} a {new_link}"
 
 #: ckan/templates/snippets/changes/version.html:5
 msgid ""
-"Changed the version of {pkg_link} to {new_version} (previously "
+"S'ha canviat la versió de {pkg_link} a {new_version} (anteriorment "
 "{old_version})"
-msgstr ""
-
+msgstr "Changed the version of {pkg_link} to {new_version} (previously "
+"{old_version})"
 #: ckan/templates/snippets/changes/version.html:13
 msgid "Removed the version from {pkg_link}"
-msgstr ""
+msgstr "S'ha elimnat la versió de {pkg_link}"
 
 #: ckan/templates/snippets/changes/version.html:19
 msgid "Changed the version of {pkg_link} to {new_version}"
-msgstr ""
+msgstr "S'ha canviat la versió de {pkg_link} a {new_version}"
 
 #: ckan/templates/tag/index.html:33 ckan/templates/tag/index.html:34
 msgid "Search Tags"
@@ -4247,16 +4272,16 @@ msgstr "Etiquetes de la cerca"
 
 #: ckan/templates/user/api_tokens.html:19
 msgid "Create API Token"
-msgstr ""
+msgstr "Crear API Token"
 
 #: ckan/templates/user/api_tokens.html:29
 #: ckan/templates/user/read_base.html:22
 msgid "API Tokens"
-msgstr ""
+msgstr "API Tokens"
 
 #: ckan/templates/user/api_tokens.html:37
 msgid "You haven't created any API Tokens."
-msgstr ""
+msgstr "No heu creat cap API Tokens"
 
 #: ckan/templates/user/dashboard.html:20 ckan/templates/user/dashboard.html:39
 msgid "News feed"
@@ -4346,12 +4371,12 @@ msgstr "Subscriu-me als correus de notificació"
 #: ckan/templates/user/edit_user_form.html:26
 #: ckan/templates/user/new_user_form.html:14
 msgid "Profile picture"
-msgstr ""
+msgstr "Imatge del perfil"
 
 #: ckan/templates/user/edit_user_form.html:26
 #: ckan/templates/user/new_user_form.html:14
 msgid "Profile picture URL"
-msgstr ""
+msgstr "URL de l'imatge del perfil"
 
 #: ckan/templates/user/edit_user_form.html:31
 msgid "Change password"
@@ -4550,29 +4575,29 @@ msgstr "Reinicieu la vostra contrasenya"
 
 #: ckan/templates/user/request_reset.html:17
 msgid "Email or username"
-msgstr ""
+msgstr "Correu electrònic o nom d'usuari"
 
 #: ckan/templates/user/request_reset.html:22
 msgid "Request Reset"
-msgstr ""
+msgstr "Sol·licitud de restabliment"
 
 #: ckan/templates/user/request_reset.html:38
 msgid ""
 "Enter your email address or username into the box and we will send you an "
 "email with a link to enter a new password."
-msgstr ""
-
+msgstr "Introdueix la teva adreça de correu electrònic o nom d'usuari a la casella i t'enviarem un"
+"correu electrònic amb un enllaç per a introduir la contrasenya"
 #: ckan/templates/user/snippets/api_token_list.html:13
 msgid "Token"
-msgstr ""
+msgstr "Token"
 
 #: ckan/templates/user/snippets/api_token_list.html:14
 msgid "Last access"
-msgstr ""
+msgstr "Darrer accés"
 
 #: ckan/templates/user/snippets/api_token_list.html:15
 msgid "Actions"
-msgstr ""
+msgstr "Accions"
 
 #: ckan/templates/user/snippets/api_token_list.html:32
 #: ckanext/datapusher/templates-bs2/datapusher/resource_data.html:56
@@ -4582,7 +4607,7 @@ msgstr "Mai"
 
 #: ckan/templates/user/snippets/api_token_list.html:40
 msgid "Revoke"
-msgstr ""
+msgstr "Revoca"
 
 #: ckan/templates/user/snippets/followee_dropdown.html:15
 #: ckan/templates/user/snippets/followee_dropdown.html:16
@@ -4607,112 +4632,112 @@ msgstr "Cercar usuaris"
 
 #: ckan/views/admin.py:159
 msgid "Are you sure you want to purge datasets?"
-msgstr ""
+msgstr "Esteu segur que voleu purgar conjunts de dades?"
 
 #: ckan/views/admin.py:161
 msgid "Are you sure you want to purge organizations?"
-msgstr ""
+msgstr "Esteu segur que voleu purgar organitzacions?"
 
 #: ckan/views/admin.py:162
 msgid "Are you sure you want to purge groups?"
-msgstr ""
+msgstr "Esteu segur que voleu purgar grups"
 
 #: ckan/views/admin.py:165
 msgid "{number} datasets have been purged"
-msgstr ""
+msgstr "S'han purgat {number} conjunts de dades"
 
 #: ckan/views/admin.py:166
 msgid "{number} organizations have been purged"
-msgstr ""
+msgstr "S'han purgat {number} organitzacions"
 
 #: ckan/views/admin.py:167
 msgid "{number} groups have been purged"
-msgstr ""
+msgstr "S'han purgat {number} grups"
 
 #: ckan/views/admin.py:170
 msgid "There are no datasets to purge"
-msgstr ""
+msgstr "No hi ha conjunts de dades per purgar"
 
 #: ckan/views/admin.py:171
 msgid "There are no organizations to purge"
-msgstr ""
+msgstr "No hi ha organitzacions per purgar"
 
 #: ckan/views/admin.py:172
 msgid "There are no groups to purge"
-msgstr ""
+msgstr "No hi ha grups per purgar"
 
 #: ckan/views/admin.py:215
 msgid "Massive purge complete"
-msgstr ""
+msgstr "Purga massiva completada"
 
 #: ckan/views/dataset.py:361
 msgid "Parameter u\"{parameter_name}\" is not an integer"
-msgstr ""
+msgstr "El paràmetre u\"{parameter_name}\" no és un número enter"
 
 #: ckan/views/dataset.py:452 ckan/views/dataset.py:470
 #: ckan/views/dataset.py:1133 ckan/views/dataset.py:1214
 #: ckan/views/resource.py:81
 msgid "Activity not found"
-msgstr ""
+msgstr "Activitat no trobada"
 
 #: ckan/views/dataset.py:454 ckan/views/dataset.py:1135
 #: ckan/views/dataset.py:1216
 msgid "Unauthorized to view activity data"
-msgstr ""
+msgstr "No està autoritzat a veure les dades de l'activitat"
 
 #: ckan/views/dataset.py:463
 msgid "The detail of this dataset activity is not available"
-msgstr ""
+msgstr "El detall d'aquesta activitat del conjunt de dades no està disponible"
 
 #: ckan/views/dataset.py:605
 msgid "Unauthorized to read package"
-msgstr ""
+msgstr "No està autoritzat a lleguir el paquet"
 
 #: ckan/views/dataset.py:1250
 msgid "Unauthorized to read collaborators {}"
-msgstr ""
+msgstr "No està autoritzat a lleguir col·laboradors"
 
 #: ckan/views/dataset.py:1268
 msgid "Unauthorized to delete collaborators {}"
-msgstr ""
+msgstr "No està autoritzat a eliminar col·laboradors"
 
 #: ckan/views/dataset.py:1273
 msgid "User removed from collaborators"
-msgstr ""
+msgstr "Usuari eliminat dels col·laboradors"
 
 #: ckan/views/dataset.py:1305
 msgid "Unauthorized to edit collaborators {}"
-msgstr ""
+msgstr "No està autoritzat a editar col·laboradors"
 
 #: ckan/views/dataset.py:1314
 msgid "User added to collaborators"
-msgstr ""
+msgstr "Usuari afegit als col·laboradors"
 
 #: ckan/views/group.py:717
 msgid "Unauthorized to access"
-msgstr ""
+msgstr "No està autoritzat a accedir"
 
 #: ckan/views/resource.py:172
 msgid "Not authorized to download resource"
-msgstr ""
+msgstr "No està autoritzat a descarregar el recurs"
 
 #: ckan/views/user.py:169
 msgid "Unauthorized to view API tokens."
-msgstr ""
+msgstr "No està autoritzat a visualitzar API tokens"
 
 #: ckan/views/user.py:203
 msgid "Unauthorized to create API tokens."
-msgstr ""
+msgstr "No està autoritzat a crear API tokens"
 
 #: ckan/views/user.py:218
 msgid ""
 "API Token created: <code style=\"word-break:break-all;\">{token}</code> "
 "{copy}<br>Make sure to copy it now, you won't be able to see it again!"
-msgstr ""
-
+msgstr "S'ha creat el API Token: <code style=\"word-break:break-all;\">{token}</code>"
+"{copy}<br>Assegureu-vos de copiar-lo ara, no podreu tornar a veure'l"
 #: ckan/views/user.py:234
 msgid "Unauthorized to revoke API tokens."
-msgstr ""
+msgstr "No s'ha autoritzat a revocar els testimonis de l'API."
 
 #: ckan/views/user.py:716
 msgid "Your password must be 8 characters or longer."
@@ -5034,7 +5059,7 @@ msgstr "Aquest grup no té descripció"
 #: ckanext/example_theme_docs/v12_extra_public_dir/templates/home/snippets/promoted.html:4
 msgid "CKAN's data previewing tool has many powerful features"
 msgstr ""
-"Les eines de visualització de dades de CKAN tenen moltes característiques "
+"Les eines de previsualització de dades de CKAN tenen moltes característiques "
 "útils"
 
 #: ckanext/expire_api_token/templates/user/api_tokens.html:6
@@ -5114,7 +5139,7 @@ msgstr "DataProxy ha retornat un error"
 #: ckanext/reclineview/theme/public/recline_view.js:197
 #: ckanext/reclineview/theme/public/recline_view.min.js:14
 msgid "Grid"
-msgstr "Taula"
+msgstr "Quadrícula"
 
 #: ckanext/reclineview/theme/templates/recline_graph_form.html:3
 #: ckanext/reclineview/theme/templates/recline_map_form.html:3
