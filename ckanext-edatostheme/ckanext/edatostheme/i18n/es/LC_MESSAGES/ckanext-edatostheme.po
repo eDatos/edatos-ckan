@@ -4830,5 +4830,14 @@ msgstr "Crear una colección"
 msgid "Search showcases..."
 msgstr "Buscando colecciones..."
 
+#: ckanext/edatostheme/templates/desplegable.html:88
 msgid "Datasets-home"
 msgstr "Datos"
+
+#: ckanext/edatostheme/templates/desplegable.html:78
+msgid "Options"
+msgstr "Opciones"
+
+#: ckanext/edatostheme/templates/desplegable.html:41
+msgid "Settings"
+msgstr "Configuraciones"

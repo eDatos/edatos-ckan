@@ -5310,3 +5310,122 @@ msgstr "URL del lloc web"
 msgid "eg. http://example.com  (if blank uses resource url)"
 msgstr ""
 "p.ex. http://example.com (si es deixa en blanc s'usa la URL del recurs)"
+
+#: ckanext/showcase/templates/header.html:8
+#: ckanext/showcase/templates/package/dataset_showcase_list.html:3
+#: ckanext/showcase/templates/package/read_base.html:7
+#: ckanext/showcase/templates/showcase/edit_base.html:5
+#: ckanext/showcase/templates/showcase/edit_base.html:17
+#: ckanext/showcase/templates/showcase/edit_base.html:21
+#: ckanext/showcase/templates/showcase/read.html:6
+#: ckanext/showcase/templates/showcase/read.html:33
+#: ckanext/showcase/templates/showcase/search.html:4
+#: ckanext/showcase/templates/showcase/search.html:7
+msgid "Showcases"
+msgstr "Col·leccions"
+
+#: ckanext/showcase/templates/package/dataset_showcase_list.html:17
+msgid "Showcases featuring {dataset_name}"
+msgstr "Recursos o serveis relacionats amb el conjunt de dades {dataset_name}"
+
+#: ckanext/showcase/templates/package/dataset_showcase_list.html:22
+msgid "There are no showcases that feature this dataset"
+msgstr "Aquest conjunt de dades no posseeix recursos relacionats"
+
+#: ckanext/showcase/templates/showcase/snippets/showcase_info.html:37
+msgid "Datasets in Showcase"
+msgstr "Recursos o serveis vinculats entre si"
+
+#: ckanext/showcase/templates/showcase/snippets/showcase_search_result_text.html:9
+msgid "{number} showcase found"
+msgid_plural "{number} showcases found"
+msgstr[0] "{number} Col·lecció trobada"
+msgstr[1] "{number} Col·leccions trobades"
+
+#: ckanext/showcase/templates/showcase/snippets/helper.html:4
+msgid "What are Showcases?"
+msgstr "Què són les col·leccions?"
+
+#: ckanext/showcase/templates/showcase/snippets/helper.html:8
+msgid ""
+"Datasets have been used to build apps, websites and visualizations. They've "
+"been featured in articles, and written about in news reports and blog posts. "
+"Showcases collect together the best examples of datasets in use, to provide "
+"further insight, ideas, and inspiration."
+msgstr "Les col·leccions són agrupacions de conjunts de dades relacionades entre si."
+
+#: ckanext/showcase/templates/package/read_base.html:7
+#: ckanext/showcase/templates/showcase/read.html:33
+msgid "Showcases-dataset"
+msgstr "Recursos relacionats"
+
+#: ckanext/showcase/templates/showcase/search.html:13
+msgid "Add Showcase"
+msgstr "Agregar col·lecció"
+
+#: ckanext/showcase/templates/showcase/snippets/helper.html:12
+#, python-format
+msgid ""
+"Sysadmins can manage Showcase Admins from the <a href='%(url)s'>Showcase "
+"configuration page</a>."
+msgstr "Els administradors del sistema poden administrar administradors de col·leccions de la <a href='%(url)s'>configuració de col·leccions</a>."
+
+#: ckanext/showcase/templates/showcase/edit_base.html:41
+msgid "Edit showcase"
+msgstr "Editar col·lecció"
+
+#: ckanext/showcase/templates/showcase/new_package_form.html:63
+msgid "Update Showcase"
+msgstr "Actualitzar col·lecció"
+
+#: ckanext/showcase/templates/showcase/edit_base.html:35
+msgid "View showcase"
+msgstr "Veure col·lecció"
+
+#: ckanext/showcase/templates/showcase/add_datasets.html:48
+#: ckanext/showcase/templates/showcase/manage_datasets.html:51
+msgid "Add to Showcase"
+msgstr "Agregar a col·lecció"
+
+#: ckanext/showcase/templates/showcase/manage_datasets.html:109
+msgid "Remove from Showcase"
+msgstr "Eliminar de la col·lecció"
+
+#: ckanext/showcase/templates/showcase/manage_datasets.html:96
+msgid "Datasets in this showcase"
+msgstr "Conjunts de dades en aquesta col·lecció"
+
+#: ckanext/showcase/templates/showcase/manage_datasets.html:140
+msgid "This showcase has no datasets associated to it"
+msgstr "Aquesta col·lecció no té conjunts de dades associades"
+
+#: ckanext/showcase/templates/showcase/add_datasets.html:31
+#: ckanext/showcase/templates/showcase/manage_datasets.html:36
+msgid "Datasets available to add to this showcase"
+msgstr "Conjunts de dades disponibles per a agregar a aquesta col·lecció"
+
+#: ckanext/showcase/templates/showcase/edit_base.html:22
+#: ckanext/showcase/templates/showcase/new.html:3
+#: ckanext/showcase/templates/showcase/new_package_form.html:63
+msgid "Create Showcase"
+msgstr "Crear col·lecció"
+
+#: ckanext/showcase/templates/showcase/new.html:8
+msgid "Create a Showcase"
+msgstr "Crear una col·lecció"
+
+#: ckanext/showcase/templates/showcase/search.html:33
+msgid "Search showcases..."
+msgstr "Cercant col·leccions..."
+
+#: ckanext/edatostheme/templates/desplegable.html:88
+msgid "Datasets-home"
+msgstr "Dades"
+
+#: ckanext/edatostheme/templates/desplegable.html:78
+msgid "Options"
+msgstr "Opcions"
+
+#: ckanext/edatostheme/templates/desplegable.html:41
+msgid "Settings"
+msgstr "Configuracions"
