@@ -119,16 +119,26 @@ def dge_is_url(value):
 
 def dge_is_uri(value):
     '''
-    Given a value, raises an RDFParsesException if value is not a complete
+    Given a value, raises an RDFParseException if value is not a complete
     URI.
     A complete URI starts with scheme_name: ([A-Za-z][A-Za-z0-9+.-]*):
     '''
+    # If the value is a list, process each element in the list
+    # if isinstance(value, list):
+    #     for item in value:
+    #         if not dge_is_uri(item):  # Recursively check each item
+    #             return False
+    #     return True
+    
+    # If the value is a single string
+    print("Value")
+    print(value)    
     if not value or value.strip() == '':
         return False
     try:
         url = urllib.parse.urlparse(value)
     except ValueError as e:
-        log.info('%s is not a valid URI. Value error %s.' % e)
+        log.info('%s is not a valid URI. Value error %s.' % (value, e))
         return False
     netloc = url.netloc
     if h.is_url(value) and not (netloc and len(netloc) > 0):
@@ -142,11 +152,11 @@ def dge_is_uri(value):
     url2 = netloc
     if url.scheme and len(url.scheme) > 0:
         url2 = url.scheme + '://' + netloc
-    # log.info('************* url2= %s' % url2)
+    
     if rfc3987.match(url2, rule='URI'):
         return True
     else:
-        log.info('% s is not a valid URI.')
+        log.info('%s is not a valid URI.' % value)
         return False
 
 

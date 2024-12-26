@@ -39,6 +39,7 @@ class EdatosschemingPlugin(plugins.SingletonPlugin):
             'multiple_required_language': validators.multiple_required_language,
             'multiple_one_value': validators.multiple_one_value,
             'select_organization': validators.select_organization,
+            'select_license' : validators.select_license,
             'tags_html_detected': validators.tags_html_detected,
             'url_encode': validators.url_encode,
             'multiple_url_encode': validators.multiple_url_encode

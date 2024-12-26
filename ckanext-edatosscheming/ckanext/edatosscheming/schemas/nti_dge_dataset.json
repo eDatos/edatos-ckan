@@ -787,6 +787,7 @@
         "gl": "Condici\u00F3ns de uso",
         "eu": "Erabilera baldintzak"
       },
+      "preset": "select_license",
       "required": true,
       "form_placeholder": {
         "en": "Licencia del conjunto de datos",
@@ -813,7 +814,6 @@
         "gl": "Cobertura xeogr\u00E1fica",
         "eu": "Estaldura geografikoa"
       },
-      "preset": "uri_text",
       "help_text": {
         "en": "\u00C1mbito geogr\u00E1fico cubierto por el conjunto de datos. Puede ser m\u00FAltiple.",
         "es": "\u00C1mbito geogr\u00E1fico cubierto por el conjunto de datos. Puede ser m\u00FAltiple.",
@@ -838,7 +838,6 @@
         "gl": "Organismo que expone y publica los datos.",
         "eu": "Organismo que expone y publica los datos."
       },
-      "preset": "select_organization",
       "required": true
     },
     {

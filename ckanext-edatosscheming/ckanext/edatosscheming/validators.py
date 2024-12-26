@@ -13,6 +13,7 @@ from ckan.logic.validators import tag_string_convert
 from ckan.plugins.toolkit import missing, _
 from ckantoolkit import get_validator
 from ckantoolkit import config
+from ckantoolkit import Invalid
 
 log = logging.getLogger(__name__)
 
@@ -857,6 +858,42 @@ def select_organization(field, schema):
         #         raise Invalid(_('You cannot add a dataset to this organization'))
         data[key] = group_id
 
+    return validator
+
+
+"""
+VALIDATOR FOR LICENSE FIELD
+"""
+
+
+@scheming_validator
+def select_license(field, schema):
+    def validator(key, data, errors, context):
+        value = data.get(key)
+        print("validator init: value")
+        print(value)
+
+        if value is missing or value is None:
+            if not authz.check_config_permission('create_unowned_dataset'):
+                raise Invalid(_('A license must be supplied'))
+            data.pop(key, None)
+            raise df.StopOnError
+
+        if value == '':
+            if not authz.check_config_permission('create_unowned_dataset'):
+                raise Invalid(_('A license must be supplied'))
+            return
+
+        license = h.license_options(value)
+        license_dict = dict(license)
+        print("LICENSEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
+        print(dict(license))
+        if value not in license_dict:
+            raise Invalid(_('License does not exist'))
+
+        data[key] = (value)
+        print("end validator_license")
+        print(data)
     return validator
 
 

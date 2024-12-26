@@ -60,6 +60,14 @@
         "validators": "date_period",
         "output_validators": "date_period_output"
       }
+    },
+    {
+      "preset_name": "select_license",
+      "values": {
+        "validators": "select_license",
+        "form_snippet": "select_license.html",
+        "display_snippet": "select_license.html"
+      }
     }
   ]
 }
