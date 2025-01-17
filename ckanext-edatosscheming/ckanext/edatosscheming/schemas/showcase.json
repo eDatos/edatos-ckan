@@ -2,7 +2,7 @@
     "scheming_version": 1,
     "dataset_type": "showcase",
     "about_url": "http://github.com/ckan/ckanext-scheming",
-    "fields": [
+    "dataset_fields": [
         {
             "field_name": "title_translated",
             "label": {
@@ -19,39 +19,39 @@
             "validators": "ignore_missing unicode_safe",
             "fluent_form_placeholder": {
                 "en": {
-                    "en": "Nombre o t\u00EDtulo de la organizaci\u00F3n en ingl\u00E9s.",
-                    "es": "Nombre o t\u00EDtulo de la organizaci\u00F3n en ingl\u00E9s.",
-                    "ca": "Nombre o t\u00EDtulo de la organizaci\u00F3n en ingl\u00E9s.",
-                    "gl": "Nombre o t\u00EDtulo de la organizaci\u00F3n en ingl\u00E9s.",
-                    "eu": "Nombre o t\u00EDtulo de la organizaci\u00F3n en ingl\u00E9s."
+                    "en": "Nombre o t\u00EDtulo de la colecci\u00F3n en ingl\u00E9s.",
+                    "es": "Nombre o t\u00EDtulo de la colecci\u00F3n en ingl\u00E9s.",
+                    "ca": "Nombre o t\u00EDtulo de la colecci\u00F3n en ingl\u00E9s.",
+                    "gl": "Nombre o t\u00EDtulo de la colecci\u00F3n en ingl\u00E9s.",
+                    "eu": "Nombre o t\u00EDtulo de la colecci\u00F3n en ingl\u00E9s."
                 },
                 "es": {
-                    "en": "Nombre o t\u00EDtulo de la organizaci\u00F3n en espa\u00F1ol.",
-                    "es": "Nombre o t\u00EDtulo de la organizaci\u00F3n en espa\u00F1ol.",
-                    "ca": "Nombre o t\u00EDtulo de la organizaci\u00F3n en espa\u00F1ol.",
-                    "gl": "Nombre o t\u00EDtulo de la organizaci\u00F3n en espa\u00F1ol.",
-                    "eu": "Nombre o t\u00EDtulo de la organizaci\u00F3n en espa\u00F1ol."
+                    "en": "Nombre o t\u00EDtulo de la colecci\u00F3n en espa\u00F1ol.",
+                    "es": "Nombre o t\u00EDtulo de la colecci\u00F3n en espa\u00F1ol.",
+                    "ca": "Nombre o t\u00EDtulo de la colecci\u00F3n en espa\u00F1ol.",
+                    "gl": "Nombre o t\u00EDtulo de la colecci\u00F3n en espa\u00F1ol.",
+                    "eu": "Nombre o t\u00EDtulo de la colecci\u00F3n en espa\u00F1ol."
                 },
                 "ca": {
-                    "en": "Nombre o t\u00EDtulo de la organizaci\u00f3n en catal\u00E1n.",
-                    "es": "Nombre o t\u00EDtulo de la organizaci\u00f3n en catal\u00E1n.",
-                    "ca": "Nombre o t\u00EDtulo de la organizaci\u00f3n en catal\u00E1n.",
-                    "gl": "Nombre o t\u00EDtulo de la organizaci\u00f3n en catal\u00E1n.",
-                    "eu": "Nombre o t\u00EDtulo de la organizaci\u00f3n en catal\u00E1n."
+                    "en": "Nombre o t\u00EDtulo de la colecci\u00f3n en catal\u00E1n.",
+                    "es": "Nombre o t\u00EDtulo de la colecci\u00f3n en catal\u00E1n.",
+                    "ca": "Nombre o t\u00EDtulo de la colecci\u00f3n en catal\u00E1n.",
+                    "gl": "Nombre o t\u00EDtulo de la colecci\u00f3n en catal\u00E1n.",
+                    "eu": "Nombre o t\u00EDtulo de la colecci\u00f3n en catal\u00E1n."
                 },
                 "gl": {
-                    "en": "Nombre o t\u00EDtulo de la organizaci\u00f3n en gallego.",
-                    "es": "Nombre o t\u00EDtulo de la organizaci\u00f3n en gallego.",
-                    "ca": "Nombre o t\u00EDtulo de la organizaci\u00f3n en gallego.",
-                    "gl": "Nombre o t\u00EDtulo de la organizaci\u00f3n en gallego.",
-                    "eu": "Nombre o t\u00EDtulo de la organizaci\u00f3n en gallego."
+                    "en": "Nombre o t\u00EDtulo de la colecci\u00f3n en gallego.",
+                    "es": "Nombre o t\u00EDtulo de la colecci\u00f3n en gallego.",
+                    "ca": "Nombre o t\u00EDtulo de la colecci\u00f3n en gallego.",
+                    "gl": "Nombre o t\u00EDtulo de la colecci\u00f3n en gallego.",
+                    "eu": "Nombre o t\u00EDtulo de la colecci\u00f3n en gallego."
                 },
                 "eu": {
-                    "en": "Nombre o t\u00EDtulo de la organizaci\u00f3n en euskera.",
-                    "es": "Nombre o t\u00EDtulo de la organizaci\u00f3n en euskera.",
-                    "ca": "Nombre o t\u00EDtulo de la organizaci\u00f3n en euskera.",
-                    "gl": "Nombre o t\u00EDtulo de la organizaci\u00f3n en euskera.",
-                    "eu": "Nombre o t\u00EDtulo de la organizaci\u00f3n en euskera."
+                    "en": "Nombre o t\u00EDtulo de la colecci\u00f3n en euskera.",
+                    "es": "Nombre o t\u00EDtulo de la colecci\u00f3n en euskera.",
+                    "ca": "Nombre o t\u00EDtulo de la colecci\u00f3n en euskera.",
+                    "gl": "Nombre o t\u00EDtulo de la colecci\u00f3n en euskera.",
+                    "eu": "Nombre o t\u00EDtulo de la colecci\u00f3n en euskera."
                 }
             },
             "fluent_help_text": {
@@ -133,39 +133,39 @@
             "required_language": "es",
             "fluent_form_placeholder": {
                 "en": {
-                    "en": "Descripci\u00F3n detallada del conjunto de datos en ingl\u00E9s.",
-                    "es": "Descripci\u00F3n detallada del conjunto de datos en ingl\u00E9s.",
-                    "ca": "Descripci\u00F3n detallada del conjunto de datos en ingl\u00E9s.",
-                    "gl": "Descripci\u00F3n detallada del conjunto de datos en ingl\u00E9s.",
-                    "eu": "Descripci\u00F3n detallada del conjunto de datos en ingl\u00E9s."
+                    "en": "Descripci\u00F3n detallada de la colecci\u00F3n en ingl\u00E9s.",
+                    "es": "Descripci\u00F3n detallada de la colecci\u00F3n en ingl\u00E9s.",
+                    "ca": "Descripci\u00F3n detallada de la colecci\u00F3n en ingl\u00E9s.",
+                    "gl": "Descripci\u00F3n detallada de la colecci\u00F3n en ingl\u00E9s.",
+                    "eu": "Descripci\u00F3n detallada de la colecci\u00F3n en ingl\u00E9s."
                 },
                 "es": {
-                    "en": "Descripci\u00F3n detallada del conjunto de datos en espa\u00F1ol.",
-                    "es": "Descripci\u00F3n detallada del conjunto de datos en espa\u00F1ol.",
-                    "ca": "Descripci\u00F3n detallada del conjunto de datos en espa\u00F1ol.",
-                    "gl": "Descripci\u00F3n detalladao del conjunto de datos en espa\u00F1ol.",
-                    "eu": "Descripci\u00F3n detallada del conjunto de datos en espa\u00F1ol."
+                    "en": "Descripci\u00F3n detallada de la colecci\u00F3n en espa\u00F1ol.",
+                    "es": "Descripci\u00F3n detallada de la colecci\u00F3n en espa\u00F1ol.",
+                    "ca": "Descripci\u00F3n detallada de la colecci\u00F3n en espa\u00F1ol.",
+                    "gl": "Descripci\u00F3n detallada de la colecci\u00F3n en espa\u00F1ol.",
+                    "eu": "Descripci\u00F3n detallada de la colecci\u00F3n en espa\u00F1ol."
                 },
                 "ca": {
-                    "en": "Descripci\u00F3n detallada del conjunto de datos en catal\u00E1n.",
-                    "es": "Descripci\u00F3n detallada del conjunto de datos en catal\u00E1n.",
-                    "ca": "Descripci\u00F3n detallada del conjunto de datos en catal\u00E1n.",
-                    "gl": "Descripci\u00F3n detallada del conjunto de datos en catal\u00E1n.",
-                    "eu": "Descripci\u00F3n detallada del conjunto de datos en catal\u00E1n."
+                    "en": "Descripci\u00F3n detallada de la colecci\u00F3n en catal\u00E1n.",
+                    "es": "Descripci\u00F3n detallada de la colecci\u00F3n en catal\u00E1n.",
+                    "ca": "Descripci\u00F3n detallada de la colecci\u00F3n en catal\u00E1n.",
+                    "gl": "Descripci\u00F3n detallada de la colecci\u00F3n en catal\u00E1n.",
+                    "eu": "Descripci\u00F3n detallada de la colecci\u00F3n en catal\u00E1n."
                 },
                 "gl": {
-                    "en": "Descripci\u00F3n detallada del conjunto de datos en gallego.",
-                    "es": "Descripci\u00F3n detallada del conjunto de datos en gallego.",
-                    "ca": "Descripci\u00F3n detallada del conjunto de datos en gallego.",
-                    "gl": "Descripci\u00F3n detallada del conjunto de datos en gallego.",
-                    "eu": "Descripci\u00F3n detallada del conjunto de datos en gallego."
+                    "en": "Descripci\u00F3n detallada de la colecci\u00F3n en gallego.",
+                    "es": "Descripci\u00F3n detallada de la colecci\u00F3n en gallego.",
+                    "ca": "Descripci\u00F3n detallada de la colecci\u00F3n en gallego.",
+                    "gl": "Descripci\u00F3n detallada de la colecci\u00F3n en gallego.",
+                    "eu": "Descripci\u00F3n detallada de la colecci\u00F3n en gallego."
                 },
                 "eu": {
-                    "en": "Descripci\u00F3n detallada del conjunto de datos en euskera.",
-                    "es": "Descripci\u00F3n detallada del conjunto de datos en euskera.",
-                    "ca": "Descripci\u00F3n detallada del conjunto de datos en euskera.",
-                    "gl": "Descripci\u00F3n detallada del conjunto de datos en euskera.",
-                    "eu": "Descripci\u00F3n detallada del conjunto de datos en euskera."
+                    "en": "Descripci\u00F3n detallada de la colecci\u00F3n en euskera.",
+                    "es": "Descripci\u00F3n detallada de la colecci\u00F3n en euskera.",
+                    "ca": "Descripci\u00F3n detallada de la colecci\u00F3n en euskera.",
+                    "gl": "Descripci\u00F3n detallada de la colecci\u00F3n en euskera.",
+                    "eu": "Descripci\u00F3n detallada de la colecci\u00F3n en euskera."
                 }
             },
             "fluent_help_text": {
@@ -207,10 +207,91 @@
             }
         },
         {
+            "field_name": "multilingual_tags",
+            "label": {
+                "en": "Tags",
+                "es": "Etiquetas",
+                "ca": "Etiquetes",
+                "gl": "Etiquetas",
+                "eu": "Etiketak"
+            },
+            "preset": "multilanguage_tag",
+            "form_placeholder": {
+                "en": "Ej: Budget, Communication, Training",
+                "es": "Ej: Presupuesto, Comunicaci\u00F3n, Formaci\u00F3n",
+                "ca": "Ej: Pressupost, Comunicaci\u00F3, Formaci\u00F3",
+                "gl": "Ej: Orzamento, Comunicaci\u00F3n, Formaci\u00F3n",
+                "eu": "Ej: Aurrekontua, Komunikazioa, Prestakuntza"
+            }
+        },
+        {
             "field_name": "image_url",
             "label": "Image URL",
             "form_snippet": "dge_upload.html",
             "form_placeholder": "http://example.com/my-image.jpg"
+        },
+        {
+            "field_name": "author",
+            "label": {
+                "en": "Author",
+                "es": "Autor",
+                "ca": "Autor",
+                "gl": "Autor",
+                "eu": "Egilea"
+            },
+            "form_placeholder": {
+                "en": "Joe Bloggs",
+                "es": "Joe Bloggs",
+                "ca": "Joe Bloggs",
+                "gl": "Joe Bloggs",
+                "eu": "Joe Bloggs"
+            },
+            "help_text": {
+                "en": "Completar si el conjunto de datos tiene un autor.",
+                "es": "Completar si el conjunto de datos tiene un autor.",
+                "ca": "Completar si el conjunto de datos tiene un autor.",
+                "gl": "Completar si el conjunto de datos tiene un autor.",
+                "eu": "Completar si el conjunto de datos tiene un autor."
+            }
+        },
+        {
+            "field_name": "url",
+            "label": "External URL",
+            "required": true,
+            "preset": "resource_url_upload",
+            "form_snippet": "dge_upload.html",
+            "form_placeholder": "Ej: http://organismo.es/catalogo/dataset/distribucion",
+            "help_text": {
+                "en": "URL que permite el acceso o descarga del conjunto de datos.",
+                "es": "URL que permite el acceso o descarga del conjunto de datos.",
+                "ca": "URL que permite el acceso o descarga del conjunto de datos.",
+                "gl": "URL que permite el acceso o descarga del conjunto de datos.",
+                "eu": "URL que permite el acceso o descarga del conjunto de datos."
+            }
+        },
+        {
+            "field_name": "author_email",
+            "label": {
+                "en": "Author Email",
+                "es": "Email del Autor",
+                "ca": "Email de l'Autor",
+                "gl": "Correo electrónico do Autor",
+                "eu": "Egilearen posta elektronikoa"
+            },
+            "form_placeholder": {
+                "en": "joe-bloggs@ejemplo.com",
+                "es": "joe-bloggs@ejemplo.com",
+                "ca": "joe-bloggs@ejemplo.com",
+                "gl": "joe-bloggs@ejemplo.com",
+                "eu": "joe-bloggs@ejemplo.com"
+            },
+            "help_text": {
+                "en": "Completar si el conjunto de datos tiene un email de autor.",
+                "es": "Completar si el conjunto de datos tiene un email de autor.",
+                "ca": "Completar si el conjunto de datos tiene un email de autor.",
+                "gl": "Completar si el conjunto de datos tiene un email de autor.",
+                "eu": "Completar si el conjunto de datos tiene un email de autor."
+            }
         }
     ]
 }
