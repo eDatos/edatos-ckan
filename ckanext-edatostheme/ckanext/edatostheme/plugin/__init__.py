@@ -231,6 +231,57 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
 
     # IConfigurer
 
+    def __get_altered_header(self,header, json_config):
+        """
+        Metodo que modifica el header para hacer que contenga los botones
+        dinamicos que se generan para esta aplicacion en concreto.
+
+        :param header: Codigo HTML del Header que se va a modificar
+        :param json_config: Fichero de configuracion cargado como
+                            un diccionario JSON
+        """
+        container_class = json_config['metadata']['htmlCodeClass']
+        alteredHeader = header
+
+        soup = BeautifulSoup(alteredHeader, 'html.parser')
+        container = soup.find(id=container_class)
+
+        if container is not None:
+            with codecs.open(HEADER_WHITE_BAR_PATH, 'r', encoding='utf8') as white_bar_file:
+                code = white_bar_file.read()
+                # Annadimos los botones en la barra blanca
+                container.append(BeautifulSoup(code, 'html.parser'))
+                alteredHeader = soup.prettify('utf-8')
+
+        alteredHeader = alteredHeader.replace(b'&gt;', b'>').decode('utf8')
+        return "{% block header_wrapper %}" + alteredHeader + "{% endblock %}"
+
+    def __get_url(self, endpoint, key):
+        """
+        Metodo generico que devolvera la URL del header o footer segun la clave que se pase
+
+        :param json_config: Fichero de configuracion cargado como un diccionario JSON
+        :param key: Clave para buscar el header o footer
+        """
+        url = "%s/properties/%s.json" % (endpoint, key)
+        headers = {
+            'Content-Type': 'application/json'
+        }
+        header_request = requests.get(url=url, headers=headers).content
+        json_header_request = json.loads(header_request)
+
+        return json_header_request['value']
+
+    def __get_header_url(self, json_config):
+        """
+        Metodo que devuelve la URL del header
+        :param json_config: Fichero de configuracion cargado como un diccionario JSON
+        """
+        header_key = json_config['metadata']['navbarPathKey']
+        endpoint = json_config['metadata']['endpoint']
+        return "%s?appName=%s&appUrl=%s" % (self.__get_url(endpoint, header_key),
+                                            json_config['metadata']['appName'],
+                                            json_config['metadata']['siteURL'])
 
     def __get_footer_ulr(self, json_config):
         """

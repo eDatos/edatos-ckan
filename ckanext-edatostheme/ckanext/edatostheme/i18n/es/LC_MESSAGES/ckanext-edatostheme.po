@@ -4841,3 +4841,11 @@ msgstr "Opciones"
 #: ckanext/edatostheme/templates/desplegable.html:41
 msgid "Settings"
 msgstr "Configuraciones"
+
+#: ckanext/edatostheme/templates/desplegable.html:78
+msgid "Options"
+msgstr "Opciones"
+
+#: ckanext/edatostheme/templates/desplegable.html:41
+msgid "Settings"
+msgstr "Configuraciones"
