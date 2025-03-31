@@ -138,10 +138,8 @@ def get_header_url(json_config):
     endpoint = json_config['metadata']['endpoint']
     cookie_key = json_config['metadata']['cookieKey']
     
-    print('YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY')
     #cookieId, se debe usar para rescatar el label de la cookie la respuesta se debe
     # de poner como parametro de llamada a la cabecera y el idioma que venga de la cookie
-    print(get_url(endpoint, cookie_key))
     request_lang = get_request_lang(get_url(endpoint, cookie_key))
     
     # Enviar al mismo nivel del appName el chosenLocale
@@ -194,21 +192,9 @@ def load_header():
     """
     Metodo que carga las templates para HEADER
     """
-    print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
     with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
         json_config = json.loads(config_file.read())
-
-        
-        #AQUI comparar los idiomas de cookie e idioma de cookeId en metacoso
-
-        print(fr.cookies) 
-        #request_lang = get_request_lang('chosenLocale')
-        #print(request_lang)
-        # https://estadisticas.arte-consultores.com/apps/organisations/istac/common/header/header.html?appName=Cat\xc3\xa1logo de datos abiertos&appUrl=https://estadisticas.arte-consultores.com/catalogo/
-        #print(get_header_url(json_config))
-
-        # FIN
-
+        # Se carga el header y se guarda como template
         header = requests.get(
             url=get_header_url(json_config)).content
         header = get_altered_header(
@@ -230,58 +216,6 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
     plugins.implements(plugins.ITemplateHelpers)
 
     # IConfigurer
-
-    def __get_altered_header(self,header, json_config):
-        """
-        Metodo que modifica el header para hacer que contenga los botones
-        dinamicos que se generan para esta aplicacion en concreto.
-
-        :param header: Codigo HTML del Header que se va a modificar
-        :param json_config: Fichero de configuracion cargado como
-                            un diccionario JSON
-        """
-        container_class = json_config['metadata']['htmlCodeClass']
-        alteredHeader = header
-
-        soup = BeautifulSoup(alteredHeader, 'html.parser')
-        container = soup.find(id=container_class)
-
-        if container is not None:
-            with codecs.open(HEADER_WHITE_BAR_PATH, 'r', encoding='utf8') as white_bar_file:
-                code = white_bar_file.read()
-                # Annadimos los botones en la barra blanca
-                container.append(BeautifulSoup(code, 'html.parser'))
-                alteredHeader = soup.prettify('utf-8')
-
-        alteredHeader = alteredHeader.replace(b'&gt;', b'>').decode('utf8')
-        return "{% block header_wrapper %}" + alteredHeader + "{% endblock %}"
-
-    def __get_url(self, endpoint, key):
-        """
-        Metodo generico que devolvera la URL del header o footer segun la clave que se pase
-
-        :param json_config: Fichero de configuracion cargado como un diccionario JSON
-        :param key: Clave para buscar el header o footer
-        """
-        url = "%s/properties/%s.json" % (endpoint, key)
-        headers = {
-            'Content-Type': 'application/json'
-        }
-        header_request = requests.get(url=url, headers=headers).content
-        json_header_request = json.loads(header_request)
-
-        return json_header_request['value']
-
-    def __get_header_url(self, json_config):
-        """
-        Metodo que devuelve la URL del header
-        :param json_config: Fichero de configuracion cargado como un diccionario JSON
-        """
-        header_key = json_config['metadata']['navbarPathKey']
-        endpoint = json_config['metadata']['endpoint']
-        return "%s?appName=%s&appUrl=%s" % (self.__get_url(endpoint, header_key),
-                                            json_config['metadata']['appName'],
-                                            json_config['metadata']['siteURL'])
 
     def __get_footer_ulr(self, json_config):
         """
@@ -351,8 +285,6 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
                 'FILL_REGEXP_SITE_URL', regexp_site_url)
 
             return updated_script
-
-    # def _load_header_footer(self):
 
     def _load_footer(self):
         """
