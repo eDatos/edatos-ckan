@@ -108,8 +108,17 @@ a:focus {
 
 .btn-primary {
 	background-image: none;
-	background-color: #008BD0;
+	background-color: #004678;
 	color: #ffffff;
+}
+
+.open>.dropdown-toggle.btn-primary,
+.open>.dropdown-toggle.btn-primary:focus,
+.open>.dropdown-toggle.btn-primary:hover {
+	color: #ffffff;
+	background-color: #004678;
+	background-image: none;
+	border-color: #004678;
 }
 
 .btn-primary:hover,
@@ -119,7 +128,7 @@ a:focus {
 .btn-primary.disabled,
 .btn-primary[disabled] {
 	color: #ffffff;
-	background-color: #005980;
+	background-color: #004678;
 }
 
 .homepage .module-search {
@@ -449,6 +458,17 @@ button.btn.btn-navbar {
 	left: unset;
 	border-radius: 5px 0px 5px 5px !important;
 	border: unset;
+
+	li a {
+		color: white;
+	}
+}
+
+.dropdown-menu {
+	li a:hover {
+		background-color: #008bd0;
+		color: #FFFFFF
+	}
 }
 
 .dropdown-menu.abrir {

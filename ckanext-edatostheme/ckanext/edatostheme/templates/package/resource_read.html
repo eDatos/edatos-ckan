@@ -28,7 +28,7 @@
           <ul>
             {% block resource_actions_inner %}
             {% if h.check_access('package_update', {'id':pkg.id }) %}
-              <li>{% link_for _('Manage'), named_route=pkg.type ~ '_resource.edit', id=pkg.name, resource_id=res.id, class_='btn btn-default', icon='wrench' %}</li>
+	      <li>{% link_for _('Manage'), named_route=pkg.type ~ '_resource.edit', id=pkg.name, resource_id=res.id, class_='btn btn-default', icon='wrench' %}</li>
             {% endif %}
             {% if res.url and h.is_url(res.url) %}
               <li>
@@ -51,15 +51,15 @@
         </div>
         {% block resource_content %}
           {% block resource_read_title %}
-                <h1 class="page-heading">
-                  <a href="{{ h.url_for('dataset.read', id=pkg.name) }}">
-                    {{ h.dataset_display_name(c.package) }}
-                  </a>
-                </h1>
-                <h2 >
-                    {{ h.resource_display_name(res) }}
-                </h2>
-          {% endblock %}
+		<h1 class="page-heading">
+		  <a href="{{ h.url_for('dataset.read', id=pkg.name) }}">
+		    {{ h.dataset_display_name(c.package) }}
+		  </a>
+		</h1>
+		<h2 >
+		    {{ h.resource_display_name(res) }}
+		</h2>
+	  {% endblock %}
           {% block resource_read_url %}
             {% if res.url and h.is_url(res.url) %}
               <p class="muted ellipsis">{{ _('URL:') }} <a class="resource-url-analytics" href="{{ res.url }}" title="{{ res.url }}">{{ res.url }}</a></p>
@@ -68,7 +68,7 @@
             {% endif %}
           {% endblock %}
           <div class="prose notes" property="rdfs:label">
-            {% if res.description_translated %}
+	    {% if res.description_translated %}
               {{ h.get_translated(res, 'description') }}
             {% endif %}
             {% if not res.description_translated and c.package.notes %}
