@@ -169,3 +169,4 @@ def dge_multiple_field_required(field, lang):
     if 'required_language' in field and field['required_language'] == lang:
         return True
     return 'not_empty' in field.get('validators', '').split()
+

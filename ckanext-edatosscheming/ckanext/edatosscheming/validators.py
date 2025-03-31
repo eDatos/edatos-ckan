@@ -890,7 +890,7 @@ def select_license(field, schema):
         print(dict(license))
         if value not in license_dict:
             raise Invalid(_('License does not exist'))
-
+        
         data[key] = (value)
         print("end validator_license")
         print(data)
@@ -1002,3 +1002,4 @@ def multiple_url_encode(field, schema):
         data[key] = value
 
     return validator
+
