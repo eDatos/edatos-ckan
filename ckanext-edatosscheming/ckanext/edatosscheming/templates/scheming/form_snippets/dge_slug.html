@@ -18,14 +18,7 @@
     qualified=true) -%}
 {%- set domain = domain|replace("http://", "")|replace("https://", "") -%}
 
-{%- if data[field.field_name] %}
-    {%- set dir3 = data[field.field_name].split("-",1)[0] -%}
-    {%- set value = data[field.field_name].split("-",1)[1] -%}
-    {%- set prefix = prefix + dir3 + "-" -%}
-    {%- set domain = domain + dir3 + "-" -%}
-{%- else %}
-    {%- set value = data[field.field_name] -%}
-{%- endif -%}
+{%- set value = data[field.field_name] -%}
 
 {%- set attrs = {
     'data-module': 'slug-preview-slug',
