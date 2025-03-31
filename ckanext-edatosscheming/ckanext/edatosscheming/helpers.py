@@ -1,7 +1,7 @@
-# import re
+
 from ckanext.scheming.helpers import lang
 import ckan.lib.helpers as h
-# from pylons.i18n import gettext
+
 from ckantoolkit import config
 import urllib.request, urllib.parse, urllib.error
 import urllib.parse
@@ -59,11 +59,7 @@ def dge_dataset_form_value(text):
                     break
         return final_text
 
-    # t = gettext(text)
     log.info('%s is instance of ' % isinstance(text))
-    # if isinstance(t, str):
-    #     return t.decode('utf-8')
-    # return t
     return ''
 
 
@@ -123,16 +119,6 @@ def dge_is_uri(value):
     URI.
     A complete URI starts with scheme_name: ([A-Za-z][A-Za-z0-9+.-]*):
     '''
-    # If the value is a list, process each element in the list
-    # if isinstance(value, list):
-    #     for item in value:
-    #         if not dge_is_uri(item):  # Recursively check each item
-    #             return False
-    #     return True
-    
-    # If the value is a single string
-    print("Value")
-    print(value)    
     if not value or value.strip() == '':
         return False
     try:

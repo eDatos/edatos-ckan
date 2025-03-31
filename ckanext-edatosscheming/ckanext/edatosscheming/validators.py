@@ -337,28 +337,9 @@ def multilanguage_url(field, schema):
 
         value = data[key]
         if value is not missing:
-            # REMOVE. se comenta porque nose enviara el dir3 en los nombres
-            # dir3 = _get_dir3(data, key)
-            #print("DIR3 ENCONTRADO >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-            #print(dir3)
             if value:
-                # Se elimina el posible dir3 que exista al inicio del name
-                # para que no se concatenen dir3 si hay cambio de dir3 del organismo
-                #dir3_history = _get_dir3_history(data, key)
-                #if dir3:
-                #    for item in dir3_history:
-                #        nitem = item + '-'
-                #        if value.startswith(nitem):
-                #            value = value.replace(nitem, '')
-
-                #if not dir3 in value:
-                #    data[key] = munge.munge_title_to_name(dir3 + '-' + value)
-                #    log.debug('[multilanguage_url] Created name "%s" from %s and %s',
-                #              data[key], dir3, value)
                 return
             else:
-                output = {}
-
                 prefix = field['autogeneration_field']
                 if not prefix:
                     prefix = DEFAULT_TITLE_FIELD
@@ -376,8 +357,6 @@ def multilanguage_url(field, schema):
 
                     if title_lang in extras and extras[title_lang]:
                         dataset_title = extras[title_lang]
-                        #data[key] = munge.munge_title_to_name(
-                        #    dir3 + '-' + dataset_title)
 
                         data[key] = dataset_title
 
@@ -390,12 +369,6 @@ def multilanguage_url(field, schema):
                     title_lang = prefix + l
                     if title_lang in extras and extras[title_lang]:
                         dataset_title = extras[title_lang]
-
-                        # Generate title prefix
-                        # Se comenta, no se usa DIR3
-                        #dir3 = _get_dir3(data)
-                        #if dir3:
-                        #    dataset_title = dir3 + '-' + dataset_title
 
                         data[key] = munge.munge_title_to_name(dataset_title)
 
@@ -852,10 +825,7 @@ def select_organization(field, schema):
         if not group:
             raise Invalid(_('Organization does not exist'))
         group_id = group.id
-        #     if not(user.sysadmin or
-        #            authz.has_user_permission_for_group_or_org(
-        #                group_id, user.name, 'create_dataset')):
-        #         raise Invalid(_('You cannot add a dataset to this organization'))
+
         data[key] = group_id
 
     return validator
@@ -870,8 +840,6 @@ VALIDATOR FOR LICENSE FIELD
 def select_license(field, schema):
     def validator(key, data, errors, context):
         value = data.get(key)
-        print("validator init: value")
-        print(value)
 
         if value is missing or value is None:
             if not authz.check_config_permission('create_unowned_dataset'):
@@ -886,14 +854,12 @@ def select_license(field, schema):
 
         license = h.license_options(value)
         license_dict = dict(license)
-        print("LICENSEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
-        print(dict(license))
+
         if value not in license_dict:
             raise Invalid(_('License does not exist'))
         
         data[key] = (value)
-        print("end validator_license")
-        print(data)
+
     return validator
 
 
@@ -911,7 +877,6 @@ def tags_html_detected(field, schema):
             return
 
         value = data.get(key)
-        languages = []
         # This is the number of inputs that have implemented this validator EX:title_translated
         prefix = key[0]
 
@@ -962,8 +927,6 @@ def _url_encode(url):
     unquote = urllib.parse.unquote((unquote_url).decode('utf-8'))
     parsed_url = urllib.parse.urlparse(unquote.encode('utf-8').strip())
     #####
-
-    # parsed_url = urlparse.urlparse(url.encode('utf-8').strip())
 
     netloc_m = netloc_re.match(parsed_url.netloc)
     username, password, host, port = (
