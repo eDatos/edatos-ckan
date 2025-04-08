@@ -26,44 +26,65 @@ window.onload = function () {
             console.log('DEBUG ~ getLocalLanguage ~ getObjectCookie.chosenLocale:',cookieObject.chosenLocale);
             return cookieObject.chosenLocale;
         }
-        // return 'es';
+
         return typeof Edatos !== 'undefined' && typeof Edatos.i18n.getDefaultLanguage !== 'undefined' ? Edatos.i18n.getDefaultLanguage() : 'es';
     };
+
+    function breakAddress(url) {
+        console.log('DEBUG ~ breakAddress ~ url:',url);
+
+        // home
+        //const SITE_URL = "https://estadisticas.arte-consultores.com/catalogo/";
+
+        // navegando en español
+        // https://estadisticas.arte-consultores.com/catalogo/es/dataset/urn-sdmx-org-sdmx-infomodel-conceptscheme-conceptscheme-istac-esquema_vacio
+
+        // https:// estadisticas.arte-consultores.com/catalogo
+
+        var data = url.split(SITE_URL);
+        var domain = data[0];
+
+        // Comprobar hay path y devolver el resto de la dirección
+        data = data[1].split("/");
+        var language = data[0];
+        if (data[1]) {
+            return [domain,language,data.slice(1).join("/")];
+        }
+
+        return [domain,language];
+    }
 
     function redirectChosenLanguage(language = 'es') {
         console.log('DEBUG ~ redirectChosenLanguage ~ redirectChosenLanguage:',redirectChosenLanguage);
         language = getLocalLanguage();
 
-
-        // const regexLang = new RegExp(`/${language}/`);
-        // const currentUrl = (window.location.href);
-        // if (!(regexLang.test(currentUrl))) {
-        //     let languageUrl = SITE_URL.concat(language);
-        //     window.location.href = languageUrl;
-        // }
-        // const regexLang = '/'.concat(language);
-
-        // site_url = "https://estadisticas.arte-consultores.com/catalogo/ru"
-        // REGEXP_SITE_URL = "https:\/\/estadisticas\.arte-consultores\.com\/catalogo\/ru"
-
-        // let regexLang = new RegExp(`^${REGEXP_SITE_URL}(${language}(\/.*|$))([^\/.]+)?$`);
         let regexLang = `^${REGEXP_SITE_URL}(${language}(\/.*|$))([^/.]+)?$`;
         regexLang = new RegExp(regexLang,'i');
         const currentUrl = new URL(window.location.href);
+
         console.log('DEBUG ~ redirectChosenLanguage ~ currentUrl:',currentUrl);
         console.log('DEBUG ~ redirectChosenLanguage ~ regexLang:',regexLang);
 
         const path = currentUrl.href;
         console.log('DEBUG ~ redirectChosenLanguage ~ path:',path);
 
-        let languageUrl = SITE_URL.concat(language);
+        //let languageUrl = SITE_URL.concat(language);
         console.log('DEBUG ~ redirectChosenLanguage ~ regexLang.test(regexLang):',regexLang.test(path));
 
-        if (regexLang.test(path) !== true) {
-            // if (!path.indexOf(regexLang)) {
-            // console.log('DEBUG ~ redirectChosenLanguage ~ path.indexOf(regexLang:',path.indexOf(regexLang));
-            console.log('DEBUG ~ redirectChosenLanguage ~ languageUrl:',languageUrl);
-            window.location.href = languageUrl;
+        var urlArray = breakAddress(path);
+        //if (regexLang.test(path) !== true) {
+        var nuevaUrl = '';
+        if (urlArray[1] !== language) {
+            //console.log('DEBUG ~ redirectChosenLanguage ~ languageUrl:',languageUrl);
+            if (urlArray[2] !== undefined) {
+                nuevaUrl = SITE_URL.concat(language,"/",urlArray[2]);
+            }
+            nuevaUrl = SITE_URL.concat(language,"/");
+            console.log('DEBUG ~ redirectChosenLanguage ~ concatUrl:',concatUrl)
+            console.log('DEBUG ~ redirectChosenLanguage ~ breakAddress(path);:',breakAddress(path))
+            window.location.href = nuevaUrl;
+        } else {
+            console.log('DEBUG ~ redirectChosenLanguage ~ DEBUG:',"NOTHING HERE");
         }
 
     };
