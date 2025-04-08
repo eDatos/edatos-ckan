@@ -15,8 +15,8 @@
             "preset": "fluent_core_translated",
             "display_snippet": "multilanguage_text.html",
             "form_snippet": "multiple_required_language_text.html",
+            "validators": "tags_html_detected multiple_one_value multiple_required_language fluent_text",
             "required_language": "es",
-            "validators": "ignore_missing unicode_safe",
             "fluent_form_placeholder": {
                 "en": {
                     "en": "Nombre o t\u00EDtulo de la organizaci\u00F3n en ingl\u00E9s.",
@@ -90,9 +90,6 @@
                     "gl": "",
                     "eu": ""
                 }
-            },
-            "form_attrs": {
-                "data-module": "slug-preview-target"
             }
         },
         {
