@@ -56,6 +56,7 @@ def get_all_groups():
         'all_fields': True,
         'limit': items_per_page,
         'offset': items_per_page * (page - 1),
+        'include_extras': True,
     }
 
     groups = toolkit.get_action('group_list')(data_dict=data_dict)
