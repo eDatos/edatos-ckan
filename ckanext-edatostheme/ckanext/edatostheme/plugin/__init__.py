@@ -8,13 +8,15 @@ import ckan.lib.helpers as h
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 import requests
+import ckanext.scheming.helpers as sh
 
 from bs4 import BeautifulSoup
-from ckan.common import _, request
+from ckan.common import _, request, c
 from ckan.lib.plugins import DefaultTranslation
 from ckantoolkit import config
 from flask import Blueprint
 from flask import request as fr
+
 
 abort = base.abort
 dirname = os.path.dirname(__file__)
@@ -33,7 +35,38 @@ HERE = os.path.abspath(os.path.dirname(__file__))
 I18N_DIR = os.path.join(HERE, "../i18n")
 
 
+def get_facet_items_dict(facet, limit=None, exclude_active=False, default_sort=True):
+    if not c.search_facets or \
+            not c.search_facets.get(facet) or \
+            not c.search_facets.get(facet).get('items'):
+        return []
 
+    facets = []
+    for facet_item in c.search_facets.get(facet)['items']:
+        if not len(facet_item['name'].strip()):
+            continue
+
+        display_name = facet_item.get('display_name')
+        title_translated = facet_item.get('title_translated', {})
+        language = sh.lang()  
+        if language in title_translated:
+            display_name = title_translated[language]
+
+        facets.append({
+            'active': (facet, facet_item['name']) in request.params.items(),
+            'name': facet_item['name'],
+            'count': facet_item['count'],
+            'display_name': display_name
+        })
+
+    if default_sort:
+        facets = sorted(facets, key=lambda item: item['count'], reverse=True)
+    else:
+        facets = sorted(facets, key=lambda item: item['display_name'])
+
+    if limit is not None and limit > 0:
+        return facets[:limit]
+    return facets
 
 def get_group_pagination_limit():
     """
@@ -350,7 +383,8 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             'edatostheme_get_count_all_datasets': get_count_all_datasets,
             'package_showcase_list': package_showcase_list,
             'edatostheme_get_delink_value': get_delink_value,
-            'edatos_get_header': load_header
+            'edatos_get_header': load_header,
+            'edatos_get_facet_items': get_facet_items_dict
         }
 
     # ITranslation
