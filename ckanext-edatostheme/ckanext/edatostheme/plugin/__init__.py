@@ -435,3 +435,35 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
 
     def i18n_directory(self):
         return I18N_DIR
+
+    # IPackageController
+    def before_index(self, pkg_dict):
+        pkg_dict['tags'] = set()
+        if 'multilingual_tags' in pkg_dict:
+            tags = json.loads(pkg_dict['multilingual_tags'])
+            
+            # Obtener lenguaje y orden configurado
+            locale_order = config.get('ckan.locale_order', '').split(',')
+            #lang = sh.lang()
+            
+            # Obtener el idioma por defecto
+            for lang in locale_order:
+                if lang in tags and tags[lang]:
+                    default_lang = lang
+                    break
+            # Indexing de tags por idioma
+            for lang in locale_order:
+                tag_key = 'tags_' + lang
+                pkg_dict[tag_key] = set()
+                if lang in tags and tags[lang]:
+                    lang_tags = tags[lang]
+                    for tag in lang_tags:
+                        #pkg_dict[tag_key].add(tag + '__' + lang)
+                        pkg_dict[tag_key].add(tag)
+                    pkg_dict['tags'].update(tags[lang])
+            
+            
+            # for lang, lang_tags in tags.items():
+            #     for tag in lang_tags:
+            #         pkg_dict[tag_ksoey].add(tag + '__' + lang)
+        return pkg_dict
