@@ -1,3 +1,4 @@
+
 # -*- coding: UTF-8 -*-
 import codecs
 import json
@@ -12,6 +13,8 @@ import ckanext.scheming.helpers as sh
 
 from bs4 import BeautifulSoup
 from ckan.common import _, request, c
+from ckan.model import Package
+from ckan.model.tag import Tag
 from ckan.lib.plugins import DefaultTranslation
 from ckantoolkit import config
 from flask import Blueprint
@@ -34,6 +37,36 @@ SCRIPT_TEMPLATE = os.path.join(dirname, '../code_templates/i18n.js')
 HERE = os.path.abspath(os.path.dirname(__file__))
 I18N_DIR = os.path.join(HERE, "../i18n")
 
+def get_tag(tag_id):
+    tag_dict = toolkit.get_action('tag_show')(
+        data_dict={'id': tag_id})
+    return tag_dict
+
+def get_group(group_id):
+    group_dict = toolkit.get_action('group_show')(
+        data_dict={'id': group_id})
+    return group_dict
+
+def get_license(license_id):
+    return Package.get_license_register().get(license_id)
+
+def schema_get_label_for_facet(facet, schema_type='dataset'):
+    scheming_field = sh.scheming_field_by_name(sh.scheming_get_dataset_schema(schema_type)['dataset_fields'], facet)
+    # Not a scheming field don't create a labeler and use the default
+
+    if scheming_field is None:
+        return None
+
+    choices = sh.scheming_field_choices(scheming_field)
+    # Not a choices field, don't create a labeler and use the default
+
+    if choices is None:
+        return None
+
+    def get_label_for_field(field):
+        return sh.scheming_choices_label(choices, field['name'])
+
+    return get_label_for_field
 
 def get_facet_items_dict(facet, limit=None, exclude_active=False, default_sort=True):
     if not c.search_facets or \
@@ -42,13 +75,20 @@ def get_facet_items_dict(facet, limit=None, exclude_active=False, default_sort=T
         return []
 
     facets = []
+    print(c.search_facets.get(facet))
+    print("FACETS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     for facet_item in c.search_facets.get(facet)['items']:
         if not len(facet_item['name'].strip()):
             continue
 
-        display_name = facet_item.get('display_name')
+        display_name = h.get_translated(facet_item, 'name') or facet_item.get('display_name')
         title_translated = facet_item.get('title_translated', {})
-        language = sh.lang()  
+        print("________________________________________________________")
+        print(display_name)
+        print(facet_item)
+        print("________________________________________________________")
+        print(title_translated)
+        language = sh.lang()
         if language in title_translated:
             display_name = title_translated[language]
 
@@ -171,11 +211,11 @@ def get_header_url(json_config):
     header_key = json_config['metadata']['navbarPathKey']
     endpoint = json_config['metadata']['endpoint']
     cookie_key = json_config['metadata']['cookieKey']
-    
+
     #cookieId, se debe usar para rescatar el label de la cookie la respuesta se debe
     # de poner como parametro de llamada a la cabecera y el idioma que venga de la cookie
     request_lang = get_request_lang(get_url(endpoint, cookie_key))
-    
+
     # Enviar al mismo nivel del appName el chosenLocale
     return "%s?appName=%s&appUrl=%s&%s=%s" % (get_url(endpoint, header_key),
                                         json_config['metadata']['appName'],
@@ -266,7 +306,7 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         """
         Metodo que devuelve la URL del favicon
         :param
-            json_config: Fichero de configuracion cargado como diccionario JSON 
+            json_config: Fichero de configuracion cargado como diccionario JSON
         """
         favicon_key = json_config['metadata']['favicon']
         endpoint = json_config['metadata']['endpoint']
@@ -295,9 +335,9 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
 
     def __save_script(self, script_content):
         """
-        Metodo para guardad el script 
+        Metodo para guardad el script
 
-        :param script: Script 
+        :param script: Script
         """
         with codecs.open(SCRIPT_PATH, 'w', encoding='utf8') as script_file:
             script_file.write(self.__config_properties_filler(
@@ -345,7 +385,7 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
 
     def _i18n_script_filler(self):
         """
-        Metodo que incrusta en el script de i18n los valores de la config 
+        Metodo que incrusta en el script de i18n los valores de la config
         necesarias para su funcionamiento
         """
         with codecs.open(SCRIPT_TEMPLATE, 'r', encoding='utf8') as script_template:
@@ -384,7 +424,11 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             'package_showcase_list': package_showcase_list,
             'edatostheme_get_delink_value': get_delink_value,
             'edatos_get_header': load_header,
-            'edatos_get_facet_items': get_facet_items_dict
+            'edatos_get_facet_items_dict': get_facet_items_dict,
+            'edatos_schema_get_label_for_facet': schema_get_label_for_facet,
+            'edatos_get_license': get_license,
+            'edatos_get_group': get_group,
+            'edatos_get_tag': get_tag
         }
 
     # ITranslation
