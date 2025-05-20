@@ -42,6 +42,7 @@ window.onload = function () {
         const path = currentUrl.href;
 
         var urlArray = breakAddress(path);
+        console.log('DEBUG ~ redirectChosenLanguage ~ urlArray:',urlArray)
         var nuevaUrl = '';
 
         if (urlArray[1] !== language) {
@@ -59,3 +60,4 @@ window.onload = function () {
     redirectChosenLanguage();
 
 };
+

@@ -4,21 +4,8 @@
 
     {{ facets }}
     {{ system_lang }}
-{% for facet in facets %}
-    {% if facet not in tags_facets %}
-        {{ h.snippet('snippets/facet_list.html', title=c.facet_titles[facet], name=facet, scheming_choices=choices, extras=extras) }}
-    {% endif %}
-{% endfor %}
 
-{% for facet in facets %}
-
-    {% if facet == system_lang %}
-        {{ h.snippet('snippets/facet_list.html', title=c.facet_titles[facet], name=facet, scheming_choices=choices, extras=extras) }}
-    {% endif %}
-{% endfor %}
-
-
-{% for facet , label in facets.items() %}
+{% for facet, label in facets.items() %}
     {% if facet.startswith('tags_') %}
         {% if facet == system_lang %}
             {{ h.snippet('snippets/facet_list.html', title=c.facet_titles[facet], name=facet, scheming_choices=choices, extras=extras) }}
@@ -26,4 +13,4 @@
     {% else %}
         {{ h.snippet('snippets/facet_list.html', title=c.facet_titles[facet], name=facet, scheming_choices=choices, extras=extras) }}
     {% endif %}
-{% endfor %}
+{% endfor %}    
