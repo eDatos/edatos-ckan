@@ -10,6 +10,7 @@ import ckan.model as model
 import ckan.plugins.toolkit as toolkit
 import ckanext.edatosscheming.helpers as dh
 from ckan.logic.validators import tag_string_convert
+from ckanext.fluent.validators import fluent_text_output
 from ckan.plugins.toolkit import missing, _
 from ckantoolkit import get_validator
 from ckantoolkit import config
@@ -694,6 +695,33 @@ def multiple_tags(field, *args):
 
     return validator
 
+@scheming_validator
+def copy_fluent_keywords_to_tags(field, schema):
+    def validator(key, data, errors, context):
+        """
+        Copy keywords to tags.
+        This will let the tag autocomplete endpoint to work as desired.
+
+        Fluent tag validation and CKAN's tag validation handles validation.
+
+        This replaces tags with the keywords for all languages in the schema
+        so it will remove (deactivate) tags as necessary as well.
+
+        This validator is dependent on scheming and fluent.
+
+        Usage:
+        "validators": "fluent_tags copy_fluent_keywords_to_tags",
+        """
+
+        fluent_tags = fluent_text_output(data[key])
+        data[('tags'),] = []
+        for key, value in fluent_tags.items():
+            for tag in value:
+                data[('tags'),].append(
+                    {'name': tag}
+                )
+
+    return validator
 
 """
 CHECK REQUIRED LANGUAGE

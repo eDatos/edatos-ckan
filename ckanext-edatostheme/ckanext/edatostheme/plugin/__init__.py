@@ -13,6 +13,7 @@ import ckanext.scheming.helpers as sh
 
 from bs4 import BeautifulSoup
 from ckan.common import _, request, c
+from collections import OrderedDict
 from ckan.model import Package
 from ckan.model.tag import Tag
 from ckan.lib.plugins import DefaultTranslation
@@ -288,6 +289,8 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
     plugins.implements(plugins.IBlueprint)
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.ITemplateHelpers)
+    plugins.implements(plugins.IPackageController, inherit=True)
+    plugins.implements(plugins.IFacets)
 
     # IConfigurer
 
@@ -437,33 +440,76 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         return I18N_DIR
 
     # IPackageController
-    def before_index(self, pkg_dict):
-        pkg_dict['tags'] = set()
-        if 'multilingual_tags' in pkg_dict:
-            tags = json.loads(pkg_dict['multilingual_tags'])
+    def before_index(self, data_dict):
+        print("--------------------------------- BEFORE INDEX PACKAGE CONTROLLER")
+        print(data_dict)
+        print("++++++++++++++++++++++++++++++++++ data_dict")
+
+        if 'multilingual_tags' in data_dict:
+            tags = json.loads(data_dict.get('extras_multilingual_tags', '{}'))
+            data_dict['tags_en'] = tags.get('en', [])
+            data_dict['tags_ca'] = tags.get('ca', [])
+            data_dict['tags_es'] = tags.get('es', [])
             
+ 
             # Obtener lenguaje y orden configurado
-            locale_order = config.get('ckan.locale_order', '').split(',')
-            #lang = sh.lang()
+            # ckan.locale_order = en ca es
+            # locale_order = config.get('ckan.locale_order', '').split()
+            # default_lang = None
+            # #lang = sh.lang()
             
-            # Obtener el idioma por defecto
-            for lang in locale_order:
-                if lang in tags and tags[lang]:
-                    default_lang = lang
-                    break
-            # Indexing de tags por idioma
-            for lang in locale_order:
-                tag_key = 'tags_' + lang
-                pkg_dict[tag_key] = set()
-                if lang in tags and tags[lang]:
-                    lang_tags = tags[lang]
-                    for tag in lang_tags:
-                        #pkg_dict[tag_key].add(tag + '__' + lang)
-                        pkg_dict[tag_key].add(tag)
-                    pkg_dict['tags'].update(tags[lang])
+            # # Obtener el idioma por defecto
+            # for lang in locale_order:
+            #     if lang in tags and tags[lang]:
+            #         default_lang = lang
+            #         break
+            # # Indexing de tags por idioma
+            # for lang in locale_order:
+            #     tag_key = 'tags_' + lang
+            #     data_dict[tag_key] = set()
+            #     if lang in tags and tags[lang]:
+            #         lang_tags = tags[lang]
+            #         for tag in lang_tags:
+            #             #pkg_dict[tag_key].add(tag + '__' + lang)
+            #             data_dict[tag_key].add(tag)
+            #     elif default_lang:
+            #         lang_tags = tags[default_lang]
+            #         for tag in lang_tags:
+            #             # pkg_dict[tag_key].add(tag)
+            #             data_dict[tag_key].add(tag + '_' + default_lang)
+            #         # pkg_dict['tags'].update(tags[lang])
             
             
             # for lang, lang_tags in tags.items():
             #     for tag in lang_tags:
             #         pkg_dict[tag_ksoey].add(tag + '__' + lang)
-        return pkg_dict
+        data_dict['multilingual_tags'] = []
+        print(data_dict)
+        return data_dict
+    
+    
+    # IFacets
+    
+    def dataset_facets(self, facets_dict, package_type):
+        '''Add new search facet dictionary for datasets.
+        '''
+        reordered_facet_dict = OrderedDict({
+            'groups': toolkit._('Groups'),
+            'tags_en': toolkit._('Tags'),
+            'tags_ca': toolkit._('Tags'),
+            'tags_es': toolkit._('Tags'),
+            'res_format': toolkit._('Formats'),
+            'license_id': toolkit._('Licences'),
+        })
+
+        return reordered_facet_dict
+    
+    def group_facets(self, facets_dict, group_type, package_type):
+        '''Modify and return the ``facets_dict`` for a group's page.
+        '''
+        return self.dataset_facets(facets_dict, package_type)
+
+    def organization_facets(self, facets_dict, organization_type, package_type):
+        '''Modify and return the ``facets_dict`` for an organization's page.
+        '''
+        return self.dataset_facets(facets_dict, package_type)

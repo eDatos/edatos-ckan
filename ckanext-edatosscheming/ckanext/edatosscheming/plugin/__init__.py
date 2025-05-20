@@ -42,7 +42,8 @@ class EdatosschemingPlugin(plugins.SingletonPlugin):
             'select_license' : validators.select_license,
             'tags_html_detected': validators.tags_html_detected,
             'url_encode': validators.url_encode,
-            'multiple_url_encode': validators.multiple_url_encode
+            'multiple_url_encode': validators.multiple_url_encode,
+            'copy_fluent_keywords_to_tags': validators.copy_fluent_keywords_to_tags
         }
 
     # ITemplateHelpers
