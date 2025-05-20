@@ -52,7 +52,9 @@ def get_license(license_id):
     return Package.get_license_register().get(license_id)
 
 def schema_get_label_for_facet(facet, schema_type='dataset'):
-    scheming_field = sh.scheming_field_by_name(sh.scheming_get_dataset_schema(schema_type)['dataset_fields'], facet)
+    scheming_field = sh.scheming_field_by_name(
+        sh.scheming_get_dataset_schema(schema_type)['dataset_fields'],
+        facet)
     # Not a scheming field don't create a labeler and use the default
 
     if scheming_field is None:
@@ -70,25 +72,22 @@ def schema_get_label_for_facet(facet, schema_type='dataset'):
     return get_label_for_field
 
 def get_facet_items_dict(facet, limit=None, exclude_active=False, default_sort=True):
+    """ Metodo que devuelve los items de un facet
+    """
     if not c.search_facets or \
             not c.search_facets.get(facet) or \
             not c.search_facets.get(facet).get('items'):
         return []
 
     facets = []
-    print(c.search_facets.get(facet))
-    print("FACETS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+
     for facet_item in c.search_facets.get(facet)['items']:
         if not len(facet_item['name'].strip()):
             continue
 
         display_name = h.get_translated(facet_item, 'name') or facet_item.get('display_name')
         title_translated = facet_item.get('title_translated', {})
-        print("________________________________________________________")
-        print(display_name)
-        print(facet_item)
-        print("________________________________________________________")
-        print(title_translated)
+
         language = sh.lang()
         if language in title_translated:
             display_name = title_translated[language]
@@ -441,52 +440,16 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
 
     # IPackageController
     def before_index(self, data_dict):
-        print("--------------------------------- BEFORE INDEX PACKAGE CONTROLLER")
-        print(data_dict)
-        print("++++++++++++++++++++++++++++++++++ data_dict")
-
+        """Metodo para realizar el indexado de las etiquetas i18n 
+        en el index de solr correspondiente
+        """
         if 'multilingual_tags' in data_dict:
             tags = json.loads(data_dict.get('extras_multilingual_tags', '{}'))
             data_dict['tags_en'] = tags.get('en', [])
             data_dict['tags_ca'] = tags.get('ca', [])
             data_dict['tags_es'] = tags.get('es', [])
-            
- 
-            # Obtener lenguaje y orden configurado
-            # ckan.locale_order = en ca es
-            # locale_order = config.get('ckan.locale_order', '').split()
-            # default_lang = None
-            # #lang = sh.lang()
-            
-            # # Obtener el idioma por defecto
-            # for lang in locale_order:
-            #     if lang in tags and tags[lang]:
-            #         default_lang = lang
-            #         break
-            # # Indexing de tags por idioma
-            # for lang in locale_order:
-            #     tag_key = 'tags_' + lang
-            #     data_dict[tag_key] = set()
-            #     if lang in tags and tags[lang]:
-            #         lang_tags = tags[lang]
-            #         for tag in lang_tags:
-            #             #pkg_dict[tag_key].add(tag + '__' + lang)
-            #             data_dict[tag_key].add(tag)
-            #     elif default_lang:
-            #         lang_tags = tags[default_lang]
-            #         for tag in lang_tags:
-            #             # pkg_dict[tag_key].add(tag)
-            #             data_dict[tag_key].add(tag + '_' + default_lang)
-            #         # pkg_dict['tags'].update(tags[lang])
-            
-            
-            # for lang, lang_tags in tags.items():
-            #     for tag in lang_tags:
-            #         pkg_dict[tag_ksoey].add(tag + '__' + lang)
         data_dict['multilingual_tags'] = []
-        print(data_dict)
         return data_dict
-    
     
     # IFacets
     

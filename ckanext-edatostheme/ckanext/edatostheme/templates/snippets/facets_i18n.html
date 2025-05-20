@@ -1,10 +1,6 @@
 {% set tags_facets = ['tags_en','tags_ca','tags_es'] %}
 {% set system_lang = 'tags_' + h.lang() %}
 {% set facets = c.facet_titles %}
-
-    {{ facets }}
-    {{ system_lang }}
-
 {% for facet, label in facets.items() %}
     {% if facet.startswith('tags_') %}
         {% if facet == system_lang %}
