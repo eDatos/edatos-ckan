@@ -9,7 +9,8 @@
     <form class="add-to-group" method="post">
       <select id="field-add_group" name="group_added" data-module="autocomplete">
         {% for option in group_dropdown %}
-          <option value="{{ option[0] }}"> {{ option[1] }}</option>
+        {% set group_dict = h.edatos_get_group(option[0])%}
+          <option value="{{ option[0] }}"> {{ h.get_translated(group_dict, "title") }}</option>
         {% endfor %}
       </select>
       <button type="submit" class="btn btn-primary" title="{{ _('Associate this group with this dataset') }}">{{ _('Add to group') }}</button>
@@ -17,8 +18,12 @@
   {% endif %}
 
   {% if pkg_dict.groups %}
+  {% set group_dicts = [] %}
+      {% for group in pkg_dict.groups %}
+        {% do group_dicts.append(h.edatos_get_group(group['name'])) %}
+      {% endfor %}
     <form method="post">
-      {% snippet 'group/snippets/group_list.html', groups=pkg_dict.groups %}
+      {% snippet 'group/snippets/group_list.html', groups=group_dicts %}
     </form>
   {% else %}
     <p class="empty">{{ _('There are no groups associated with this dataset') }}</p>
