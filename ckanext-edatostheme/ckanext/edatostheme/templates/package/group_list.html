@@ -4,7 +4,6 @@
 {% block primary_content_inner %}
   <h2 class="hide-heading">{{ _('Groups') }}</h2>
 
-  {{ group_dropdown }}
   {% if group_dropdown %}
     <form class="add-to-group" method="post">
       <select id="field-add_group" name="group_added" data-module="autocomplete">
