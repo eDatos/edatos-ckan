@@ -203,7 +203,7 @@ class GobCanProfile(RDFProfile):
             'semanal': (TIME.days, 'Semanal', 7),
             'diaria': (TIME.days, 'Diaria', 1),
         }
-        return frequencies.get(frequency.lower(), (TIME.years, 'Anual', '0'))
+        return frequencies.get(frequency['type'], (TIME.years, 'Anual', '0'))
 
     def _set_resource_formats(self):
         self.RESOURCE_FORMATS = h.resource_formats()
@@ -227,21 +227,60 @@ class GobCanProfile(RDFProfile):
 
         # Add the namespace time to vocabulary
         g.bind('time', TIME)
+        
+        multilingual_fields = self._multilingual_dataset_fields()
+        
+        # Multilingual core description field
+        key = "description"
+        predicate = DCT.description    
+        if f"{key}_translated" in multilingual_fields:
+            value = self._object_value(dataset_ref, predicate, multilingual=True)
+            dataset_dict[f"{key}_translated"] = value
+            dataset_dict[f"{key}"] = value.get(self._default_lang)
+        else:
+            value = self._object_value(dataset_ref, predicate)
+            if value:
+                dataset_dict[key] = value
 
         # License
         license_id = self._get_dataset_value(dataset_dict, 'license_url')
         if license_id:
             g.add((dataset_ref, DCT.license, Literal(license_id)))
 
-        # Tag: Delink
+        # Tag
+        # Tag:Delink
         delink_tag = config.get(
             'ckanext.gobcangroups.flag.for.delink', 'Manual')
 
         for tag in dataset_dict.get('tags', []):
             if tag["name"] == delink_tag:
                 g.remove((dataset_ref, DCAT.keyword, Literal(delink_tag)))
+                
+        # Tag:multilingual_tags
+        
+        if "multilingual_tags" in multilingual_fields and 'multilingual_tags' in dataset_dict:
+            dataset_dict["tags"] = []
+            # tags = dataset_dict["multilingual_tags"].get(self._default_lang, [])
+            # dataset_dict["tags"] = [{"name": t} for t in tags]
+            # print("Multilingual tags:", dataset_dict["multilingual_tags"])
+            print(dataset_dict)
+            # Multilingual tags: 
+            #             {'en': ['Statistical cube'], 
+            #              'es': ['Cubo estad\xc3\xadstico'], 
+            #              'ca': ['Taula de dades estad\xc3\xadstiques']}
+            print("Default lang:", self._default_lang)
+            print("ID",dataset_dict["identifier"])
+            
+            # dataset_dict["multilingual_tags"] = self._object_value_list_multilingual(
+            #     dataset_ref, DCAT.keyword)
+            # dataset_dict["tags"] = [
+            #     {"name": t } for t in dataset_dict["multilingual_tags"][self._default_lang]
+            # ]
+            
+            default_lang_tags = dataset_dict["multilingual_tags"].get(self._default_lang, [])
+            dataset_dict["tags"] = [{"name": t} for t in default_lang_tags]
 
-            # Frequency
+        # Frequency
         frequency = self._get_dataset_value(dataset_dict, 'frequency')
         if frequency is not None:
             label, frec, times = self._get_frequency_details(frequency)
