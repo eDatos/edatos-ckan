@@ -228,19 +228,9 @@ class GobCanProfile(RDFProfile):
         # Add the namespace time to vocabulary
         g.bind('time', TIME)
         
-        multilingual_fields = self._multilingual_dataset_fields()
-        
         # Multilingual core description field
-        key = "description"
-        predicate = DCT.description    
-        if f"{key}_translated" in multilingual_fields:
-            value = self._object_value(dataset_ref, predicate, multilingual=True)
-            dataset_dict[f"{key}_translated"] = value
-            dataset_dict[f"{key}"] = value.get(self._default_lang)
-        else:
-            value = self._object_value(dataset_ref, predicate)
-            if value:
-                dataset_dict[key] = value
+        self._add_triples_from_dict(dataset_dict, dataset_ref, 
+                                    [("description_translated", DCT.description, None, Literal)])
 
         # License
         license_id = self._get_dataset_value(dataset_dict, 'license_url')
@@ -257,28 +247,13 @@ class GobCanProfile(RDFProfile):
                 g.remove((dataset_ref, DCAT.keyword, Literal(delink_tag)))
                 
         # Tag:multilingual_tags
-        
-        if "multilingual_tags" in multilingual_fields and 'multilingual_tags' in dataset_dict:
-            dataset_dict["tags"] = []
-            # tags = dataset_dict["multilingual_tags"].get(self._default_lang, [])
-            # dataset_dict["tags"] = [{"name": t} for t in tags]
-            # print("Multilingual tags:", dataset_dict["multilingual_tags"])
-            print(dataset_dict)
-            # Multilingual tags: 
-            #             {'en': ['Statistical cube'], 
-            #              'es': ['Cubo estad\xc3\xadstico'], 
-            #              'ca': ['Taula de dades estad\xc3\xadstiques']}
-            print("Default lang:", self._default_lang)
-            print("ID",dataset_dict["identifier"])
-            
-            # dataset_dict["multilingual_tags"] = self._object_value_list_multilingual(
-            #     dataset_ref, DCAT.keyword)
-            # dataset_dict["tags"] = [
-            #     {"name": t } for t in dataset_dict["multilingual_tags"][self._default_lang]
-            # ]
-            
-            default_lang_tags = dataset_dict["multilingual_tags"].get(self._default_lang, [])
-            dataset_dict["tags"] = [{"name": t} for t in default_lang_tags]
+        if 'multilingual_tags' in dataset_dict:
+            for lang in dataset_dict["multilingual_tags"]:
+                for value in dataset_dict["multilingual_tags"][lang]:
+                    g.add((dataset_ref, DCAT.keyword, Literal(value, lang=lang)))
+        else:
+            for tag in dataset_dict.get("tags", []):
+                g.add((dataset_ref, DCAT.keyword, Literal(tag["name"])))
 
         # Frequency
         frequency = self._get_dataset_value(dataset_dict, 'frequency')
