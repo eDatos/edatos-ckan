@@ -24,16 +24,22 @@ window.onload = function () {
     };
 
     function breakAddress(url) {
-        var data = url.split(SITE_URL);
-        var domain = data[0];
+        if (!url.startsWith(SITE_URL)) return [url,null,null];
 
-        // Comprobar hay path y devolver el resto de la dirección
-        data = data[1].split("/");
-        var language = data[0];
-        if (data[1]) {
-            return [domain,language,data.slice(1).join("/")];
+        let path = url.slice(SITE_URL.length);
+        let segments = path.split("/").filter(Boolean);
+
+        let language = null;
+        let rest = [];
+
+        if (["ca","es","en"].includes(segments[0])) {
+            language = segments[0];
+            rest = segments.slice(1);
+        } else {
+            rest = segments;
         }
-        return [domain,language,"home"];
+
+        return [SITE_URL,language,rest.join("/")];
     }
 
     function redirectChosenLanguage(language = 'es') {
