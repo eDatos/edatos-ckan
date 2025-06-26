@@ -2,6 +2,7 @@ window.onload = function () {
 
     const SITE_URL = "FILL_SITE_URL";
     const I18N_COOKIE = "chosenLocale";
+    const SITE_LANGUAGES = "FILL_SITE_LANGUAGES";
 
     function getObjectCookie() {
         const separador = '; ';
@@ -31,8 +32,7 @@ window.onload = function () {
 
         let language = null;
         let rest = [];
-
-        if (["ca","es","en"].includes(segments[0])) {
+        if (SITE_LANGUAGES.split(' ').includes(segments[0])) {
             language = segments[0];
             rest = segments.slice(1);
         } else {
@@ -48,7 +48,6 @@ window.onload = function () {
         const path = currentUrl.href;
 
         var urlArray = breakAddress(path);
-        console.log('DEBUG ~ redirectChosenLanguage ~ urlArray:',urlArray)
         var nuevaUrl = '';
 
         if (urlArray[1] !== language) {

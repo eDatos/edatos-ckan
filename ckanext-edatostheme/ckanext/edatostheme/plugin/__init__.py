@@ -355,10 +355,16 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
 
             site_url = json_config['metadata']['siteURL']
             regexp_site_url = site_url.replace('/', '\/').replace('.', '\.')
+            if not config.get('ckan.locales_offered', None):
+                raise RuntimeError(
+                    '"ckan.locales_offered" is required for plugin: {0}'
+                    .format(self.name))
+            site_languages = config.get('ckan.locales_offered')
 
             updated_script = script_content.replace(
                 'FILL_SITE_URL', site_url).replace(
-                'FILL_REGEXP_SITE_URL', regexp_site_url)
+                'FILL_REGEXP_SITE_URL', regexp_site_url).replace(
+                'FILL_SITE_LANGUAGES', site_languages)
 
             return updated_script
 
