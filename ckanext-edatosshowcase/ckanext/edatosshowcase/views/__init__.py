@@ -284,7 +284,7 @@ class CreateView(views.CreateView):
 
         _setup_template_variables(context, {}, package_type=package_type)
 
-        new_template = 'edatosshowcase/showcase/new.html'
+        new_template = 'edatosshowcase/new.html'
         return base.render(
             new_template,
             extra_vars={
@@ -400,7 +400,7 @@ class EditView(views.EditView):
         if data.get('state', '').startswith('draft'):
             form_vars['stage'] = ['active', 'complete']
 
-        edit_template = 'edatosshowcase/showcase/edit.html'
+        edit_template = 'edatosshowcase/edit.html'
         return base.render(
             edit_template,
             extra_vars={
@@ -449,13 +449,20 @@ def edit(id):
     print("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEdit")
     return 
 
-showcase = Blueprint('edatosshowcase', __name__)
+def delete(id):
+    return showcase_utils.delete_view(id)
+
+showcase = Blueprint('edatosshowcase_blueprint', __name__)
 #showcase.add_url_rule('/showcase', view_func=index, endpoint="index")
 
 showcase.add_url_rule('/showcase', view_func=search, strict_slashes=False)
 showcase.add_url_rule('/showcase/edit/<id>',
                         view_func=EditView.as_view('edit'),
                         methods=['GET', 'POST'])
+showcase.add_url_rule('/showcase/delete/<id>',
+                      view_func=delete,
+                      methods=['GET', 'POST'],
+                      endpoint="delete")
 
 # showcase.add_url_rule('/showcase/edit/<id>',
 #                       view_func=EditView.as_view('edit'),

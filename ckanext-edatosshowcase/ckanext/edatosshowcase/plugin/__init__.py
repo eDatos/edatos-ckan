@@ -1,6 +1,7 @@
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 from ckanext.showcase.plugin import ShowcasePlugin
+from ckanext.showcase.logic import action as showcase_action
 from ckanext.edatosshowcase import views
 from flask import Blueprint
 
@@ -40,3 +41,12 @@ class EdatosshowcasePlugin(ShowcasePlugin, plugins.SingletonPlugin):
     
     def get_blueprint(self):
         return views.get_blueprints()
+
+
+    #IRoutes
+    def get_actions(self):
+        action_functions = {
+            'edatosshowcase.delete': views.read.showcase_read,
+            'edatosshowcase.search': views.search.showcase_search,
+        }
+        return action_functions
