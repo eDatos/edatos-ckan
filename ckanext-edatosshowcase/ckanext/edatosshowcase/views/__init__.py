@@ -438,7 +438,7 @@ class EditView(views.EditView):
         toolkit.c.pkg_dict = pkg
 
         # redirect to showcase details page
-        url = h.url_for('edatosshowcase.read', id=pkg['name'])
+        url = h.url_for('edatosshowcase_blueprint.read', id=pkg['name'])
         return h.redirect_to(url)
 
 def search():
@@ -452,6 +452,9 @@ def edit(id):
 def delete(id):
     return showcase_utils.delete_view(id)
 
+def read(id):
+    return showcase_utils.read_view(id)
+
 showcase = Blueprint('edatosshowcase_blueprint', __name__)
 #showcase.add_url_rule('/showcase', view_func=index, endpoint="index")
 
@@ -462,7 +465,10 @@ showcase.add_url_rule('/showcase/edit/<id>',
 showcase.add_url_rule('/showcase/delete/<id>',
                       view_func=delete,
                       methods=['GET', 'POST'],
-                      endpoint="delete")
+                      endpoint="delete"),
+showcase.add_url_rule('/showcase/<id>', 
+                      view_func=read,
+                      endpoint="read")
 
 # showcase.add_url_rule('/showcase/edit/<id>',
 #                       view_func=EditView.as_view('edit'),
