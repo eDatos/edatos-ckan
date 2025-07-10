@@ -453,7 +453,34 @@ def delete(id):
     return showcase_utils.delete_view(id)
 
 def read(id):
-    return showcase_utils.read_view(id)
+    context = {
+        'model': model,
+        'session': model.Session,
+        'user': toolkit.g.user or toolkit.author,
+        'for_view': True,
+        'auth_user_obj': toolkit.g.userobj
+    }
+    data_dict = {'id': id}
+
+    # check if showcase exists
+    try:
+        pkg_dict = toolkit.get_action('package_show')(context, data_dict)
+    except toolkit.ObjectNotFound:
+        return toolkit.abort(404, _('Showcase not found'))
+    except toolkit.NotAuthorized:
+        return toolkit.abort(401, _('Unauthorized to read showcase'))
+
+    # get showcase packages
+    showcase_pkgs = toolkit.get_action('ckanext_showcase_package_list')(
+        context, {
+            'showcase_id': pkg_dict['id']
+        })
+
+    package_type = showcase_utils.DATASET_TYPE_NAME
+    return toolkit.render('edatosshowcase/read.html',
+                          extra_vars={'dataset_type': package_type,
+                                      'pkg_dict': pkg_dict,
+                                      'showcase_pkgs': showcase_pkgs})
 
 showcase = Blueprint('edatosshowcase_blueprint', __name__)
 #showcase.add_url_rule('/showcase', view_func=index, endpoint="index")
