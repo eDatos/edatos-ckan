@@ -36,16 +36,18 @@ log = logging.getLogger(__name__)
 
 DATASET_TYPE_NAME = showcase_utils.DATASET_TYPE_NAME
 
+showcase = Blueprint('edatosshowcase_blueprint', __name__)
+
 def drill_down_url(alternative_url=None, **by):
     return h.add_url_param(
         alternative_url=alternative_url,
-        controller='sixodp_showcase',
+        controller='edatosshowcase_blueprint',
         action='search',
         new_params=by
     )
 
 def remove_field(package_type, key, value=None, replace=None):
-    url = h.url_for('sixodp_showcase.search')
+    url = h.url_for('edatosshowcase_blueprint.search')
     return h.remove_url_param(
         key,
         value=value,
@@ -53,11 +55,7 @@ def remove_field(package_type, key, value=None, replace=None):
         alternative_url=url
     )
 
-# def index():
-#     return dataset.search(DATASET_TYPE_NAME)
-
 def index(package_type):
-    print("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEG")
     extra_vars = {}
 
     try:
@@ -227,7 +225,6 @@ def index(package_type):
     extra_vars['dataset_type'] = package_type
 
     return toolkit.render(
-        # _get_pkg_template('search_template', package_type), extra_vars
         'edatosshowcase/search.html', extra_vars
     )
 
@@ -327,7 +324,6 @@ class CreateView(views.CreateView):
 
 class EditView(views.EditView):
     def get(self, id, data=None, errors=None, error_summary=None):
-        print("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG")
         showcase_utils.check_new_view_auth()
 
         context = self._prepare(id, data)
@@ -442,11 +438,9 @@ class EditView(views.EditView):
         return h.redirect_to(url)
 
 def search():
-    print("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSssssG")
     return index(DATASET_TYPE_NAME)
 
 def edit(id):
-    print("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEdit")
     return 
 
 def delete(id):
@@ -482,8 +476,6 @@ def read(id):
                                       'pkg_dict': pkg_dict,
                                       'showcase_pkgs': showcase_pkgs})
 
-showcase = Blueprint('edatosshowcase_blueprint', __name__)
-#showcase.add_url_rule('/showcase', view_func=index, endpoint="index")
 
 showcase.add_url_rule('/showcase', view_func=search, strict_slashes=False)
 showcase.add_url_rule('/showcase/new', 
@@ -499,7 +491,6 @@ showcase.add_url_rule('/showcase/delete/<id>',
 showcase.add_url_rule('/showcase/<id>', 
                       view_func=read,
                       endpoint="read")
-
 
 
 def get_blueprints():

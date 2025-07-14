@@ -2,7 +2,6 @@ import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 from ckanext.showcase.plugin import ShowcasePlugin
 from ckanext.edatosshowcase import views
-from flask import Blueprint
 
 class EdatosshowcasePlugin(ShowcasePlugin, plugins.SingletonPlugin):
     plugins.implements(plugins.IDatasetForm)
@@ -12,14 +11,12 @@ class EdatosshowcasePlugin(ShowcasePlugin, plugins.SingletonPlugin):
     #IDatasetForm
 
     def package_types(self):
-        print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG")
         return []
 
     def search_template(self):
         return "showcase/search.html"
 
     def read_template(self):
-        print("CAOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOS")
         return "showcase/read.html"
 
     def edit_template(self):
@@ -33,8 +30,6 @@ class EdatosshowcasePlugin(ShowcasePlugin, plugins.SingletonPlugin):
         toolkit.add_public_directory(config, '../public')
         toolkit.add_resource('../assets', 'ckanext-edatosshowcase')
         toolkit.add_resource('../fanstatic', 'ckanext-edatosshowcase')
-        #super(EdatosshowcasePlugin, self).update_config(config)  # Llama a la configuración original de Showcase
-        # Aquí puedes agregar o ajustar configuraciones adicionales según sea necesario
 
     #IBlueprint
     
