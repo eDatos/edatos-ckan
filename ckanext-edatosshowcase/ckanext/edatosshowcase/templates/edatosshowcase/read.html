@@ -70,10 +70,6 @@
             {% endblock %}
         </h1>
 
-        {% if pkg.image_display_url %}
-            <p class="ckanext-showcase-image-container"><img src="{{ pkg.image_display_url }}" alt="{{ name }}" class="media-image ckanext-showcase-image img-fluid"></p>
-        {% endif %}
-
     {% block package_notes %}
       {% if pkg.showcase_notes_formatted and editor == 'ckeditor' %}
         <div class="ck-content">
@@ -96,6 +92,10 @@
         {% snippet "showcase/snippets/tags.html", tags=pkg.tags %}
     {% endblock %}
 
+    {% block package_info %}
+        {% snippet 'edatosshowcase/snippets/showcase_info.html', pkg=pkg, showcase_pkgs=showcase_pkgs %}
+    {% endblock %}
+
     {% block package_search_results_list %}
     {% endblock %}
 
@@ -103,9 +103,8 @@
 
 {% block secondary_content %}
     {% block secondary_help_content %}{% endblock %}
-
-    {% block package_info %}
-        {% snippet 'showcase/snippets/showcase_info.html', pkg=pkg, showcase_pkgs=showcase_pkgs %}
+    {% block package_additional_info %}
+        {% snippet 'edatosshowcase/snippets/showcase_additional_info.html', pkg=pkg, showcase_pkgs=showcase_pkgs, show_nums=true %}
     {% endblock %}
 
     {% block package_social %}

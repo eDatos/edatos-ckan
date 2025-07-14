@@ -1,0 +1,62 @@
+{#
+Displays a sidebard module with information for given package
+
+pkg    - The showcase package dict that owns the resources.
+
+Example:
+
+{% snippet "package/snippets/info.html", pkg=pkg %}
+
+#}
+{% block package_info %}
+    {% if pkg %}
+        <section class="module module-narrow">
+            <div class="module context-info">
+                <div class="module-content">
+		    {% if pkg.image_display_url %}
+                        {% block image_container %}
+                            <div class="ckanext-showcase-image-container">
+                                <p class="ckanext-showcase-image-container"><img src="{{ pkg.image_display_url }}" alt="{{ name }}" class="media-image ckanext-showcase-image img-responsive"></p>
+				{% if pkg.author %}
+                                    <p class="ckanext-showcase-image-autor">{{ pkg.author }}</p>
+				{% endif %}    
+                            <div>
+                        {% endblock %}
+                    {% endif %}
+                    {% block package_info_inner %}
+                        {% block heading %}
+                            <h1 class="heading">{{ pkg.title or pkg.name }}</h1>
+                        {% endblock %}
+			    {% block inner %}
+
+        		{% block heading_count %}
+            			<h1 class="media-heading">
+                			{{ _('Datasets') }}
+           	 		</h1>
+        		{% endblock %}
+
+        		{% if show_nums %}
+            			{% block nums %}
+            				<div class="nums">
+
+                				<h2 class="media-heading">
+                    					<dd>{{ h.SI_number_span(pkg.num_datasets) }}</dd>
+                				</h2>
+            				</div>
+            			{% endblock %}	
+
+			{% endif %}
+                        {% endblock %}
+                        {% if pkg.url %}
+                            <div class="info">
+                                <a class="btn btn-primary" href="{{ pkg.url }}" target="_blank">
+                                    <i class="fa fa-external-link icon-external-link"></i> {{ _('Launch website') }}
+                                </a>
+                            </div>
+                        {% endif %}
+                    {% endblock %}
+                </div>
+            </div>
+        </section>
+    {% endif %}
+{% endblock %}
