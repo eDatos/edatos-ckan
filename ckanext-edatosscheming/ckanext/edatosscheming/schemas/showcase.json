@@ -16,7 +16,7 @@
             "display_snippet": "multilanguage_text.html",
             "form_snippet": "multiple_required_language_text.html",
             "required_language": "es",
-            "validators": "ignore_missing unicode_safe",
+            "validators": "tags_html_detected multiple_one_value multiple_required_language fluent_text",
             "fluent_form_placeholder": {
                 "en": {
                     "en": "Nombre o t\u00EDtulo de la colecci\u00F3n en ingl\u00E9s.",
@@ -90,9 +90,6 @@
                     "gl": "",
                     "eu": ""
                 }
-            },
-            "form_attrs": {
-                "data-module": "slug-preview-target"
             }
         },
         {
@@ -100,7 +97,7 @@
             "label": "URL",
             "required": true,
             "preset": "dataset_slug",
-            "validators": "multilanguage_url unicode",
+            "autogeneration_field": "name",
             "form_snippet": "dge_slug.html",
             "form_placeholder": {
                 "en": "Sin URL el valor del campo se autogenera.",
@@ -118,7 +115,7 @@
             }
         },
         {
-            "field_name": "description_translated",
+            "field_name": "notes_translated",
             "label": {
                 "en": "Description",
                 "es": "Descripci\u00F3n",
