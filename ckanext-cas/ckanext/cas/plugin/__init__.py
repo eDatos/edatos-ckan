@@ -31,6 +31,7 @@ class CASClientPlugin(p.SingletonPlugin):
     p.implements(p.IAuthenticator, inherit=True)
     p.implements(p.IBlueprint)
     p.implements(p.IConfigurable)
+    p.implements(p.IAfterInit)
 
     USER_ATTR_MAP = {}
     TICKET_KEY = None
@@ -162,9 +163,7 @@ class CASClientPlugin(p.SingletonPlugin):
 
     def update_config(self, config_):
         t.add_template_directory(config_, 'templates')
-        t.add_public_directory(config_, 'public')  
-        # Setup database tables in this point to ensure engine is initialize
-        db_setup()      
+        t.add_public_directory(config_, 'public')          
 
     # IAuthenticator
 
@@ -251,3 +250,8 @@ class CASClientPlugin(p.SingletonPlugin):
 
     def get_blueprint(self):
         return [blueprints.cas]
+    
+    # IAfterInit
+
+    def after_init(self, app):
+        db_setup() 
