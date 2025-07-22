@@ -4,7 +4,7 @@ import sqlalchemy.exc
 import ckan.plugins.toolkit as t
 
 from ckan.model import domain_object
-from ckan.model.meta import Session, metadata, mapper, engine
+from ckan.model.meta import Session, metadata, mapper
 from sqlalchemy.engine.reflection import Inspector
 from sqlalchemy.exc import NoSuchTableError
 from sqlalchemy import types, Column, Table, ForeignKey, func, CheckConstraint, UniqueConstraint, Index
@@ -15,6 +15,7 @@ cas_table = None
 
 
 def setup():
+    from ckan.model.meta import engine
     if engine is None:
         raise RuntimeError("CKAN database engine is not initialized. Call setup() later.")
       
