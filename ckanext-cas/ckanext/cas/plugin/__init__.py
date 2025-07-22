@@ -11,6 +11,7 @@ import urllib.error
 import ckan.lib.base as base
 import ckan.lib.helpers as h
 import ckan.plugins as p
+from ckan.plugins.interfaces import IAfterInit
 import ckan.plugins.toolkit as t
 import ckanext.cas.blueprints as blueprints
 from ckanext.cas.db import setup as db_setup
@@ -31,7 +32,7 @@ class CASClientPlugin(p.SingletonPlugin):
     p.implements(p.IAuthenticator, inherit=True)
     p.implements(p.IBlueprint)
     p.implements(p.IConfigurable)
-    p.implements(p.IAfterInit)
+    p.implements(IAfterInit)
 
     USER_ATTR_MAP = {}
     TICKET_KEY = None
