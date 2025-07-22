@@ -20,7 +20,6 @@ import ckan.model as model
 
 render = base.render
 abort = base.abort
-_db_setup_done = False
 
 
 log = logging.getLogger(__name__)
@@ -168,14 +167,7 @@ class CASClientPlugin(p.SingletonPlugin):
 
     def identify(self):
         log.debug('Invoked "identify" method.')
-
-        global _db_setup_done
-
-        if not _db_setup_done:
-            from ckanext.cas.db import setup as db_setup
-            db_setup()
-            _db_setup_done = True
-
+        
         environ = t.request.environ
 
         remote_user = session.get('user')

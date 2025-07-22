@@ -350,3 +350,25 @@ for rule in rules:
 if config.get('ckanext.cas.register_url', None):
     cas.add_url_rule('/user/register',
                      'register_url_redirect', register_url_redirect)
+
+import threading
+from ckanext.cas import db
+
+_setup_lock = threading.Lock()
+_setup_done = False
+
+@cas.before_app_request
+def ensure_setup_once():
+    global _setup_done
+    if not _setup_done:
+        with _setup_lock:
+            if not _setup_done:
+                try:
+                    db.setup()
+                    _setup_done = True
+                    log.debug("CKANext-CAS: DB setup ejecutado correctamente.")
+                except RuntimeError as e:
+                    log.debug(f"CKANext-CAS: DB setup pospuesto: {e}")
+                except Exception as e:
+                    log.exception("CKANext-CAS: Error en setup()")
+
