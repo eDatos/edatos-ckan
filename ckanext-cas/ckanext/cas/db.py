@@ -2,7 +2,6 @@ import logging
 import datetime
 import sqlalchemy.exc
 import ckan.plugins.toolkit as t
-
 from ckan.model import domain_object
 from ckan.model.meta import Session, metadata, mapper
 from sqlalchemy.engine.reflection import Inspector
@@ -23,9 +22,10 @@ def setup():
         define_cas_tables()
         log.debug('CAS table(s) defined in memory')
 
-        if not engine.dialect.has_table(engine, cas_table.name):
-            cas_table.create(bind=engine)
-
+        inspector = inspect(engine)
+        if not inspector.has_table(cas_table.name):
+            log.info("Creating cas table: %s", cas_table.name)
+            cas_table.create(bind=engine)        
     else:
         log.debug('CAS table(s) already exist')        
         inspector = Inspector.from_engine(engine)
