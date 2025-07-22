@@ -11,10 +11,8 @@ import urllib.error
 import ckan.lib.base as base
 import ckan.lib.helpers as h
 import ckan.plugins as p
-from ckan.plugins.interfaces import IAfterInit
 import ckan.plugins.toolkit as t
 import ckanext.cas.blueprints as blueprints
-from ckanext.cas.db import setup as db_setup
 from ckanext.cas.db import delete_user_entry, is_ticket_valid
 from ckan.common import g, session
 import ckan.model as model
@@ -22,6 +20,7 @@ import ckan.model as model
 
 render = base.render
 abort = base.abort
+_db_setup_done = False
 
 
 log = logging.getLogger(__name__)
@@ -32,7 +31,6 @@ class CASClientPlugin(p.SingletonPlugin):
     p.implements(p.IAuthenticator, inherit=True)
     p.implements(p.IBlueprint)
     p.implements(p.IConfigurable)
-    p.implements(IAfterInit)
 
     USER_ATTR_MAP = {}
     TICKET_KEY = None
@@ -171,6 +169,13 @@ class CASClientPlugin(p.SingletonPlugin):
     def identify(self):
         log.debug('Invoked "identify" method.')
 
+        global _db_setup_done
+
+        if not _db_setup_done:
+            from ckanext.cas.db import setup as db_setup
+            db_setup()
+            _db_setup_done = True
+
         environ = t.request.environ
 
         remote_user = session.get('user')
@@ -251,8 +256,3 @@ class CASClientPlugin(p.SingletonPlugin):
 
     def get_blueprint(self):
         return [blueprints.cas]
-    
-    # IAfterInit
-
-    def after_init(self, app):
-        db_setup() 
