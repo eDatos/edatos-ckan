@@ -14,7 +14,10 @@ log = logging.getLogger(__name__)
 cas_table = None
 
 
-def setup():    
+def setup():
+    if engine is None:
+        raise RuntimeError("CKAN database engine is not initialized. Call setup() later.")
+      
     if cas_table is None:
         define_cas_tables()
         log.debug('CAS table(s) defined in memory')

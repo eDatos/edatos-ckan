@@ -74,9 +74,7 @@ class CASClientPlugin(p.SingletonPlugin):
 
     # IConfigurable
 
-    def configure(self, config_):
-        # Setup database tables
-        db_setup()
+    def configure(self, config_):        
 
         # Load and parse user attributes mapping
         user_mapping = t.aslist(config_.get('ckanext.cas.user_mapping'))
@@ -164,7 +162,9 @@ class CASClientPlugin(p.SingletonPlugin):
 
     def update_config(self, config_):
         t.add_template_directory(config_, 'templates')
-        t.add_public_directory(config_, 'public')        
+        t.add_public_directory(config_, 'public')  
+        # Setup database tables in this point to ensure engine is initialize
+        db_setup()      
 
     # IAuthenticator
 
