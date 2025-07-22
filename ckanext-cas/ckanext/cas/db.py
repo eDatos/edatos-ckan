@@ -106,6 +106,9 @@ def delete_user_entry(user):
 
 
 def is_ticket_valid(user):
+    if cas_table is None:
+        # Engine no inicializado
+        return False
     search = {'user': user}
     results = CasUser.get(**search)
     log.info(results)
