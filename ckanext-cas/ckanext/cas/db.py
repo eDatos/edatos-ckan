@@ -22,7 +22,7 @@ def setup():
         define_cas_tables()
         log.debug('CAS table(s) defined in memory')
 
-        inspector = inspect(engine)
+        inspector = Inspector.from_engine(engine)
         if not inspector.has_table(cas_table.name):
             log.info("Creating cas table: %s", cas_table.name)
             cas_table.create(bind=engine)        
