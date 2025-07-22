@@ -164,8 +164,7 @@ class CASClientPlugin(p.SingletonPlugin):
 
     def update_config(self, config_):
         t.add_template_directory(config_, 'templates')
-        t.add_public_directory(config_, 'public')
-        t.add_resource('fanstatic', 'cas')
+        t.add_public_directory(config_, 'public')        
 
     # IAuthenticator
 
