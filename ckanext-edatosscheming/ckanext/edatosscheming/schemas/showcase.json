@@ -224,17 +224,20 @@
         {
             "field_name": "image_url",
             "label": "Image URL",
-            "form_snippet": "dge_upload.html",
-            "form_placeholder": "http://example.com/my-image.jpg"
+            "form_snippet": "organization_upload.html",
+            "upload_field": "upload",
+            "upload_clear": "clear_upload",
+            "form_placeholder": "http://example.com/my-image.jpg",
+            "upload_label": "Image"
         },
         {
             "field_name": "author",
             "label": {
-                "en": "Author",
-                "es": "Autor",
-                "ca": "Autor",
-                "gl": "Autor",
-                "eu": "Egilea"
+                "en": "Fuente de la imagen",
+                "es": "Fuente de la imagen",
+                "ca": "Fuente de la imagen",
+                "gl": "Fuente de la imagen",
+                "eu": "Fuente de la imagen"
             },
             "form_placeholder": {
                 "en": "Joe Bloggs",
@@ -252,11 +255,9 @@
             }
         },
         {
-            "field_name": "url",
+            "field_name": "url_external",
             "label": "External URL",
             "required": true,
-            "preset": "resource_url_upload",
-            "form_snippet": "dge_upload.html",
             "form_placeholder": "Ej: http://organismo.es/catalogo/dataset/distribucion",
             "help_text": {
                 "en": "URL que permite el acceso o descarga del conjunto de datos.",

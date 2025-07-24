@@ -206,8 +206,11 @@
         {
             "field_name": "image_url",
             "label": "Image URL",
-            "form_snippet": "dge_upload.html",
-            "form_placeholder": "http://example.com/my-image.jpg"
+            "form_snippet": "organization_upload.html",
+            "upload_field": "upload",
+            "upload_clear": "clear_upload",
+            "form_placeholder": "http://example.com/my-image.jpg",
+            "upload_label": "Image"
         }
     ]
 }
