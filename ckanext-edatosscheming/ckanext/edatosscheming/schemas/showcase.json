@@ -255,7 +255,7 @@
             }
         },
         {
-            "field_name": "url_external",
+            "field_name": "url",
             "label": "External URL",
             "required": true,
             "form_placeholder": "Ej: http://organismo.es/catalogo/dataset/distribucion",

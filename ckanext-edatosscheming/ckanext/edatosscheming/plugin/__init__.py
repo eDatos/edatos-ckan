@@ -2,7 +2,6 @@ import logging
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 
-from ckan.lib.uploader import get_uploader
 
 from ckanext.edatosscheming import validators, helpers
 
@@ -13,7 +12,6 @@ class EdatosschemingPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.IValidators)
     plugins.implements(plugins.ITemplateHelpers)
-    plugins.implements(plugins.IMapper)
 
     # IConfigurer
 
@@ -55,18 +53,3 @@ class EdatosschemingPlugin(plugins.SingletonPlugin):
             'dge_dataset_form_organization_list': helpers.dge_dataset_form_organization_list,
             'dge_multiple_field_required': helpers.dge_multiple_field_required,
         }
-
-    # IMapper
-    
-    def before_update(self, context, data_dict):
-        """Hook to modify data_dict before update."""
-        log.debug("Before update hook called for EdatosschemingPlugin")
-        # Call the helper function to update the data_dict
-        # helpers.before_update(self, context, data_dict)
-        uploader = get_uploader('organization')
-        uploader.update_data_dict(
-            data_dict,
-            url_field='image_url',
-            file_field='upload',
-            clear_field='clear_upload'
-        )
