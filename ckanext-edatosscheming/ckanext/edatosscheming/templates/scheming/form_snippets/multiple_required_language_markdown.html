@@ -1,5 +1,10 @@
 {% import 'macros/form.html' as form %}
 
+{%- set custom_attrs = field.form_attrs.copy() if 'form_attrs' in field else {} %}
+{%- set existing_class = custom_attrs['class'] if 'class' in custom_attrs else '' %}
+{%- set new_class = (existing_class + ' form-control').strip() if existing_class else 'form-control' %}
+{%- set _ = custom_attrs.update({'class': new_class}) %}
+
 {%- for lang in h.fluent_form_languages(field, entity_type, object_type, schema) -%}
   {% call form.markdown(
     field.field_name + '-' + lang,
@@ -9,7 +14,7 @@
     value=data[field.field_name + '-' + lang]
         or data.get(field.field_name, {})[lang],
     error=errors[field.field_name + '-' + lang],
-    attrs=field.form_attrs or {},
+    attrs=custom_attrs,
     is_required=h.dge_multiple_field_required(field,lang)
     ) %}
     {%- snippet 'scheming/form_snippets/fluent_help_text.html',

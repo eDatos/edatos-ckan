@@ -212,7 +212,9 @@
                 "gl": "Etiquetas",
                 "eu": "Etiketak"
             },
-            "preset": "multilanguage_tag",
+            "preset": "fluent_tags",
+            "validators": "fluent_tags copy_fluent_keywords_to_tags",
+            "output_validators": "fluent_tags_output",
             "form_placeholder": {
                 "en": "Ej: Budget, Communication, Training",
                 "es": "Ej: Presupuesto, Comunicaci\u00F3n, Formaci\u00F3n",

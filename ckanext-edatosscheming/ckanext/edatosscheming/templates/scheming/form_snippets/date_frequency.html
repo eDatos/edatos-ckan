@@ -1,5 +1,10 @@
 {% import 'macros/form.html' as form %}
 
+{%- set custom_attrs = field.form_attrs.copy() if 'form_attrs' in field else {} %}
+{%- set existing_class = custom_attrs['class'] if 'class' in custom_attrs else '' %}
+{%- set new_class = (existing_class + ' form-control').strip() if existing_class else 'form-control' %}
+{%- set _ = custom_attrs.update({'class': new_class}) %}
+
 <div class="date-frequency date-frequency-{{field.field_name}}" id="date-frequency-{{field.field_name}}">
 
    {#
@@ -14,7 +19,7 @@
           or data.get(field.field_name, {})['value'],
       error=errors[field.field_name],
       classes=['control-medium', 'div-date-frequency-value', 'div-'+field.field_name+'-value'],
-      attrs=field.form_attrs if 'form_attrs' in field else {},
+      attrs=custom_attrs,
       is_required=h.scheming_field_required(field)
       ) %}
    {% endcall %}
