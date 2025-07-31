@@ -3,7 +3,7 @@
 {%- set custom_attrs = field.form_attrs.copy() if 'form_attrs' in field else {} %}
 {%- set existing_class = custom_attrs['class'] if 'class' in custom_attrs else '' %}
 {%- set new_class = (existing_class + ' form-control').strip() if existing_class else 'form-control' %}
-{%- set _ = custom_attrs.update({'class': new_class}) %}
+{%- set __ = custom_attrs.update({'class': new_class}) %}
 
 <div class="date-frequency date-frequency-{{field.field_name}}" id="date-frequency-{{field.field_name}}">
 
