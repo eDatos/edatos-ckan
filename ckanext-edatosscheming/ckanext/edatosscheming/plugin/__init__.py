@@ -19,19 +19,8 @@ SChEMAS_FOLDER_PATH = os.path.join(dirname, '../schemas')
 SCHEMAS_TEMPLATES_FOLDER_PATH = os.path.join(dirname, '../schemas_templates')
 
 
-#  def __get_languages(self, json_config):
-#         """
-#         Metodo que devuelve los lenguajes del cmetadata
-#         :param json_config: Fichero de configuracion cargado como un diccionario JSON
-#         https://estadisticas.arte-consultores.com/cmetadata/v1.0/properties/metamac.internationalization.languages.json
-#         """
-#         availableLanguages = json_config['metadata']['availablesLanguages']
-#         endpoint = json_config['metadata']['endpoint']
-#         return "%s?appName=%s&appUrl=%s" % (get_url(endpoint, availableLanguages),
-#                                             json_config['metadata']['appName'],
-#                                             json_config['metadata']['siteURL'])
 
-def get_url(endpoint, key):
+def get_cmetadata_languages(endpoint, key):
     """
     Metodo generico que devolvera la lista de lenguajes
     :param json_config: Fichero de configuracion cargado como un diccionario JSON
@@ -43,6 +32,8 @@ def get_url(endpoint, key):
     }
     header_request = requests.get(url=url, headers=headers).content
     json_header_request = json.loads(header_request)
+    print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+    print(json_header_request)
 
     return json_header_request['value']
 
@@ -55,7 +46,7 @@ def get_languages():
         json_config = json.load(config_file)
         endpoint = json_config['metadata']['endpoint']
         availableLanguages = json_config['metadata']['availablesLanguages']
-        return get_url(endpoint, availableLanguages)
+        return get_cmetadata_languages(endpoint, availableLanguages)
 
 def _languages_properties_filler(self):
     pass
@@ -66,13 +57,14 @@ class EdatosschemingPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.ITemplateHelpers)
 
 
-    def __save_schema(self, schema_content):
+    def __save_schema(self, schema_content, schema):
         """
         Metodo para guardar el schema 
 
         :param schema: schema
         """
-        with codecs.open(SCRIPT_PATH, 'w', encoding='utf8') as schema_file:
+        path = os.path.join(SChEMAS_FOLDER_PATH, schema)
+        with codecs.open(path, 'w', encoding='utf8') as schema_file:
             schema_file.write(self.__language_properties_filler(
                 schema_content=schema_content
             ))
@@ -82,26 +74,29 @@ class EdatosschemingPlugin(plugins.SingletonPlugin):
         Metodo que rellena los lenguajes de las propiedades del cmetadata
         :return: None
         """
-        languages = get_languages() # ['es', 'en', 'ca', 'gl', 'eu']
-        with codecs.open(SChEMAS_FOLDER_PATH, 'r', 'utf-8') as config_file:
-            json_config = json.load(config_file)
+        languages = get_languages().split(',') # ['es', 'en', 'ca', 'gl', 'eu']
+        primary_language = languages[0] if languages else 'es'
+        
+        schema_updated = schema_content.replace(
+            'FILL_REQUIRED_LANGUAGE', primary_language)
+        
+        return schema_updated
         
 
-    def __languages_schemas_filler(self)):
+    def __languages_schemas_filler(self):
         """
-        AQUI DEBO DE LLAMAR EL JSON DE LOS LENGUAJES Y PARA CADA SCHEMA DEBO DE RELLENAR SU FILL CORRESPONDIENTE. NO OLVIDAR EL CKAN.INI
         Metodo para rellenar los lenguajes de los schemas segun la configuracion
         en el commun-metadata
         """
         SCHEMAS = ['datasets.json', 
-                   'showcases.json', 
-                   'organizations.json',
-                   'groups.json',]
+                   'showcase.json', 
+                   'organization.json',
+                   'group.json']
         for schema in SCHEMAS: 
             path = os.path.join(SCHEMAS_TEMPLATES_FOLDER_PATH, schema) 
-            with codecs.open(path, 'w', 'utf-8') as schema_file:
+            with codecs.open(path, 'r', encoding='utf8') as schema_file:
                 schema_content = schema_file.read()
-                self.__save_schema(schema_content)
+                self.__save_schema(schema_content, schema)
                 
 
 
