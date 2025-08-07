@@ -19,39 +19,39 @@
             "validators": "tags_html_detected multiple_one_value multiple_required_language fluent_text",
             "fluent_form_placeholder": {
                 "en": {
-                    "en": "Nombre o t\u00EDtulo de la colecci\u00F3n en ingl\u00E9s.",
+                    "en": "Name or title of the collection in English.",
                     "es": "Nombre o t\u00EDtulo de la colecci\u00F3n en ingl\u00E9s.",
-                    "ca": "Nombre o t\u00EDtulo de la colecci\u00F3n en ingl\u00E9s.",
-                    "gl": "Nombre o t\u00EDtulo de la colecci\u00F3n en ingl\u00E9s.",
-                    "eu": "Nombre o t\u00EDtulo de la colecci\u00F3n en ingl\u00E9s."
+                    "ca": "Nom o t\u00EDtol de la col\u00B7lecci\u00F3 en angl\u00E8s.",
+                    "gl": "Nome ou t\u00EDtulo da colecci\u00F3n en ingl\u00E9s.",
+                    "eu": "Izena edo biltzaren \u00EDzena ingelesez."
                 },
                 "es": {
-                    "en": "Nombre o t\u00EDtulo de la colecci\u00F3n en espa\u00F1ol.",
+                    "en": "Name or t\u00EDtle of the collection in Spanish.",
                     "es": "Nombre o t\u00EDtulo de la colecci\u00F3n en espa\u00F1ol.",
-                    "ca": "Nombre o t\u00EDtulo de la colecci\u00F3n en espa\u00F1ol.",
-                    "gl": "Nombre o t\u00EDtulo de la colecci\u00F3n en espa\u00F1ol.",
-                    "eu": "Nombre o t\u00EDtulo de la colecci\u00F3n en espa\u00F1ol."
+                    "ca": "Nom o t\u00EDtol de la col\u00B7lecci\u00F3 en espanyol.",
+                    "gl": "Nome ou t\u00EDtulo da colecci\u00F3n en espa\u00F1ol.",
+                    "eu": "Bilduma izena edo izenburua gaztelaniaz."
                 },
                 "ca": {
-                    "en": "Nombre o t\u00EDtulo de la colecci\u00f3n en catal\u00E1n.",
-                    "es": "Nombre o t\u00EDtulo de la colecci\u00f3n en catal\u00E1n.",
-                    "ca": "Nombre o t\u00EDtulo de la colecci\u00f3n en catal\u00E1n.",
-                    "gl": "Nombre o t\u00EDtulo de la colecci\u00f3n en catal\u00E1n.",
-                    "eu": "Nombre o t\u00EDtulo de la colecci\u00f3n en catal\u00E1n."
+                    "en": "Name or title of the collection in Catalan.",
+                    "es": "Nombre o t\u00EDtulo de la colecci\u00F3n en catal\u00E1n.",
+                    "ca": "Nom o t\u00EDtol de la col\u00B7lecci\u00F3 en catal\u00E0.",
+                    "gl": "Nome ou t\u00EDtulo da colecci\u00F3n en catal\u00E1n.",
+                    "eu": "Bilduma izena edo izenburua katalanez."
                 },
                 "gl": {
-                    "en": "Nombre o t\u00EDtulo de la colecci\u00f3n en gallego.",
-                    "es": "Nombre o t\u00EDtulo de la colecci\u00f3n en gallego.",
-                    "ca": "Nombre o t\u00EDtulo de la colecci\u00f3n en gallego.",
-                    "gl": "Nombre o t\u00EDtulo de la colecci\u00f3n en gallego.",
-                    "eu": "Nombre o t\u00EDtulo de la colecci\u00f3n en gallego."
+                    "en": "Name or title of the collection in Galician.",
+                    "es": "Nombre o t\u00EDtulo de la colecci\u00F3n en gallego.",
+                    "ca": "Nom o t\u00EDtol de la col\u00B7lecci\u00F3 en gallec.",
+                    "gl": "Nome ou t\u00EDtulo da colecci\u00F3n en galego.",
+                    "eu": "Bilduma izena edo izenburua galizieraz."
                 },
                 "eu": {
-                    "en": "Nombre o t\u00EDtulo de la colecci\u00f3n en euskera.",
-                    "es": "Nombre o t\u00EDtulo de la colecci\u00f3n en euskera.",
-                    "ca": "Nombre o t\u00EDtulo de la colecci\u00f3n en euskera.",
-                    "gl": "Nombre o t\u00EDtulo de la colecci\u00f3n en euskera.",
-                    "eu": "Nombre o t\u00EDtulo de la colecci\u00f3n en euskera."
+                    "en": "Name or title of the collection in Basque.",
+                    "es": "Nombre o t\u00EDtulo de la colecci\u00F3n en euskera.",
+                    "ca": "Nom o t\u00EDtol de la col\u00B7lecci\u00F3 en basc.",
+                    "gl": "Nome ou t\u00EDtulo da colecci\u00f3n en vascuence.",
+                    "eu": "Bildumaren izena edo titulua euskaraz."
                 }
             },
             "fluent_help_text": {
@@ -63,11 +63,11 @@
                     "eu": ""
                 },
                 "es": {
-                    "en": "Requiere al menos un nombre en espa\u00F1ol.",
+                    "en": "Requires at least one name in Spanish.",
                     "es": "Requiere al menos un nombre en espa\u00F1ol.",
-                    "ca": "Requiere al menos un nombre en espa\u00F1ol.",
-                    "gl": "Requiere al menos un nombre en espa\u00F1ol.",
-                    "eu": "Requiere al menos un nombre en espa\u00F1ol."
+                    "ca": "Es requereix com a m\u00EDnim un nom en espanyol.",
+                    "gl": "Requ\u00EDrese polo menos un nome en espa\u00F1ol.",
+                    "eu": "Gutxienez izen bat behar da gaztelaniaz."
                 },
                 "ca": {
                     "en": "",
@@ -100,18 +100,18 @@
             "autogeneration_field": "name",
             "form_snippet": "dge_slug.html",
             "form_placeholder": {
-                "en": "Sin URL el valor del campo se autogenera.",
+                "en": "Without URL the field value is autogenerated.",
                 "es": "Sin URL el valor del campo se autogenera.",
-                "ca": "Sin URL el valor del campo se autogenera.",
-                "gl": "Sin URL el valor del campo se autogenera.",
-                "eu": "Sin URL el valor del campo se autogenera."
+                "ca": "Sense URL el valor del camp s\u0027autogenera.",
+                "gl": "Sen URL o valor do campo autoxera.",
+                "eu": "URLrik gabe, eremuaren balioa automatikoki sortzen da."
             },
             "help_text": {
-                "en": "URL, se recomienda no editar.",
+                "en": "URL, editing is not recommended.",
                 "es": "URL, se recomienda no editar.",
-                "ca": "URL, se recomienda no editar.",
-                "gl": "URL, se recomienda no editar.",
-                "eu": "URL, se recomienda no editar."
+                "ca": "URL, es recomana no editar.",
+                "gl": "URL, recom\u00E9ndase non editar.",
+                "eu": "URLa, ez da gomendatzen editatzea."
             }
         },
         {
@@ -130,76 +130,76 @@
             "required_language": "FILL_REQUIRED_LANGUAGE",
             "fluent_form_placeholder": {
                 "en": {
-                    "en": "Descripci\u00F3n detallada de la colecci\u00F3n en ingl\u00E9s.",
+                    "en": "Detailed description of the collection in English.",
                     "es": "Descripci\u00F3n detallada de la colecci\u00F3n en ingl\u00E9s.",
-                    "ca": "Descripci\u00F3n detallada de la colecci\u00F3n en ingl\u00E9s.",
-                    "gl": "Descripci\u00F3n detallada de la colecci\u00F3n en ingl\u00E9s.",
-                    "eu": "Descripci\u00F3n detallada de la colecci\u00F3n en ingl\u00E9s."
+                    "ca": "Descripci\u00F3 detallada de la col\u00B7lecci\u00F3 en angl\u00E8s.",
+                    "gl": "Descrici\u00F3n detallada da colecci\u00F3n en ingl\u00E9s.",
+                    "eu": "Bildumaren deskribapen zehatza ingelesez."
                 },
                 "es": {
-                    "en": "Descripci\u00F3n detallada de la colecci\u00F3n en espa\u00F1ol.",
+                    "en": "Detailed description of the collection in Spanish.",
                     "es": "Descripci\u00F3n detallada de la colecci\u00F3n en espa\u00F1ol.",
-                    "ca": "Descripci\u00F3n detallada de la colecci\u00F3n en espa\u00F1ol.",
-                    "gl": "Descripci\u00F3n detallada de la colecci\u00F3n en espa\u00F1ol.",
-                    "eu": "Descripci\u00F3n detallada de la colecci\u00F3n en espa\u00F1ol."
+                    "ca": "Descripci\u00F3 detallada de la col\u00B7lecci\u00F3 en espanyol.",
+                    "gl": "Descrici\u00F3n detallada da colecci\u00f3n en espa\u00F1ol.",
+                    "eu": "Bildumaren deskribapen zehatza gaztelaniaz."
                 },
                 "ca": {
-                    "en": "Descripci\u00F3n detallada de la colecci\u00F3n en catal\u00E1n.",
+                    "en": "Detailed description of the collection in Catalan.",
                     "es": "Descripci\u00F3n detallada de la colecci\u00F3n en catal\u00E1n.",
-                    "ca": "Descripci\u00F3n detallada de la colecci\u00F3n en catal\u00E1n.",
-                    "gl": "Descripci\u00F3n detallada de la colecci\u00F3n en catal\u00E1n.",
-                    "eu": "Descripci\u00F3n detallada de la colecci\u00F3n en catal\u00E1n."
+                    "ca": "Descripci\u00F3 detallada de la col\u00B7lecci\u00F3 en catal\u00E0.",
+                    "gl": "Descrici\u00F3n detallada da colecci\u00f3n en catal\u00e1n.",
+                    "eu": "Bildumaren deskribapen zehatza katalanez."
                 },
                 "gl": {
-                    "en": "Descripci\u00F3n detallada de la colecci\u00F3n en gallego.",
-                    "es": "Descripci\u00F3n detallada de la colecci\u00F3n en gallego.",
-                    "ca": "Descripci\u00F3n detallada de la colecci\u00F3n en gallego.",
-                    "gl": "Descripci\u00F3n detallada de la colecci\u00F3n en gallego.",
-                    "eu": "Descripci\u00F3n detallada de la colecci\u00F3n en gallego."
+                    "en": "Detailed description of the collection in Galician.",
+                    "es": "Descripci\u00F3n detallada da colecci\u00F3n en galego.",
+                    "ca": "Descripci\u00F3 detallada del conjunt de dades en gallec.",
+                    "gl": "Descrici\u00F3n detallada da colecci\u00f3n en galego.",
+                    "eu": "Bildumaren deskribapen zehatza galegoz."
                 },
                 "eu": {
-                    "en": "Descripci\u00F3n detallada de la colecci\u00F3n en euskera.",
+                    "en": "Detailed description of the collection in Basque.",
                     "es": "Descripci\u00F3n detallada de la colecci\u00F3n en euskera.",
-                    "ca": "Descripci\u00F3n detallada de la colecci\u00F3n en euskera.",
-                    "gl": "Descripci\u00F3n detallada de la colecci\u00F3n en euskera.",
-                    "eu": "Descripci\u00F3n detallada de la colecci\u00F3n en euskera."
+                    "ca": "Descripci\u00F3 detallada de la col\u00B7lecci\u00F3 en basc.",
+                    "gl": "Descrici\u00F3n detallada da colecci\u00f3n en vascuence.",
+                    "eu": "Bildumaren deskribapen zehatza euskaraz."
                 }
             },
             "fluent_help_text": {
                 "en": {
-                    "en": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "es": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "ca": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "gl": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "eu": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022."
+                    "en": "Requires at least one description in Spanish. You can open or close the help to format the text by clicking on the link \u0022Markdown format\u0022.",
+                    "es": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+                    "ca": "Es requereix com a m\u00EDnim una descripci\u00F3 en espanyol. Podeu obrir o tancar l\u0027ajuda per donar format al text prement a l\u0027enlla\u00E7 \u0022format Markdown\u0022.",
+                    "gl": "Requ\u00EDrese polo menos unha descrici\u00F3n en espa\u00F1ol. Pode abrir ou pechar a axuda para dar formato ao texto premendo no enlace \u0022formato Markdown\u0022.",
+                    "eu": "Gutxienez deskribapen bat behar da gaztelaniaz. Markdown formatuaren laguntza ireki edo itxi dezakezu esteka gainean klik eginez."
                 },
                 "es": {
-                    "en": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+                    "en": "Requires at least one description in Spanish. You can open or close the help to format the text by clicking on the link \u0022Markdown format\u0022.",
                     "es": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "ca": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "gl": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "eu": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022."
+                    "ca": "Es requereix com a m\u00EDnim una descripci\u00F3 en espanyol. Podeu obrir o tancar l\u0027ajuda per donar format al text prement a l\u0027enlla\u00E7 \u0022format Markdown\u0022.",
+                    "gl": "Requ\u00EDrese polo menos unha descrici\u00F3n en espa\u00F1ol. Pode abrir ou pechar a axuda para dar formato ao texto premendo no enlace \u0022formato Markdown\u0022.",
+                    "eu": "Gutxienez deskribapen bat behar da gaztelaniaz. Markdown formatuaren laguntza ireki edo itxi dezakezu esteka gainean klik eginez."
                 },
                 "ca": {
-                    "en": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "es": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "ca": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "gl": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "eu": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022."
+                    "en": "Requires at least one description in Spanish. You can open or close the help to format the text by clicking on the link \u0022Markdown format\u0022.",
+                    "es": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+                    "ca": "Es requereix com a m\u00EDnim una descripci\u00F3 en espanyol. Podeu obrir o tancar l\u0027ajuda per donar format al text prement a l\u0027enlla\u00E7 \u0022format Markdown\u0022.",
+                    "gl": "Requ\u00EDrese polo menos unha descrici\u00F3n en espa\u00F1ol. Pode abrir ou pechar a axuda para dar formato ao texto premendo no enlace \u0022formato Markdown\u0022.",
+                    "eu": "Gutxienez deskribapen bat behar da gaztelaniaz. Markdown formatuaren laguntza ireki edo itxi dezakezu esteka gainean klik eginez."
                 },
                 "gl": {
-                    "en": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "es": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "ca": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "gl": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "eu": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022."
+                    "en": "Requires at least one description in Spanish. You can open or close the help to format the text by clicking on the link \u0022Markdown format\u0022.",
+                    "es": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+                    "ca": "Es requereix com a m\u00EDnim una descripci\u00F3 en espanyol. Podeu obrir o tancar l\u0027ajuda per donar format al text prement a l\u0027enlla\u00E7 \u0022format Markdown\u0022.",
+                    "gl": "Requ\u00EDrese polo menos unha descrici\u00F3n en espa\u00F1ol. Pode abrir ou pechar a axuda para dar formato ao texto premendo no enlace \u0022formato Markdown\u0022.",
+                    "eu": "Gutxienez deskribapen bat behar da gaztelaniaz. Markdown formatuaren laguntza ireki edo itxi dezakezu esteka gainean klik eginez."
                 },
                 "eu": {
-                    "en": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "es": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "ca": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "gl": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "eu": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022."
+                    "en": "Requires at least one description in Spanish. You can open or close the help to format the text by clicking on the link \u0022Markdown format\u0022.",
+                    "es": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+                    "ca": "Es requereix com a m\u00EDnim una descripci\u00F3 en espanyol. Podeu obrir o tancar l\u0027ajuda per donar format al text prement a l\u0027enlla\u00E7 \u0022format Markdown\u0022.",
+                    "gl": "Requ\u00EDrese polo menos unha descrici\u00F3n en espa\u00F1ol. Pode abrir ou pechar a axuda para dar formato ao texto premendo no enlace \u0022formato Markdown\u0022.",
+                    "eu": "Gutxienez deskribapen bat behar da gaztelaniaz. Markdown formatuaren laguntza ireki edo itxi dezakezu esteka gainean klik eginez."
                 }
             }
         },
@@ -235,11 +235,11 @@
         {
             "field_name": "author",
             "label": {
-                "en": "Fuente de la imagen",
-                "es": "Fuente de la imagen",
-                "ca": "Fuente de la imagen",
-                "gl": "Fuente de la imagen",
-                "eu": "Fuente de la imagen"
+                "en": "Image source.",
+                "es": "Fuente de la imagen.",
+                "ca": "Font de la imatge.",
+                "gl": "Fonte da imaxe.",
+                "eu": "Irudiaren iturria."
             },
             "form_placeholder": {
                 "en": "Joe Bloggs",
@@ -249,11 +249,11 @@
                 "eu": "Joe Bloggs"
             },
             "help_text": {
-                "en": "Completar si el conjunto de datos tiene un autor.",
+                "en": "Complete if the dataset has an author.",
                 "es": "Completar si el conjunto de datos tiene un autor.",
-                "ca": "Completar si el conjunto de datos tiene un autor.",
-                "gl": "Completar si el conjunto de datos tiene un autor.",
-                "eu": "Completar si el conjunto de datos tiene un autor."
+                "ca": "Completar si el conjunt de dades t\u00e9 un autor.",
+                "gl": "Completar se o conxunto de datos ten un autor.",
+                "eu": "Osatu datu-multzoak egile bat badu."
             }
         },
         {
@@ -262,11 +262,11 @@
             "required": true,
             "form_placeholder": "Ej: http://organismo.es/catalogo/dataset/distribucion",
             "help_text": {
-                "en": "URL que permite el acceso o descarga del conjunto de datos.",
-                "es": "URL que permite el acceso o descarga del conjunto de datos.",
-                "ca": "URL que permite el acceso o descarga del conjunto de datos.",
-                "gl": "URL que permite el acceso o descarga del conjunto de datos.",
-                "eu": "URL que permite el acceso o descarga del conjunto de datos."
+                "en": "External URL that expands the information of the collection.",
+                "es": "URL externo que ampl\u00eda la informaci\u00f3n de la colecci\u00f3n.",
+                "ca": "URL externa que amplia la informaci\u00f3 de la col\u00B7lecci\u00f3.",
+                "gl": "URL externa que ampl\u00eda a informaci\u00f3n da colecci\u00f3n.",
+                "eu": "Bilduma osatzeko informazioa zabaltzen duen kanpoko URL-a."
             }
         },
         {
@@ -274,7 +274,7 @@
             "label": {
                 "en": "Author Email",
                 "es": "Email del Autor",
-                "ca": "Email de l'Autor",
+                "ca": "Email de l\u0027Autor",
                 "gl": "Correo electr\u00F3nico do Autor",
                 "eu": "Egilearen posta elektronikoa"
             },
@@ -286,11 +286,11 @@
                 "eu": "joe-bloggs@ejemplo.com"
             },
             "help_text": {
-                "en": "Completar si el conjunto de datos tiene un email de autor.",
-                "es": "Completar si el conjunto de datos tiene un email de autor.",
-                "ca": "Completar si el conjunto de datos tiene un email de autor.",
-                "gl": "Completar si el conjunto de datos tiene un email de autor.",
-                "eu": "Completar si el conjunto de datos tiene un email de autor."
+                "en": "Complete if the collection has an author\u0027s email.",
+                "es": "Completar si la colecci\u00f3n tiene un email de autor.",
+                "ca": "Completar si la col\u00B7lecci\u00f3 t\u00e9 un correu electr\u00f2nic de l\u0027autor.",
+                "gl": "Completar se a colecci\u00f3n ten un correo electr\u00f3nico do autor.",
+                "eu": "Osatu bilduma egilearen posta elektronikoa badu."
             }
         },
         {

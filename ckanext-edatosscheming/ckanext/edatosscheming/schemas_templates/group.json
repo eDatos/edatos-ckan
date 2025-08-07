@@ -19,39 +19,39 @@
             "required_language": "FILL_REQUIRED_LANGUAGE",
             "fluent_form_placeholder": {
                 "en": {
-                    "en": "Nombre o t\u00EDtulo de la categor\u00ed en ingl\u00E9s.",
-                    "es": "Nombre o t\u00EDtulo de la categor\u00ed en ingl\u00E9s.",
-                    "ca": "Nombre o t\u00EDtulo de la categor\u00ed en ingl\u00E9s.",
-                    "gl": "Nombre o t\u00EDtulo de la categor\u00ed en ingl\u00E9s.",
-                    "eu": "Nombre o t\u00EDtulo de la categor\u00ed en ingl\u00E9s."
+                    "en": "Name or title of the category in English.",
+                    "es": "Nombre o t\u00EDtulo de la categor\u00EDa en ingl\u00E9s.",
+                    "ca": "Nom o t\u00EDtol de la categoria en angl\u00E8s.",
+                    "gl": "Nome ou t\u00EDtulo da categor\u00EDa en ingl\u00e9s.",
+                    "eu": "Kategoria izena edo titulua ingelesez."
                 },
                 "es": {
-                    "en": "Nombre o t\u00EDtulo de la categor\u00ed en espa\u00F1ol.",
-                    "es": "Nombre o t\u00EDtulo de la categor\u00ed en espa\u00F1ol.",
-                    "ca": "Nombre o t\u00EDtulo de la categor\u00ed en espa\u00F1ol.",
-                    "gl": "Nombre o t\u00EDtulo de la categor\u00ed en espa\u00F1ol.",
-                    "eu": "Nombre o t\u00EDtulo de la categor\u00ed en espa\u00F1ol."
+                    "en": "Name or title of the category in Spanish.",
+                    "es": "Nombre o t\u00EDtulo de la categor\u00EDa en espa\u00F1ol.",
+                    "ca": "Nom o t\u00EDtol de la categoria en espanyol.",
+                    "gl": "Nome ou t\u00EDtulo da categor\u00EDa en espa\u00f1ol.",
+                    "eu": "Kategoria izena edo titulua gaztelaniaz."
                 },
                 "ca": {
-                    "en": "Nombre o t\u00EDtulo de la categor\u00ed en catal\u00E1n.",
-                    "es": "Nombre o t\u00EDtulo de la categor\u00ed en catal\u00E1n.",
-                    "ca": "Nombre o t\u00EDtulo de la categor\u00ed en catal\u00E1n.",
-                    "gl": "Nombre o t\u00EDtulo de la categor\u00ed en catal\u00E1n.",
-                    "eu": "Nombre o t\u00EDtulo de la categor\u00ed en catal\u00E1n."
+                    "en": "Name or title of the category in Catalan.",
+                    "es": "Nombre o t\u00EDtulo de la categor\u00EDa en catal\u00E1n.",
+                    "ca": "Nom o t\u00EDtol de la categoria en catal\u00E0.",
+                    "gl": "Nome ou t\u00EDtulo da categor\u00EDa en catal\u00E1n.",
+                    "eu": "Kategoria izena edo titulua katalanez."
                 },
                 "gl": {
-                    "en": "Nombre o t\u00EDtulo de la categor\u00ed en gallego.",
-                    "es": "Nombre o t\u00EDtulo de la categor\u00ed en gallego.",
-                    "ca": "Nombre o t\u00EDtulo de la categor\u00ed en gallego.",
-                    "gl": "Nombre o t\u00EDtulo de la categor\u00ed en gallego.",
-                    "eu": "Nombre o t\u00EDtulo de la categor\u00ed en gallego."
+                    "en": "Name or title of the category in Galician.",
+                    "es": "Nombre o t\u00EDtulo de la categor\u00EDa en gallego.",
+                    "ca": "Nom o t\u00EDtol de la categoria en gallec.",
+                    "gl": "Nome ou t\u00EDtulo da categor\u00EDa en galego.",
+                    "eu": "Kategoria izena edo titulua galegoz."
                 },
                 "eu": {
-                    "en": "Nombre o t\u00EDtulo de la categor\u00ed en euskera.",
-                    "es": "Nombre o t\u00EDtulo de la categor\u00ed en euskera.",
-                    "ca": "Nombre o t\u00EDtulo de la categor\u00ed en euskera.",
-                    "gl": "Nombre o t\u00EDtulo de la categor\u00ed en euskera.",
-                    "eu": "Nombre o t\u00EDtulo de la categor\u00ed en euskera."
+                    "en": "Name or title of the category in Basque.",
+                    "es": "Nombre o t\u00EDtulo de la categor\u00EDa en euskera.",
+                    "ca": "Nom o t\u00EDtol de la categoria en basc.",
+                    "gl": "Nome ou t\u00EDtulo da categor\u00EDa en vascuence.",
+                    "eu": "Kategoria izena edo titulua euskaraz."
                 }
             },
             "fluent_help_text": {
@@ -63,11 +63,11 @@
                     "eu": ""
                 },
                 "es": {
-                    "en": "Requiere al menos un nombre en espa\u00F1ol.",
+                    "en": "Requires at least one name in Spanish.",
                     "es": "Requiere al menos un nombre en espa\u00F1ol.",
-                    "ca": "Requiere al menos un nombre en espa\u00F1ol.",
-                    "gl": "Requiere al menos un nombre en espa\u00F1ol.",
-                    "eu": "Requiere al menos un nombre en espa\u00F1ol."
+                    "ca": "Es requereix com a m\u00ednim un nom en espanyol.",
+                    "gl": "Requ\u00edrese polo menos un nome en espa\u00f1ol.",
+                    "eu": "Gutxienez izen bat behar da gaztelaniaz."
                 },
                 "ca": {
                     "en": "",
@@ -100,18 +100,18 @@
             "validators": "multilanguage_url unicode",
             "form_snippet": "dge_slug.html",
             "form_placeholder": {
-                "en": "Sin URL el valor del campo se autogenera.",
+                "en": "Without URL the field value is autogenerated.",
                 "es": "Sin URL el valor del campo se autogenera.",
-                "ca": "Sin URL el valor del campo se autogenera.",
-                "gl": "Sin URL el valor del campo se autogenera.",
-                "eu": "Sin URL el valor del campo se autogenera."
+                "ca": "Sense URL el valor del camp s\u0027autogenera.",
+                "gl": "Sen URL o valor do campo autoxera.",
+                "eu": "URLrik gabe, eremuaren balioa automatikoki sortzen da."
             },
             "help_text": {
-                "en": "URL, se recomienda no editar.",
+                "en": "URL, editing is not recommended.",
                 "es": "URL, se recomienda no editar.",
-                "ca": "URL, se recomienda no editar.",
-                "gl": "URL, se recomienda no editar.",
-                "eu": "URL, se recomienda no editar."
+                "ca": "URL, es recomana no editar.",
+                "gl": "URL, recom\u00e9ndase non editar.",
+                "eu": "URLa, ez da gomendatzen editatzea."
             }
         },
         {
@@ -130,76 +130,76 @@
             "required_language": "FILL_REQUIRED_LANGUAGE",
             "fluent_form_placeholder": {
                 "en": {
-                    "en": "Descripci\u00F3n detallada de la categor\u00ed en ingl\u00E9s.",
-                    "es": "Descripci\u00F3n detallada de la categor\u00ed en ingl\u00E9s.",
-                    "ca": "Descripci\u00F3n detallada de la categor\u00ed en ingl\u00E9s.",
-                    "gl": "Descripci\u00F3n detallada de la categor\u00ed en ingl\u00E9s.",
-                    "eu": "Descripci\u00F3n detallada de la categor\u00ed en ingl\u00E9s."
+                    "en": "Detailed description of the category in English.",
+                    "es": "Descripci\u00f3n detallada de la categor\u00eda en ingl\u00e9s.",
+                    "ca": "Descripci\u00f3 detallada de la categoria en angl\u00e8s.",
+                    "gl": "Descrici\u00f3n detallada da categor\u00eda en ingl\u00e9s.",
+                    "eu": "Kategoria deskribapen zehatza ingelesez."
                 },
                 "es": {
-                    "en": "Descripci\u00F3n detallada de la categor\u00ed en espa\u00F1ol.",
-                    "es": "Descripci\u00F3n detallada de la categor\u00ed en espa\u00F1ol.",
-                    "ca": "Descripci\u00F3n detallada de la categor\u00ed en espa\u00F1ol.",
-                    "gl": "Descripci\u00F3n detallada de la categor\u00ed en espa\u00F1ol.",
-                    "eu": "Descripci\u00F3n detallada de la categor\u00ed en espa\u00F1ol."
+                    "en": "Detailed description of the category in Spanish.",
+                    "es": "Descripci\u00f3n detallada de la categor\u00eda en espa\u00f1ol.",
+                    "ca": "Descripci\u00f3 detallada de la categoria en espanyol.",
+                    "gl": "Descrici\u00f3n detallada da categor\u00eda en espa\u00f1ol.",
+                    "eu": "Kategoria deskribapen zehatza gaztelaniaz."
                 },
                 "ca": {
-                    "en": "Descripci\u00F3n detallada de la categor\u00ed en catal\u00E1n.",
-                    "es": "Descripci\u00F3n detallada de la categor\u00ed en catal\u00E1n.",
-                    "ca": "Descripci\u00F3n detallada de la categor\u00ed en catal\u00E1n.",
-                    "gl": "Descripci\u00F3n detallada de la categor\u00ed en catal\u00E1n.",
-                    "eu": "Descripci\u00F3n detallada de la categor\u00ed en catal\u00E1n."
+                    "en": "Detailed description of the category in Catalan.",
+                    "es": "Descripci\u00f3n detallada de la categor\u00eda en catal\u00e1n.",
+                    "ca": "Descripci\u00f3 detallada de la categoria en catal\u00e0.",
+                    "gl": "Descrici\u00f3n detallada da categor\u00eda en catal\u00e1n.",
+                    "eu": "Kategoria deskribapen zehatza katalanez."
                 },
                 "gl": {
-                    "en": "Descripci\u00F3n detallada de la categor\u00ed en gallego.",
-                    "es": "Descripci\u00F3n detallada de la categor\u00ed en gallego.",
-                    "ca": "Descripci\u00F3n detallada de la categor\u00ed en gallego.",
-                    "gl": "Descripci\u00F3n detallada de la categor\u00ed en gallego.",
-                    "eu": "Descripci\u00F3n detallada de la categor\u00ed en gallego."
+                    "en": "Detailed description of the category in Galician.",
+                    "es": "Descripci\u00f3n detallada de la categor\u00eda en gallego.",
+                    "ca": "Descripci\u00f3 detallada de la categoria en gallec.",
+                    "gl": "Descrici\u00f3n detallada da categor\u00eda en galego.",
+                    "eu": "Kategoria deskribapen zehatza galegoz."
                 },
                 "eu": {
-                    "en": "Descripci\u00F3n detallada de la categor\u00ed en euskera.",
-                    "es": "Descripci\u00F3n detallada de la categor\u00ed en euskera.",
-                    "ca": "Descripci\u00F3n detallada de la categor\u00ed en euskera.",
-                    "gl": "Descripci\u00F3n detallada de la categor\u00ed en euskera.",
-                    "eu": "Descripci\u00F3n detallada de la categor\u00ed en euskera."
+                    "en": "Detailed description of the category in Basque.",
+                    "es": "Descripci\u00f3n detallada de la categor\u00eda en euskera.",
+                    "ca": "Descripci\u00f3 detallada de la categoria en basc.",
+                    "gl": "Descrici\u00f3n detallada da categor\u00eda en vascuence.",
+                    "eu": "Kategoria deskribapen zehatza euskaraz."
                 }
             },
             "fluent_help_text": {
                 "en": {
-                    "en": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "es": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "ca": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "gl": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "eu": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022."
+                    "en": "Requires at least one description in Spanish. You can open or close the help to format the text by clicking on the \"Markdown format\" link.",
+                    "es": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \"formato Markdown\".",
+                    "ca": "Es requereix com a m\u00ednim una descripci\u00F3 en espanyol. Podeu obrir o tancar l\u0027ajuda per donar format al text prement a l\u0027enlla\u00E7 \"format Markdown\".",
+                    "gl": "Requ\u00EDrese polo menos unha descrici\u00F3n en espa\u00F1ol. Pode abrir ou pechar a axuda para dar formato ao texto premendo no enlace \"formato Markdown\".",
+                    "eu": "Gutxienez deskribapen bat behar da gaztelaniaz. Markdown formatuaren laguntza ireki edo itxi dezakezu esteka gainean klik eginez."
                 },
                 "es": {
-                    "en": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "es": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "ca": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "gl": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "eu": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022."
+                    "en": "Requires at least one description in Spanish. You can open or close the help to format the text by clicking on the \"Markdown format\" link.",
+                    "es": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \"formato Markdown\".",
+                    "ca": "Es requereix com a m\u00ednim una descripci\u00F3 en espanyol. Podeu obrir o tancar l\u0027ajuda per donar format al text prement a l\u0027enlla\u00E7 \"format Markdown\".",
+                    "gl": "Requ\u00EDrese polo menos unha descrici\u00F3n en espa\u00F1ol. Pode abrir ou pechar a axuda para dar formato ao texto premendo no enlace \"formato Markdown\".",
+                    "eu": "Gutxienez deskribapen bat behar da gaztelaniaz. Markdown formatuaren laguntza ireki edo itxi dezakezu esteka gainean klik eginez."
                 },
                 "ca": {
-                    "en": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "es": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "ca": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "gl": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "eu": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022."
+                    "en": "Requires at least one description in Spanish. You can open or close the help to format the text by clicking on the \"Markdown format\" link.",
+                    "es": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \"formato Markdown\".",
+                    "ca": "Es requereix com a m\u00ednim una descripci\u00F3 en espanyol. Podeu obrir o tancar l\u0027ajuda per donar format al text prement a l\u0027enlla\u00E7 \"format Markdown\".",
+                    "gl": "Requ\u00EDrese polo menos unha descrici\u00F3n en espa\u00F1ol. Pode abrir ou pechar a axuda para dar formato ao texto premendo no enlace \"formato Markdown\".",
+                    "eu": "Gutxienez deskribapen bat behar da gaztelaniaz. Markdown formatuaren laguntza ireki edo itxi dezakezu esteka gainean klik eginez."
                 },
                 "gl": {
-                    "en": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "es": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "ca": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "gl": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "eu": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022."
+                    "en": "Requires at least one description in Spanish. You can open or close the help to format the text by clicking on the \"Markdown format\" link.",
+                    "es": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \"formato Markdown\".",
+                    "ca": "Es requereix com a m\u00ednim una descripci\u00F3 en espanyol. Podeu obrir o tancar l\u0027ajuda per donar format al text prement a l\u0027enlla\u00E7 \"format Markdown\".",
+                    "gl": "Requ\u00EDrese polo menos unha descrici\u00F3n en espa\u00F1ol. Pode abrir ou pechar a axuda para dar formato ao texto premendo no enlace \"formato Markdown\".",
+                    "eu": "Gutxienez deskribapen bat behar da gaztelaniaz. Markdown formatuaren laguntza ireki edo itxi dezakezu esteka gainean klik eginez."
                 },
                 "eu": {
-                    "en": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "es": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "ca": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "gl": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-                    "eu": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022."
+                    "en": "Requires at least one description in Spanish. You can open or close the help to format the text by clicking on the \"Markdown format\" link.",
+                    "es": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \"formato Markdown\".",
+                    "ca": "Es requereix com a m\u00ednim una descripci\u00F3 en espanyol. Podeu obrir o tancar l\u0027ajuda per donar format al text prement a l\u0027enlla\u00E7 \"format Markdown\".",
+                    "gl": "Requ\u00EDrese polo menos unha descrici\u00F3n en espa\u00F1ol. Pode abrir ou pechar a axuda para dar formato ao texto premendo no enlace \"formato Markdown\".",
+                    "eu": "Gutxienez deskribapen bat behar da gaztelaniaz. Markdown formatuaren laguntza ireki edo itxi dezakezu esteka gainean klik eginez."
                 }
             }
         },

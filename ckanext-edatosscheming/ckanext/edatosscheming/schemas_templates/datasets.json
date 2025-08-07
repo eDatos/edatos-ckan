@@ -20,39 +20,39 @@
       "required_language": "FILL_REQUIRED_LANGUAGE",
       "fluent_form_placeholder": {
         "en": {
-          "en": "Nombre o t\u00EDtulo del conjunto de datos en ingl\u00E9s.",
-          "es": "Nombre o t\u00EDtulo del conjunto de datos en ingl\u00E9s.",
-          "ca": "Nombre o t\u00EDtulo del conjunto de datos en ingl\u00E9s.",
-          "gl": "Nombre o t\u00EDtulo del conjunto de datos en ingl\u00E9s.",
-          "eu": "Nombre o t\u00EDtulo del conjunto de datos en ingl\u00E9s."
+          "en": "Name or title of the dataset in English.",
+          "es": "Nombre o t\u00edtulo del conjunto de datos en ingl\u00e9s.",
+          "ca": "Nom o t\u00edtol del conjunt de dades en angl\u00e8s.",
+          "gl": "Nome ou t\u00edtulo do conxunto de datos en ingl\u00e9s.",
+          "eu": "Datu multzoaren izena edo titulua ingelesez."
         },
         "es": {
-          "en": "Nombre o t\u00EDtulo del conjunto de datos en espa\u00F1ol.",
-          "es": "Nombre o t\u00EDtulo del conjunto de datos en espa\u00F1ol.",
-          "ca": "Nombre o t\u00EDtulo del conjunto de datos en espa\u00F1ol.",
-          "gl": "Nombre o t\u00EDtulo del conjunto de datos en espa\u00F1ol.",
-          "eu": "Nombre o t\u00EDtulo del conjunto de datos en espa\u00F1ol."
+          "en": "Name or title of the dataset in Spanish.",
+          "es": "Nombre o t\u00edtulo del conjunto de datos en espa\u00f1ol.",
+          "ca": "Nom o t\u00edtol del conjunt de dades en espanyol.",
+          "gl": "Nome ou t\u00edtulo do conxunto de datos en espa\u00f1ol.",
+          "eu": "Datu multzoaren izena edo titulua gazteleraz."
         },
         "ca": {
-          "en": "Nombre o t\u00EDtulo del conjunto de datos en catal\u00E1n.",
-          "es": "Nombre o t\u00EDtulo del conjunto de datos en catal\u00E1n.",
-          "ca": "Nombre o t\u00EDtulo del conjunto de datos en catal\u00E1n.",
-          "gl": "Nombre o t\u00EDtulo del conjunto de datos en catal\u00E1n.",
-          "eu": "Nombre o t\u00EDtulo del conjunto de datos en catal\u00E1n."
+          "en": "Name or title of the dataset in Catalan.",
+          "es": "Nombre o t\u00edtulo del conjunto de datos en catal\u00e1n.",
+          "ca": "Nom o t\u00edtol del conjunt de dades en catal\u00e0.",
+          "gl": "Nome ou t\u00edtulo do conxunto de datos en catal\u00e1n.",
+          "eu": "Datu multzoaren izena edo titulua katalanez."
         },
         "gl": {
-          "en": "Nombre o t\u00EDtulo del conjunto de datos en gallego.",
-          "es": "Nombre o t\u00EDtulo del conjunto de datos en gallego.",
-          "ca": "Nombre o t\u00EDtulo del conjunto de datos en gallego.",
-          "gl": "Nombre o t\u00EDtulo del conjunto de datos en gallego.",
-          "eu": "Nombre o t\u00EDtulo del conjunto de datos en gallego."
+          "en": "Name or title of the dataset in Galician.",
+          "es": "Nombre o t\u00edtulo del conjunto de datos en gallego.",
+          "ca": "Nom o t\u00edtol del conjunt de dades en gallec.",
+          "gl": "Nome ou t\u00edtulo do conxunto de datos en galego.",
+          "eu": "Datu multzoaren izena edo titulua galegoz."
         },
         "eu": {
-          "en": "Nombre o t\u00EDtulo del conjunto de datos en euskera.",
-          "es": "Nombre o t\u00EDtulo del conjunto de datos en euskera.",
-          "ca": "Nombre o t\u00EDtulo del conjunto de datos en euskera.",
-          "gl": "Nombre o t\u00EDtulo del conjunto de datos en euskera.",
-          "eu": "Nombre o t\u00EDtulo del conjunto de datos en euskera."
+          "en": "Name or title of the dataset in Basque.",
+          "es": "Nombre o t\u00edtulo del conjunto de datos en euskera.",
+          "ca": "Nom o t\u00edtol del conjunt de dades en basc.",
+          "gl": "Nome ou t\u00edtulo do conxunto de datos en \u00e9uscaro.",
+          "eu": "Datu multzoaren izena edo titulua euskaraz."
         }
       },
       "fluent_help_text": {
@@ -64,11 +64,11 @@
           "eu": ""
         },
         "es": {
-          "en": "Requiere al menos un nombre en espa\u00F1ol.",
+          "en": "Requires at least one name in Spanish.",
           "es": "Requiere al menos un nombre en espa\u00F1ol.",
-          "ca": "Requiere al menos un nombre en espa\u00F1ol.",
-          "gl": "Requiere al menos un nombre en espa\u00F1ol.",
-          "eu": "Requiere al menos un nombre en espa\u00F1ol."
+          "ca": "Requereix almenys un nom en espa\u00F1ol.",
+          "gl": "Requiere ao m\u00EDn un nome en espa\u00F1ol.",
+          "eu": "Gutxienez izen bat behar da euskaraz."
         },
         "ca": {
           "en": "",
@@ -104,18 +104,18 @@
       "organization_prefix": "C_ID_UD_ORGANICA",
       "form_snippet": "dge_slug.html",
       "form_placeholder": {
-        "en": "Sin URL el valor del campo se autogenera.",
-        "es": "Sin URL el valor del campo se autogenera.",
-        "ca": "Sin URL el valor del campo se autogenera.",
-        "gl": "Sin URL el valor del campo se autogenera.",
-        "eu": "Sin URL el valor del campo se autogenera."
+        "en": "Requires at least one name in Spanish.",
+        "es": "Requiere al menos un nombre en espa\u00F1ol.",
+        "ca": "Requereix almenys un nom en espa\u00F1ol.",
+        "gl": "Requiere ao m\u00EDn un nome en espa\u00F1ol.",
+        "eu": "Gutxienez izen bat behar da euskaraz."
       },
       "help_text": {
-        "en": "URL en datos.gob.es. Se recomienda no editar.",
-        "es": "URL en datos.gob.es. Se recomienda no editar.",
-        "ca": "URL en datos.gob.es. Se recomienda no editar.",
-        "gl": "URL en datos.gob.es. Se recomienda no editar.",
-        "eu": "URL en datos.gob.es. Se recomienda no editar."
+        "en": "Editing is not recommended.",
+        "es": "Se recomienda no editar.",
+        "ca": "Es recomana no editar.",
+        "gl": "Recom\u00E9ndase non editar.",
+        "eu": "Ez da gomendatzen editatzea."
       }
     },
     {
@@ -134,76 +134,76 @@
       "required_language": "FILL_REQUIRED_LANGUAGE",
       "fluent_form_placeholder": {
         "en": {
-          "en": "Descripci\u00F3n detallada del conjunto de datos en ingl\u00E9s.",
+          "en": "Detailed description of the dataset in English.",
           "es": "Descripci\u00F3n detallada del conjunto de datos en ingl\u00E9s.",
-          "ca": "Descripci\u00F3n detallada del conjunto de datos en ingl\u00E9s.",
-          "gl": "Descripci\u00F3n detallada del conjunto de datos en ingl\u00E9s.",
-          "eu": "Descripci\u00F3n detallada del conjunto de datos en ingl\u00E9s."
+          "ca": "Descripci\u00F3 detallada del conjunt de dades en angl\u00E8s.",
+          "gl": "Descrici\u00F3n detallada do conxunto de datos en ingl\u00E9s.",
+          "eu": "Deskribapen zehatza datu multzoari buruz ingelesez."
         },
         "es": {
-          "en": "Descripci\u00F3n detallada del conjunto de datos en espa\u00F1ol.",
+          "en": "Detailed description of the dataset in Spanish.",
           "es": "Descripci\u00F3n detallada del conjunto de datos en espa\u00F1ol.",
-          "ca": "Descripci\u00F3n detallada del conjunto de datos en espa\u00F1ol.",
-          "gl": "Descripci\u00F3n detalladao del conjunto de datos en espa\u00F1ol.",
-          "eu": "Descripci\u00F3n detallada del conjunto de datos en espa\u00F1ol."
+          "ca": "Descripci\u00F3 detallada del conjunt de dades en espanyol.",
+          "gl": "Descrici\u00F3n detallada do conxunto de datos en espa\u00F1ol.",
+          "eu": "Datu multzoaren deskribapen zehatza gazteleraz."
         },
         "ca": {
-          "en": "Descripci\u00F3n detallada del conjunto de datos en catal\u00E1n.",
+          "en": "Detailed description of the dataset in Catalan.",
           "es": "Descripci\u00F3n detallada del conjunto de datos en catal\u00E1n.",
-          "ca": "Descripci\u00F3n detallada del conjunto de datos en catal\u00E1n.",
-          "gl": "Descripci\u00F3n detallada del conjunto de datos en catal\u00E1n.",
-          "eu": "Descripci\u00F3n detallada del conjunto de datos en catal\u00E1n."
+          "ca": "Descripci\u00F3 detallada del conjunt de dades en catal\u00E0.",
+          "gl": "Descrici\u00F3n detallada do conxunto de datos en catal\u00E1n.",
+          "eu": "Datu multzoaren deskribapen zehatza katalanez."
         },
         "gl": {
-          "en": "Descripci\u00F3n detallada del conjunto de datos en gallego.",
-          "es": "Descripci\u00F3n detallada del conjunto de datos en gallego.",
-          "ca": "Descripci\u00F3n detallada del conjunto de datos en gallego.",
-          "gl": "Descripci\u00F3n detallada del conjunto de datos en gallego.",
-          "eu": "Descripci\u00F3n detallada del conjunto de datos en gallego."
+          "en": "Detailed description of the dataset in Galician.",
+          "es": "Descripci\u00F3n detallada del conjunto de datos en galego.",
+          "ca": "Descripci\u00F3 detallada del conjunt de dades en gallec.",
+          "gl": "Descrici\u00F3n detallada do conxunto de datos en galego.",
+          "eu": "Datu multzoaren deskribapen zehatza galegoz."
         },
         "eu": {
-          "en": "Descripci\u00F3n detallada del conjunto de datos en euskera.",
+          "en": "Detailed description of the dataset in Basque.",
           "es": "Descripci\u00F3n detallada del conjunto de datos en euskera.",
-          "ca": "Descripci\u00F3n detallada del conjunto de datos en euskera.",
-          "gl": "Descripci\u00F3n detallada del conjunto de datos en euskera.",
-          "eu": "Descripci\u00F3n detallada del conjunto de datos en euskera."
+          "ca": "Descripci\u00F3 detallada del conjunt de dades en euskera.",
+          "gl": "Descrici\u00F3n detallada do conxunto de datos en euskera.",
+          "eu": "Datu multzoaren deskribapen zehatza euskaraz."
         }
       },
       "fluent_help_text": {
         "en": {
-          "en": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "en": "You can open or close the help to format the text by clicking on the \u0022Markdown format\u0022 link.",
           "es": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "ca": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "gl": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "eu": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022."
+          "ca": "Podeu obrir o tancar l\u0027ajuda per donar format al text prement sobre l\u0027enlla\u00E7 \u0022format Markdown\u0022.",
+          "gl": "Podes abrir ou pechar a axuda para dar formato ao texto premendo no enlace \u0022formato Markdown\u0022.",
+          "eu": "Laguntza ireki edo itxi dezakezu testuaren formatea emateko, \u0022Markdown formatua\u0022 estekan klik eginez."
         },
         "es": {
-          "en": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "en": "At least one description in Spanish is required. You can open or close the help to format the text by clicking on the \u0022Markdown format\u0022 link.",
           "es": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "ca": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "gl": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "eu": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022."
+          "ca": "Es requereix almenys una descripci\u00F3 en espa\u00F1ol. Podeu obrir o tancar l\u0027ajuda per donar format al text prement sobre l\u0027enlla\u00E7 \u0022format Markdown\u0022.",
+          "gl": "Requ\u00E9rese ao menos unha descrici\u00F3n en espa\u00F1ol. Pode abrir ou pechar a axuda para dar formato ao texto premendo no enlace \u0022formato Markdown\u0022.",
+          "eu": "Gutxienez deskribapen bat behar da gazteleraz. Laguntza ireki edo itxi dezakezu testuaren formatea emateko, \u0022Markdown formatua\u0022 estekan klik eginez."
         },
         "ca": {
-          "en": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "es": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "ca": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "gl": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "eu": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022."
+          "en": "At least one description in Spanish is required. You can open or close the help to format the text by clicking on the \u0022Markdown format\u0022 link.",
+          "es": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "ca": "Es requereix almenys una descripci\u00F3 en espa\u00F1ol. Podeu obrir o tancar l\u0027ajuda per donar format al text prement sobre l\u0027enlla\u00E7 \u0022format Markdown\u0022.",
+          "gl": "Requ\u00E9rese ao menos unha descrici\u00F3n en espa\u00F1ol. Pode abrir ou pechar a axuda para dar formato ao texto premendo no enlace \u0022formato Markdown\u0022.",
+          "eu": "Gutxienez deskribapen bat behar da gazteleraz. Laguntza ireki edo itxi dezakezu testuaren formatea emateko, \u0022Markdown formatua\u0022 estekan klik eginez."
         },
         "gl": {
-          "en": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "es": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "ca": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "gl": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "eu": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022."
+          "en": "At least one description in Spanish is required. You can open or close the help to format the text by clicking on the \u0022Markdown format\u0022 link.",
+          "es": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "ca": "Es requereix almenys una descripci\u00F3 en espa\u00F1ol. Podeu obrir o tancar l\u0027ajuda per donar format al text prement sobre l\u0027enlla\u00E7 \u0022format Markdown\u0022.",
+          "gl": "Requ\u00E9rese ao menos unha descrici\u00F3n en espa\u00F1ol. Pode abrir ou pechar a axuda para dar formato ao texto premendo no enlace \u0022formato Markdown\u0022.",
+          "eu": "Gutxienez deskribapen bat behar da gazteleraz. Laguntza ireki edo itxi dezakezu testuaren formatea emateko, \u0022Markdown formatua\u0022 estekan klik eginez."
         },
         "eu": {
-          "en": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "es": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "ca": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "gl": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "eu": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022."
+          "en": "At least one description in Spanish is required. You can open or close the help to format the text by clicking on the \u0022Markdown format\u0022 link.",
+          "es": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "ca": "Es requereix almenys una descripci\u00F3 en espa\u00F1ol. Podeu obrir o tancar l\u0027ajuda per donar format al text prement sobre l\u0027enlla\u00E7 \u0022format Markdown\u0022.",
+          "gl": "Requ\u00E9rese ao menos unha descrici\u00F3n en espa\u00F1ol. Pode abrir ou pechar a axuda para dar formato ao texto premendo no enlace \u0022formato Markdown\u0022.",
+          "eu": "Gutxienez deskribapen bat behar da gazteleraz. Laguntza ireki edo itxi dezakezu testuaren formatea emateko, \u0022Markdown formatua\u0022 estekan klik eginez."
         }
       }
     },
@@ -217,11 +217,11 @@
         "eu": "Kategoriak"
       },
       "help_text": {
-        "en": "Select a category",
+        "en": "Primary theme or subject of the dataset. It can be multiple.",
         "es": "Tem\u00E1tica o materia primaria del conjunto de datos. Puede ser m\u00FAltiple.",
-        "ca": "Tem\u00E1tica o materia primaria del conjunto de datos. Puede ser m\u00FAltiple.",
-        "gl": "Tem\u00E1tica o materia primaria del conjunto de datos. Puede ser m\u00FAltiple.",
-        "eu": "Tem\u00E1tica o materia primaria del conjunto de datos. Puede ser m\u00FAltiple."
+        "ca": "Tem\u00E0tica o mat\u00E8ria prim\u00E0ria del conjunt de dades. Pot ser m\u00FAltiple.",
+        "gl": "Tem\u00E1tica ou materia primaria do conxunto de datos. Pode ser m\u00FAltiple.",
+        "eu": "Datu multzoaren gai edo lehen mailako arloa. Anitza izan daiteke."
       },
       "required": true,
       "preset": "multiple_select",
@@ -684,11 +684,11 @@
         "eu": "Ej: http://organismo.es/catalogo/dataset"
       },
       "help_text": {
-        "en": "Completar  si el conjunto de datos tiene asociado un identificador tipo URI.",
-        "es": "Completar  si el conjunto de datos tiene asociado un identificador tipo URI.",
-        "ca": "Completar  si el conjunto de datos tiene asociado un identificador tipo URI.",
-        "gl": "Completar  si el conjunto de datos tiene asociado un identificador tipo URI.",
-        "eu": "Completar  si el conjunto de datos tiene asociado un identificador tipo URI."
+        "en": "Fill in if the dataset has an associated URI-type identifier.",
+        "es": "Completar si el conjunto de datos tiene asociado un identificador tipo URI.",
+        "ca": "Completar si el conjunt de dades t\u00e9 associat un identificador tipus URI.",
+        "gl": "Completar se o conxunto de datos ten asociado un identificador do tipo URI.",
+        "eu": "Osatu datu multzoak URI motako identifikatzailea badu."
       }
     },
     {
@@ -696,23 +696,23 @@
       "label": {
         "en": "Refresh rate",
         "es": "Frecuencia de actualizaci\u00F3n",
-        "ca": "Freq\u00FC\u00E8ncia d'actualitzaci\u00F3",
+        "ca": "Freq\u00FC\u00E8ncia d\u0027actualitzaci\u00F3",
         "gl": "Frecuencia de actualizaci\u00F3n",
         "eu": "Eguneratze maiztasuna"
       },
       "label_value": {
         "en": "Value of the refresh rate",
         "es": "Valor de la frecuencia de actualizaci\u00F3n",
-        "ca": "Valor de la freq\u00FC\u00E8ncia d'actualitzaci\u00F3",
+        "ca": "Valor de la freq\u00FC\u00E8ncia d\u0027actualitzaci\u00F3",
         "gl": "Valor da frecuencia de actualizaci\u00F3n",
         "eu": "Eguneratze maiztasunaren balioa"
       },
       "help_text": {
-        "en": "Incluir un n\u00FAmero entero.",
+        "en": "Include an integer number.",
         "es": "Incluir un n\u00FAmero entero.",
-        "ca": "Incluir un n\u00FAmero entero.",
-        "gl": "Incluir un n\u00FAmero entero.",
-        "eu": "Incluir un n\u00FAmero entero."
+        "ca": "Incloure un n\u00FAmero enter.",
+        "gl": "Incluir un n\u00FAmero enteiro.",
+        "eu": "Zenbaki oso bat sartu."
       },
       "preset": "date_frequency",
       "form_placeholder": ""
@@ -785,25 +785,25 @@
       "label": {
         "en": "Terms of use",
         "es": "Condiciones de uso",
-        "ca": "Condicions d'\u00FAs",
+        "ca": "Condicions d\u0027\u00FAs",
         "gl": "Condici\u00F3ns de uso",
         "eu": "Erabilera baldintzak"
       },
       "preset": "select_license",
       "required": true,
       "form_placeholder": {
-        "en": "Licencia del conjunto de datos",
+        "en": "Dataset license",
         "es": "Licencia del conjunto de datos",
-        "ca": "Licencia del conjunto de datos",
-        "gl": "Licencia del conjunto de datos",
-        "eu": "Licencia del conjunto de datos"
+        "ca": "Llic\u00e8ncia del conjunt de dades",
+        "gl": "Licenza do conxunto de datos",
+        "eu": "Datu-multzoaren lizentzia"
       },
       "help_text": {
-        "en": "Incluir la licencia del conjunto de datos.",
+        "en": "Include the dataset license.",
         "es": "Incluir la licencia del conjunto de datos.",
-        "ca": "Incluir la licencia del conjunto de datos.",
-        "gl": "Incluir la licencia del conjunto de datos.",
-        "eu": "Incluir la licencia del conjunto de datos."
+        "ca": "Incloure la llic\u00E8ncia del conjunt de dades.",
+        "gl": "Incluir a licencia do conxunto de datos.",
+        "eu": "Sartu datu-multzoaren lizentzia."
       }
     },
     {
@@ -817,11 +817,11 @@
         "eu": "Estaldura geografikoa"
       },
       "help_text": {
-        "en": "\u00C1mbito geogr\u00E1fico cubierto por el conjunto de datos. Puede ser m\u00FAltiple.",
+        "en": "Geographic scope covered by the dataset. It can be multiple.",
         "es": "\u00C1mbito geogr\u00E1fico cubierto por el conjunto de datos. Puede ser m\u00FAltiple.",
-        "ca": "\u00C1mbito geogr\u00E1fico cubierto por el conjunto de datos. Puede ser m\u00FAltiple.",
-        "gl": "\u00C1mbito geogr\u00E1fico cubierto por el conjunto de datos. Puede ser m\u00FAltiple.",
-        "eu": "\u00C1mbito geogr\u00E1fico cubierto por el conjunto de datos. Puede ser m\u00FAltiple."
+        "ca": "\u00C0mbit geogr\u00E0fic cobert pel conjunt de dades. Pot ser m\u00FAltiple.",
+        "gl": "\u00C1mbito xeogr\u00E1fico cuberto polo conxunto de datos. Pode ser m\u00FAltiple.",
+        "eu": "Datu multzoak estalitako eremu geografikoa. Anitza izan daiteke."
       }
     },
     {
@@ -834,11 +834,11 @@
         "eu": "Argitaratzailea"
       },
       "help_text": {
-        "en": "Organismo que expone y publica los datos.",
+        "en": "Entity that publishes and exposes the data.",
         "es": "Organismo que expone y publica los datos.",
-        "ca": "Organismo que expone y publica los datos.",
-        "gl": "Organismo que expone y publica los datos.",
-        "eu": "Organismo que expone y publica los datos."
+        "ca": "Organisme que exposa i publica les dades.",
+        "gl": "Organismo que exp\u00f3n e publica os datos.",
+        "eu": "Datuak erakusten eta argitaratzen dituen erakundea."
       },
       "required": true
     },
@@ -852,18 +852,18 @@
         "eu": "Erakundea"
       },
       "help_text": {
-        "en": "Organismo encargado de publicar el conjunto de datos en datos.gob.es. Este campo no es p\u00FAblico.",
+        "en": "Entity responsible for publishing the dataset on datos.gob.es. This field is not public.",
         "es": "Organismo encargado de publicar el conjunto de datos en datos.gob.es. Este campo no es p\u00FAblico.",
-        "ca": "Organismo encargado de publicar el conjunto de datos en datos.gob.es. Este campo no es p\u00FAblico.",
-        "gl": "Organismo encargado de publicar el conjunto de datos en datos.gob.es. Este campo no es p\u00FAblico.",
-        "eu": "Organismo encargado de publicar el conjunto de datos en datos.gob.es. Este campo no es p\u00FAblico."
+        "ca": "Organisme encarregat de publicar el conjunt de dades a dades.gob.es. Aquest camp no \u00E9s p\u00FAblic.",
+        "gl": "Organismo encargado de publicar o conxunto de datos en datos.gob.es. Este campo non \u00E9 p\u00FAblico.",
+        "eu": "Datu-multzoa datos.gob.es-en argitaratzeko arduraduna den erakundea. Eremu hau ez da publiko."
       },
       "visibility_help_text": {
-        "en": "Marque privado si todav\u00EDa no desea que el conjunto de datos est\u00E9 disponible para el p\u00FAblico",
-        "es": "Marque privado si todav\u00EDa no desea que el conjunto de datos est\u00E9 disponible para el p\u00FAblico",
-        "ca": "Marque privado si todav\u00EDa no desea que el conjunto de datos est\u00E9 disponible para el p\u00FAblico",
-        "gl": "Marque privado si todav\u00EDa no desea que el conjunto de datos est\u00E9 disponible para el p\u00FAblico",
-        "eu": "Marque privado si todav\u00EDa no desea que el conjunto de datos est\u00E9 disponible para el p\u00FAblico"
+        "en": "Check private if you still do not want the dataset to be available to the public.",
+        "es": "Marque privado si todav\u00EDa no desea que el conjunto de datos est\u00E9 disponible para el p\u00FAblico.",
+        "ca": "Marque privat si encara no desitja que el conjunt de dades estigui disponible pel p\u00FAblic.",
+        "gl": "Marque privado se ainda non desexa que o conxunto de datos estea dispo\u00f1ible para o p\u00FAblico.",
+        "eu": "Markatu pribatua datu-multzoa oraindik publikoari eskuragarri ez dadin nahi izanez gero."
       },
       "required": true,
       "preset": "dataset_organization",
@@ -886,11 +886,11 @@
         "eu": "joe-bloggs@ejemplo.com"
       },
       "help_text": {
-        "en": "Completar si el conjunto de datos tiene un email de contacto.",
+        "en": "Fill in if the dataset has a contact email.",
         "es": "Completar si el conjunto de datos tiene un email de contacto.",
-        "ca": "Completar si el conjunto de datos tiene un email de contacto.",
-        "gl": "Completar si el conjunto de datos tiene un email de contacto.",
-        "eu": "Completar si el conjunto de datos tiene un email de contacto."
+        "ca": "Completar si el conjunt de dades t\u00e9 un email de contacte.",
+        "gl": "Completar se o conxunto de datos ten un correo electr\u00f3nico de contacto.",
+        "eu": "Osatu datu multzoak kontaktuko posta elektronikoa badu."
       }
     },
     {
@@ -910,11 +910,11 @@
         "eu": "Joe Bloggs"
       },
       "help_text": {
-        "en": "Completar si el conjunto de datos tiene un autor.",
+        "en": "Fill in if the dataset has an author.",
         "es": "Completar si el conjunto de datos tiene un autor.",
-        "ca": "Completar si el conjunto de datos tiene un autor.",
-        "gl": "Completar si el conjunto de datos tiene un autor.",
-        "eu": "Completar si el conjunto de datos tiene un autor."
+        "ca": "Completar si el conjunt de dades t\u00e9 un autor.",
+        "gl": "Completar se o conxunto de datos ten un autor.",
+        "eu": "Osatu datu multzoak egile bat badu."
       }
     },
     {
@@ -922,7 +922,7 @@
       "label": {
         "en": "Author Email",
         "es": "Email del Autor",
-        "ca": "Email de l'Autor",
+        "ca": "Email de l\u0027Autor",
         "gl": "Correo electrnico do Autor",
         "eu": "Egilearen posta elektronikoa"
       },
@@ -934,11 +934,11 @@
         "eu": "joe-bloggs@ejemplo.com"
       },
       "help_text": {
-        "en": "Completar si el conjunto de datos tiene un email de autor.",
+        "en": "Fill in if the dataset has an author\u0027s email.",
         "es": "Completar si el conjunto de datos tiene un email de autor.",
-        "ca": "Completar si el conjunto de datos tiene un email de autor.",
-        "gl": "Completar si el conjunto de datos tiene un email de autor.",
-        "eu": "Completar si el conjunto de datos tiene un email de autor."
+        "ca": "Completar si el conjunt de dades t\u00e9 un correu electr\u00f2nic de l\u0027autor.",
+        "gl": "Completar se o conxunto de datos ten un correo electr\u00f3nico do autor.",
+        "eu": "Osatu datu multzoak egilearen posta elektronikoa badu."
       }
     },
     {
@@ -958,11 +958,11 @@
         "eu": "Joe Bloggs"
       },
       "help_text": {
-        "en": "Completar si el conjunto de datos tiene un mantenedor.",
+        "en": "Fill in if the dataset has a maintainer.",
         "es": "Completar si el conjunto de datos tiene un mantenedor.",
-        "ca": "Completar si el conjunto de datos tiene un mantenedor.",
-        "gl": "Completar si el conjunto de datos tiene un mantenedor.",
-        "eu": "Completar si el conjunto de datos tiene un mantenedor."
+        "ca": "Completar si el conjunt de dades t\u00e9 un mantenidor.",
+        "gl": "Completar se o conxunto de datos ten un mantenedor.",
+        "eu": "Osatu datu multzoak mantentzaile bat badu."
       }
     },
     {
@@ -982,11 +982,11 @@
         "eu": "joe-bloggs@ejemplo.com"
       },
       "help_text": {
-        "en": "Completar si el conjunto de datos tiene un email de mantenedor.",
+        "en": "Fill in if the dataset has a maintainer\u0027s email.",
         "es": "Completar si el conjunto de datos tiene un email de mantenedor.",
-        "ca": "Completar si el conjunto de datos tiene un email de mantenedor.",
-        "gl": "Completar si el conjunto de datos tiene un email de mantenedor.",
-        "eu": "Completar si el conjunto de datos tiene un email de mantenedor."
+        "ca": "Completar si el conjunt de dades t\u00e9 un correu electr\u00f2nic del mantenidor.",
+        "gl": "Completar se o conxunto de datos ten un correo electr\u00f3nico do mantenedor.",
+        "eu": "Osatu datu multzoak mantentzailearen posta elektronikoa badu."
       }
     }
   ],
@@ -999,11 +999,11 @@
       "form_snippet": "dge_upload.html",
       "form_placeholder": "Ej: http://organismo.es/catalogo/dataset/distribucion",
       "help_text": {
-        "en": "URL que permite el acceso o descarga del conjunto de datos.",
+        "en": "URL that allows access or download of the dataset.",
         "es": "URL que permite el acceso o descarga del conjunto de datos.",
-        "ca": "URL que permite el acceso o descarga del conjunto de datos.",
-        "gl": "URL que permite el acceso o descarga del conjunto de datos.",
-        "eu": "URL que permite el acceso o descarga del conjunto de datos."
+        "ca": "URL que permet l\u0027acc\u00e9s o la desc\u00e0rrega del conjunt de dades.",
+        "gl": "URL que permite o acceso ou descarga do conxunto de datos.",
+        "eu": "URL-a, datu multzoarako sarbidea edo deskarga egiteko aukera ematen duena."
       }
     },
     {
@@ -1022,39 +1022,39 @@
       "required_language": "FILL_REQUIRED_LANGUAGE",
       "fluent_form_placeholder": {
         "en": {
-          "en": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en ingl\u00E9s.",
+          "en": "Brief title or name given to the distribution in English.",
           "es": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en ingl\u00E9s.",
-          "ca": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en ingl\u00E9s.",
-          "gl": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en ingl\u00E9s.",
-          "eu": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en ingl\u00E9s."
+          "ca": "Breu t\u00EDtol o nom donat a la distribuci\u00F3 en angl\u00E8s.",
+          "gl": "Breve t\u00EDtulo ou nome dado \u00e1 distribuci\u00f3n en ingl\u00e9s.",
+          "eu": "Banaketa izendatzeko izen laburra edo titulua ingelesez."
         },
         "es": {
-          "en": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en espa\u00F1ol.",
+          "en": "Brief title or name given to the distribution in Spanish.",
           "es": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en espa\u00F1ol.",
-          "ca": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en espa\u00F1ol.",
-          "gl": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en espa\u00F1ol.",
-          "eu": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en espa\u00F1ol."
+          "ca": "Breu t\u00EDtol o nom donat a la distribuci\u00F3 en espanyol.",
+          "gl": "Breve t\u00EDtulo ou nome dado \u00e1 distribuci\u00f3n en espa\u00f1ol.",
+          "eu": "Banaketa izendatzeko izen laburra edo titulua gaztelaniaz."
         },
         "ca": {
-          "en": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en catal\u00E1n.",
+          "en": "Brief title or name given to the distribution in Catalan.",
           "es": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en catal\u00E1n.",
-          "ca": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en catal\u00E1n.",
-          "gl": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en catal\u00E1n.",
-          "eu": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en catal\u00E1n."
+          "ca": "Breu t\u00EDtol o nom donat a la distribuci\u00F3 en catal\u00e0.",
+          "gl": "Breve t\u00EDtulo ou nome dado \u00e1 distribuci\u00f3n en catal\u00e1n.",
+          "eu": "Banaketa izendatzeko izen laburra edo titulua katalanez."
         },
         "gl": {
-          "en": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en gallego.",
+          "en": "Brief title or name given to the distribution in Galician.",
           "es": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en gallego.",
-          "ca": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en gallego.",
-          "gl": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en gallego.",
-          "eu": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en gallego."
+          "ca": "Breu t\u00EDtol o nom donat a la distribuci\u00F3 en gallec.",
+          "gl": "Breve t\u00EDtulo ou nome dado \u00E1 distribuci\u00F3n en galego.",
+          "eu": "Banaketa izendatzeko izen laburra edo titulua galegoz."
         },
         "eu": {
-          "en": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en euskera.",
+          "en": "Brief title or name given to the distribution in Basque.",
           "es": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en euskera.",
-          "ca": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en euskera.",
-          "gl": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en euskera.",
-          "eu": "Breve t\u00EDtulo o nombre dado a la distribuci\u00F3n en euskera."
+          "ca": "Breu t\u00EDtol o nom donat a la distribuci\u00F3 en basc.",
+          "gl": "Breve t\u00EDtulo ou nome dado \u00E1 distribuci\u00F3n en vascuence.",
+          "eu": "Banaketa izendatzeko izen laburra edo titulua euskaraz."
         }
       },
       "fluent_help_text": {
@@ -1066,11 +1066,11 @@
           "eu": ""
         },
         "es": {
-          "en": "Campo opcional. Si se completa, debe incluirse el nombre al menos en espa\u00F1ol.",
+          "en": "Optional field. If filled in, the name must be included at least in Spanish.",
           "es": "Campo opcional. Si se completa, debe incluirse el nombre al menos en espa\u00F1ol.",
-          "ca": "Campo opcional. Si se completa, debe incluirse el nombre al menos en espa\u00F1ol.",
-          "gl": "Campo opcional. Si se completa, debe incluirse el nombre al menos en espa\u00F1ol.",
-          "eu": "Campo opcional. Si se completa, debe incluirse el nombre al menos en espa\u00F1ol."
+          "ca": "Camp opcional. Si es completa, s\u0027ha d\u0027incloure el nom com a m\u00ednim en espanyol.",
+          "gl": "Campo opcional. Se se completa, debe inclu\u00edrse o nome polo menos en espa\u00f1ol.",
+          "eu": "Aukerako eremua. Betetzen bada, gutxienez izena espainieraz sartu behar da."
         },
         "ca": {
           "en": "",
@@ -1110,76 +1110,76 @@
       "required_language": "FILL_REQUIRED_LANGUAGE",
       "fluent_form_placeholder": {
         "en": {
-          "en": "Descripci\u00F3n detallada de la distribuci\u00F3n en ingl\u00E9s.",
+          "en": "Detailed description of the distribution in English.",
           "es": "Descripci\u00F3n detallada de la distribuci\u00F3n en ingl\u00E9s.",
-          "ca": "Descripci\u00F3n detallada de la distribuci\u00F3n en ingl\u00E9s.",
-          "gl": "Descripci\u00F3n detallada de la distribuci\u00F3n en ingl\u00E9s.",
-          "eu": "Descripci\u00F3n detallada de la distribuci\u00F3n en ingl\u00E9s."
+          "ca": "Descripci\u00F3 detallada de la distribuci\u00F3 en angl\u00E8s.",
+          "gl": "Descrici\u00F3n detallada da distribuci\u00F3n en ingl\u00E9s.",
+          "eu": "Banaketa xehetasunez euskaraz ingelesez (deskribapen zehatza)."
         },
         "es": {
-          "en": "Descripci\u00F3n detallada de la  distribuci\u00F3n en espa\u00F1ol.",
-          "es": "Descripci\u00F3n detallada de la  distribuci\u00F3n en espa\u00F1ol.",
-          "ca": "Descripci\u00F3n detallada de la distribuci\u00F3n en espa\u00F1ol.",
-          "gl": "Descripci\u00F3n detalladao de la  distribuci\u00F3n en espa\u00F1ol.",
-          "eu": "Descripci\u00F3n detallada de la  distribuci\u00F3n en espa\u00F1ol."
+          "en": "Detailed description of the distribution in Spanish.",
+          "es": "Descripci\u00F3n detallada de la distribuci\u00F3n en espa\u00F1ol.",
+          "ca": "Descripci\u00F3 detallada de la distribuci\u00F3 en espanyol.",
+          "gl": "Descrici\u00F3n detallada da distribuci\u00F3n en espa\u00f1ol.",
+          "eu": "Banaketa xehetasunez gaztelaniaz."
         },
         "ca": {
-          "en": "Descripci\u00F3n detallada de la  distribuci\u00F3n en catal\u00E1n.",
-          "es": "Descripci\u00F3n detallada de la  distribuci\u00F3n en catal\u00E1n.",
-          "ca": "Descripci\u00F3n detallada de la  distribuci\u00F3n en catal\u00E1n.",
-          "gl": "Descripci\u00F3n detallada de la  distribuci\u00F3n en catal\u00E1n.",
-          "eu": "Descripci\u00F3n detallada de la  distribuci\u00F3n en catal\u00E1n."
+          "en": "Detailed description of the distribution in Catalan.",
+          "es": "Descripci\u00F3n detallada de la distribuci\u00F3n en catal\u00E1n.",
+          "ca": "Descripci\u00F3 detallada de la distribuci\u00F3 en catal\u00E0.",
+          "gl": "Descrici\u00F3n detallada da distribuci\u00F3n en catal\u00E1n.",
+          "eu": "Banaketa xehetasunez katalanez."
         },
         "gl": {
-          "en": "Descripci\u00F3n detallada de la  distribuci\u00F3n en gallego.",
-          "es": "Descripci\u00F3n detallada de la  distribuci\u00F3n en gallego.",
-          "ca": "Descripci\u00F3n detallada de la  distribuci\u00F3n en gallego.",
-          "gl": "Descripci\u00F3n detallada de la  distribuci\u00F3n en gallego.",
-          "eu": "Descripci\u00F3n detallada de la  distribuci\u00F3n en gallego."
+          "en": "Detailed description of the distribution in Galician.",
+          "es": "Descripci\u00F3n detallada da distribuci\u00F3n en galego.",
+          "ca": "Descripci\u00F3 detallada de la distribuci\u00F3 en gallec.",
+          "gl": "Descrici\u00F3n detallada da distribuci\u00F3n en galego.",
+          "eu": "Banaketa xehetasunez galegoz."
         },
         "eu": {
-          "en": "Descripci\u00F3n detallada de la  distribuci\u00F3n en euskera.",
-          "es": "Descripci\u00F3n detallada de la  distribuci\u00F3n en euskera.",
-          "ca": "Descripci\u00F3n detallada de la  distribuci\u00F3n en euskera.",
-          "gl": "Descripci\u00F3n detallada de la  distribuci\u00F3n en euskera.",
-          "eu": "Descripci\u00F3n detallada de la  distribuci\u00F3n en euskera."
+          "en": "Detailed description of the distribution in Basque.",
+          "es": "Descripci\u00F3n detallada de la distribuci\u00F3n en euskera.",
+          "ca": "Descripci\u00F3 detallada de la distribuci\u00F3 en basc.",
+          "gl": "Descrici\u00F3n detallada da distribuci\u00F3n en vascuence.",
+          "eu": "Banaketa xehetasunez euskaraz."
         }
       },
       "fluent_help_text": {
         "en": {
-          "en": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "es": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "ca": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "gl": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "eu": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022."
+          "en": "At least one description in Spanish is required. You can open or close the help to format the text by clicking on the \u0022Markdown format\u0022 link.",
+          "es": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "ca": "Es requereix almenys una descripci\u00F3 en espa\u00F1ol. Podeu obrir o tancar l\u0027ajuda per donar format al text prement sobre l\u0027enlla\u00E7 \u0022format Markdown\u0022.",
+          "gl": "Requ\u00E9rese ao menos unha descrici\u00F3n en espa\u00F1ol. Pode abrir ou pechar a axuda para dar formato ao texto premendo no enlace \u0022formato Markdown\u0022.",
+          "eu": "Gutxienez deskribapen bat behar da gazteleraz. Laguntza ireki edo itxi dezakezu testuaren formatea emateko, \u0022Markdown formatua\u0022 estekan klik eginez."
         },
         "es": {
-          "en": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "en": "At least one description in Spanish is required. You can open or close the help to format the text by clicking on the \u0022Markdown format\u0022 link.",
           "es": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "ca": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "gl": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "eu": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022."
+          "ca": "Es requereix almenys una descripci\u00F3 en espa\u00F1ol. Podeu obrir o tancar l\u0027ajuda per donar format al text prement sobre l\u0027enlla\u00E7 \u0022format Markdown\u0022.",
+          "gl": "Requ\u00E9rese ao menos unha descrici\u00F3n en espa\u00F1ol. Pode abrir ou pechar a axuda para dar formato ao texto premendo no enlace \u0022formato Markdown\u0022.",
+          "eu": "Gutxienez deskribapen bat behar da gazteleraz. Laguntza ireki edo itxi dezakezu testuaren formatea emateko, \u0022Markdown formatua\u0022 estekan klik eginez."
         },
         "ca": {
-          "en": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "es": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "ca": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "gl": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "eu": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022."
+          "en": "At least one description in Spanish is required. You can open or close the help to format the text by clicking on the \u0022Markdown format\u0022 link.",
+          "es": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "ca": "Es requereix almenys una descripci\u00F3 en espa\u00F1ol. Podeu obrir o tancar l\u0027ajuda per donar format al text prement sobre l\u0027enlla\u00E7 \u0022format Markdown\u0022.",
+          "gl": "Requ\u00E9rese ao menos unha descrici\u00F3n en espa\u00F1ol. Pode abrir ou pechar a axuda para dar formato ao texto premendo no enlace \u0022formato Markdown\u0022.",
+          "eu": "Gutxienez deskribapen bat behar da gazteleraz. Laguntza ireki edo itxi dezakezu testuaren formatea emateko, \u0022Markdown formatua\u0022 estekan klik eginez."
         },
         "gl": {
-          "en": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "es": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "ca": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "gl": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "eu": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022."
+          "en": "At least one description in Spanish is required. You can open or close the help to format the text by clicking on the \u0022Markdown format\u0022 link.",
+          "es": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "ca": "Es requereix almenys una descripci\u00F3 en espa\u00F1ol. Podeu obrir o tancar l\u0027ajuda per donar format al text prement sobre l\u0027enlla\u00E7 \u0022format Markdown\u0022.",
+          "gl": "Requ\u00E9rese ao menos unha descrici\u00F3n en espa\u00F1ol. Pode abrir ou pechar a axuda para dar formato ao texto premendo no enlace \u0022formato Markdown\u0022.",
+          "eu": "Gutxienez deskribapen bat behar da gazteleraz. Laguntza ireki edo itxi dezakezu testuaren formatea emateko, \u0022Markdown formatua\u0022 estekan klik eginez."
         },
         "eu": {
-          "en": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "es": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "ca": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "gl": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
-          "eu": "Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022."
+          "en": "At least one description in Spanish is required. You can open or close the help to format the text by clicking on the \u0022Markdown format\u0022 link.",
+          "es": "Requiere al menos una descripci\u00F3n en espa\u00F1ol. Puede abrir o cerrar la ayuda para dar el formato al texto pulsando sobre el enlace \u0022formato Markdown\u0022.",
+          "ca": "Es requereix almenys una descripci\u00F3 en espa\u00F1ol. Podeu obrir o tancar l\u0027ajuda per donar format al text prement sobre l\u0027enlla\u00E7 \u0022format Markdown\u0022.",
+          "gl": "Requ\u00E9rese ao menos unha descrici\u00F3n en espa\u00F1ol. Pode abrir ou pechar a axuda para dar formato ao texto premendo no enlace \u0022formato Markdown\u0022.",
+          "eu": "Gutxienez deskribapen bat behar da gazteleraz. Laguntza ireki edo itxi dezakezu testuaren formatea emateko, \u0022Markdown formatua\u0022 estekan klik eginez."
         }
       }
     },
@@ -1193,11 +1193,11 @@
         "eu": "Formatua"
       },
       "help_text": {
-        "en": "Formato en el que se encuentra representado el conjunto de datos en esta distribuci\u00F3n.",
+        "en": "Format in which the dataset is represented in this distribution.",
         "es": "Formato en el que se encuentra representado el conjunto de datos en esta distribuci\u00F3n.",
-        "ca": "Formato en el que se encuentra representado el conjunto de datos en esta distribuci\u00F3n.",
-        "gl": "Formato en el que se encuentra representado el conjunto de datos en esta distribuci\u00F3n.",
-        "eu": "Formato en el que se encuentra representado el conjunto de datos en esta distribuci\u00F3n."
+        "ca": "Format en qu\u00e8 es troba representat el conjunt de dades en aquesta distribuci\u00F3.",
+        "gl": "Formato no que se atopa representado o conxunto de datos nesta distribuci\u00F3n.",
+        "eu": "Formatua, non datu multzoa banaketa honetan agertzen den."
       },
       "required": true
     },
@@ -1211,11 +1211,11 @@
         "eu": "Mimetype"
       },
       "help_text": {
-        "en": "Mimetype en el que se encuentra representado el conjunto de datos en esta distribuci\u00F3n.",
+        "en": "Mimetype in which the dataset is represented in this distribution.",
         "es": "Mimetype en el que se encuentra representado el conjunto de datos en esta distribuci\u00F3n.",
-        "ca": "Mimetype en el que se encuentra representado el conjunto de datos en esta distribuci\u00F3n.",
-        "gl": "Mimetype en el que se encuentra representado el conjunto de datos en esta distribuci\u00F3n.",
-        "eu": "Mimetype en el que se encuentra representado el conjunto de datos en esta distribuci\u00F3n."
+        "ca": "Mimetype en qu\u00e8 es troba representat el conjunt de dades en aquesta distribuci\u00F3.",
+        "gl": "Mimetype no que se atopa representado o conxunto de datos nesta distribuci\u00F3n.",
+        "eu": "Mimetype, non datu multzoa banaketa honetan agertzen den."
       }
     },
     {
@@ -1235,11 +1235,11 @@
         "eu": "Ej: 2048"
       },
       "help_text": {
-        "en": "Indicar tama\u00F1o del archivo en Bytes.",
+        "en": "Indicate the file size in bytes.",
         "es": "Indicar tama\u00F1o del archivo en Bytes.",
-        "ca": "Indicar tama\u00F1o del archivo en Bytes.",
-        "gl": "Indicar tama\u00F1o del archivo en Bytes.",
-        "eu": "Indicar tama\u00F1o del archivo en Bytes."
+        "ca": "Indicar la mida del fitxer en Bytes.",
+        "gl": "Indicar o tama\u00f1o do arquivo en Bytes.",
+        "eu": "Adierazi fitxategiaren tamaina Byteetan."
       }
     }
   ]
