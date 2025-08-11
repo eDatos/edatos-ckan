@@ -38,10 +38,11 @@
         {{ h.snippet('snippets/package_list.html', packages=c.page.items) }}
       {% endblock %}
     </div>
-
+    {#
     {% block page_pagination %}
       {{ c.page.pager(q=c.q) }}
     {% endblock %}
+    #}
   </section>
 
 {% endblock %}

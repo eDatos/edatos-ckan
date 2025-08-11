@@ -2,6 +2,7 @@ window.onload = function () {
 
     const SITE_URL = "FILL_SITE_URL";
     const I18N_COOKIE = "chosenLocale";
+    const SITE_LANGUAGES = "FILL_SITE_LANGUAGES";
 
     function getObjectCookie() {
         const separador = '; ';
@@ -24,16 +25,21 @@ window.onload = function () {
     };
 
     function breakAddress(url) {
-        var data = url.split(SITE_URL);
-        var domain = data[0];
+        if (!url.startsWith(SITE_URL)) return [url,null,null];
 
-        // Comprobar hay path y devolver el resto de la dirección
-        data = data[1].split("/");
-        var language = data[0];
-        if (data[1]) {
-            return [domain,language,data.slice(1).join("/")];
+        let path = url.slice(SITE_URL.length);
+        let segments = path.split("/").filter(Boolean);
+
+        let language = null;
+        let rest = [];
+        if (SITE_LANGUAGES.split(' ').includes(segments[0])) {
+            language = segments[0];
+            rest = segments.slice(1);
+        } else {
+            rest = segments;
         }
-        return [domain,language,"home"];
+
+        return [SITE_URL,language,rest.join("/")];
     }
 
     function redirectChosenLanguage(language = 'es') {
@@ -42,7 +48,6 @@ window.onload = function () {
         const path = currentUrl.href;
 
         var urlArray = breakAddress(path);
-        console.log('DEBUG ~ redirectChosenLanguage ~ urlArray:',urlArray)
         var nuevaUrl = '';
 
         if (urlArray[1] !== language) {
@@ -60,4 +65,5 @@ window.onload = function () {
     redirectChosenLanguage();
 
 };
+
 
