@@ -8,3 +8,8 @@ edatostheme-fonts:
   output: ckanext-edatostheme/%(version)s-edatostheme_fonts.css
   contents:
     - fonts/glyphter/css/Glyphter.css
+
+edatostheme-js:
+  output: ckanext-edatostheme/%(version)s-edatostheme_js.js
+  contents: 
+    - js/i18n.js

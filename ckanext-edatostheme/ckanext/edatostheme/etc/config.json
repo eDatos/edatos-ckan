@@ -3,10 +3,11 @@
         "endpoint": "FILL ME",
         "navbarPathKey": "metamac.app.style.header.url",
         "footerPathKey": "metamac.app.style.footer.url",
-        "appName": "FILL ME",
+        "appName": "Catálogo de datos abiertos",
         "siteURL": "FILL ME",
-        "htmlCodeClass": "istac-app-header-content",
+        "htmlCodeClass": "edatos-custom-header",
         "groupPaginationLimit": 24,
-        "favicon": "metamac.app.style.favicon.url"
+        "favicon": "metamac.app.style.favicon.url",
+        "cookieKey": "metamac.internationalization.cookieId"
     }
 }

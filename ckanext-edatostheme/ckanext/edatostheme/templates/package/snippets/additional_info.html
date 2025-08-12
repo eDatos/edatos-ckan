@@ -8,7 +8,7 @@
       </tr>
     </thead>
     <tbody>
-      {% block package_additional_info %}
+      {% block package_additional_info_edatos %}
 {#
         {% if pkg_dict.url %}
           <tr>
@@ -69,6 +69,48 @@
             <td class="dataset-details">
                 {% snippet 'snippets/local_friendly_datetime.html', datetime_obj=pkg_dict.metadata_created %}
             </td>
+          </tr>
+        {% endif %}
+
+        {% if pkg_dict.contact_email %}
+          <tr>
+            <th scope="row" class="dataset-label">{{ _('Email de contacto') }}</th>
+            <td class="dataset-details" property="dc:contributor">{{ h.mail_to(email_address=pkg_dict.contact_email, name=pkg_dict.contact_email) }}</td>
+          </tr>
+        {% endif %}
+
+        {% if pkg_dict.identifier %}
+          <tr>
+            <th scope="row" class="dataset-label">{{ _('Identifier') }}</th>
+            <td class="dataset-details" >{{ pkg_dict.identifier }}</td>
+          </tr>
+        {% endif %}
+
+        {% if pkg_dict.language %}
+          <tr>
+            <th scope="row" class="dataset-label">{{ _('Language') }}</th>
+            <td class="dataset-details" >{{ pkg_dict.language }}</td>
+          </tr>
+        {% endif %}
+
+        {% if pkg_dict.theme %}
+          <tr>
+            <th scope="row" class="dataset-label">{{ _('Theme') }}</th>
+            <td class="dataset-details" >{{ pkg_dict.theme }}</td>
+          </tr>
+        {% endif %}
+
+        {% if pkg_dict.publisher %}
+          <tr>
+            <th scope="row" class="dataset-label">{{ _('Publisher URI') }}</th>
+            <td class="dataset-details" >{{ pkg_dict.publisher }}</td>
+          </tr>
+        {% endif %}
+
+        {% if pkg_dict.spatial %}
+          <tr>
+            <th scope="row" class="dataset-label">{{ _('Spatial URI') }}</th>
+            <td class="dataset-details" >{{ pkg_dict.spatial }}</td>
           </tr>
         {% endif %}
 

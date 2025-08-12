@@ -105,7 +105,7 @@ def delete_user_entry(user):
 def is_ticket_valid(user):
     search = {'user': user}
     results = CasUser.get(**search)
-    log.info(results)
+    log.debug(results)
     if len(results) == 1:
         return True
     return False

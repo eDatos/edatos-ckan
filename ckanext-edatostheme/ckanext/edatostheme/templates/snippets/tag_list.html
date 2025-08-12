@@ -10,14 +10,30 @@
 #}
 {% set _class = _class or 'tag-list' %}
 {% set delink = h.edatostheme_get_delink_value() %}
+{% set value = h.scheming_language_text(tags) %}
+{% set lang = h.lang() %}
+
 {% block tag_list %}
   <ul class="{{ _class }}">
-    {% for tag in tags %}
-      {% if tag.display_name != delink %}
+    {% for tag in value %}
         <li>
-            <a class="{% block tag_list_item_class %}tag{% endblock %}" href="{% url_for 'dataset.search', tags=tag.name %}">{{ h.truncate(tag.display_name, 22) }}</a>
+            {% if lang == 'en' %}
+            <a class="{% block tag_list_item_class_en %}tag{% endblock %}" href="{%
+              url_for controller='dataset', action='search', tags_en=tag %}">{{
+              h.truncate(tag, 22) }}
+            </a>
+            {% elif lang == 'es' %}
+            <a class="{% block tag_list_item_class_es %}tag{% endblock %}" href="{%
+              url_for controller='dataset', action='search', tags_es=tag %}">{{
+              h.truncate(tag, 22) }}
+            </a>
+            {% elif lang == 'ca' %}
+            <a class="{% block tag_list_item_class_ca %}tag{% endblock %}" href="{%
+              url_for controller='dataset', action='search', tags_ca=tag %}">{{
+              h.truncate(tag, 22) }}
+            </a>
+            {% endif %}
         </li>
-      {% endif %}
     {% endfor %}
   </ul>
 {% endblock %}
