@@ -235,7 +235,6 @@ def get_altered_header(header, json_config):
                         un diccionario JSON
     """
     container_class = json_config['metadata']['htmlCodeClass']
-    # "htmlCodeClass": "istac-app-header-content"
     alteredHeader = header
 
     with codecs.open(HEADER_WHITE_BAR_PATH, 'r', encoding='utf8') as white_bar_file:
@@ -258,6 +257,10 @@ def get_altered_header(header, json_config):
             alteredHeader = soup.prettify('utf-8')
 
     alteredHeader = alteredHeader.replace(b'&gt;', b'>').decode('utf8')
+    # Se reemplaza la clave de appName por el titulo traducido segun idioma activo
+    title = _("Open Data Catalog")
+    title_template = json_config['metadata']['appName']
+    alteredHeader = alteredHeader.replace(title_template, title)
     return "{% block header_wrapper %}" + alteredHeader + "{% endblock %}"
 
 

@@ -3,7 +3,7 @@
         "endpoint": "FILL ME",
         "navbarPathKey": "metamac.app.style.header.url",
         "footerPathKey": "metamac.app.style.footer.url",
-        "appName": "Catálogo de datos abiertos",
+        "appName": "open-data-catalog ",
         "siteURL": "FILL ME",
         "htmlCodeClass": "edatos-custom-header",
         "groupPaginationLimit": 24,

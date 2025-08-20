@@ -4607,3 +4607,15 @@ msgstr ""
 
 msgid "Options"
 msgstr ""
+
+#: ckanext/edatostheme/templates/desplegable.html:41
+msgid "Settings"
+msgstr ""
+
+#: ckanext/edatostheme/template/license.html:3
+msgid "Legal Notice"
+msgstr ""
+
+#: ckanext/edatostheme/template/base.html:4
+msgid "Open Data Catalog"
+msgstr ""

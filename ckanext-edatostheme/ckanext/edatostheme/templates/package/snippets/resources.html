@@ -25,7 +25,7 @@ Example:
               <li class="nav-item{{ ' active' if active == resource.id }}">
                 <a class="heading" href="{{  h.url_for(pkg.type ~ ('_resource.read'), id=pkg.name, 
                 resource_id=resource.id) }}">
-                  {{ 'Formato ' ~ resource.format.lower() }}
+                  {{ _('Formato') }} {{ resource.format.lower() }}
                 </a>
               </li>
             {% endfor %}
