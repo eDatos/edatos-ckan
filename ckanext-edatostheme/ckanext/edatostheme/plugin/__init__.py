@@ -211,6 +211,7 @@ def get_header_url(json_config):
     header_key = json_config['metadata']['navbarPathKey']
     endpoint = json_config['metadata']['endpoint']
     cookie_key = json_config['metadata']['cookieKey']
+    title_translated = _(json_config['metadata']['appName'])
 
     #cookieId, se debe usar para rescatar el label de la cookie la respuesta se debe
     # de poner como parametro de llamada a la cabecera y el idioma que venga de la cookie
@@ -218,7 +219,7 @@ def get_header_url(json_config):
 
     # Enviar al mismo nivel del appName el chosenLocale
     return "%s?appName=%s&appUrl=%s&%s=%s" % (get_url(endpoint, header_key),
-                                        json_config['metadata']['appName'],
+                                        title_translated,
                                         json_config['metadata']['siteURL'],
                                         get_url(endpoint, cookie_key),
                                         request_lang
@@ -257,10 +258,7 @@ def get_altered_header(header, json_config):
             alteredHeader = soup.prettify('utf-8')
 
     alteredHeader = alteredHeader.replace(b'&gt;', b'>').decode('utf8')
-    # Se reemplaza la clave de appName por el titulo traducido segun idioma activo
-    title = _("Open Data Catalog")
-    title_template = json_config['metadata']['appName']
-    alteredHeader = alteredHeader.replace(title_template, title)
+
     return "{% block header_wrapper %}" + alteredHeader + "{% endblock %}"
 
 
