@@ -23,6 +23,14 @@
       {% endblock %}
     </h1>
     {% block package_notess %}
+
+      {% comment %} {% if pkg.notes %}
+        <div class="notes embedded-content">
+          {{ h.render_markdown(h.get_translated(pkg, 'notes')) }}
+        </div>
+      {% endif %} {% endcomment %}
+
+      
       {% if (h.scheming_field_by_name(schema.dataset_fields, 'notes') or
       h.scheming_field_by_name(schema.dataset_fields, 'description_translated')) %}
          <div class="notes embedded-content">

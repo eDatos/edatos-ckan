@@ -38,6 +38,24 @@ SCRIPT_TEMPLATE = os.path.join(dirname, '../code_templates/i18n.js')
 HERE = os.path.abspath(os.path.dirname(__file__))
 I18N_DIR = os.path.join(HERE, "../i18n")
 
+def get_freq_tags(lang='tags_es'):
+    """
+    Obtiene los facets de los datasets (package) usando package_search.
+    Devuelve los 5 tags mas frecuentes en el idioma indicado
+    :param lang: Idioma de los tags a recuperar
+    """
+    package = toolkit.get_action('package_search')(data_dict = {
+        'rows': 0,
+        'facet.field': ['tags_en', 'tags_ca', 'tags_es']
+    })
+    
+    items = package["search_facets"][lang]["items"]
+    items_ordenados = sorted(items, key=lambda item: item['count'], reverse=True)
+
+    tags_limit_5 = [item['display_name'] for item in items_ordenados[:5]]
+    return tags_limit_5
+    
+
 def get_tag(tag_id):
     tag_dict = toolkit.get_action('tag_show')(
         data_dict={'id': tag_id})
@@ -437,7 +455,8 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             'edatos_schema_get_label_for_facet': schema_get_label_for_facet,
             'edatos_get_license': get_license,
             'edatos_get_group': get_group,
-            'edatos_get_tag': get_tag
+            'edatos_get_tag': get_tag,
+            'edatos_get_freq_tags': get_freq_tags
         }
 
     # ITranslation
