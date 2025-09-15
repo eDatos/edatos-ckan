@@ -4856,3 +4856,11 @@ msgstr "Aviso Legal"
 #: ckanext/edatostheme/template/base.html:4
 msgid "Open Data Catalog"
 msgstr "Catálogo de datos abiertos"
+
+#: ckanext/template/snippets/facet_list.html:74
+msgid "Aviso Legal del ISTAC"
+msgstr "Aviso Legal del ISTAC"
+
+#: ckanext/template/snippets/facet_list.html:74
+msgid "Aviso Legal del IBESTAT"
+msgstr "Aviso Legal del IBESTAT"

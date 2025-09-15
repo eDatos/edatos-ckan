@@ -1,6 +1,6 @@
 {% macro license_string(pkg_dict) %}
   {% if 'license_url' in pkg_dict %}
-    <a href="{{ pkg_dict.license_url }}" rel="dc:rights">{{ _(Legal Notice) }}</a>
+    <a href="{{ pkg_dict.license_url }}" rel="dc:rights">{{ _('Legal Notice') }}</a>
   {% else %}
     <span property="dc:rights">{{ pkg_dict.license_title }}</span>
   {% endif %}

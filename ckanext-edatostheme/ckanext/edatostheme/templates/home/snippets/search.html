@@ -1,6 +1,8 @@
-{% set tags = h.get_facet_items_dict('tags', limit=4) %}
 {% set placeholder = _('E.g. environment') %}
 {% set delink = h.edatostheme_get_delink_value() %}
+{% set lang = 'tags_' + h.lang() %}
+{% set tags = h.edatos_get_freq_tags(lang) %}
+
 
 <div class="module module-search module-narrow module-shallow box">
   <form class="module-content search-form" method="get" action="{% url_for controller='dataset', action='search' %}">
@@ -16,9 +18,15 @@
   <div class="tags">
     <h3>{{ _('Popular tags') }}</h3>
     {% for tag in tags %}
-      {% if tag.display_name != delink %}
-        <a class="tag" href="{% url_for controller='dataset', action='search', tags=tag.name %}">{{ h.truncate(tag.display_name, 22) }}</a>
+      {% if tag != delink %}
+        {% if tag.active %}
+          {% set href = h.remove_url_param('dataset', tag, controller='dataset', action='search', extras=extras, alternative_url=alternative_url) %}
+        {% else %}
+          {% set href = h.add_url_param(controller='dataset', action='search', new_params={lang: tag}, extras=extras, alternative_url=alternative_url) %}
+        {% endif %}
+        <a class="tag" href="{{ href }}">{{ tag }}</a>
       {% endif %}
     {% endfor %}
   </div>
 </div>
+
