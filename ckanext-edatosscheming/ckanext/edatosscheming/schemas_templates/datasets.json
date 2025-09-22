@@ -1201,23 +1201,6 @@
       "required": true
     },
     {
-      "field_name": "mimetype",
-      "label": {
-        "en": "Mimetype",
-        "es": "Mimetype",
-        "ca": "Mimetype",
-        "gl": "Mimetype",
-        "eu": "Mimetype"
-      },
-      "help_text": {
-        "en": "Mimetype in which the dataset is represented in this distribution.",
-        "es": "Mimetype en el que se encuentra representado el conjunto de datos en esta distribuci\u00F3n.",
-        "ca": "Mimetype en qu\u00e8 es troba representat el conjunt de dades en aquesta distribuci\u00F3.",
-        "gl": "Mimetype no que se atopa representado o conxunto de datos nesta distribuci\u00F3n.",
-        "eu": "Mimetype, non datu multzoa banaketa honetan agertzen den."
-      }
-    },
-    {
       "field_name": "byte_size",
       "label": {
         "en": "Size",
