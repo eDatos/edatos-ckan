@@ -55,7 +55,7 @@
     {% set showcases = h.package_showcase_list(c) %}
     {% if showcases %}
       <h3>{{ _("Showcases-dataset")  }}</h3>
-      {% snippet "showcase/snippets/showcase_list.html", packages=showcases, pkg_id=c.pkg_dict.name %}
+      {% snippet "edatosshowcase/snippets/showcase_list.html", packages=showcases, pkg_id=c.pkg_dict.name %}
     {% endif %}
   {% endblock %}
 

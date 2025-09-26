@@ -548,3 +548,16 @@ selector#language-selector {
 	font-family: "Font Awesome 6 Pro" !important;
 	font-weight: 100 !important;
 }
+
+.format-label {
+	background: url("/catalogo/base/images/sprite-resource-icons.png") no-repeat 0 0;
+}
+
+.format-label[data-format=tsv],
+.format-label[data-format*=tsv] {
+	width: 60px;
+	height: 65px;
+	background-position: -1720px -220px;
+	transform: scale(0.53);
+	margin: -14px 0 0 -14px;
+}

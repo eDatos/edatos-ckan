@@ -230,6 +230,7 @@ def get_header_url(json_config):
     endpoint = json_config['metadata']['endpoint']
     cookie_key = json_config['metadata']['cookieKey']
     title_translated = _(json_config['metadata']['appName'])
+    title = json_config['metadata']['appName']
 
     #cookieId, se debe usar para rescatar el label de la cookie la respuesta se debe
     # de poner como parametro de llamada a la cabecera y el idioma que venga de la cookie
@@ -237,7 +238,7 @@ def get_header_url(json_config):
 
     # Enviar al mismo nivel del appName el chosenLocale
     return "%s?appName=%s&appUrl=%s&%s=%s" % (get_url(endpoint, header_key),
-                                        title_translated,
+                                        title,
                                         json_config['metadata']['siteURL'],
                                         get_url(endpoint, cookie_key),
                                         request_lang
@@ -274,6 +275,19 @@ def get_altered_header(header, json_config):
             code = burger_button_file.read()
             container.append(BeautifulSoup(code, 'html.parser'))
             alteredHeader = soup.prettify('utf-8')
+            
+            
+    # Reemplazar titulo por el titulo con funcion de traduccion
+    title = json_config['metadata']['appName']
+    
+    div = soup.find('div', id='title-bar')
+    if div:
+        span = div.find('span')
+        if span and title in span.text:
+            span.string = "{{ _(title) }}"
+    
+    
+    
 
     alteredHeader = alteredHeader.replace(b'&gt;', b'>').decode('utf8')
 
