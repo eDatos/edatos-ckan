@@ -281,13 +281,14 @@ def get_altered_header(header, json_config):
     title = json_config['metadata']['appName']
     
     div = soup.find('div', id='title-bar')
+    print('DEBUG ~ div:', div)
+    
     if div:
         span = div.find('span')
-        if span and title in span.text:
-            span.string = "{{ _(title) }}"
-    
-    
-    
+        if span and title.lower() in span.text.strip().lower():
+            span.string = f"{{{{ _('{title}') }}}}"
+            
+    alteredHeader = soup.prettify('utf-8')
 
     alteredHeader = alteredHeader.replace(b'&gt;', b'>').decode('utf8')
 
