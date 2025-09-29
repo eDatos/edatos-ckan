@@ -550,11 +550,13 @@ selector#language-selector {
 }
 
 .format-label {
-	background: url("/catalogo/sprite-resource-icons.png") no-repeat 0 0;
+	background: url("../../sprite-resource-icons.png") no-repeat 0 0;
 }
 
 .format-label[data-format=tsv],
-.format-label[data-format*=tsv] {
+.format-label[data-format*=tsv],
+.format-label[data-format=pcaxis],
+.format-label[data-format*=pcaxis] {
 	width: 60px;
 	height: 65px;
 	background-position: -1720px -220px;
