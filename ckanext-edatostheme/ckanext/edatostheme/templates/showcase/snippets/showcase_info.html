@@ -18,7 +18,7 @@ Example:
                             {% set truncate_title = truncate_title or 80 %}
                             {% set counter= loop.index0 + 1  %}
                             {% set title = counter ~ ". " ~ (package.title or package.name) %}
-                            <li class="nav-item">{{ h.link_to(title, h.url_for(controller='dataset' if h.ckan_version_info()['major'] == 2 and h.ckan_version_info()['minor'] >= 9 else 'package', action='read', id=package.name)) }}</li>
+                            <li class="nav-item">{{ h.link_to(title, h.url_for(controller='dataset', action='read', id=package.name)) }}</li>
                         {% endfor %}
                     </ul>
                 {% else %}
