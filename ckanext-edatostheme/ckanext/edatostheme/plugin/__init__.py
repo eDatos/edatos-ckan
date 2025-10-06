@@ -379,7 +379,7 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             updated_script = script_content.replace(
                 'FILL_SITE_URL', site_url).replace(
                 'FILL_REGEXP_SITE_URL', regexp_site_url).replace(
-                'FILL_SITE_LANGUAGES', site_languages)
+                'FILL_SITE_LANGUAGES', json.dumps(site_languages))
 
             return updated_script
 
