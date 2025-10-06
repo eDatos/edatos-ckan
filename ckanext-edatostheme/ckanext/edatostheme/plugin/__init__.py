@@ -2,20 +2,13 @@
 import codecs
 import json
 import os
-
-import ckan.lib.base as base
-import ckan.lib.helpers as h
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 import requests
-import shutil
 from bs4 import BeautifulSoup
-from ckan.common import _, request
 from ckan.lib.plugins import DefaultTranslation
-from ckantoolkit import config
+from ckantoolkit import config, h, _, request, abort
 from flask import Blueprint
-
-abort = base.abort
 
 
 def get_group_pagination_limit():
@@ -126,8 +119,9 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
                 # Annadimos los botones en la barra blanca
                 container.append(BeautifulSoup(code, 'html.parser'))
                 alteredHeader = soup.prettify('utf-8')
-
-        alteredHeader = alteredHeader.replace(b'&gt;', b'>').decode('utf8')
+        if isinstance(alteredHeader, bytes):
+            alteredHeader = alteredHeader.decode('utf8')
+        alteredHeader = alteredHeader.replace('&gt;', '>')
         return "{% block header_wrapper %}" + alteredHeader + "{% endblock %}"
 
     def __get_url(self, endpoint, key):
@@ -207,7 +201,6 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         """
         with open(FAVICON_PATH,'wb') as favicon_file:
             favicon_file.write(favicon)
-            # shutil.copyfileobj(favicon.raw, f)
         
 
     def _load_header_footer(self):
@@ -216,12 +209,12 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         """
         with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
             json_config = json.loads(config_file.read())
-            header = requests.get(
-                url=self.__get_header_url(json_config)).content
+            header_response = requests.get(url=self.__get_header_url(json_config))
+            header_response.raise_for_status()
+            header = header_response.content
             header = self.__get_altered_header(
                 header=header, json_config=json_config)
-            footer = requests.get(
-                url=self.__get_footer_ulr(json_config)).content
+            footer = requests.get(url=self.__get_footer_ulr(json_config)).text
 
             footer = footer.decode('utf-8')
 
