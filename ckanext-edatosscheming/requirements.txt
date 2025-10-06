@@ -1,1 +1,2 @@
+ckanext-scheming
 rfc3987
