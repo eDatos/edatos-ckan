@@ -198,6 +198,33 @@ def get_url(endpoint, key):
     return json_header_request['value']
 
 
+def get_header_url(json_config):
+    """
+    Metodo que devuelve la URL del header
+    :param json_config: Fichero de configuracion cargado como un diccionario JSON
+    """
+    header_key = json_config['metadata']['navbarPathKey']
+    endpoint = json_config['metadata']['endpoint']
+    title_translated = _(json_config['metadata']['appName'])
+    cookie_key = json_config['metadata'].get('cookieKey')
+
+    base_url = "%s?appName=%s&appUrl=%s" % (
+        get_url(endpoint, header_key),
+        title_translated,
+        json_config['metadata']['siteURL']
+    )
+
+    if cookie_key:
+        #cookieId, se debe usar para rescatar el label de la cookie la respuesta se debe
+        # de poner como parametro de llamada a la cabecera y el idioma que venga de la cookie
+        request_lang = get_request_lang(get_url(endpoint, cookie_key))
+
+        # Enviar al mismo nivel del appName el chosenLocale
+        return "%s&%s=%s" % (base_url, get_url(endpoint, cookie_key), request_lang)
+
+    return base_url
+
+
 def get_request_lang(cookie_value):
     return request.cookies.get(cookie_value)
 
@@ -215,29 +242,6 @@ def save_header(header):
         header_file.truncate(0)
         header_file.seek(0)
         header_file.write(header)
-
-
-def get_header_url(json_config):
-    """
-    Metodo que devuelve la URL del header
-    :param json_config: Fichero de configuracion cargado como un diccionario JSON
-    """
-    header_key = json_config['metadata']['navbarPathKey']
-    endpoint = json_config['metadata']['endpoint']
-    cookie_key = json_config['metadata']['cookieKey']
-    title_translated = _(json_config['metadata']['appName'])
-
-    #cookieId, se debe usar para rescatar el label de la cookie la respuesta se debe
-    # de poner como parametro de llamada a la cabecera y el idioma que venga de la cookie
-    request_lang = get_request_lang(get_url(endpoint, cookie_key))
-
-    # Enviar al mismo nivel del appName el chosenLocale
-    return "%s?appName=%s&appUrl=%s&%s=%s" % (get_url(endpoint, header_key),
-                                        title_translated,
-                                        json_config['metadata']['siteURL'],
-                                        get_url(endpoint, cookie_key),
-                                        request_lang
-                                        )
 
 
 def get_altered_header(header, json_config):
