@@ -203,7 +203,7 @@ class GobCanProfile(RDFProfile):
             'semanal': (TIME.days, 'Semanal', 7),
             'diaria': (TIME.days, 'Diaria', 1),
         }
-        return frequencies.get(frequency.lower(), (TIME.years, 'Anual', '0'))
+        return frequencies.get(frequency['type'], (TIME.years, 'Anual', '0'))
 
     def _set_resource_formats(self):
         self.RESOURCE_FORMATS = h.resource_formats()
@@ -227,21 +227,35 @@ class GobCanProfile(RDFProfile):
 
         # Add the namespace time to vocabulary
         g.bind('time', TIME)
+        
+        # Multilingual core description field
+        self._add_triples_from_dict(dataset_dict, dataset_ref, 
+                                    [("description_translated", DCT.description, None, Literal)])
 
         # License
         license_id = self._get_dataset_value(dataset_dict, 'license_url')
         if license_id:
             g.add((dataset_ref, DCT.license, Literal(license_id)))
 
-        # Tag: Delink
+        # Tag
+        # Tag:Delink
         delink_tag = config.get(
             'ckanext.gobcangroups.flag.for.delink', 'Manual')
 
         for tag in dataset_dict.get('tags', []):
             if tag["name"] == delink_tag:
                 g.remove((dataset_ref, DCAT.keyword, Literal(delink_tag)))
+                
+        # Tag:multilingual_tags
+        if 'multilingual_tags' in dataset_dict:
+            for lang in dataset_dict["multilingual_tags"]:
+                for value in dataset_dict["multilingual_tags"][lang]:
+                    g.add((dataset_ref, DCAT.keyword, Literal(value, lang=lang)))
+        else:
+            for tag in dataset_dict.get("tags", []):
+                g.add((dataset_ref, DCAT.keyword, Literal(tag["name"])))
 
-            # Frequency
+        # Frequency
         frequency = self._get_dataset_value(dataset_dict, 'frequency')
         if frequency is not None:
             label, frec, times = self._get_frequency_details(frequency)

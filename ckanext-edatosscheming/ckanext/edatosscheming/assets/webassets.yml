@@ -1,0 +1,14 @@
+# edatosscheming-js:
+#   filter: rjsmin
+#   output: ckanext-edatosscheming/%(version)s-edatosscheming.js
+#   contents:
+#     - js/edatosscheming.js
+#   extra:
+#     preload:
+#       - base/main
+
+# edatosscheming-css:
+#   filter: cssrewrite
+#   output: ckanext-edatosscheming/%(version)s-edatosscheming.css
+#   contents:
+#     - css/edatosscheming.css

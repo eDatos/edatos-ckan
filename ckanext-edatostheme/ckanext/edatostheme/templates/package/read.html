@@ -22,7 +22,13 @@
         {% endif %}
       {% endblock %}
     </h1>
-    {% block package_notes %}
+    {% block package_notess %} 
+      {% if (h.scheming_field_by_name(schema.dataset_fields, 'notes') or
+      h.scheming_field_by_name(schema.dataset_fields, 'description_translated')) %}
+        <div class="notes embedded-content">
+          {{ h.render_markdown(h.get_translated(pkg, 'description')) }}
+        </div>
+      {% endif %}
       {% if pkg.notes %}
         <div class="notes embedded-content">
           {{ h.render_markdown(h.get_translated(pkg, 'notes')) }}
@@ -38,7 +44,7 @@
   {% endblock %}
 
   {% block package_tags %}
-    {% snippet "package/snippets/tags.html", tags=pkg.tags %}
+    {% snippet "package/snippets/tags.html", tags=pkg.multilingual_tags %}
   {% endblock %}
 
   {% block package_additional_info %}

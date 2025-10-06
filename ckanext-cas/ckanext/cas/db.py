@@ -112,7 +112,7 @@ def is_ticket_valid(user):
         return False
     search = {'user': user}
     results = CasUser.get(**search)
-    log.info(results)
+    log.debug(results)
     if len(results) == 1:
         return True
     return False

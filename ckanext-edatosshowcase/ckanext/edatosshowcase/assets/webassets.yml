@@ -1,0 +1,14 @@
+# edatosshowcase-js:
+#   filter: rjsmin
+#   output: ckanext-edatosshowcase/%(version)s-edatosshowcase.js
+#   contents:
+#     - js/edatosshowcase.js
+#   extra:
+#     preload:
+#       - base/main
+
+# edatosshowcase-css:
+#   filter: cssrewrite
+#   output: ckanext-edatosshowcase/%(version)s-edatosshowcase.css
+#   contents:
+#     - css/edatosshowcase.css

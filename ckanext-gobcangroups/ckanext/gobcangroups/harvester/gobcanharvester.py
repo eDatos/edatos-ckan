@@ -25,8 +25,8 @@ class GOBCANHarvester(DCATRDFHarvester):
     def info(self):
         return {
             'name': 'gobcan_harvester',
-            'title': 'GOBCAN DCAT RDF Harvester',
-            'description': 'DCAT RDF Harvester modified for GOBCAN'
+            'title': 'EDATOS DCAT RDF Harvester',
+            'description': 'DCAT RDF Harvester modified by EDATOS'
         }
 
     def _search_dict(self, list_of_dictionaries, key, value):

@@ -1,7 +1,13 @@
 {% ckan_extends %}
 
+{%- block title -%}
+   {{ _(g.site_title) }}
+{%- endblock -%}
+
+
 {%- block styles %}
    {{ super() }}
    {% asset 'ckanext-edatostheme/edatostheme-css' %}
    {% asset 'ckanext-edatostheme/edatostheme-fonts' %}
+   {% asset 'ckanext-edatostheme/edatostheme-js' %}
 {% endblock %}

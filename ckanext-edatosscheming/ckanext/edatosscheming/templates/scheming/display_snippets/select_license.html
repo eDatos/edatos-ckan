@@ -1,0 +1,4 @@
+{% if data[field.field_name] %}
+  {% set license = h.license_options(data[field.field_name]) %}
+  {{ license.title }}
+{% endif %}

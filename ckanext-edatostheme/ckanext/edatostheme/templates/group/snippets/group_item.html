@@ -22,10 +22,10 @@ Example:
   {% endblock %}
 #}
   {% block icon %}
-    <span class="subject-area-icon {{ group.name}}"></span>
+    <span class="subject-area-icon {{ group.name }}"></span>
   {% endblock %}
   {% block title %}
-    <h3 class="media-heading">{{ h.get_translated(group, 'title') or group.display_name }}</h3>
+    <h3 class="media-heading">{{ h.get_translated(group, 'title') }}</h3>
   {% endblock %}
   {% block description %}
     {% if h.get_translated(group, 'description') %}

@@ -3,7 +3,6 @@
 # This file is distributed under the same license as the ckan project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
 #
-# fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: ckan 2.7.0b0\n"
@@ -4830,8 +4829,38 @@ msgstr "Crear una colección"
 msgid "Search showcases..."
 msgstr "Buscando colecciones..."
 
+#: ckanext/edatostheme/templates/desplegable.html:88
 msgid "Datasets-home"
 msgstr "Datos"
 
+#: ckanext/edatostheme/templates/desplegable.html:78
 msgid "Options"
 msgstr "Opciones"
+
+#: ckanext/edatostheme/templates/desplegable.html:41
+msgid "Settings"
+msgstr "Configuraciones"
+
+#: ckanext/edatostheme/templates/desplegable.html:78
+msgid "Options"
+msgstr "Opciones"
+
+#: ckanext/edatostheme/templates/desplegable.html:41
+msgid "Settings"
+msgstr "Configuraciones"
+
+#: ckanext/edatostheme/template/license.html:3
+msgid "Legal Notice"
+msgstr "Aviso Legal"
+
+#: ckanext/edatostheme/template/base.html:4
+msgid "Open Data Catalog"
+msgstr "Catálogo de datos abiertos"
+
+#: ckanext/template/snippets/facet_list.html:74
+msgid "Aviso Legal del ISTAC"
+msgstr "Aviso Legal del ISTAC"
+
+#: ckanext/template/snippets/facet_list.html:74
+msgid "Aviso Legal del IBESTAT"
+msgstr "Aviso Legal del IBESTAT"
