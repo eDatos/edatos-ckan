@@ -34,6 +34,13 @@ SCRIPT_TEMPLATE = os.path.join(dirname, '../code_templates/i18n.js')
 HERE = os.path.abspath(os.path.dirname(__file__))
 I18N_DIR = os.path.join(HERE, "../i18n")
 
+def new_activities_dummy():
+    """
+    Dummy helper to prevent crashes in CKAN 2.9+ where the
+    h.new_activities() helper from ckanext-dashboard was removed.
+    """
+    return 0
+
 def get_freq_tags(lang='tags_es'):
     """
     Obtiene los facets de los datasets (package) usando package_search.
@@ -456,7 +463,8 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             'edatos_get_license': get_license,
             'edatos_get_group': get_group,
             'edatos_get_tag': get_tag,
-            'edatos_get_freq_tags': get_freq_tags
+            'edatos_get_freq_tags': get_freq_tags,
+            'new_activities': new_activities_dummy,
         }
 
     # ITranslation
