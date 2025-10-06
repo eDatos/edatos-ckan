@@ -19,7 +19,6 @@ from flask import Blueprint
 from flask import request as fr
 
 
-abort = base.abort
 dirname = os.path.dirname(__file__)
 CONFIG_FILE_PATH = os.path.join(dirname, '../etc/config.json')
 FOOTER_PATH = os.path.join(dirname, '../templates/footer.html')
@@ -499,4 +498,3 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         '''Modify and return the ``facets_dict`` for an organization's page.
         '''
         return self.dataset_facets(facets_dict, package_type)
-
