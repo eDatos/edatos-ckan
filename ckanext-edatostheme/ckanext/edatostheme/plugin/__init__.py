@@ -34,17 +34,12 @@ SCRIPT_TEMPLATE = os.path.join(dirname, '../code_templates/i18n.js')
 HERE = os.path.abspath(os.path.dirname(__file__))
 I18N_DIR = os.path.join(HERE, "../i18n")
 
-# Global cache for plugin config to avoid repeated file reads
-_plugin_config = None
-
-
 def new_activities_dummy():
     """
     Dummy helper to prevent crashes in CKAN 2.9+ where the
     h.new_activities() helper from ckanext-dashboard was removed.
     """
     return 0
-
 
 def get_freq_tags(lang='tags_es'):
     """
@@ -56,13 +51,13 @@ def get_freq_tags(lang='tags_es'):
         'rows': 0,
         'facet.field': ['tags_en', 'tags_ca', 'tags_es']
     })
-
+    
     items = package["search_facets"][lang]["items"]
     items_ordenados = sorted(items, key=lambda item: item['count'], reverse=True)
 
     tags_limit_5 = [item['display_name'] for item in items_ordenados[:5]]
     return tags_limit_5
-
+    
 
 def get_tag(tag_id):
     tag_dict = toolkit.get_action('tag_show')(
@@ -70,14 +65,12 @@ def get_tag(tag_id):
     return tag_dict
 
 def get_group(group_id):
-    # Note: This function is not used by the plugin itself.
     group_dict = toolkit.get_action('group_show')(
         data_dict={'id': group_id})
     return group_dict
 
 def get_license(license_id):
     return Package.get_license_register().get(license_id)
-
 
 def schema_get_label_for_facet(facet, schema_type='dataset'):
     scheming_field = sh.scheming_field_by_name(
@@ -98,7 +91,6 @@ def schema_get_label_for_facet(facet, schema_type='dataset'):
         return sh.scheming_choices_label(choices, field['name'])
 
     return get_label_for_field
-
 
 def get_facet_items_dict(facet, limit=None, exclude_active=False, default_sort=True):
     """ Metodo que devuelve los items de un facet
@@ -137,17 +129,16 @@ def get_facet_items_dict(facet, limit=None, exclude_active=False, default_sort=T
         return facets[:limit]
     return facets
 
-
 def get_group_pagination_limit():
     """
     Devuelve el límite de paginación para grupos definida en el archivo
     de configuración etc/config.json
     """
-    global _plugin_config
-    if _plugin_config is None:
-        _load_plugin_config()
-    # Se asume que es un número entero, en otro caso habrá que hacer cast con int()
-    return _plugin_config['metadata']['groupPaginationLimit']
+
+    with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as json_file:
+        json_data = json.loads(json_file.read())
+        # Se asume que es un número entero, en otro caso habrá que hacer cast con int()
+        return json_data['metadata']['groupPaginationLimit']
 
 
 def get_all_groups():
@@ -269,247 +260,14 @@ def get_altered_header(header, json_config):
     :param json_config: Fichero de configuracion cargado como
                         un diccionario JSON
     """
-    soup = BeautifulSoup(header, 'html.parser')
     container_class = json_config['metadata']['htmlCodeClass']
+    alteredHeader = header
 
-    # Add the white bar buttons
-    container = soup.find(id=container_class)
-    if container:
-        with codecs.open(HEADER_WHITE_BAR_PATH, 'r', encoding='utf8') as white_bar_file:
-            code = white_bar_file.read()
-            container.append(BeautifulSoup(code, 'html.parser'))
-
-    # Add the burger button
-    container = soup.find(class_='d-flex justify-content-end align-items-center')
-    if container:
-        with codecs.open(BURGER_BUTTON_PATH, 'r', encoding='utf8') as burger_button_file:
-            code = burger_button_file.read()
-            container.append(BeautifulSoup(code, 'html.parser'))
-
-    alteredHeader = soup.prettify('utf-8')
-    alteredHeader = alteredHeader.replace(b'&gt;', b'>').decode('utf8')
-
-    return "{% block header_wrapper %}" + alteredHeader + "{% endblock %}"
-
-
-def _load_plugin_config():
-    """Loads the plugin's JSON config file into a global variable."""
-    global _plugin_config
-    if _plugin_config is None:
-        with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
-            _plugin_config = json.loads(config_file.read())
-
-
-def load_external_assets():
-    """
-    This function should be called once at startup.
-    It fetches the header, footer, and favicon from remote URLs
-    and saves them as local templates/files.
-    """
-    global _plugin_config
-    if _plugin_config is None:
-        _load_plugin_config()
-
-    # Load header
-    header_url = get_header_url(_plugin_config)
-    header_content = requests.get(url=header_url).content
-    altered_header = get_altered_header(header=header_content, json_config=_plugin_config)
-    save_header(header=altered_header)
-
-    # Load footer
-    footer_url = get_footer_url(_plugin_config)
-    footer_content = requests.get(url=footer_url).content.decode('utf-8')
-    save_footer(footer=footer_content)
-
-    # Load favicon
-    favicon_url = get_favicon_url(_plugin_config)
-    favicon_content = requests.get(url=favicon_url).content
-    save_favicon(favicon=favicon_content)
-
-
-def get_footer_url(json_config):
-    """
-    Metodo que devuelve la URL del footer
-    :param json_config: Fichero de configuracion cargado como un diccionario JSON
-    """
-    footer_key = json_config['metadata']['footerPathKey']
-    endpoint = json_config['metadata']['endpoint']
-    return "%s?appName=%s&appUrl=%s" % (get_url(endpoint, footer_key),
-                                        json_config['metadata']['appName'],
-                                        json_config['metadata']['siteURL'])
-
-
-def get_favicon_url(json_config):
-    """
-    Metodo que devuelve la URL del favicon
-    :param
-        json_config: Fichero de configuracion cargado como diccionario JSON
-    """
-    favicon_key = json_config['metadata']['favicon']
-    endpoint = json_config['metadata']['endpoint']
-    return "%s?appName=%s&appUrl=%s" % (get_url(endpoint, favicon_key),
-                                        json_config['metadata']['appName'],
-                                        json_config['metadata']['siteURL'])
-
-
-def save_footer(footer):
-    """
-    Metodo que guarda el footer como template
-
-    :param footer: Codigo del footer en formato string que se va a guardar
-    """
-    with codecs.open(FOOTER_PATH, 'w', encoding='utf8') as footer_file:
-        footer_file.write(footer)
-
-
-def save_favicon(favicon):
-    """
-    Metodo para guardar el favicon
-
-    :param favicon: Imagen descargada a guardar en la extension
-    """
-    with open(FAVICON_PATH, 'wb') as favicon_file:
-        favicon_file.write(favicon)
-
-
-class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
-    plugins.implements(plugins.ITranslation)
-    plugins.implements(plugins.IBlueprint)
-    plugins.implements(plugins.IConfigurer)
-    plugins.implements(plugins.ITemplateHelpers)
-    plugins.implements(plugins.IPackageController, inherit=True)
-    plugins.implements(plugins.IFacets)
-
-    def __init__(self, *args, **kwargs):
-        super(EdatosthemePlugin, self).__init__(*args, **kwargs)
-        # Load external assets only once when the plugin is initialized
-        load_external_assets()
-
-    # IConfigurer
-
-    def __save_script(self, script_content):
-        """
-        Metodo para guardad el script
-
-        :param script: Script
-        """
-        with codecs.open(SCRIPT_PATH, 'w', encoding='utf8') as script_file:
-            script_file.write(self.__config_properties_filler(
-                script_content=script_content
-            ))
-
-    def __config_properties_filler(self, script_content):
-        """
-        Metodo que rellena las variables
-        """
-        global _plugin_config
-        if _plugin_config is None:
-            _load_plugin_config()
-
-        site_url = _plugin_config['metadata']['siteURL']
-        regexp_site_url = site_url.replace('/', r'\/').replace('.', r'\.')
-        if not config.get('ckan.locales_offered', None):
-            raise RuntimeError(
-                '"ckan.locales_offered" is required for plugin: {0}'
-                .format(self.name))
-        site_languages = config.get('ckan.locales_offered')
-
-        updated_script = script_content.replace(
-            'FILL_SITE_URL', site_url).replace(
-            'FILL_REGEXP_SITE_URL', regexp_site_url).replace(
-            'FILL_SITE_LANGUAGES', json.dumps(site_languages))
-
-        return updated_script
-
-    def _i18n_script_filler(self):
-        """
-        Metodo que incrusta en el script de i18n los valores de la config
-        necesarias para su funcionamiento
-        """
-        with codecs.open(SCRIPT_TEMPLATE, 'r', encoding='utf8') as script_template:
-            script_content = script_template.read()
-            self.__save_script(script_content)
-
-    # IConfigurer
-
-    def update_config(self, config_):
-        self._i18n_script_filler()
-        toolkit.add_template_directory(config_, '../templates')
-        toolkit.add_public_directory(config_, '../public')
-        toolkit.add_resource('../assets', 'ckanext-edatostheme')
-
-    # IBlueprint
-    def get_blueprint(self):
-        edatos = Blueprint('istac_theme', self.__module__)
-
-        if REDIRECT_VIEWS:
-            for route_, view_, function_ in REDIRECT_VIEWS:
-                edatos.add_url_rule(route_, view_, function_)
-
-        return [edatos]
-
-    # ITemplateHelpers
-
-    def get_helpers(self):
-        '''Register the get_all_groups function as a template helper function.
-        '''
-        return {
-            'edatostheme_get_all_groups': get_all_groups,
-            'edatostheme_get_count_all_datasets': get_count_all_datasets,
-            'package_showcase_list': package_showcase_list,
-            'edatostheme_get_delink_value': get_delink_value,
-            'edatos_get_facet_items_dict': get_facet_items_dict,
-            'edatos_schema_get_label_for_facet': schema_get_label_for_facet,
-            'edatos_get_license': get_license,
-            'edatos_get_group': get_group,
-            'edatos_get_tag': get_tag,
-            'edatos_get_freq_tags': get_freq_tags,
-            'new_activities': new_activities_dummy,
-        }
-
-    # ITranslation
-
-    def i18n_directory(self):
-        return I18N_DIR
-
-    # IPackageController
-    def before_index(self, data_dict):
-        """Metodo para realizar el indexado de las etiquetas i18n
-        en el index de solr correspondiente
-        """
-        if 'multilingual_tags' in data_dict:
-            tags = json.loads(data_dict.get('extras_multilingual_tags', '{}'))
-            data_dict['tags_en'] = tags.get('en', [])
-            data_dict['tags_ca'] = tags.get('ca', [])
-            data_dict['tags_es'] = tags.get('es', [])
-        data_dict['multilingual_tags'] = []
-        return data_dict
-
-    # IFacets
-
-    def dataset_facets(self, facets_dict, package_type):
-        '''Add new search facet dictionary for datasets.
-        '''
-        reordered_facet_dict = OrderedDict({
-            'groups': toolkit._('Groups'),
-            'tags_en': toolkit._('Tags'),
-            'tags_ca': toolkit._('Tags'),
-            'tags_es': toolkit._('Tags'),
-            'res_format': toolkit._('Formats'),
-            'license_id': toolkit._('Licences'),
-        })
-
-        return reordered_facet_dict
-
-    def group_facets(self, facets_dict, group_type, package_type):
-        '''Modify and return the ``facets_dict`` for a group's page.
-        '''
-        return self.dataset_facets(facets_dict, package_type)
-
-    def organization_facets(self, facets_dict, organization_type, package_type):
-        '''Modify and return the ``facets_dict`` for an organization's page.
-        '''
-        return self.dataset_facets(facets_dict, package_type)
+    with codecs.open(HEADER_WHITE_BAR_PATH, 'r', encoding='utf8') as white_bar_file:
+        code = white_bar_file.read()
+        # Annadimos los botones en la barra blanca
+        soup = BeautifulSoup(alteredHeader, 'html.parser')
+        container = soup.find(id=container_class)
         container.append(BeautifulSoup(code, 'html.parser'))
         alteredHeader = soup.prettify('utf-8')
 

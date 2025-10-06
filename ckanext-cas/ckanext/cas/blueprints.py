@@ -321,8 +321,8 @@ def cas_callback(**kwargs):
             return redirect(next_url)
         log.debug('USERNAME :' + username)
         log.debug('(END CAS/CALLBACK) REDIRECTING TO ' +
-                  t.url_for('user.dashboard', _external=True))
-        return redirect(t.url_for('user.dashboard', _external=True))
+                  t.url_for('dashboard.index', id=username, _external=True))
+        return redirect(t.url_for('dashboard.index', id=username, _external=True))
 
     else:
         msg = 'MethodNotSupported: {0}'.format(t.request.method)
@@ -371,3 +371,4 @@ def ensure_setup_once():
                     log.debug(f"CKANext-CAS: DB setup pospuesto: {e}")
                 except Exception as e:
                     log.exception("CKANext-CAS: Error en setup()")
+
