@@ -304,7 +304,7 @@ def load_header():
 
 # Map de vistas que se quieren restringir acceso
 REDIRECT_VIEWS = (
-    # route, view, function
+    # route, view, function    
     ('/user/register', 'abort_redirect', abort_redirect),
 
 )
