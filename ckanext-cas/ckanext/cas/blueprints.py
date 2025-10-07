@@ -141,7 +141,7 @@ def cas_saml_callback(**kwargs):
         insert_entry(ticket, username)
         if 'user/login' not in next_url:
             return redirect(next_url)
-        return redirect(t.h.url_for('dashboard.index', id=username))
+        return redirect(t.h.url_for('dashboard.groups', id=username))
 
     else:
         msg = 'MethodNotSupported: {0}'.format(t.request.method)
@@ -321,8 +321,8 @@ def cas_callback(**kwargs):
             return redirect(next_url)
         log.debug('USERNAME :' + username)
         log.debug('(END CAS/CALLBACK) REDIRECTING TO ' +
-                  t.url_for('dashboard.index', id=username, _external=True))
-        return redirect(t.url_for('dashboard.index', id=username, _external=True))
+                  t.url_for('dashboard.groups', id=username, _external=True))
+        return redirect(t.url_for('dashboard.groups', id=username, _external=True))
 
     else:
         msg = 'MethodNotSupported: {0}'.format(t.request.method)
