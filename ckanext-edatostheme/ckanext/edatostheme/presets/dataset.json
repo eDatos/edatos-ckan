@@ -1,0 +1,19 @@
+{
+    "dataset": {
+      "title": "Dataset",
+      "description": "A basic dataset schema",
+      "fields": [
+        {
+          "field_name": "title",
+          "label": "Title",
+          "required": true
+        },
+        {
+          "field_name": "notes",
+          "label": "Description",
+          "required": false
+        }
+      ]
+    }
+  }
+    
