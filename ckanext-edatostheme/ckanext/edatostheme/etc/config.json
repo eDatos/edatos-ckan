@@ -1,10 +1,10 @@
 {
     "metadata": {
-        "endpoint": "https://estadisticas.arte-consultores.com/cmetadata/v1.0",
+        "endpoint": "FILL_ME",
         "navbarPathKey": "metamac.app.style.header.url",
         "footerPathKey": "metamac.app.style.footer.url",
         "appName": "Open Data Catalog",
-        "siteURL": "https://estadisticas.arte-consultores.com/catalogo",
+        "siteURL": "FILL_ME",
         "htmlCodeClass": "edatos-custom-header",
         "groupPaginationLimit": 24,
         "favicon": "metamac.app.style.favicon.url",
