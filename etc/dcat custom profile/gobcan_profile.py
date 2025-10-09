@@ -203,7 +203,7 @@ class GobCanProfile(RDFProfile):
             'semanal': (TIME.days, 'Semanal', 7),
             'diaria': (TIME.days, 'Diaria', 1),
         }
-        return frequencies.get(frequency['type'], (TIME.years, 'Anual', '0'))
+        return frequencies.get(frequency.lower(), (TIME.years, 'Anual', '0'))
 
     def _set_resource_formats(self):
         self.RESOURCE_FORMATS = h.resource_formats()
@@ -257,7 +257,7 @@ class GobCanProfile(RDFProfile):
 
         # Frequency
         frequency = self._get_dataset_value(dataset_dict, 'frequency')
-        if frequency is not None:
+        if frequency :
             label, frec, times = self._get_frequency_details(frequency)
             frequency_node = BNode()
             duration_desc_node = BNode()
