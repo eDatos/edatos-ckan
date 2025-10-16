@@ -3,9 +3,6 @@
 import codecs
 import json
 import os
-
-import ckan.lib.base as base
-import ckan.lib.helpers as h
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 import requests
@@ -17,12 +14,11 @@ from collections import OrderedDict
 from ckan.model import Package
 from ckan.model.tag import Tag
 from ckan.lib.plugins import DefaultTranslation
-from ckantoolkit import config
+from ckantoolkit import config, h, _, request, abort
 from flask import Blueprint
 from flask import request as fr
 
 
-abort = base.abort
 dirname = os.path.dirname(__file__)
 CONFIG_FILE_PATH = os.path.join(dirname, '../etc/config.json')
 FOOTER_PATH = os.path.join(dirname, '../templates/footer.html')
@@ -37,6 +33,13 @@ SCRIPT_TEMPLATE = os.path.join(dirname, '../code_templates/i18n.js')
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 I18N_DIR = os.path.join(HERE, "../i18n")
+
+def new_activities_dummy():
+    """
+    Dummy helper to prevent crashes in CKAN 2.9+ where the
+    h.new_activities() helper from ckanext-dashboard was removed.
+    """
+    return 0
 
 def get_freq_tags(lang='tags_es'):
     """
@@ -202,6 +205,33 @@ def get_url(endpoint, key):
     return json_header_request['value']
 
 
+def get_header_url(json_config):
+    """
+    Metodo que devuelve la URL del header
+    :param json_config: Fichero de configuracion cargado como un diccionario JSON
+    """
+    header_key = json_config['metadata']['navbarPathKey']
+    endpoint = json_config['metadata']['endpoint']
+    title_translated = _(json_config['metadata']['appName'])
+    cookie_key = json_config['metadata'].get('cookieKey')
+
+    base_url = "%s?appName=%s&appUrl=%s" % (
+        get_url(endpoint, header_key),
+        title_translated,
+        json_config['metadata']['siteURL']
+    )
+
+    if cookie_key:
+        #cookieId, se debe usar para rescatar el label de la cookie la respuesta se debe
+        # de poner como parametro de llamada a la cabecera y el idioma que venga de la cookie
+        request_lang = get_request_lang(get_url(endpoint, cookie_key))
+
+        # Enviar al mismo nivel del appName el chosenLocale
+        return "%s&%s=%s" % (base_url, get_url(endpoint, cookie_key), request_lang)
+
+    return base_url
+
+
 def get_request_lang(cookie_value):
     return request.cookies.get(cookie_value)
 
@@ -312,7 +342,7 @@ def load_header():
 
 # Map de vistas que se quieren restringir acceso
 REDIRECT_VIEWS = (
-    # route, view, function
+    # route, view, function    
     ('/user/register', 'abort_redirect', abort_redirect),
 
 )
@@ -398,7 +428,7 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             updated_script = script_content.replace(
                 'FILL_SITE_URL', site_url).replace(
                 'FILL_REGEXP_SITE_URL', regexp_site_url).replace(
-                'FILL_SITE_LANGUAGES', site_languages)
+                'FILL_SITE_LANGUAGES', json.dumps(site_languages))
 
             return updated_script
 
@@ -471,7 +501,8 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             'edatos_get_license': get_license,
             'edatos_get_group': get_group,
             'edatos_get_tag': get_tag,
-            'edatos_get_freq_tags': get_freq_tags
+            'edatos_get_freq_tags': get_freq_tags,
+            'new_activities': new_activities_dummy,
         }
 
     # ITranslation
@@ -517,4 +548,3 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         '''Modify and return the ``facets_dict`` for an organization's page.
         '''
         return self.dataset_facets(facets_dict, package_type)
-

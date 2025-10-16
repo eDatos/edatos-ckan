@@ -1,6 +1,7 @@
 {% extends "package/read_base.html" %}
 
 {% set pkg = c.pkg_dict %}
+{% set schema = h.scheming_get_dataset_schema(pkg.type) %}
 
 {% block primary_content_inner %}
   {{ super() }}

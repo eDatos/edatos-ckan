@@ -13,7 +13,6 @@ import ckan.lib.helpers as h
 import ckan.plugins as p
 import ckan.plugins.toolkit as t
 import ckanext.cas.blueprints as blueprints
-from ckanext.cas.db import setup as db_setup
 from ckanext.cas.db import delete_user_entry, is_ticket_valid
 from ckan.common import g, session
 import ckan.model as model
@@ -74,9 +73,7 @@ class CASClientPlugin(p.SingletonPlugin):
 
     # IConfigurable
 
-    def configure(self, config_):
-        # Setup database tables
-        db_setup()
+    def configure(self, config_):        
 
         # Load and parse user attributes mapping
         user_mapping = t.aslist(config_.get('ckanext.cas.user_mapping'))
@@ -164,14 +161,13 @@ class CASClientPlugin(p.SingletonPlugin):
 
     def update_config(self, config_):
         t.add_template_directory(config_, 'templates')
-        t.add_public_directory(config_, 'public')
-        t.add_resource('fanstatic', 'cas')
+        t.add_public_directory(config_, 'public')          
 
     # IAuthenticator
 
     def identify(self):
         log.debug('Invoked "identify" method.')
-
+        
         environ = t.request.environ
 
         remote_user = session.get('user')

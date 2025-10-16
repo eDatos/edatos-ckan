@@ -141,7 +141,7 @@ def cas_saml_callback(**kwargs):
         insert_entry(ticket, username)
         if 'user/login' not in next_url:
             return redirect(next_url)
-        return redirect(t.h.url_for('dashboard.index', id=username))
+        return redirect(t.h.url_for('dashboard.groups', id=username))
 
     else:
         msg = 'MethodNotSupported: {0}'.format(t.request.method)
@@ -321,8 +321,8 @@ def cas_callback(**kwargs):
             return redirect(next_url)
         log.debug('USERNAME :' + username)
         log.debug('(END CAS/CALLBACK) REDIRECTING TO ' +
-                  t.url_for('dashboard.index', id=username, _external=True))
-        return redirect(t.url_for('dashboard.index', id=username, _external=True))
+                  t.url_for('dashboard.groups', id=username, _external=True))
+        return redirect(t.url_for('dashboard.groups', id=username, _external=True))
 
     else:
         msg = 'MethodNotSupported: {0}'.format(t.request.method)
@@ -350,3 +350,25 @@ for rule in rules:
 if config.get('ckanext.cas.register_url', None):
     cas.add_url_rule('/user/register',
                      'register_url_redirect', register_url_redirect)
+
+import threading
+from ckanext.cas import db
+
+_setup_lock = threading.Lock()
+_setup_done = False
+
+@cas.before_app_request
+def ensure_setup_once():
+    global _setup_done
+    if not _setup_done:
+        with _setup_lock:
+            if not _setup_done:
+                try:
+                    db.setup()
+                    _setup_done = True
+                    log.debug("CKANext-CAS: DB setup ejecutado correctamente.")
+                except RuntimeError as e:
+                    log.debug(f"CKANext-CAS: DB setup pospuesto: {e}")
+                except Exception as e:
+                    log.exception("CKANext-CAS: Error en setup()")
+

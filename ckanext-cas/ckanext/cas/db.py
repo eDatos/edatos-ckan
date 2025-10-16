@@ -2,7 +2,6 @@ import logging
 import datetime
 import sqlalchemy.exc
 import ckan.plugins.toolkit as t
-
 from ckan.model import domain_object
 from ckan.model.meta import Session, metadata, mapper
 from sqlalchemy.engine.reflection import Inspector
@@ -15,29 +14,32 @@ cas_table = None
 
 
 def setup():
+    from ckan.model.meta import engine
+    if engine is None:
+        raise RuntimeError("CKAN database engine is not initialized. Call setup() later.")
+      
     if cas_table is None:
         define_cas_tables()
         log.debug('CAS table(s) defined in memory')
 
-        if not cas_table.exists():
-            cas_table.create()
-
+        inspector = Inspector.from_engine(engine)
+        if not inspector.has_table(cas_table.name):
+            log.info("Creating cas table: %s", cas_table.name)
+            cas_table.create(bind=engine)        
     else:
-        log.debug('CAS table(s) already exist')
-        from ckan.model.meta import engine
+        log.debug('CAS table(s) already exist')        
         inspector = Inspector.from_engine(engine)
 
         try:
             inspector.get_indexes("ckanext_cas_login")
         except NoSuchTableError:
-            cas_table.create()
-
+            cas_table.create(bind=engine)        
+            
         index_names = [index['name']
                        for index in inspector.get_indexes("ckanext_cas_login")]
         if "ckanext_cas_login_ticket_id_idx" not in index_names:
-            log.debug('Creating index for ckanext_cas_login')
             Index("ckanext_cas_login_ticket_id_idx",
-                  cas_table.c.ticket_id).create()
+                  cas_table.c.ticket_id).create(bind=engine)
 
 
 class CasUser(domain_object.DomainObject):
@@ -94,15 +96,20 @@ def insert_entry(ticket_id, user=None):
         return False
 
 
-def delete_entry(ticket_id):
-    cas_table.delete(CasUser.ticket_id == ticket_id).execute()
+def delete_entry(ticket_id):    
+    Session.query(CasUser).filter_by(ticket_id=ticket_id).delete()
+    Session.commit()
 
 
 def delete_user_entry(user):
-    cas_table.delete(CasUser.user == user).execute()
+    Session.query(CasUser).filter_by(user=user).delete()
+    Session.commit()
 
 
 def is_ticket_valid(user):
+    if cas_table is None:
+        # Engine no inicializado
+        return False
     search = {'user': user}
     results = CasUser.get(**search)
     log.debug(results)
