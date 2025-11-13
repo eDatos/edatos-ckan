@@ -27,10 +27,7 @@ services:
       args:
         - TZ=${TZ}
     networks:
-      - ckan-ckannet
-      - ckan-dbnet
-      - ckan-solrnet
-      - ckan-redisnet
+      - ckan-net
     env_file:
       - .env
     depends_on:
@@ -42,9 +39,13 @@ services:
         condition: service_healthy
     volumes:
       - ./src/ckanext-edatostheme/ckanext/edatostheme/etc/config.json:/srv/app/src/ckanext-edatostheme/ckanext/edatostheme/etc/config.json
+      - ./src/ckanext-edatosscheming/ckanext/edatosscheming/etc/config.json:/srv/app/src/ckanext-edatosscheming/ckanext/edatosscheming/etc/config.json
       - ckan_storage:/var/lib/ckan
       - pip_cache:/root/.cache/pip
       - site_packages:/usr/lib/python3.10/site-packages
+      - ./src/extensions:/srv/app/src/src_extensions
+      - local_bin:/usr/local/bin
+      - home_dir:/srv/app/
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:5000/api/action/status_show"]
@@ -70,10 +71,7 @@ services:
       redis:
         condition: service_healthy
     networks:
-      - ckan-ckannet
-      - ckan-dbnet
-      - ckan-redisnet
-      - ckan-solrnet
+      - ckan-net
     volumes:
       - ckan_storage:/var/lib/ckan
       - pip_cache:/root/.cache/pip
@@ -98,10 +96,7 @@ services:
       redis:
         condition: service_healthy
     networks:
-      - ckan-ckannet
-      - ckan-dbnet
-      - ckan-redisnet
-      - ckan-solrnet
+      - ckan-net
     volumes:
       - ckan_storage:/var/lib/ckan
       - pip_cache:/root/.cache/pip
@@ -128,10 +123,7 @@ services:
       redis:
         condition: service_healthy
     networks:
-      - ckan-ckannet
-      - ckan-dbnet
-      - ckan-redisnet
-      - ckan-solrnet
+      - ckan-net
     volumes:
       - ckan_storage:/var/lib/ckan
       - pip_cache:/root/.cache/pip
@@ -142,7 +134,7 @@ services:
     build:
       context: postgresql/
     networks:
-      - ckan-dbnet
+      - ckan-net
     environment:
       - POSTGRES_USER
       - POSTGRES_PASSWORD
@@ -158,10 +150,10 @@ services:
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
-     
+
   solr:
     networks:
-      - ckan-solrnet
+      - ckan-net
     image: ckan/ckan-solr:${SOLR_IMAGE_VERSION}
     volumes:
       - solr_data:/var/solr
@@ -172,14 +164,11 @@ services:
   redis:
     image: redis:${REDIS_VERSION}
     networks:
-      - ckan-redisnet
+      - ckan-net
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "redis-cli", "-e", "QUIT"]
     
 networks:
-  ckan-webnet:
-  ckan-ckannet:
-  ckan-solrnet:
-  ckan-dbnet:
-  ckan-redisnet:
+  ckan-net:
+    external: true
