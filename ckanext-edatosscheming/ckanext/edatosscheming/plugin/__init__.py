@@ -108,9 +108,6 @@ class EdatosschemingPlugin(plugins.SingletonPlugin):
         # self._languages_dataset_schemas()
         self.__languages_schemas_filler()
         toolkit.add_template_directory(config_, '../templates')
-        toolkit.add_public_directory(config_, '../public')
-        toolkit.add_resource('../fanstatic',
-                             '../ckanext-edatosscheming')
 
     # IValidatos
 
