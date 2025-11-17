@@ -19,35 +19,37 @@ RUN mkdir /srv/app/.local && chown ckan /srv/app/.local && \
 
 USER ckan
 
-COPY *.json . 
+COPY *.json .
 
 ## edatos plugins
-RUN git clone -b upgrade_ckan_2_11 https://apersan:glpat-zzB15xJzKcpjJxURoq9e@git.arte-consultores.com/istac/ckan-istac.git /tmp/ckan-istac && \
+#RUN git clone -b upgrade_ckan_2_11 https://apersan:glpat-zzB15xJzKcpjJxURoq9e@git.arte-consultores.com/istac/ckan-istac.git /tmp/ckan-istac && \
+RUN git clone -b EDATOS-5261_ActualizacionCKANDockerizado https://apersan:glpat-zzB15xJzKcpjJxURoq9e@git.arte-consultores.com/istac/ckan-istac.git /tmp/ckan-istac && \
     #RUN git clone -b master https://apersan:glpat-zzB15xJzKcpjJxURoq9e@git.arte-consultores.com/istac/ckan-istac.git /tmp/ckan-istac && \
     mv /tmp/ckan-istac/ckanext-edatostheme src/ckanext-edatostheme && \
     chmod 777 src/ckanext-edatostheme/ckanext/edatostheme/templates/header.html && \
     chmod 777 src/ckanext-edatostheme/ckanext/edatostheme/templates/footer.html && \
     mv /tmp/ckan-istac/ckanext-cas src/ckanext-cas && \
     mv /tmp/ckan-istac/ckanext-edatosscheming src/ckanext-edatosscheming && \
-    mv /tmp/ckan-istac/ckanext-gobcangroups src/ckanext-gobcangroups
+    mv /tmp/ckan-istac/ckanext-gobcangroups src/ckanext-gobcangroups && \
+    mv /tmp/ckan-istac/ckanext-edatosshowcase src/ckanext-edatosshowcase
 
 # Esto es para la versión 2.9: Activamos el entorno python
 #RUN . /usr/lib/ckan/venv/bin/activate
 
 ### XLoader ###
-RUN pip3 install -e 'git+https://github.com/ckan/ckanext-xloader.git@2.2.0#egg=ckanext-xloader' && \ 
+RUN pip3 install -e 'git+https://github.com/ckan/ckanext-xloader.git@2.2.0#egg=ckanext-xloader' && \
     pip3 install -r ${APP_DIR}/src/ckanext-xloader/requirements.txt && \
     pip3 install -U requests[security]
 
 ### GeoView ###
-RUN pip3 install -e "git+https://github.com/ckan/ckanext-geoview.git#egg=ckanext-geoview"
-# RUN git clone https://github.com/ckan/ckanext-geoview.git /srv/app/src/ckanext-geoview && \
-#     cd /srv/app/src/ckanext-geoview && \
-#     git checkout tags/0.2.2 && \
-#     pip install -e .
+RUN pip3 install -e 'git+https://github.com/ckan/ckanext-geoview.git@v0.2.2#egg=ckanext-geoview'
+#RUN git clone https://github.com/ckan/ckanext-geoview.git /srv/app/src/ckanext-geoview && \
+#    cd /srv/app/src/ckanext-geoview && \
+#    git checkout tags/0.2.2 && \
+#    pip install -e .
 
 ### showcase ###
-RUN pip3 install -e 'git+https://github.com/ckan/ckanext-showcase.git@1.8.4#egg=ckanext-showcase' && \
+RUN pip3 install -e 'git+https://github.com/ckan/ckanext-showcase.git@v1.8.4#egg=ckanext-showcase' && \
     pip3 install -r ${APP_DIR}/src/ckanext-showcase/requirements.txt
 
 ### DCat ###
@@ -59,20 +61,21 @@ RUN  git clone --branch v2.4.2 --single-branch https://github.com/ckan/ckanext-d
     pip3 install -r ${APP_DIR}/src/ckanext-dcat/requirements.txt
 
 ### Harvester ###
-RUN pip3 install -e 'git+https://github.com/ckan/ckanext-harvest.git@1.6.1#egg=ckanext-harvest' && \
+RUN pip3 install -e 'git+https://github.com/ckan/ckanext-harvest.git@v1.6.1#egg=ckanext-harvest' && \
     pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt
 
 
 ### Scheming and fluent
-RUN pip3 install -e 'git+https://github.com/ckan/ckanext-scheming.git@3.1.0#egg=ckanext-scheming' && \
-    pip3 install -e 'git+https://github.com/ckan/ckanext-fluent.git@#egg=ckanext-fluent' 
+RUN pip3 install -e 'git+https://github.com/ckan/ckanext-scheming.git@release-3.1.0#egg=ckanext-scheming'
+RUN pip3 install -e 'git+https://github.com/ckan/ckanext-fluent.git#egg=ckanext-fluent'
 
 ### Custom plugins
 RUN pip3 install -e src/ckanext-edatostheme && \
     pip3 install -e src/ckanext-cas && \
     pip3 install -r src/ckanext-edatosscheming/requirements.txt && \
     pip3 install -e src/ckanext-edatosscheming && \
-    pip3 install -e src/ckanext-gobcangroups
+    pip3 install -e src/ckanext-gobcangroups && \
+    pip3 install -e src/ckanext-edatosshowcase
 
 # Revisar si no debemos incluir esto en requirements.txt del edatostheme
 RUN pip3 install beautifulsoup4
@@ -85,7 +88,7 @@ RUN apt install vim -y
 
 RUN sed -i '/^\[logger_ckanext\]/,/^\[/ s/level = Info/level = DEBUG/' /srv/app/ckan.ini
 RUN sed -i 's/^debug=false/debug=true/' /srv/app/ckan.ini
-# RUN sed -i '/./ s/^/#/' /docker-entrypoint.d/02_setup_xloader.sh
+#RUN sed -i '/./ s/^/#/' /docker-entrypoint.d/02_setup_xloader.sh
 
 
 
@@ -108,4 +111,3 @@ RUN for d in $APP_DIR/patches/*; do \
     done ; \
     fi ; \
     done
-
