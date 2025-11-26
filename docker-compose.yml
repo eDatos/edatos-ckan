@@ -12,8 +12,7 @@ services:
       context: nginx/
       dockerfile: Dockerfile
     networks:
-      - ckan-webnet
-      - ckan-ckannet
+      - ckan-net
     depends_on:
       ckan:
         condition: service_healthy
@@ -44,8 +43,6 @@ services:
       - pip_cache:/root/.cache/pip
       - site_packages:/usr/lib/python3.10/site-packages
       - ./src/extensions:/srv/app/src/src_extensions
-      - local_bin:/usr/local/bin
-      - home_dir:/srv/app/
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:5000/api/action/status_show"]
@@ -53,83 +50,6 @@ services:
       timeout: 10s
       retries: 3
 
-  jobs-worker:
-    build:
-      context: ckan/
-      dockerfile: Dockerfile.worker
-      args:
-        - TZ=${TZ}    
-    env_file:
-      - .env
-    environment:      
-      - CKAN__PLUGINS=datastore xloader harvest dcat dcat_rdf_harvester dcat_json_harvester dcat_json_interface envvars
-      - CKAN_SITE_URL=http://ckan:5000'      
-      - CKAN___SECRET_KEY=una-clave-segura  # clave dummy para correcta iniciar del ckan worker
-    depends_on:
-      db:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-    networks:
-      - ckan-net
-    volumes:
-      - ckan_storage:/var/lib/ckan
-      - pip_cache:/root/.cache/pip
-      - site_packages:/usr/lib/python3.10/site-packages    
-    entrypoint: ["ckan", "-c", "/srv/app/ckan.ini", "jobs", "worker"]
-  
-  gather-consumer:
-    build:
-      context: ckan/
-      dockerfile: Dockerfile.worker
-      args:
-        - TZ=${TZ}    
-    env_file:
-      - .env
-    environment:      
-      - CKAN__PLUGINS=harvest dcat dcat_rdf_harvester dcat_json_harvester dcat_json_interface envvars
-      - CKAN_SITE_URL=http://ckan:5000'      
-      - CKAN___SECRET_KEY=una-clave-segura  # clave dummy para correcta iniciar del ckan worker
-    depends_on:
-      db:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-    networks:
-      - ckan-net
-    volumes:
-      - ckan_storage:/var/lib/ckan
-      - pip_cache:/root/.cache/pip
-      - site_packages:/usr/lib/python3.10/site-packages    
-    entrypoint: ["ckan", "-c", "/srv/app/ckan.ini", "harvester", "gather-consumer"]
-  
-  fetch-consumer:
-    build:
-      context: ckan/
-      dockerfile: Dockerfile
-      args:
-        - TZ=${TZ}
-    deploy:
-      replicas: 3
-    env_file:
-      - .env
-    environment:      
-      - CKAN__PLUGINS=harvest dcat dcat_rdf_harvester dcat_json_harvester dcat_json_interface envvars
-      - CKAN_SITE_URL=http://ckan:5000'      
-      - CKAN___SECRET_KEY=una-clave-segura  # clave dummy para correcta iniciar del ckan worker
-    depends_on:
-      db:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-    networks:
-      - ckan-net
-    volumes:
-      - ckan_storage:/var/lib/ckan
-      - pip_cache:/root/.cache/pip
-      - site_packages:/usr/lib/python3.10/site-packages    
-    entrypoint: ["ckan", "-c", "/srv/app/ckan.ini", "harvester", "fetch-consumer"]
-      
   db:
     build:
       context: postgresql/
@@ -157,6 +77,7 @@ services:
     image: ckan/ckan-solr:${SOLR_IMAGE_VERSION}
     volumes:
       - solr_data:/var/solr
+      - ./src/solr/schema.xml:/opt/solr-9.9.0/server/solr/configsets/ckan/conf/schema.xml
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:8983/solr/"]

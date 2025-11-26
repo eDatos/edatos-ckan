@@ -66,7 +66,7 @@ RUN pip3 install -e 'git+https://github.com/ckan/ckanext-harvest.git@v1.6.1#egg=
 
 
 ### Scheming and fluent
-RUN pip3 install -e 'git+https://github.com/ckan/ckanext-scheming.git@release-3.1.0#egg=ckanext-scheming'
+RUN pip3 install -e 'git+https://github.com/ckan/ckanext-scheming.git#egg=ckanext-scheming'
 RUN pip3 install -e 'git+https://github.com/ckan/ckanext-fluent.git#egg=ckanext-fluent'
 
 ### Custom plugins
@@ -76,6 +76,10 @@ RUN pip3 install -e src/ckanext-edatostheme && \
     pip3 install -e src/ckanext-edatosscheming && \
     pip3 install -e src/ckanext-gobcangroups && \
     pip3 install -e src/ckanext-edatosshowcase
+
+
+# Instalacion schming en el global de la imagen
+#RUN /usr/local/bin/python -m pip install --no-cache-dir ckanext-scheming
 
 # Revisar si no debemos incluir esto en requirements.txt del edatostheme
 RUN pip3 install beautifulsoup4
