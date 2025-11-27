@@ -424,6 +424,11 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
                     '"ckan.locales_offered" is required for plugin: {0}'
                     .format(self.name))
             site_languages = config.get('ckan.locales_offered')
+            print('DEBUG __config_properties_filler ~ site_languages:', site_languages)
+            if isinstance(site_languages, list):
+                site_languages_json = ' '.join(site_languages)
+            elif isinstance(site_languages, str):
+                site_languages_json = site_languages
 
             updated_script = script_content.replace(
                 'FILL_SITE_URL', site_url).replace(
