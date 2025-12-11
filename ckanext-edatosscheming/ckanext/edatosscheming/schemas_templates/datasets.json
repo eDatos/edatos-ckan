@@ -16,7 +16,7 @@
       "preset": "fluent_core_translated",
       "display_snippet": "multilanguage_text.html",
       "form_snippet": "multiple_required_language_text.html",
-      "validators": "tags_html_detected multiple_one_value multiple_required_language",
+      "validators": "tags_html_detected multiple_one_value multiple_required_language fluent_text",
       "required_language": "FILL_REQUIRED_LANGUAGE",
       "fluent_form_placeholder": {
         "en": {
@@ -98,7 +98,7 @@
       "label": "URL",
       "required": true,
       "preset": "dataset_slug",
-      "validators": "multilanguage_url unicode name_validator package_name_validator",
+      "validators": "multilanguage_url name_validator package_name_validator",
       "autogeneration_field": "title_translated",
       "organization_field": "publisher",
       "organization_prefix": "C_ID_UD_ORGANICA",
@@ -130,7 +130,7 @@
       "preset": "fluent_core_translated",
       "display_snippet": "multilanguage_markdown.html",
       "form_snippet": "multiple_required_language_markdown.html",
-      "validators": "tags_html_detected multiple_one_value multiple_required_language",
+      "validators": "tags_html_detected multiple_one_value multiple_required_language fluent_text",
       "required_language": "FILL_REQUIRED_LANGUAGE",
       "fluent_form_placeholder": {
         "en": {
@@ -1018,7 +1018,7 @@
         "gl": "Nome",
         "eu": "Izena"
       },
-      "validators": "tags_html_detected multiple_required_language",
+      "validators": "tags_html_detected multiple_required_language fluent_text",
       "required_language": "FILL_REQUIRED_LANGUAGE",
       "fluent_form_placeholder": {
         "en": {
