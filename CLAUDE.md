@@ -396,6 +396,108 @@ docker compose exec -u root ckan bash -c "sed -i 's/^ckan.locales_offered =$/cka
 docker compose restart ckan
 ```
 
+#### Issue: Redirect to `/es/null` or `/{lang}/null`
+
+**Cause:** The `edatostheme` extension includes a JavaScript file (`i18n.js`) that automatically adds language prefixes to URLs. A bug in the redirect logic causes it to concatenate `null` when accessing the root URL without a language prefix.
+
+**Symptoms:**
+- Accessing `https://localhost:8443/` redirects to `https://localhost:8443/es/null`
+- Browser shows 404 or blank page after redirect
+
+**Root Cause:**
+The JavaScript template in `ckanext-edatostheme/code_templates/i18n.js` has a bug in the redirect function:
+
+```javascript
+if (urlArray[2] === "home") {
+    nuevaUrl = SITE_URL.concat(language,"/");
+} else {
+    nuevaUrl = SITE_URL.concat(language,"/",urlArray[2]);  // ← urlArray[2] is null/undefined
+}
+```
+
+When accessing the root URL, `urlArray[2]` (the path after the language) is `null` or `undefined`, causing it to be concatenated literally as the string "null".
+
+**Solution:**
+
+1. Fix the template to handle empty/null values:
+
+```bash
+# Access container as root
+cd docker/ckan-docker
+docker compose exec -u root ckan bash
+
+# Fix the template
+sed -i '54s/if (urlArray\[2\] === "home")/if (urlArray[2] === "home" || !urlArray[2])/' \
+  /srv/app/src/ckanext-edatostheme/ckanext/edatostheme/code_templates/i18n.js
+
+# Exit container
+exit
+```
+
+2. Verify the fix:
+
+```bash
+docker compose exec ckan bash -c "grep -A3 'home' /srv/app/src/ckanext-edatostheme/ckanext/edatostheme/code_templates/i18n.js"
+```
+
+You should see:
+```javascript
+if (urlArray[2] === "home" || !urlArray[2]) {
+```
+
+3. Restart CKAN to regenerate the JavaScript file:
+
+```bash
+docker compose restart ckan
+```
+
+4. Wait for CKAN to be healthy and verify:
+
+```bash
+# Check CKAN is healthy
+docker compose ps | grep ckan
+
+# Verify generated file has the fix
+docker compose exec ckan bash -c "grep -A3 'home' /srv/app/src/ckanext-edatostheme/ckanext/edatostheme/assets/js/i18n.js"
+```
+
+**Alternative: Fix in the repository**
+
+If you have access to the source repository, fix it in `ckanext-edatostheme/ckanext/edatostheme/code_templates/i18n.js`:
+
+```javascript
+// Line 54, change from:
+if (urlArray[2] === "home") {
+
+// To:
+if (urlArray[2] === "home" || !urlArray[2]) {
+```
+
+Then rebuild the Docker image:
+```bash
+docker compose down
+docker compose build --no-cache ckan
+docker compose up -d
+```
+
+**Related Configuration Issues:**
+
+This redirect issue is often accompanied by missing locale configuration. Ensure these are set in `/srv/app/ckan.ini`:
+
+```ini
+ckan.locale_default = es
+ckan.locales_offered = es ca en
+ckan.root_path = /
+```
+
+If these are empty or missing, fix them:
+
+```bash
+docker compose exec -u root ckan bash -c "sed -i 's/^ckan.locales_offered =$/ckan.locales_offered = es ca en/' /srv/app/ckan.ini"
+docker compose exec -u root ckan bash -c "sed -i 's/^ckan.root_path =$/ckan.root_path = \//' /srv/app/ckan.ini"
+docker compose restart ckan
+```
+
 #### Issue: Extensions Not Loading After Rebuild
 
 **Cause:** Docker is using cached layers and not reinstalling the extensions.
