@@ -312,6 +312,172 @@ docker network create ckan-net
 
 All services connect to this network and can communicate using service names as hostnames (e.g., `ckan`, `db`, `solr`, `redis`).
 
+## Adding New Extensions to Docker
+
+When adding new CKAN extensions to the Docker environment, follow this process to ensure they are properly installed and loaded.
+
+### Step 1: Add Extension to Plugin List
+
+Edit `docker/ckan-docker/.env` and add the new extension(s) to the `CKAN__PLUGINS` variable:
+
+```bash
+CKAN__PLUGINS="stats image_view text_view resource_proxy datatables_view datastore gobcangroups gobcan_harvester geojson_view shp_view cas edatosscheming xloader scheming_datasets scheming_groups scheming_organizations fluent edatostheme edatosshowcase envvars"
+```
+
+**CRITICAL: Plugin Order**
+- The `envvars` plugin **MUST be the last plugin** in the list
+- This ensures environment variables are processed before other plugins need them
+- Incorrect order will cause configuration errors like "ckan.locales_offered is required"
+
+### Step 2: Verify Extension Files
+
+Ensure the extension files are in the correct location:
+- Custom ISTAC extensions should be in: `docker/ckan-docker/src/extensions/`
+- These are mounted into the container at: `/srv/app/src/src_extensions/`
+
+### Step 3: Rebuild and Restart Docker
+
+To pick up new extensions, you must rebuild the Docker image without cache:
+
+```bash
+cd docker/ckan-docker
+
+# Stop and remove containers
+docker compose down
+
+# Rebuild image without cache (forces fresh installation of all extensions)
+docker compose build --no-cache ckan
+
+# Start all services
+docker compose up -d
+```
+
+**Why `--no-cache` is important:**
+- Forces Docker to reinstall all Python packages
+- Ensures new extensions are properly installed
+- Clears any cached build layers that might be outdated
+
+### Step 4: Verify Extensions Loaded
+
+Check that the extensions are loaded correctly:
+
+```bash
+# Check container status
+docker compose ps
+
+# Verify extensions via API
+curl -k -s https://localhost:8443/api/3/action/status_show | grep -o '"extensions":\[.*\]'
+
+# Check logs for errors
+docker compose logs ckan | grep -i error
+```
+
+### Common Issues and Solutions
+
+#### Issue: "ckan.locales_offered is required"
+
+**Cause:** The `edatostheme` plugin requires `ckan.locales_offered` to be set in the CKAN configuration file, but it's being read before `envvars` processes environment variables.
+
+**Solution:**
+1. Ensure `envvars` is the last plugin in `CKAN__PLUGINS`
+2. If the issue persists, add the configuration directly to `ckan.ini` inside the container:
+
+```bash
+# Access the container
+docker compose exec ckan bash
+
+# Check if configuration exists
+grep "ckan.locales_offered" /srv/app/ckan.ini
+
+# If there's an empty line (e.g., "ckan.locales_offered = "), replace it
+docker compose exec -u root ckan bash -c "sed -i 's/^ckan.locales_offered =$/ckan.locales_offered = es ca en/' /srv/app/ckan.ini"
+
+# Restart CKAN
+docker compose restart ckan
+```
+
+#### Issue: Extensions Not Loading After Rebuild
+
+**Cause:** Docker is using cached layers and not reinstalling the extensions.
+
+**Solution:**
+Always use `--no-cache` flag when adding or updating extensions:
+
+```bash
+docker compose build --no-cache ckan
+```
+
+#### Issue: Configuration Changes Not Applied
+
+**Cause:** Changes to `.env` file require container recreation.
+
+**Solution:**
+```bash
+# After editing .env
+docker compose down
+docker compose up -d
+```
+
+The containers will be recreated with the new environment variables.
+
+### Extension Installation in Dockerfile
+
+The ISTAC extensions are installed in the Dockerfile during build:
+
+```dockerfile
+# Clone ckan-istac repository
+RUN git clone -b EDATOS-5261_ActualizacionCKANDockerizado \
+    https://git.arte-consultores.com/istac/ckan-istac.git /tmp/ckan-istac
+
+# Move extensions to src directory
+RUN mv /tmp/ckan-istac/ckanext-edatostheme src/ckanext-edatostheme && \
+    mv /tmp/ckan-istac/ckanext-cas src/ckanext-cas && \
+    mv /tmp/ckan-istac/ckanext-edatosscheming src/ckanext-edatosscheming && \
+    mv /tmp/ckan-istac/ckanext-gobcangroups src/ckanext-gobcangroups && \
+    mv /tmp/ckan-istac/ckanext-edatosshowcase src/ckanext-edatosshowcase
+
+# Install extensions
+RUN pip3 install -e src/ckanext-edatostheme && \
+    pip3 install -e src/ckanext-cas && \
+    pip3 install -r src/ckanext-edatosscheming/requirements.txt && \
+    pip3 install -e src/ckanext-edatosscheming && \
+    pip3 install -e src/ckanext-gobcangroups && \
+    pip3 install -e src/ckanext-edatosshowcase
+```
+
+If you need to add a new extension, modify the Dockerfile to include the installation steps for your extension.
+
+### Best Practices
+
+1. **Always test extensions locally first** before adding to production
+2. **Keep plugin order consistent** - envvars must be last
+3. **Document any custom configurations** required by new extensions
+4. **Use `--no-cache` when troubleshooting** extension loading issues
+5. **Check logs immediately after startup** to catch configuration errors early
+6. **Verify API response** to confirm extensions are loaded
+
+### Example: Adding a New Extension
+
+Let's say you want to add `ckanext-spatial`:
+
+1. Edit `.env`:
+```bash
+CKAN__PLUGINS="... fluent edatostheme edatosshowcase ckanext-spatial envvars"
+```
+
+2. Rebuild:
+```bash
+cd docker/ckan-docker
+docker compose down
+docker compose build --no-cache ckan
+docker compose up -d
+```
+
+3. Verify:
+```bash
+curl -k -s https://localhost:8443/api/3/action/status_show | grep spatial
+```
+
 ## Important Configuration Properties
 
 ### CAS Authentication (ckanext-cas)
