@@ -92,12 +92,18 @@ RUN apt install vim -y
 
 RUN sed -i '/^\[logger_ckanext\]/,/^\[/ s/level = Info/level = DEBUG/' /srv/app/ckan.ini
 RUN sed -i 's/^debug=false/debug=true/' /srv/app/ckan.ini
-#RUN sed -i '/./ s/^/#/' /docker-entrypoint.d/02_setup_xloader.sh
-
 
 
 # Copy custom initialization scripts
 COPY --chown=ckan-sys:ckan-sys docker-entrypoint.d/* /docker-entrypoint.d/
+
+# Hacer ejecutables todos los scripts sh y py
+RUN chmod +x /docker-entrypoint.d/*.sh 2>/dev/null || true
+RUN chmod +x /docker-entrypoint.d/*.py 2>/dev/null || true
+
+# scripts que se van a ejecutar
+RUN echo "[Dockerfile] Scripts de entrypoint disponibles:" && ls -la /docker-entrypoint.d/
+
 
 # Apply any patches needed to CKAN core or any of the built extensions (not the
 # runtime mounted ones)
