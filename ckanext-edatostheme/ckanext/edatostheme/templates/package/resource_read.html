@@ -58,8 +58,14 @@
         </div>
         {% block resource_content %}
           {% block resource_read_title %}
-            <h1 class="page-heading" title="{{ h.resource_display_name(res) }}">{{ h.resource_display_name(res) | truncate(50) }}
+            <h1 class="page-heading">
+              <a href="{{ h.url_for('dataset.read', id=pkg.name) }}">
+                {{ h.dataset_display_name(package) }}
+              </a>
             </h1>
+            <h2 >
+                {{ h.resource_display_name(res) }}
+            </h2>
             {% endblock %}
           {% block resource_read_url %}
             {% if res.url and h.is_url(res.url) %}
@@ -174,6 +180,24 @@
                 <td>{% snippet "snippets/license.html", pkg_dict=pkg, text_only=True %}</td>
               </tr>
               {% for key, value in h.format_resource_items(res.items()) %}
+                {% if key == "datastore active"%}
+                      <tr class="toggle-more"><th scope="row">{{ _("datastore active") }}</th><td>{{ value }}</td></tr>
+                  {% endif%}
+                  {% if key == "has views"%}
+                      <tr class="toggle-more"><th scope="row">{{ _("has views") }}</th><td>{{ value }}</td></tr>
+                  {% endif%}
+                  {% if key == "last modified"%}
+                      <tr class="toggle-more"><th scope="row">{{ _("last modified") }}</th><td>{{ value }}</td></tr>
+                  {% endif%}
+                  {% if key == "on same domain"%}
+                      <tr class="toggle-more"><th scope="row">{{ _("on same domain") }}</th><td>{{ value }}</td></tr>
+                  {% endif%}
+                  {% if key == "state"%}
+                      <tr class="toggle-more"><th scope="row">{{ _("state") }}</th><td>{{ value }}</td></tr>
+                  {% endif%}
+                  {% if key == "id"%}
+                      <tr class="toggle-more"><th scope="row">{{ _("id") }}</th><td>{{ value }}</td></tr>
+                  {% endif%}
                 {% if key not in ('created', 'metadata modified', 'last modified', 'format') %}
                   <tr class="toggle-more"><th scope="row">{{ key | capitalize }}</th><td>{{ value }}</td></tr>
                 {% endif %}

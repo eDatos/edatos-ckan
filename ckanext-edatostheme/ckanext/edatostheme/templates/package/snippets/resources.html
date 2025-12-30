@@ -26,7 +26,9 @@ Example:
               {% set url = h.url_for('%s_resource.read' % pkg.type, id=pkg.name, resource_id=resource.id) %}
               {% if active == resource.id %}
                 <li class="nav-item active">
-                  <a href="#" title="{{ h.resource_display_name(resource) }}">{{ h.resource_display_name(resource) }}</a>
+                  <a href="#" title="{{ h.resource_display_name(resource) }}">
+                    {{ _('Format') }} {{ resource.format.lower() }}
+                  </a>
                 </li>
               {% elif can_edit %}
                 <li class="nav-item d-flex justify-content-between position-relative">
