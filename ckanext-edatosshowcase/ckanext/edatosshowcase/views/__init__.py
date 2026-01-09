@@ -64,7 +64,7 @@ def index(package_type):
             'user': g.user,
             'auth_user_obj': g.userobj
         }
-        check_access('site_read', context)
+        check_access('package_search', context)
     except NotAuthorized:
         toolkit.abort(403, _('Not authorized to see this page'))
 
