@@ -1,14 +1,25 @@
-{% ckan_extends %}
+{% extends "page.html" %}
+{% set dataset_type = h.default_package_type() %}
+{% set organization = group_dict %}
 
-{% block subtitle %}{{ h.get_translated(c.group_dict,"title") }} - {{ _('Organizations') }}{% endblock %}
+{% block subtitle %}{{ group_dict.display_name }} {{ g.template_title_delimiter }} {{ h.humanize_entity_type('organization', group_type, 'page title') or _('Organizations') }}{% endblock %}
 
 {% block breadcrumb_content %}
-  <li>{% link_for _('Organizations'), controller='organization', action='index', named_route=group_type + '_index' %}</li>
-  <li class="active">{% link_for h.get_translated(c.group_dict,"title")|truncate(35), controller='organization', action='read', id=c.group_dict.name, named_route=group_type + '_read' %}</li>
+  <li>{% link_for h.humanize_entity_type('organization', group_type, 'breadcrumb') or _('Organizations'), named_route=group_type+'.index' %}</li>
+  <li class="active">{% link_for group_dict.display_name|truncate(35), named_route=group_type+'.read', id=group_dict.name, title=group_dict.display_name %}</li>
 {% endblock %}
 
 {% block content_action %}
-  {% if h.check_access('organization_update', {'id': c.group_dict.id}) %}
-    {% link_for _('Edit'), controller='organization', action='edit', id=c.group_dict.name, class_='btn btn-default btn-secondary', icon='wrench', named_route=group_type + '_edit'  %}
+  {% if h.check_access('organization_update', {'id': group_dict.id}) %}
+    {% link_for _('Manage'), named_route=group_type+'.edit', id=group_dict.name, class_='btn btn-default', icon='wrench' %}
   {% endif %}
+{% endblock %}
+
+{% block content_primary_nav %}
+{% endblock %}
+
+{% block secondary_content %}
+{% endblock %}
+
+{% block links %}
 {% endblock %}
