@@ -777,11 +777,55 @@ CREATE TABLE IF NOT EXISTS showcase_admin (
 
 Execute inside Docker:
 ```bash
-docker compose exec db psql -U postgres -d ckandb -c "CREATE TABLE IF NOT EXISTS showcase_package_association (...);"
-docker compose exec db psql -U postgres -d ckandb -c "CREATE TABLE IF NOT EXISTS showcase_admin (...);"
+docker compose exec db psql -U postgres -d ckandb -c "CREATE TABLE IF NOT EXISTS showcase_package_association (
+    package_id TEXT NOT NULL,
+    showcase_id TEXT NOT NULL,
+    PRIMARY KEY (package_id, showcase_id),
+    FOREIGN KEY (package_id) REFERENCES package(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (showcase_id) REFERENCES package(id) ON DELETE CASCADE ON UPDATE CASCADE
+);"
+
+docker compose exec db psql -U postgres -d ckandb -c "CREATE TABLE IF NOT EXISTS showcase_admin (
+    user_id TEXT NOT NULL PRIMARY KEY,
+    FOREIGN KEY (user_id) REFERENCES \"user\"(id) ON DELETE CASCADE ON UPDATE CASCADE
+);"
 ```
 
-**2. Fix Missing Authorization Check**
+**2. Grant Permissions to ckandbuser**
+
+**CRITICAL:** Tables created by the `postgres` superuser are not accessible by `ckandbuser` (the user CKAN uses to connect to the database).
+
+Error if permissions not granted:
+```
+psycopg2.errors.InsufficientPrivilege: permission denied for table showcase_package_association
+```
+
+Solution - Grant ALL PRIVILEGES to `ckandbuser`:
+
+```bash
+docker compose exec db psql -U postgres -d ckandb -c "GRANT ALL PRIVILEGES ON TABLE showcase_package_association TO ckandbuser;"
+
+docker compose exec db psql -U postgres -d ckandb -c "GRANT ALL PRIVILEGES ON TABLE showcase_admin TO ckandbuser;"
+```
+
+Verify permissions:
+```bash
+# Check permissions were granted
+docker compose exec db psql -U postgres -d ckandb -c "SELECT grantee, privilege_type FROM information_schema.role_table_grants WHERE table_name='showcase_package_association' AND grantee='ckandbuser';"
+
+# Expected output: 7 privileges (INSERT, SELECT, UPDATE, DELETE, TRUNCATE, REFERENCES, TRIGGER)
+```
+
+Test that ckandbuser can access the tables:
+```bash
+docker compose exec db psql -U ckandbuser -d ckandb -c "SELECT COUNT(*) FROM showcase_package_association;"
+# Expected: count = 0 (no errors)
+
+docker compose exec db psql -U ckandbuser -d ckandb -c "SELECT COUNT(*) FROM showcase_admin;"
+# Expected: count = 0 (no errors)
+```
+
+**3. Fix Missing Authorization Check**
 
 File: `/srv/app/src/ckanext-edatosshowcase/ckanext/edatosshowcase/views/__init__.py`
 
@@ -800,7 +844,7 @@ Command:
 docker compose exec -u root ckan bash -c "sed -i '67s/^/        # /' /srv/app/src/ckanext-edatosshowcase/ckanext/edatosshowcase/views/__init__.py"
 ```
 
-**3. Add Missing Template Context Variable**
+**4. Add Missing Template Context Variable**
 
 File: `/srv/app/src/ckanext-edatosshowcase/ckanext/edatosshowcase/views/__init__.py`
 
