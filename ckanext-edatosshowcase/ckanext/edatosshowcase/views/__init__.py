@@ -64,7 +64,7 @@ def index(package_type):
             'user': g.user,
             'auth_user_obj': g.userobj
         }
-        check_access('package_search', context)
+        #check_access('package_search', context)
     except NotAuthorized:
         toolkit.abort(403, _('Not authorized to see this page'))
 
@@ -179,6 +179,7 @@ def index(package_type):
             item_count=query['count'],
             items_per_page=limit
         )
+        g.page = extra_vars["page"]
         extra_vars['search_facets'] = query['search_facets']
         g.search_facets = query['search_facets']
         g.facets = query['facets']
@@ -234,7 +235,7 @@ class CreateView(views.CreateView):
     def get(self, data=None, errors=None, error_summary=None):
         package_type = showcase_utils.DATASET_TYPE_NAME
         showcase_utils.check_new_view_auth()
-        context = self._prepare(data)
+        context = self._prepare()
 
         data = data or clean_dict(
             dict_fns.unflatten(
@@ -326,7 +327,7 @@ class EditView(views.EditView):
     def get(self, id, data=None, errors=None, error_summary=None):
         showcase_utils.check_new_view_auth()
 
-        context = self._prepare(id, data)
+        context = self._prepare()
         package_type = showcase_utils.DATASET_TYPE_NAME
 
         try:
@@ -411,7 +412,7 @@ class EditView(views.EditView):
         )
 
     def post(self, id):
-        context = self._prepare(id)
+        context = self._prepare()
         showcase_utils.check_edit_view_auth(id)
 
         data_dict = dataset.clean_dict(
