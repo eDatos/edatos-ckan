@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -
 from ckantoolkit import config
 
 from flask import redirect
@@ -182,23 +181,33 @@ class CASClientPlugin(p.SingletonPlugin):
 
             if(self.CAS_ROOT_PATH is not None):
                 url = h.url_for('user.logged_out_page')
-                logout_path = getattr(
-                    t.request.environ['repoze.who.plugins']['friendlyform'],
-                    'logout_handler_path')
-                return h.redirect_to(
-                    '{root_path}{logout_path}?came_from={url}'
-                    .format(
-                        root_path=self.CAS_ROOT_PATH,
-                        logout_path=logout_path,
-                        url=url
-                    ))
+                # Check if repoze.who.plugins exists before accessing
+                if 'repoze.who.plugins' in t.request.environ and 'friendlyform' in t.request.environ.get('repoze.who.plugins', {}):
+                    logout_path = getattr(
+                        t.request.environ['repoze.who.plugins']['friendlyform'],
+                        'logout_handler_path')
+                    return h.redirect_to(
+                        '{root_path}{logout_path}?came_from={url}'
+                        .format(
+                            root_path=self.CAS_ROOT_PATH,
+                            logout_path=logout_path,
+                            url=url
+                        ))
+                else:
+                    # Fallback if repoze.who.plugins not available
+                    return h.redirect_to(url)
 
             url = h.url_for('user.logged_out_page')
-            return h.redirect_to(
-                getattr(
-                    t.request.environ['repoze.who.plugins']['friendlyform'],
+            # Check if repoze.who.plugins exists before accessing
+            if 'repoze.who.plugins' in t.request.environ and 'friendlyform' in t.request.environ.get('repoze.who.plugins', {}):
+                return h.redirect_to(
+                    getattr(
+                        t.request.environ['repoze.who.plugins']['friendlyform'],
                     'logout_handler_path'
                 ) + '?came_from=' + url)
+            else:
+                # Fallback if repoze.who.plugins not available
+                return h.redirect_to(url)
 
         elif not remote_user \
                 and not re.match(r'.*/api(/\d+)?/action/.*', environ['PATH_INFO']) \
@@ -222,6 +231,8 @@ class CASClientPlugin(p.SingletonPlugin):
 
         remote_user = session.get('user')
 
+        # Initialize keys_to_delete before using it
+        keys_to_delete = []
         if remote_user:
             keys_to_delete = [
                 key for key in session if key.startswith('user')
@@ -239,10 +250,15 @@ class CASClientPlugin(p.SingletonPlugin):
             return redirect(cas_logout_url)
         # TODO: Refactor into helper
         url = h.url_for('user.logged_out_page')
-        return h.redirect_to(
-            getattr(
-                t.request.environ['repoze.who.plugins']['friendlyform'],
-                'logout_handler_path') + '?came_from=' + url)
+        # Check if repoze.who.plugins exists before accessing
+        if 'repoze.who.plugins' in t.request.environ and 'friendlyform' in t.request.environ.get('repoze.who.plugins', {}):
+            return h.redirect_to(
+                getattr(
+                    t.request.environ['repoze.who.plugins']['friendlyform'],
+                    'logout_handler_path') + '?came_from=' + url)
+        else:
+            # Fallback if repoze.who.plugins not available
+            return h.redirect_to(url)
 
     # IBlueprint
 
