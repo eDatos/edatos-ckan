@@ -239,10 +239,7 @@ class CASClientPlugin(p.SingletonPlugin):
             ]
         if keys_to_delete:
             for key in keys_to_delete:
-                del session[key]
-                g.user = None
-                g.userobj = None
-            session.save()
+                session.pop(key, None)
         delete_user_entry(t.c.user)
         if t.asbool(config.get('ckanext.cas.single_sign_out')):
             cas_logout_url = self.CAS_LOGOUT_URL + \
