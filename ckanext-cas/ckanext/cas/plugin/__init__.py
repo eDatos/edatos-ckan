@@ -197,34 +197,7 @@ class CASClientPlugin(p.SingletonPlugin):
                 # Redirect to logged out page
                 if(self.CAS_ROOT_PATH is not None):
                     url = h.url_for('user.logged_out_page')
-                    # Check if repoze.who.plugins exists before accessing
-                    if 'repoze.who.plugins' in t.request.environ and 'friendlyform' in t.request.environ.get('repoze.who.plugins', {}):
-                        logout_path = getattr(
-                            t.request.environ['repoze.who.plugins']['friendlyform'],
-                            'logout_handler_path')
-                        return h.redirect_to(
-                            '{root_path}{logout_path}?came_from={url}'
-                            .format(
-                                root_path=self.CAS_ROOT_PATH,
-                                logout_path=logout_path,
-                                url=url
-                            ))
-                    else:
-                        # Fallback if repoze.who.plugins not available
-                        return h.redirect_to(url)
-
-                url = h.url_for('user.logged_out_page')
-                # Check if repoze.who.plugins exists before accessing
-                if 'repoze.who.plugins' in t.request.environ and 'friendlyform' in t.request.environ.get('repoze.who.plugins', {}):
-                    return h.redirect_to(
-                        getattr(
-                            t.request.environ['repoze.who.plugins']['friendlyform'],
-                        'logout_handler_path'
-                    ) + '?came_from=' + url)
-                else:
-                    # Fallback if repoze.who.plugins not available
                     return h.redirect_to(url)
-
             # Ticket is valid, set user context
             log.debug(f'Ticket valid for user: {remote_user}')
             g.user = remote_user
