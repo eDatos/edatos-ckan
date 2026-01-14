@@ -1097,52 +1097,6 @@ You should see log entries like:
 docker compose exec ckan python3 -c "import flask_debugtoolbar; print('Flask-DebugToolbar installed')"
 ```
 
-### Troubleshooting
-
-#### Problem: Toolbar Not Appearing
-
-**Cause 1: Debug mode not actually enabled**
-
-```bash
-# Check actual debug value (not commented out)
-docker compose exec ckan grep "^debug" /srv/app/ckan.ini
-
-# Should show: debug = true
-# If shows: debug = false, then fix it:
-docker compose exec -u root ckan sed -i 's/^debug = false/debug = true/' /srv/app/ckan.ini
-docker compose restart ckan
-```
-
-**Cause 2: JavaScript errors in browser**
-
-1. Open browser DevTools (`F12`)
-2. Go to **Console** tab
-3. Look for errors related to Flask or DebugToolbar
-
-**Cause 3: Multi-process mode**
-
-Flask-DebugToolbar doesn't work with multiple WSGI workers. Check uWSGI configuration:
-```bash
-docker compose exec ckan grep -E "processes|workers" /srv/app/ckan.ini
-```
-
-#### Problem: Templates Panel is Empty
-
-This means no Jinja2 templates were rendered. Try navigating to a dataset page: `/dataset/{dataset-name}`
-
-#### Problem: Redirect Issues (localhost → IP)
-
-If Flask-DebugToolbar redirects from `localhost` to `192.168.10.110`, check `siteURL` in theme config:
-
-```bash
-docker compose exec ckan cat /srv/app/src/ckanext-edatostheme/ckanext/edatostheme/etc/config.json | grep siteURL
-```
-
-Should be:
-```json
-"siteURL": "https://localhost:8443/"
-```
-
 ### Working with Templates
 
 #### Typical Workflow
