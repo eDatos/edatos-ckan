@@ -1,18 +1,19 @@
+{% set dataset_type = h.default_package_type() %}
+
 {% block info %}
-<div class="module context-info">
-  <section class="module-content">
+<section id="group-info" class="module module-narrow">
+  <div class="module context-info">
+    <div class="module-content">
     {% block inner %}
     {% block image %}
     <div class="image">
       <a href="{{ group.url }}">
-        {% block icon %}
-          <span class="subject-area-icon {{ group.name}}"></span>
-        {% endblock %}
+        <img src="{{ group.image_display_url or h.url_for_static('/base/images/placeholder-group.png') }}" width="190" height="118" alt="{{ group.name }}" />
       </a>
     </div>
     {% endblock %}
     {% block heading %}
-    <h1 class="media-heading">
+    <h1 class="heading">
       {{ h.get_translated(group, 'title') or group.display_name }}
       {% if group.state == 'deleted' %}
         [{{ _('Deleted') }}]
@@ -20,10 +21,12 @@
     </h1>
     {% endblock %}
     {% block description %}
-    {% if h.get_translated(group, 'description') %}
-      <p>
+    {% if group.description %}
+      <p class="description">
         {{ h.markdown_extract(h.get_translated(group, 'description'), 180) }}
-        {% link_for _('read more'), controller='group', action='about', id=group.name %}
+      </p>
+      <p class="read-more">
+        {% link_for _('read more'), named_route='group.about', id=group.name %}
       </p>
     {% endif %}
     {% endblock %}
@@ -38,6 +41,7 @@
       {% endblock %}
     {% endif %}
     {% endblock %}
-  </section>
-</div>
+    </div>
+  </div>
+</section>
 {% endblock %}
