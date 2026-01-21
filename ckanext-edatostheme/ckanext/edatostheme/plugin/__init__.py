@@ -311,7 +311,6 @@ def get_altered_header(header, json_config):
     title = json_config['metadata']['appName']
     
     div = soup.find('div', id='title-bar')
-    print('DEBUG ~ div:', div)
     
     if div:
         span = div.find('span')

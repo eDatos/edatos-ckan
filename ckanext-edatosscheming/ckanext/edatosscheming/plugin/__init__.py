@@ -32,8 +32,6 @@ def get_cmetadata_languages(endpoint, key):
     }
     header_request = requests.get(url=url, headers=headers).content
     json_header_request = json.loads(header_request)
-    print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
-    print(json_header_request)
 
     return json_header_request['value']
 
