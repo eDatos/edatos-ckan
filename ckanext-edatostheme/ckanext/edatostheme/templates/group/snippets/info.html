@@ -7,9 +7,9 @@
     {% block inner %}
     {% block image %}
     <div class="image">
-      <a href="{{ group.url }}">
-        <img src="{{ group.image_display_url or h.url_for_static('/base/images/placeholder-group.png') }}" width="190" height="118" alt="{{ group.name }}" />
-      </a>
+      {% block icon %}
+        <span class="subject-area-icon {{ group.name}}"></span>
+      {% endblock %}
     </div>
     {% endblock %}
     {% block heading %}
