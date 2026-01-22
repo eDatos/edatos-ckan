@@ -1,18 +1,18 @@
 {% macro license_string(pkg_dict) %}
   {% if 'license_url' in pkg_dict %}
-    <a href="{{ pkg_dict.license_url }}" rel="dc:rights">{{ _('Legal Notice') }}</a>
+    <a href="{{ pkg_dict.license_url }}" rel="dc:rights">{{ pkg_dict.license_title }}</a>
   {% else %}
-    <span property="dc:rights">{{ pkg_dict.license_title }}</span>
+    {% if pkg_dict.license_id %}
+      <span property="dc:rights">{{ pkg_dict.license_title }}</span>
+    {% else %}
+      <span>{{ _('No License Provided') }}</span>
+    {% endif %}
   {% endif %}
 {% endmacro %}
 
 {% block license %}
   {% if text_only %}
-    {% if pkg_dict.license_id %}
-      {{ license_string(pkg_dict) }}
-    {% else %}
-      {{ _('No License Provided') }}
-    {% endif %}
+    {{ license_string(pkg_dict) }}
   {% else %}
     {% if pkg_dict.license_id %}
       {% block license_wrapper %}
@@ -24,8 +24,6 @@
             <p class="module-content">
               {% block license_content_inner %}
                 {{ license_string(pkg_dict) }}
-                {% if pkg_dict.isopen %}
-                {% endif %}
               {% endblock %}
             </p>
           {% endblock %}
