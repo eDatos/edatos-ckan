@@ -1,27 +1,28 @@
 <script>
     let abierto = false;
-    const menus = document.getElementsByClassName("dropdown-menu");
 
-    function abrir_menu() {
-        for (let menu of menus) {
+    function abrir_menu(button) {
+        const menu = button.nextElementSibling;
+        if (menu && menu.classList.contains("dropdown-menu")) {
             menu.classList.add("abrir");
         }
         abierto = true;
     }
 
-    function cerrar_menu() {
-        for (let menu of menus) {
+    function cerrar_menu(button) {
+        const menu = button.nextElementSibling;
+        if (menu && menu.classList.contains("dropdown-menu")) {
             menu.classList.remove("abrir");
         }
         abierto = false;
     }
 
-    function toggle_collapsable_menu() {
+    function toggle_collapsable_menu(button) {
         if (abierto) {
-            cerrar_menu();
+            cerrar_menu(button);
             return;
         } else {
-            abrir_menu();
+            abrir_menu(button);
             return;
         }
     }
@@ -122,7 +123,7 @@
                 <ul class="nav nav-pills">
                     <ul class="nav navbar-nav">
                         <li class="nav">
-                            <button onclick="toggle_collapsable_menu()" class="btn btn-navbar" type="button"
+                            <button onclick="toggle_collapsable_menu(this)" class="btn btn-navbar" type="button"
                                 title="{{ _('Options') }}">
                                 {{ _('Options') }}
                                 <span class="fa fa-chevron-down"></span>

@@ -453,17 +453,26 @@ button.btn.btn-navbar {
 	left: unset;
 	border-radius: 5px 0px 5px 5px !important;
 	border: unset;
-
-	li a {
-		color: white;
-	}
 }
 
-.dropdown-menu {
-	li a:hover {
-		background-color: #008bd0;
-		color: #FFFFFF
-	}
+.dropdown-menu li {
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+.dropdown-menu li a {
+	color: white;
+	display: block;
+	padding: 10px 15px;
+	text-decoration: none;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.dropdown-menu li a:hover {
+	background-color: #008bd0;
+	color: #FFFFFF
 }
 
 .dropdown-menu.abrir {
@@ -472,11 +481,13 @@ button.btn.btn-navbar {
 	-ms-transition: 0.1s;
 	-o-transition: 0.1s;
 	transition: 0.1s;
-	transition-property: height;
+	transition-property: opacity, visibility;
 	visibility: visible;
 	opacity: 1;
 	display: flex;
 	flex-flow: column;
+	flex-wrap: nowrap;
+	justify-content: flex-start;
 	-webkit-transform: translateY(0px);
 	-ms-transform: translateY(0px);
 	transform: translateY(0px);
