@@ -440,7 +440,7 @@ button.btn.btn-navbar {
 	display: none;
 	float: right;
 	min-width: 160px;
-	margin-top: -3px !important;
+	margin-top: 0px !important;
 	padding-top: 10px;
 	padding-bottom: 10px;
 	font-size: 14px;
