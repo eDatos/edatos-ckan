@@ -50,6 +50,85 @@ services:
       timeout: 10s
       retries: 3
 
+    entrypoint: ["ckan", "-c", "/srv/app/ckan.ini", "harvester", "fetch-consumer"]
+  
+  jobs-worker:
+    build:
+      context: ckan/
+      dockerfile: Dockerfile.worker
+      args:
+        - TZ=${TZ}    
+    env_file:
+      - .env
+    environment:      
+      - CKAN__PLUGINS=datastore xloader harvest dcat dcat_rdf_harvester dcat_json_harvester dcat_json_interface envvars
+      - CKAN_SITE_URL=http://ckan:5000'      
+      - CKAN___SECRET_KEY=una-clave-segura  # clave dummy para correcta iniciar del ckan worker
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - ckan-net
+    volumes:
+      - ckan_storage:/var/lib/ckan
+      - pip_cache:/root/.cache/pip
+      - site_packages:/usr/lib/python3.10/site-packages    
+    entrypoint: ["ckan", "-c", "/srv/app/ckan.ini", "jobs", "worker"]
+  
+  gather-consumer:
+    build:
+      context: ckan/
+      dockerfile: Dockerfile.worker
+      args:
+        - TZ=${TZ}    
+    env_file:
+      - .env
+    environment:      
+      - CKAN__PLUGINS=harvest dcat dcat_rdf_harvester dcat_json_harvester dcat_json_interface envvars
+      - CKAN_SITE_URL=http://ckan:5000'      
+      - CKAN___SECRET_KEY=una-clave-segura  # clave dummy para correcta iniciar del ckan worker
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - ckan-net
+    volumes:
+      - ckan_storage:/var/lib/ckan
+      - pip_cache:/root/.cache/pip
+      - site_packages:/usr/lib/python3.10/site-packages    
+    entrypoint: ["ckan", "-c", "/srv/app/ckan.ini", "harvester", "gather-consumer"]
+  
+  fetch-consumer:
+    build:
+      context: ckan/
+      dockerfile: Dockerfile
+      args:
+        - TZ=${TZ}
+    deploy:
+      replicas: 3
+    env_file:
+      - .env
+    environment:      
+      - CKAN__PLUGINS=harvest dcat dcat_rdf_harvester dcat_json_harvester dcat_json_interface envvars
+      - CKAN_SITE_URL=http://ckan:5000'      
+      - CKAN___SECRET_KEY=una-clave-segura  # clave dummy para correcta iniciar del ckan worker
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - ckan-net
+    volumes:
+      - ckan_storage:/var/lib/ckan
+      - pip_cache:/root/.cache/pip
+      - site_packages:/usr/lib/python3.10/site-packages    
+    entrypoint: ["ckan", "-c", "/srv/app/ckan.ini", "harvester", "fetch-consumer"]
+      
   db:
     build:
       context: postgresql/
