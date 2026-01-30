@@ -49,8 +49,6 @@ services:
       interval: 60s
       timeout: 10s
       retries: 3
-
-    entrypoint: ["ckan", "-c", "/srv/app/ckan.ini", "harvester", "fetch-consumer"]
   
   jobs-worker:
     build:
@@ -154,9 +152,11 @@ services:
     networks:
       - ckan-net
     image: ckan/ckan-solr:${SOLR_IMAGE_VERSION}
+    ports:
+      - "0.0.0.0:8983:8983"
     volumes:
       - solr_data:/var/solr
-      - ./src/solr/schema.xml:/opt/solr-9.9.0/server/solr/configsets/ckan/conf/schema.xml
+      - ./src/solr/schema.xml:/opt/solr/server/solr/configsets/ckan/conf/managed-schema
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:8983/solr/"]
@@ -171,4 +171,4 @@ services:
     
 networks:
   ckan-net:
-    external: true
+    driver: bridge
