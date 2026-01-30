@@ -23,7 +23,7 @@ COPY *.json .
 
 ## edatos plugins
 #RUN git clone -b upgrade_ckan_2_11 https://apersan:glpat-zzB15xJzKcpjJxURoq9e@git.arte-consultores.com/istac/ckan-istac.git /tmp/ckan-istac && \
-RUN git clone -b EDATOS-5261_ActualizacionCKANDockerizado https://apersan:glpat-zzB15xJzKcpjJxURoq9e@git.arte-consultores.com/istac/ckan-istac.git /tmp/ckan-istac && \
+RUN git clone -b EDATOS-5261_ActualizacionCKANDockerizado https://jescgom:glpat-Pu_hF-P3xfKxB-FNcj1z@git.arte-consultores.com/istac/ckan-istac.git /tmp/ckan-istac && \
     #RUN git clone -b master https://apersan:glpat-zzB15xJzKcpjJxURoq9e@git.arte-consultores.com/istac/ckan-istac.git /tmp/ckan-istac && \
     mv /tmp/ckan-istac/ckanext-edatostheme src/ckanext-edatostheme && \
     chmod 777 src/ckanext-edatostheme/ckanext/edatostheme/templates/header.html && \

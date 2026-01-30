@@ -7,5 +7,5 @@ _service-provider/*
 _solr/schema.xml
 _src/*
 local/*
-.env
 src/ckan-ckan-2.11.4/
+src/extensions/
