@@ -94,12 +94,20 @@ RUN sed -i '/^\[logger_ckanext\]/,/^\[/ s/level = Info/level = DEBUG/' /srv/app/
 RUN sed -i 's/^debug=false/debug=true/' /srv/app/ckan.ini
 
 
+# Create necessary directories
+RUN mkdir -p /docker-entrypoint.d /srv/app/docker/bin
+
 # Copy custom initialization scripts
 COPY --chown=ckan-sys:ckan-sys docker-entrypoint.d/* /docker-entrypoint.d/
+
+# Copy bin scripts for entrypoint
+COPY --chown=ckan-sys:ckan-sys bin/ /srv/app/docker/bin/
 
 # Hacer ejecutables todos los scripts sh y py
 RUN chmod +x /docker-entrypoint.d/*.sh 2>/dev/null || true
 RUN chmod +x /docker-entrypoint.d/*.py 2>/dev/null || true
+RUN chmod +x /srv/app/docker/bin/*.py 2>/dev/null || true
+RUN chmod +x /srv/app/docker/bin/*.sh 2>/dev/null || true
 
 # scripts que se van a ejecutar
 RUN echo "[Dockerfile] Scripts de entrypoint disponibles:" && ls -la /docker-entrypoint.d/
