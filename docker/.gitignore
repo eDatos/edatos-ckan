@@ -1,0 +1,11 @@
+# generic
+.DS_Store
+.vagrant
+
+# code & config
+_service-provider/*
+_solr/schema.xml
+_src/*
+local/*
+src/ckan-ckan-2.11.4/
+src/extensions/
