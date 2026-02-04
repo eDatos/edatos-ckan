@@ -156,7 +156,7 @@ services:
       - "0.0.0.0:8983:8983"
     volumes:
       - solr_data:/var/solr
-      - ./src/solr/schema.xml:/opt/solr/server/solr/configsets/ckan/conf/managed-schema
+      - ./src/solr/schema.xml:/opt/solr/server/solr/configsets/ckan/conf/managed-schema:ro
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:8983/solr/"]
