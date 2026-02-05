@@ -21,17 +21,9 @@ USER ckan
 
 COPY *.json .
 
-## edatos plugins
-#RUN git clone -b upgrade_ckan_2_11 https://apersan:glpat-zzB15xJzKcpjJxURoq9e@git.arte-consultores.com/istac/ckan-istac.git /tmp/ckan-istac && \
-RUN git clone -b EDATOS-5261_ActualizacionCKANDockerizado https://jescgom:glpat-Pu_hF-P3xfKxB-FNcj1z@git.arte-consultores.com/istac/ckan-istac.git /tmp/ckan-istac && \
-    #RUN git clone -b master https://apersan:glpat-zzB15xJzKcpjJxURoq9e@git.arte-consultores.com/istac/ckan-istac.git /tmp/ckan-istac && \
-    mv /tmp/ckan-istac/ckanext-edatostheme src/ckanext-edatostheme && \
-    chmod 777 src/ckanext-edatostheme/ckanext/edatostheme/templates/header.html && \
-    chmod 777 src/ckanext-edatostheme/ckanext/edatostheme/templates/footer.html && \
-    mv /tmp/ckan-istac/ckanext-cas src/ckanext-cas && \
-    mv /tmp/ckan-istac/ckanext-edatosscheming src/ckanext-edatosscheming && \
-    mv /tmp/ckan-istac/ckanext-gobcangroups src/ckanext-gobcangroups && \
-    mv /tmp/ckan-istac/ckanext-edatosshowcase src/ckanext-edatosshowcase
+## edatos plugins actualizamos permisos 
+RUN chmod 777 ../../ckanext-edatostheme/ckanext/edatostheme/templates/header.html && \
+    chmod 777 ../../ckanext-edatostheme/ckanext/edatostheme/templates/footer.html
 
 # Esto es para la versión 2.9: Activamos el entorno python
 #RUN . /usr/lib/ckan/venv/bin/activate
@@ -70,12 +62,12 @@ RUN pip3 install -e 'git+https://github.com/ckan/ckanext-scheming.git#egg=ckanex
 RUN pip3 install -e 'git+https://github.com/ckan/ckanext-fluent.git#egg=ckanext-fluent'
 
 ### Custom plugins
-RUN pip3 install -e src/ckanext-edatostheme && \
-    pip3 install -e src/ckanext-cas && \
-    pip3 install -r src/ckanext-edatosscheming/requirements.txt && \
-    pip3 install -e src/ckanext-edatosscheming && \
-    pip3 install -e src/ckanext-gobcangroups && \
-    pip3 install -e src/ckanext-edatosshowcase
+RUN pip3 install -e ../../ckanext-edatostheme && \
+    pip3 install -e ../../ckanext-cas && \
+    pip3 install -r ../../ckanext-edatosscheming/requirements.txt && \
+    pip3 install -e ../../ckanext-edatosscheming && \
+    pip3 install -e ../../ckanext-gobcangroups && \
+    pip3 install -e ../../ckanext-edatosshowcase
 
 
 # Instalacion schming en el global de la imagen
