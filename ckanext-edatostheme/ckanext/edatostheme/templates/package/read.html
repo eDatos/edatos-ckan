@@ -1,5 +1,7 @@
 {% extends "package/read_base.html" %}
 
+{% set schema = h.scheming_get_dataset_schema(package_type) %}
+
 {% block primary_content_inner %}
   {{ super() }}
   {% block package_description %}
