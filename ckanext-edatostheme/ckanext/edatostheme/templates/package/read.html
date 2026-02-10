@@ -24,7 +24,7 @@
       {% if (h.scheming_field_by_name(schema.dataset_fields, 'notes') or
       h.scheming_field_by_name(schema.dataset_fields, 'description_translated')) %}
         <div class="notes embedded-content">
-          {{ h.render_markdown(h.get_translated(pkg, 'notes')) }}
+          {{ h.render_markdown(h.get_translated(pkg, 'description')) }}
         </div>
       {% endif %}
     {% endblock %}

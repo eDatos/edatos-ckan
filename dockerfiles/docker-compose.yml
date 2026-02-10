@@ -142,6 +142,8 @@ services:
       - DATASTORE_READONLY_USER
       - DATASTORE_READONLY_PASSWORD
       - DATASTORE_DB
+    ports:
+      - "5432:5432"
     volumes:
       - pg_data:/var/lib/postgresql/data
     restart: unless-stopped
