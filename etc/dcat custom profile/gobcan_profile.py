@@ -193,6 +193,45 @@ class GobCanProfile(RDFProfile):
         '''
         Returns the time tag, the update frequency string and integer
         '''
+        if isinstance(frequency, dict):
+            frequency_type = frequency.get('type')
+            frequency_value = frequency.get('value')
+            frequency_type = str(frequency_type).lower() if frequency_type else None
+            value_str = str(frequency_value) if frequency_value is not None else '0'
+
+            time_tag = getattr(TIME, frequency_type, TIME.years)
+            label_map = {
+                ('years', '1'): 'Anual',
+                ('months', '6'): 'Semestral',
+                ('months', '3'): 'Trimestral',
+                ('months', '2'): 'Bimensual',
+                ('months', '1'): 'Mensual',
+                ('days', '15'): 'Quincenal',
+                ('days', '7'): 'Semanal',
+                ('days', '1'): 'Diaria',
+            }
+            label = label_map.get((frequency_type, value_str))
+            if label:
+                return time_tag, label, value_str
+
+            unit_map = {
+                'days': 'dias',
+                'weeks': 'semanas',
+                'months': 'meses',
+                'years': 'anos',
+                'hours': 'horas',
+                'minutes': 'minutos',
+                'seconds': 'segundos',
+            }
+            unit_label = unit_map.get(frequency_type, frequency_type or 'periodo')
+            return time_tag, 'Cada {0} {1}'.format(value_str, unit_label), value_str
+
+        if isinstance(frequency, list):
+            frequency = frequency[0] if frequency else None
+
+        if not isinstance(frequency, str):
+            return (TIME.years, 'Anual', '0')
+
         frequencies = {
             'anual': (TIME.years, 'Anual', 1),
             'semestral': (TIME.months, 'Semestral', 6),
