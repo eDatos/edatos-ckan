@@ -450,7 +450,7 @@ def read(id):
     context = {
         'model': model,
         'session': model.Session,
-        'user': toolkit.g.user or toolkit.author,
+        'user': toolkit.g.user or '',
         'for_view': True,
         'auth_user_obj': toolkit.g.userobj
     }
@@ -465,10 +465,15 @@ def read(id):
         return toolkit.abort(401, _('Unauthorized to read showcase'))
 
     # get showcase packages
-    showcase_pkgs = toolkit.get_action('ckanext_showcase_package_list')(
-        context, {
-            'showcase_id': pkg_dict['id']
-        })
+    showcase_pkgs = []
+    try:
+        showcase_pkgs = toolkit.get_action('ckanext_showcase_package_list')(
+            context, {
+                'showcase_id': pkg_dict['id']
+            })
+    except (toolkit.ValidationError, toolkit.ObjectNotFound):
+        log.warning('Failed to get packages for showcase %s', pkg_dict['id'])
+        showcase_pkgs = []
 
     package_type = showcase_utils.DATASET_TYPE_NAME
     return toolkit.render('edatosshowcase/read.html',

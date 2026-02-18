@@ -16,7 +16,7 @@ Example:
                     {% if pkg.image_display_url %}
                         {% block image_container %}
                             <div class="ckanext-showcase-image-container">
-                                <p class="ckanext-showcase-image-container"><img src="{{ pkg.image_display_url }}" alt="{{ name }}" class="media-image ckanext-showcase-image img-responsive"></p>
+                                <p class="ckanext-showcase-image-container"><img src="{{ pkg.image_display_url }}" alt="{{ name }}" class="media-image ckanext-showcase-image img-fluid"></p>
                             {% if pkg.author %}
                                 <p class="ckanext-showcase-image-autor">{{ pkg.author }}</p>
                             {% endif %}    
