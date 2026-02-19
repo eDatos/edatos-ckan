@@ -85,6 +85,8 @@ RUN apt install vim -y
 RUN sed -i '/^\[logger_ckanext\]/,/^\[/ s/level = Info/level = DEBUG/' /srv/app/ckan.ini
 RUN sed -i 's/^debug=false/debug=true/' /srv/app/ckan.ini
 
+# Se anhade la ruta del endpoint de DCAT al ini de CKAN ruta especifica para el cliente
+RUN sed -i '/^\[app:main\]/a\ckanext.dcat.catalog_endpoint = /dcat/catalog.{_format}' /srv/app/ckan.ini
 
 # Create necessary directories
 RUN mkdir -p /docker-entrypoint.d /srv/app/docker/bin
