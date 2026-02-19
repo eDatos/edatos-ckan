@@ -24,9 +24,6 @@ Example:
                         {% endblock %}
                     {% endif %}
                     {% block package_info_inner %}
-                        {% block heading %}
-                            <h1 class="heading">{{ pkg.title or pkg.name }}</h1>
-                        {% endblock %}
                         {% block inner %}
                             {% block heading_count %}
                                 <h1 class="media-heading">
