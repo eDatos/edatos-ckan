@@ -61,12 +61,12 @@ def get_freq_tags(lang='tags_es'):
 
 def get_tag(tag_id):
     tag_dict = toolkit.get_action('tag_show')(
-        data_dict={'id': tag_id})
+        {}, {'id': tag_id})
     return tag_dict
 
 def get_group(group_id):
     group_dict = toolkit.get_action('group_show')(
-        data_dict={'id': group_id})
+        {}, {'id': group_id})
     return group_dict
 
 def get_license(license_id):
@@ -513,7 +513,7 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         return I18N_DIR
 
     # IPackageController
-    def before_index(self, data_dict):
+    def before_dataset_index(self, data_dict):
         """Metodo para realizar el indexado de las etiquetas i18n 
         en el index de solr correspondiente
         """
