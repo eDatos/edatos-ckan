@@ -21,8 +21,8 @@ services:
     
   ckan:
     build:
-      context: ckan/
-      dockerfile: Dockerfile
+      context: ../
+      dockerfile: dockerfiles/ckan/Dockerfile
       args:
         - TZ=${TZ}
     networks:
@@ -52,8 +52,8 @@ services:
   
   jobs-worker:
     build:
-      context: ckan/
-      dockerfile: Dockerfile.worker
+      context: ../
+      dockerfile: dockerfiles/ckan/Dockerfile.worker
       args:
         - TZ=${TZ}    
     env_file:
@@ -77,8 +77,8 @@ services:
   
   gather-consumer:
     build:
-      context: ckan/
-      dockerfile: Dockerfile.worker
+      context: ../
+      dockerfile: dockerfiles/ckan/Dockerfile.worker
       args:
         - TZ=${TZ}    
     env_file:
@@ -102,8 +102,8 @@ services:
   
   fetch-consumer:
     build:
-      context: ckan/
-      dockerfile: Dockerfile
+      context: ../
+      dockerfile: dockerfiles/ckan/Dockerfile
       args:
         - TZ=${TZ}
     deploy:
