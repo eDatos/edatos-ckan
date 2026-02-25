@@ -42,11 +42,6 @@ Example:
           </h2>
         {% endblock %}
         {% block notes %}
-          {% if notes %}
-            <div>{{ notes|urlize }}</div>
-          {% else %}
-            <p class="empty">{{ h.humanize_entity_type('package', package.type, 'no description') or _("There is no description for this dataset") }}</p>
-          {% endif %}
         {% endblock %}
       </div>
       {% block resources %}
