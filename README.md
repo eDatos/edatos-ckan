@@ -20,10 +20,15 @@ Se han desarrollado las siguientes extensiones de CKAN:
 - ckanext-istactranslation (Deprecated): Las traducciones se han vuelto a implementar en la extensión istac_theme <s>contiene las traducciones de la extensión de theme y se implementan en esta extensión para solventar un comportamiento por defecto de CKAN que toma las traducciones siempre de la última extensión en la lista de configuración, por lo tanto deberá estar siempre en última posición en esta.</s>
 
 
-## Instalación
+## Instalación y despliegue en desarrollo
 ---------------------------------------------------------------
+### Generación de imágenes:
+docker build -f dockerfiles/ckan/Dockerfile.worker -t docker.arte-consultores.com/istac/ckan:<version> .
+docker build -f dockerfiles/ckan/Dockerfile.worker -t docker.arte-consultores.com/istac/ckan-worker:<version> .
 
-El proceso de instalación y configuración de las extensiones y ficheros de configuración se explica en los manuales de configuración del proyecto.
+### Despliegue en local:
+docker compose -f dockerfiles/docker-compose.yml up
+
 
 ## Configuración
 ---------------------------------------------------------------

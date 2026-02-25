@@ -19,11 +19,21 @@ RUN mkdir /srv/app/.local && chown ckan /srv/app/.local && \
 
 USER ckan
 
-COPY *.json .
+COPY dockerfiles/ckan/*.json .
+
+COPY --chown=ckan:ckan ckanext-cas/ src/ckanext-cas/
+COPY --chown=ckan:ckan ckanext-edatosscheming/ src/ckanext-edatosscheming/
+COPY --chown=ckan:ckan ckanext-gobcangroups/ src/ckanext-gobcangroups/
+COPY --chown=ckan:ckan ckanext-edatosshowcase/ src/ckanext-edatosshowcase/
+COPY --chown=ckan:ckan ckanext-edatostheme/ src/ckanext-edatostheme/
+COPY --chown=ckan:ckan ckanext-istactranslation src/ckanext-istactranslation/
+COPY --chown=ckan:ckan ["etc/dcat custom profile/gobcan_profile.py", "/tmp/gobcan_profile.py"]
+
+
 
 ## edatos plugins actualizamos permisos 
-RUN chmod 777 ../../ckanext-edatostheme/ckanext/edatostheme/templates/header.html && \
-    chmod 777 ../../ckanext-edatostheme/ckanext/edatostheme/templates/footer.html
+RUN chmod 777 src/ckanext-edatostheme/ckanext/edatostheme/templates/header.html && \
+    chmod 777 src/ckanext-edatostheme/ckanext/edatostheme/templates/footer.html
 
 # Esto es para la versión 2.9: Activamos el entorno python
 #RUN . /usr/lib/ckan/venv/bin/activate
@@ -47,7 +57,7 @@ RUN pip3 install -e 'git+https://github.com/ckan/ckanext-showcase.git@v1.8.4#egg
 ### DCat ###
 #RUN  pip3 install -e git+https://github.com/ckan/ckanext-dcat.git@master#egg=ckanext-dcat && \
 RUN  git clone --branch v2.4.2 --single-branch https://github.com/ckan/ckanext-dcat.git /srv/app/src/ckanext-dcat && \
-    mv /tmp/ckan-istac/etc/dcat\ custom\ profile/gobcan_profile.py src/ckanext-dcat/ckanext/dcat/profiles/. && \
+    mv /tmp/gobcan_profile.py src/ckanext-dcat/ckanext/dcat/profiles/. && \
     echo 'gobcan_dcat_ap = "ckanext.dcat.profiles.gobcan_profile:GobCanProfile"\n' >> src/ckanext-dcat/pyproject.toml && \
     pip3 install -e /srv/app/src/ckanext-dcat && \
     pip3 install -r ${APP_DIR}/src/ckanext-dcat/requirements.txt
@@ -62,12 +72,12 @@ RUN pip3 install -e 'git+https://github.com/ckan/ckanext-scheming.git#egg=ckanex
 RUN pip3 install -e 'git+https://github.com/ckan/ckanext-fluent.git#egg=ckanext-fluent'
 
 ### Custom plugins
-RUN pip3 install -e ../../ckanext-edatostheme && \
-    pip3 install -e ../../ckanext-cas && \
-    pip3 install -r ../../ckanext-edatosscheming/requirements.txt && \
-    pip3 install -e ../../ckanext-edatosscheming && \
-    pip3 install -e ../../ckanext-gobcangroups && \
-    pip3 install -e ../../ckanext-edatosshowcase
+RUN pip3 install -e src/ckanext-edatostheme && \
+    pip3 install -e src/ckanext-cas && \
+    pip3 install -r src/ckanext-edatosscheming/requirements.txt && \
+    pip3 install -e src/ckanext-edatosscheming && \
+    pip3 install -e src/ckanext-gobcangroups && \
+    pip3 install -e src/ckanext-edatosshowcase
 
 
 # Instalacion schming en el global de la imagen
@@ -92,10 +102,10 @@ RUN sed -i '/^\[app:main\]/a\ckanext.dcat.catalog_endpoint = /dcat/catalog.{_for
 RUN mkdir -p /docker-entrypoint.d /srv/app/docker/bin
 
 # Copy custom initialization scripts
-COPY --chown=ckan-sys:ckan-sys docker-entrypoint.d/* /docker-entrypoint.d/
+COPY --chown=ckan-sys:ckan-sys dockerfiles/ckan/docker-entrypoint.d/* /docker-entrypoint.d/
 
 # Copy bin scripts for entrypoint
-COPY --chown=ckan-sys:ckan-sys bin/ /srv/app/docker/bin/
+COPY --chown=ckan-sys:ckan-sys dockerfiles/ckan/bin/ /srv/app/docker/bin/
 
 # Hacer ejecutables todos los scripts sh y py
 RUN chmod +x /docker-entrypoint.d/*.sh 2>/dev/null || true
@@ -109,7 +119,7 @@ RUN echo "[Dockerfile] Scripts de entrypoint disponibles:" && ls -la /docker-ent
 
 # Apply any patches needed to CKAN core or any of the built extensions (not the
 # runtime mounted ones)
-COPY --chown=ckan-sys:ckan-sys patches ${APP_DIR}/patches
+COPY --chown=ckan-sys:ckan-sys dockerfiles/ckan/patches ${APP_DIR}/patches
 
 # Esto es para la versión 2.9
 #RUN chown -R ckan:ckan /var/lib/ckan
