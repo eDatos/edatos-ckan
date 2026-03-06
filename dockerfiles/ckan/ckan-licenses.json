@@ -236,6 +236,16 @@
     "status": "active",
     "title": "Aviso Legal del ISTAC",
     "url": "http://www.gobiernodecanarias.org/istac/aviso_legal.html"
+  },
+  {
+    "id": "ibestat-aviso-legal",
+    "domain_content": false,
+    "domain_data": true,
+    "domain_software": false,
+    "od_conformance": "approved",
+    "osd_conformance": "not reviewed",
+    "status": "active",
+    "title": "Aviso Legal del IBESTAT",
+    "url": "https://ibestat.es/aviso-legal/"
   }
 ]
-

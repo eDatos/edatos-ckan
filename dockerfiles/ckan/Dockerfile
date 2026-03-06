@@ -72,6 +72,7 @@ RUN pip3 install -e 'git+https://github.com/ckan/ckanext-scheming.git#egg=ckanex
 RUN pip3 install -e 'git+https://github.com/ckan/ckanext-fluent.git#egg=ckanext-fluent'
 
 ### Custom plugins
+
 RUN pip3 install -e src/ckanext-edatostheme && \
     pip3 install -e src/ckanext-cas && \
     pip3 install -r src/ckanext-edatosscheming/requirements.txt && \
@@ -79,6 +80,14 @@ RUN pip3 install -e src/ckanext-edatostheme && \
     pip3 install -e src/ckanext-gobcangroups && \
     pip3 install -e src/ckanext-edatosshowcase
 
+# Generar schemas por defecto desde los templates (con locale 'es') para que
+# nunca estén vacíos durante el arranque. 
+#El entrypoint 01_fill_schemas_templates.sh
+# los regenerará en runtime con el valor real de CKAN__LOCALE_DEFAULT.
+RUN for f in src/ckanext-edatosscheming/ckanext/edatosscheming/schemas_templates/*.json; do \
+    sed 's/FILL_REQUIRED_LANGUAGE/es/g' "$f" \
+    > "src/ckanext-edatosscheming/ckanext/edatosscheming/schemas/$(basename $f)"; \
+    done
 
 # Instalacion schming en el global de la imagen
 #RUN /usr/local/bin/python -m pip install --no-cache-dir ckanext-scheming
@@ -96,7 +105,7 @@ RUN sed -i '/^\[logger_ckanext\]/,/^\[/ s/level = Info/level = DEBUG/' /srv/app/
 RUN sed -i 's/^debug=false/debug=true/' /srv/app/ckan.ini
 
 # Se anhade la ruta del endpoint de DCAT al ini de CKAN ruta especifica para el cliente
-RUN sed -i '/^\[app:main\]/a\ckanext.dcat.catalog_endpoint = /dcat/catalog.{_format}' /srv/app/ckan.ini
+RUN sed -i '/^\[app:main\]/a\ckanext.dcat.catalog_endpoint = /catalog/dcat/catalog.{_format}' /srv/app/ckan.ini
 
 # Create necessary directories
 RUN mkdir -p /docker-entrypoint.d /srv/app/docker/bin
@@ -106,6 +115,10 @@ COPY --chown=ckan-sys:ckan-sys dockerfiles/ckan/docker-entrypoint.d/* /docker-en
 
 # Copy bin scripts for entrypoint
 COPY --chown=ckan-sys:ckan-sys dockerfiles/ckan/bin/ /srv/app/docker/bin/
+
+# Normalizar finales de línea (CRLF -> LF) para scripts copiados desde Windows
+RUN find /docker-entrypoint.d -type f \( -name "*.sh" -o -name "*.py" \) -exec sed -i 's/\r$//' {} + && \
+    find /srv/app/docker/bin -type f \( -name "*.sh" -o -name "*.py" \) -exec sed -i 's/\r$//' {} +
 
 # Hacer ejecutables todos los scripts sh y py
 RUN chmod +x /docker-entrypoint.d/*.sh 2>/dev/null || true

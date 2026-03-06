@@ -15,7 +15,7 @@
     {
       "preset_name": "select_organization",
       "values": {
-        "validators": "select_organization unicode",
+        "validators": "select_organization unicode_safe",
         "form_snippet": "select_organization.html",
         "display_snippet": "select_organization.html"
       }

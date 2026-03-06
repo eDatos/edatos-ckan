@@ -12,14 +12,14 @@ if [[ "${DEBUG_MODE}" == "true" ]] || [[ "${CKAN_DEBUG}" == "true" ]]; then
     log_info "[04_debug_mode] Activando modo DEBUG..."
     
     # Cambiar debug de false a true en ckan.ini
-    if sed -i 's/^debug=false/debug=true/' /srv/app/ckan.ini 2>&1 | tee -a $ENTRYPOINT_LOG; then
+    if sed -i 's/^debug=false/debug=true/' /srv/app/ckan.ini 2>&1; then
         log_success "[04_debug_mode] debug=true configurado"
     else
         log_warn "[04_debug_mode] No se pudo actualizar debug en ckan.ini"
     fi
     
     # Cambiar nivel de logger ckanext a DEBUG
-    if sed -i '/^\[logger_ckanext\]/,/^\[/ s/level = Info/level = DEBUG/' /srv/app/ckan.ini 2>&1 | tee -a $ENTRYPOINT_LOG; then
+    if sed -i '/^\[logger_ckanext\]/,/^\[/ s/level = Info/level = DEBUG/' /srv/app/ckan.ini 2>&1; then
         log_success "[04_debug_mode] Logger ckanext configurado a DEBUG"
     else
         log_warn "[04_debug_mode] No se pudo actualizar logger ckanext"
