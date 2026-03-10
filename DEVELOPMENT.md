@@ -1,118 +1,127 @@
 
-## Debug Mode and Flask-DebugToolbar
+## Modo Debug y Flask-DebugToolbar
 
-### Overview
+### Descripción general
 
-CKAN supports Flask-DebugToolbar for development debugging. This toolbar provides:
-- **Templates panel**: Shows all Jinja2 templates rendered for each request (critical for theme development)
-- **SQLAlchemy queries**: Database query analysis
-- **Request/Response inspection**: Headers, variables, routes
-- **Performance profiling**: Timing information
+CKAN soporta Flask-DebugToolbar para depuración en desarrollo. Esta barra de herramientas proporciona:
+- **Panel de plantillas**: Muestra todas las plantillas Jinja2 renderizadas en cada petición (fundamental para el desarrollo del tema)
+- **Consultas SQLAlchemy**: Análisis de consultas a la base de datos
+- **Inspección de peticiones/respuestas**: Cabeceras, variables, rutas
+- **Perfilado de rendimiento**: Información de tiempos
 
-**⚠️ WARNING:** Debug mode should **NEVER** be enabled in production environments.
+**⚠️ ADVERTENCIA:** El modo debug **NUNCA** debe habilitarse en entornos de producción.
 
-### Prerequisites
+### Prerrequisitos
 
-* Se deberá de comparar y verificar la configuración de .env, realizar una copia de seguridad y modificar las variables
-necesarias para su carga en local, ver el fichero dev.env donde se puede ver el ejemplo donde se usa DESA, su base de
-datos, cmetadata y la IP de un host dentro de la red de Arte.
+#### Conexión VPN
 
-* Se debe de modificar el nombre de la configuración para las base de datos, las propiedades son: 
-CKAN_SQLALCHEMY_URL
-CKAN_DATASTORE_WRITE_URL
-CKAN_DATASTORE_READ_URL
-CKANEXT__XLOADER__JOBS_DB__URI
+**Es obligatorio estar conectado a la VPN corporativa** para que los contenedores puedan acceder a los servicios internos (base de datos, CAS, cmetadata, etc.).
 
-* Comprobar que la aplicación se levante en localhost o con la IP dada por la VPN corporativa, las propiedades en .env a verificar:
-CKAN_SITE_URL
-CKANEXT__PAGE_URL
-CKANEXT__DCAT__BASE_URI
-CKANEXT__CAS__APPLICATION_URL
+El `docker-compose.dev.yml` ya incluye la configuración de DNS interno (`192.168.10.1`) y `extra_hosts` en los servicios `ckan`, `jobs-worker`, `gather-consumer` y `fetch-consumer`. Si cambia el DNS interno o se necesitan dominios adicionales, actualizar las secciones `dns` y `extra_hosts` de esos servicios.
 
-* Comprobar en la configuración JSON de la extensión ckanext-edatosscheming, la siguiente propiedad:
-siteURL
+#### Base de datos externa
 
-* Comprobar las rutas de los endpoints de en la configuración JSON de las extensiones por si ha cambiado.
+El servicio `db` está **comentado** en `docker-compose.dev.yml`. Se usa una base de datos PostgreSQL externa (host: `ckan-docker-db-1` o `estadisticas.arte.internal`). Verificar que el host de la BD sea accesible desde los contenedores.
+
+#### Configuración del .env
+
+* Se deberá de comparar y verificar la configuración de `dockerfiles/.env`, realizar una copia de seguridad y modificar las variables necesarias para su carga en local.
+
+* Se debe de modificar la configuración para las bases de datos, las propiedades son:
+  - `CKAN_SQLALCHEMY_URL`
+  - `CKAN_DATASTORE_WRITE_URL`
+  - `CKAN_DATASTORE_READ_URL`
+  - `CKANEXT__XLOADER__JOBS_DB__URI`
+
+* Comprobar que la aplicación se levante con la IP dada por la VPN corporativa, las propiedades en `dockerfiles/.env` a verificar:
+  - `CKAN_SITE_URL`
+  - `CKANEXT__PAGE_URL`
+  - `CKANEXT__DCAT__BASE_URI`
+  - `CKANEXT__CAS__APPLICATION_URL`
+
+* Comprobar en la configuración JSON de la extensión **ckanext-edatostheme** (`dockerfiles/src/ckanext-edatostheme/ckanext/edatostheme/etc/config.json`), la propiedad:
+  - `siteURL` — Debe coincidir con `CKAN_SITE_URL` (ej: `https://192.168.10.110:8443/`)
+
+* Comprobar las rutas de los endpoints en la configuración JSON de las extensiones (`config.json` de edatostheme y edatosscheming) por si han cambiado.
 
 
-Flask-DebugToolbar is already installed in the Docker image (`Flask-DebugToolbar 0.16.0`). If not present:
+Flask-DebugToolbar ya viene instalado en la imagen Docker (`Flask-DebugToolbar 0.16.0`). Si no está presente:
 
 ```bash
-
 docker compose -f dockerfiles/docker-compose.dev.yml exec ckan pip install flask-debugtoolbar
-docker compose -f dockerfiles/docker-compose.dev.yml -u root apt install vim -y
+docker compose -f dockerfiles/docker-compose.dev.yml exec -u root ckan apt install vim -y
 ```
 
-### Step-by-Step Activation
+### Activación paso a paso
 
-#### 1. Enable Debug Mode in ckan.ini
+#### 1. Habilitar el modo debug en ckan.ini
 
 ```bash
-docker compose -f dockerfiles/docker-compose.dev.yml -u root ckan sed -i 's/^debug = false/debug = true/' /srv/app/ckan.ini
+docker compose -f dockerfiles/docker-compose.dev.yml exec -u root ckan sed -i 's/^debug = false/debug = true/' /srv/app/ckan.ini
 ```
 
-**Verify:**
+**Verificar:**
 ```bash
 docker compose -f dockerfiles/docker-compose.dev.yml exec ckan grep "^debug" /srv/app/ckan.ini
-# Should show: debug = true
+# Debería mostrar: debug = true
 ```
 
-#### 2. Verify Environment Variables (.env)
+#### 2. Verificar las variables de entorno (.env)
 
-Ensure these are set in `docker/ckan-docker/.env`:
+Asegurarse de que estas variables estén configuradas en `dockerfiles/.env`:
 
 ```ini
-# Debug settings
+# Configuración de debug
 DEBUG=true
 CKAN__DEBUG=true
 CKAN__LOGGER_CKAN__LEVEL=DEBUG
 CKAN__LOGGER_CKANEXT__LEVEL=DEBUG
 ```
 
-#### 3. Check Single-Process Requirement
+#### 3. Requisito de proceso único
 
-Flask-DebugToolbar requires CKAN to run in **single-process mode**:
+Flask-DebugToolbar requiere que CKAN se ejecute en **modo de proceso único**:
 
 ```bash
 docker compose -f dockerfiles/docker-compose.dev.yml exec ckan ps aux | grep uwsgi
 ```
 
-If you see multiple worker processes, Flask-DebugToolbar may not work correctly.
+Si se ven múltiples procesos worker, Flask-DebugToolbar podría no funcionar correctamente.
 
-#### 4. Restart CKAN
+#### 4. Reiniciar CKAN
 
 ```bash
 docker compose -f dockerfiles/docker-compose.dev.yml restart ckan
 ```
 
-Wait 30-60 seconds for CKAN to become healthy:
+Esperar 30-60 segundos hasta que CKAN esté sano:
 
 ```bash
 docker compose -f dockerfiles/docker-compose.dev.yml ps ckan
-# STATUS should show: Up X seconds (healthy)
+# El STATUS debería mostrar: Up X seconds (healthy)
 ```
 
-#### 5. Access the Debug Toolbar
+#### 5. Acceder a la barra de depuración
 
-1. Open browser and navigate to: `https://localhost:8443/`
-2. Look for a **small tab/icon on the right side** of the page (may show "FLDT" or Flask logo)
-3. Click the tab to expand the debug toolbar panel
-4. The panel will show sections including **Templates**, **SQLAlchemy**, **Time**, **HTTP Headers**, etc.
+1. Abrir el navegador y navegar a: `https://localhost:8443/`
+2. Buscar una **pestaña/icono pequeño en el lado derecho** de la página (puede mostrar "FLDT" o el logo de Flask)
+3. Hacer clic en la pestaña para expandir el panel de la barra de depuración
+4. El panel mostrará secciones incluyendo **Templates**, **SQLAlchemy**, **Time**, **HTTP Headers**, etc.
 
-**If the toolbar doesn't appear:**
-- Hard refresh: `Ctrl + F5` (clears cache)
-- Try incognito/private browsing mode
-- Check browser console (`F12` → Console) for JavaScript errors
-- Verify debug mode is actually enabled (see verification steps below)
+**Si la barra no aparece:**
+- Forzar recarga: `Ctrl + F5` (limpia la caché)
+- Probar en modo incógnito/privado del navegador
+- Revisar la consola del navegador (`F12` → Consola) en busca de errores JavaScript
+- Verificar que el modo debug esté realmente habilitado (ver pasos de verificación más abajo)
 
-### Using the Templates Panel
+### Uso del panel de plantillas
 
-The **Templates** panel is the most useful for theme development:
+El panel de **Templates** es el más útil para el desarrollo del tema:
 
-#### Viewing Rendered Templates
+#### Ver las plantillas renderizadas
 
-1. Expand the **"Templates (XX rendered)"** section in the toolbar
-2. You'll see a list like:
+1. Expandir la sección **"Templates (XX rendered)"** en la barra
+2. Se verá una lista como:
    ```
    package/read.html
    package/read_base.html
@@ -121,179 +130,183 @@ The **Templates** panel is the most useful for theme development:
    base.html
    ```
 
-#### Locating Template Files
+#### Localizar archivos de plantillas
 
-Templates are searched in this **priority order**, the order of the configured extentions matter :
+Las plantillas se buscan en este **orden de prioridad** (el orden de las extensiones configuradas importa):
 
-1. **Your theme** (highest priority):
+1. **Tu tema** (máxima prioridad):
    ```
    /srv/app/src/ckanext-edatostheme/ckanext/edatostheme/templates/
    ```
 
-2. **Other extensions**:
+2. **Otras extensiones**:
    ```
    /srv/app/src/ckanext-*/ckanext/*/templates/
    ```
 
-3. **CKAN core** (fallback):
+3. **CKAN core** (última opción):
    ```
    /srv/app/src/ckan/ckan/templates/
    ```
 
-#### Finding Templates in the Container
+#### Buscar plantillas en el contenedor
 
 ```bash
-# Enter container
+# Entrar al contenedor
 docker compose -f dockerfiles/docker-compose.dev.yml exec ckan bash
 
-# Find a specific template
+# Buscar una plantilla específica
 find /srv/app/src -name "read_base.html"
 
-# List all templates in your theme
+# Listar todas las plantillas del tema
 find /srv/app/src/ckanext-edatostheme/ckanext/edatostheme/templates -name "*.html" | sort
 
-# List CKAN core templates
+# Listar plantillas del core de CKAN
 find /srv/app/src/ckan/ckan/templates/package -name "*.html" | head -20
 
-# Exit container
+# Salir del contenedor
 exit
 ```
 
-#### Template Override Examples
+#### Ejemplos de sobreescritura de plantillas
 
-| Template shown in toolbar | Most likely location to edit |
-|---------------------------|------------------------------|
+| Plantilla mostrada en la barra | Ubicación más probable para editar |
+|--------------------------------|------------------------------------|
 | `package/read_base.html` | `/srv/app/src/ckanext-edatostheme/ckanext/edatostheme/templates/package/read_base.html` |
-| `package/snippets/resources.html` | Check theme first, fallback to `/srv/app/src/ckan/ckan/templates/package/snippets/resources.html` |
-| `base.html` | Usually CKAN core: `/srv/app/src/ckan/ckan/templates/base.html` |
+| `package/snippets/resources.html` | Comprobar primero el tema, si no en `/srv/app/src/ckan/ckan/templates/package/snippets/resources.html` |
+| `base.html` | Normalmente CKAN core: `/srv/app/src/ckan/ckan/templates/base.html` |
 
-### Verification Commands
+### Comandos de verificación
 
-#### Check Debug Status
+#### Comprobar el estado del debug
 
 ```bash
-# Verify ckan.ini
+# Verificar ckan.ini
 docker compose -f dockerfiles/docker-compose.dev.yml exec ckan grep "^debug" /srv/app/ckan.ini
 
-# Verify environment variables
+# Verificar variables de entorno
 docker compose -f dockerfiles/docker-compose.dev.yml exec ckan env | grep -E "DEBUG|CKAN.*DEBUG"
 
-# Check logs for debug confirmation
+# Comprobar en los logs la confirmación del debug
 docker compose -f dockerfiles/docker-compose.dev.yml logs ckan --tail 100 | grep -i "debug"
 ```
 
-You should see log entries like:
+Deberían verse entradas en los logs como:
 ```
 [ckan.config.middleware] Debug mode is enabled
 ```
 
-#### Test Flask-DebugToolbar Installation
+#### Comprobar la instalación de Flask-DebugToolbar
 
 ```bash
-docker compose -f dockerfiles/docker-compose.dev.yml exec ckan python3 -c "import flask_debugtoolbar; print('Flask-DebugToolbar installed')"
+docker compose -f dockerfiles/docker-compose.dev.yml exec ckan python3 -c "import flask_debugtoolbar; print('Flask-DebugToolbar instalado')"
 ```
 
-### Troubleshooting
+### Resolución de problemas
 
-#### Problem: Toolbar Not Appearing
+#### Problema: La barra no aparece
 
-**Cause 1: Debug mode not actually enabled**
+**Causa 1: El modo debug no está realmente habilitado**
 
 ```bash
-# Check actual debug value (not commented out)
+# Comprobar el valor real de debug (no comentado)
 docker compose -f dockerfiles/docker-compose.dev.yml exec ckan grep "^debug" /srv/app/ckan.ini
 
-# Should show: debug = true
-# If shows: debug = false, then fix it:
-docker compose -f dockerfiles/docker-compose.dev.yml exec-u root ckan sed -i 's/^debug = false/debug = true/' /srv/app/ckan.ini
+# Debería mostrar: debug = true
+# Si muestra: debug = false, corregirlo:
+docker compose -f dockerfiles/docker-compose.dev.yml exec -u root ckan sed -i 's/^debug = false/debug = true/' /srv/app/ckan.ini
 docker compose -f dockerfiles/docker-compose.dev.yml restart ckan
 ```
 
-**Cause 2: JavaScript errors in browser**
+**Causa 2: Errores JavaScript en el navegador**
 
-1. Open browser DevTools (`F12`)
-2. Go to **Console** tab
-3. Look for errors related to Flask or DebugToolbar
+1. Abrir las herramientas de desarrollo del navegador (`F12`)
+2. Ir a la pestaña **Consola**
+3. Buscar errores relacionados con Flask o DebugToolbar
 
-**Cause 3: Multi-process mode**
+**Causa 3: Modo multiproceso**
 
-Flask-DebugToolbar doesn't work with multiple WSGI workers. Check uWSGI configuration:
+Flask-DebugToolbar no funciona con múltiples workers WSGI. Comprobar la configuración de uWSGI:
 ```bash
 docker compose -f dockerfiles/docker-compose.dev.yml exec ckan grep -E "processes|workers" /srv/app/ckan.ini
 ```
 
-#### Problem: Templates Panel is Empty
+#### Problema: El panel de plantillas está vacío
 
-This means no Jinja2 templates were rendered. Try navigating to a dataset page: `/dataset/{dataset-name}`
+Esto significa que no se renderizaron plantillas Jinja2. Intentar navegar a una página de dataset: `/dataset/{nombre-del-dataset}`
 
-#### Problem: Redirect Issues (localhost → IP)
+#### Problema: Redirecciones (localhost → IP)
 
-If Flask-DebugToolbar redirects from `localhost` to `192.168.10.110`, check `siteURL` in theme config:
+Si Flask-DebugToolbar redirige de `localhost` a `192.168.10.110`, comprobar `siteURL` en la configuración del tema:
 
 ```bash
 docker compose -f dockerfiles/docker-compose.dev.yml exec ckan cat /srv/app/src/ckanext-edatostheme/ckanext/edatostheme/etc/config.json | grep siteURL
 ```
 
-Should be:
+Debe coincidir con el valor de `CKAN_SITE_URL` en `dockerfiles/.env`, por ejemplo:
 ```json
-"siteURL": "https://localhost:8443/"
+"siteURL": "https://192.168.10.110:8443/"
 ```
 
-### Working with Templates
+### Trabajo con plantillas
 
-#### Typical Workflow
+#### Flujo de trabajo típico
 
-1. **Identify template** using Flask-DebugToolbar Templates panel
-2. **Locate file** using find commands or the priority order above
-3. **Edit template** (either on host in `src/` or inside container)
-4. **Reload page** to see changes (templates auto-reload in debug mode)
-5. **Verify changes** using the toolbar
+1. **Identificar la plantilla** usando el panel de Templates de Flask-DebugToolbar
+2. **Localizar el archivo** usando los comandos find o el orden de prioridad anterior
+3. **Editar la plantilla** (en el host en `src/` o dentro del contenedor)
+4. **Recargar la página** para ver los cambios (las plantillas se recargan automáticamente en modo debug)
+5. **Verificar los cambios** usando la barra de depuración
 
-#### Editing Templates from Host Machine
+#### Editar configuraciones desde la máquina host
 
-Templates in these directories are mounted from the host:
+Las configuraciones JSON de las extensiones están montadas como volúmenes desde el host:
 
 ```
-Host location:
-docker/ckan-docker/src/ckanext-edatostheme/ckanext/edatostheme/templates/
+Ubicación en el host:
+dockerfiles/src/ckanext-edatostheme/ckanext/edatostheme/etc/config.json
+dockerfiles/src/ckanext-edatosscheming/ckanext/edatosscheming/etc/config.json
 
-Maps to container:
-/srv/app/src/ckanext-edatostheme/ckanext/edatostheme/templates/
+Ubicación en el contenedor:
+/srv/app/src/ckanext-edatostheme/ckanext/edatostheme/etc/config.json
+/srv/app/src/ckanext-edatosscheming/ckanext/edatosscheming/etc/config.json
 ```
 
-**Changes made on the host are immediately reflected in the container** (no rebuild needed).
+**Los cambios en estos ficheros de configuración se reflejan inmediatamente en el contenedor** (no requiere rebuild).
 
-### Best Practices
+**Nota:** Los templates HTML **no están montados** como volúmenes. Para modificar templates se debe entrar al contenedor o reconstruir la imagen.
 
-1. **Always disable debug mode in production**
-   - Set `debug = false` in ckan.ini
-   - Remove `DEBUG=true` from .env
+### Buenas prácticas
 
-2. **Use Templates panel to understand CKAN's rendering**
-   - Identify which template to override
-   - Understand template inheritance chains
+1. **Siempre deshabilitar el modo debug en producción**
+   - Establecer `debug = false` en ckan.ini
+   - Eliminar `DEBUG=true` del .env
 
-3. **Hot-reload in debug mode**
-   - Templates auto-reload on changes
-   - No container restart needed for template edits
+2. **Usar el panel de Templates para entender el renderizado de CKAN**
+   - Identificar qué plantilla sobreescribir
+   - Entender las cadenas de herencia de plantillas
 
-### Quick Reference Commands
+3. **Recarga en caliente en modo debug**
+   - Las plantillas se recargan automáticamente con los cambios
+   - No se necesita reiniciar el contenedor para ediciones de plantillas
+
+### Referencia rápida de comandos
 
 ```bash
-# Enable debug mode
-docker compose -f dockerfiles/docker-compose.dev.yml exec-u root ckan sed -i 's/debug = false/debug = true/' /srv/app/ckan.ini
-docker compose restart ckan
+# Habilitar modo debug
+docker compose -f dockerfiles/docker-compose.dev.yml exec -u root ckan sed -i 's/debug = false/debug = true/' /srv/app/ckan.ini
+docker compose -f dockerfiles/docker-compose.dev.yml restart ckan
 
-# Disable debug mode
-docker compose -f dockerfiles/docker-compose.dev.yml exec-u root ckan sed -i 's/debug = true/debug = false/' /srv/app/ckan.ini
-docker compose restart ckan
+# Deshabilitar modo debug
+docker compose -f dockerfiles/docker-compose.dev.yml exec -u root ckan sed -i 's/debug = true/debug = false/' /srv/app/ckan.ini
+docker compose -f dockerfiles/docker-compose.dev.yml restart ckan
 
-# Find template
-docker compose -f dockerfiles/docker-compose.dev.yml exec ckan find /srv/app/src -name "template_name.html"
+# Buscar plantilla
+docker compose -f dockerfiles/docker-compose.dev.yml exec ckan find /srv/app/src -name "nombre_plantilla.html"
 
-# View logs
+# Ver logs
 docker compose logs ckan -f
 
-# Check debug status
+# Comprobar estado del debug
 docker compose -f dockerfiles/docker-compose.dev.yml exec ckan grep "^debug" /srv/app/ckan.ini
 ```
