@@ -8,12 +8,6 @@ USER root
 RUN mkdir /srv/app/.local && chown ckan /srv/app/.local && \
     mkdir /srv/app/.cache && chown ckan /srv/app/.cache
 
-# Esto es para la versión 2.9
-#RUN deluser ckan && \
-#    addgroup -g 502 ckan && \
-#    adduser -D -u 503 -G ckan ckan
-#RUN chown -R ckan:ckan /srv/app /var/lib/ckan
-
 # Install any extensions needed by your CKAN instance
 # See Dockerfile.dev for more details and examples
 
@@ -34,9 +28,6 @@ COPY --chown=ckan:ckan ["etc/dcat custom profile/gobcan_profile.py", "/tmp/gobca
 ## edatos plugins actualizamos permisos 
 RUN chmod 777 src/ckanext-edatostheme/ckanext/edatostheme/templates/header.html && \
     chmod 777 src/ckanext-edatostheme/ckanext/edatostheme/templates/footer.html
-
-# Esto es para la versión 2.9: Activamos el entorno python
-#RUN . /usr/lib/ckan/venv/bin/activate
 
 ### XLoader ###
 RUN pip3 install -e 'git+https://github.com/ckan/ckanext-xloader.git@2.2.0#egg=ckanext-xloader' && \
@@ -73,7 +64,8 @@ RUN pip3 install -e 'git+https://github.com/ckan/ckanext-fluent.git#egg=ckanext-
 
 ### Custom plugins
 
-RUN pip3 install -e src/ckanext-edatostheme && \
+RUN pip3 install -r src/ckanext-edatostheme/requirements.txt && \
+    pip3 install -e src/ckanext-edatostheme && \
     pip3 install -e src/ckanext-cas && \
     pip3 install -r src/ckanext-edatosscheming/requirements.txt && \
     pip3 install -e src/ckanext-edatosscheming && \
@@ -83,26 +75,13 @@ RUN pip3 install -e src/ckanext-edatostheme && \
 # Generar schemas por defecto desde los templates (con locale 'es') para que
 # nunca estén vacíos durante el arranque. 
 #El entrypoint 01_fill_schemas_templates.sh
-# los regenerará en runtime con el valor real de CKAN__LOCALE_DEFAULT.
+# los regenerará en runtime con el valor real de CKAN__LOCALE_DEFAULT de .env
 RUN for f in src/ckanext-edatosscheming/ckanext/edatosscheming/schemas_templates/*.json; do \
     sed 's/FILL_REQUIRED_LANGUAGE/es/g' "$f" \
     > "src/ckanext-edatosscheming/ckanext/edatosscheming/schemas/$(basename $f)"; \
     done
 
-# Instalacion schming en el global de la imagen
-#RUN /usr/local/bin/python -m pip install --no-cache-dir ckanext-scheming
-
-# Revisar si no debemos incluir esto en requirements.txt del edatostheme
-RUN pip3 install beautifulsoup4
-
 USER root
-
-# Para desarrollar con CKAN
-RUN pip install flask_debugtoolbar
-RUN apt install vim -y
-
-RUN sed -i '/^\[logger_ckanext\]/,/^\[/ s/level = Info/level = DEBUG/' /srv/app/ckan.ini
-RUN sed -i 's/^debug=false/debug=true/' /srv/app/ckan.ini
 
 # Se anhade la ruta del endpoint de DCAT al ini de CKAN ruta especifica para el cliente
 RUN sed -i '/^\[app:main\]/a\ckanext.dcat.catalog_endpoint = /catalog/dcat/catalog.{_format}' /srv/app/ckan.ini
@@ -129,13 +108,9 @@ RUN chmod +x /srv/app/docker/bin/*.sh 2>/dev/null || true
 # scripts que se van a ejecutar
 RUN echo "[Dockerfile] Scripts de entrypoint disponibles:" && ls -la /docker-entrypoint.d/
 
-
 # Apply any patches needed to CKAN core or any of the built extensions (not the
 # runtime mounted ones)
 COPY --chown=ckan-sys:ckan-sys dockerfiles/ckan/patches ${APP_DIR}/patches
-
-# Esto es para la versión 2.9
-#RUN chown -R ckan:ckan /var/lib/ckan
 
 USER ckan
 

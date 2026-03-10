@@ -1,6 +1,6 @@
 volumes:
   ckan_storage:
-  pg_data:
+  # pg_data:
   solr_data:
   pip_cache:
   site_packages:
@@ -13,13 +13,18 @@ services:
       dockerfile: Dockerfile
     networks:
       - ckan-net
-    depends_on:
-      ckan:
-        condition: service_healthy
+    # depends_on:
+    #   ckan:
+    #     condition: service_healthy
     ports:
       - "0.0.0.0:${NGINX_SSLPORT_HOST}:${NGINX_SSLPORT}"
     
   ckan:
+    dns:
+      - 192.168.10.1
+      - 8.8.8.8
+    extra_hosts:
+      - "estadisticas.arte-consultores.com:217.76.135.60"
     build:
       context: ../
       dockerfile: dockerfiles/ckan/Dockerfile
@@ -30,8 +35,8 @@ services:
     env_file:
       - .env
     depends_on:
-      db:
-        condition: service_healthy
+      # db:
+      #   condition: service_healthy
       solr:
         condition: service_healthy
       redis:
@@ -51,6 +56,11 @@ services:
       retries: 3
   
   jobs-worker:
+    dns:
+      - 192.168.10.1
+      - 8.8.8.8
+    extra_hosts:
+      - "estadisticas.arte-consultores.com:217.76.135.60"
     build:
       context: ../
       dockerfile: dockerfiles/ckan/Dockerfile.worker
@@ -63,8 +73,8 @@ services:
       - CKAN_SITE_URL=http://ckan:5000'      
       - CKAN___SECRET_KEY=una-clave-segura  # clave dummy para correcta iniciar del ckan worker
     depends_on:
-      db:
-        condition: service_healthy
+      # db:
+      #   condition: service_healthy
       redis:
         condition: service_healthy
     networks:
@@ -76,6 +86,11 @@ services:
     entrypoint: ["ckan", "-c", "/srv/app/ckan.ini", "jobs", "worker"]
   
   gather-consumer:
+    dns:
+      - 192.168.10.1
+      - 8.8.8.8
+    extra_hosts:
+      - "estadisticas.arte-consultores.com:217.76.135.60"
     build:
       context: ../
       dockerfile: dockerfiles/ckan/Dockerfile.worker
@@ -88,8 +103,8 @@ services:
       - CKAN_SITE_URL=http://ckan:5000'      
       - CKAN___SECRET_KEY=una-clave-segura  # clave dummy para correcta iniciar del ckan worker
     depends_on:
-      db:
-        condition: service_healthy
+      # db:
+      #   condition: service_healthy
       redis:
         condition: service_healthy
     networks:
@@ -101,6 +116,11 @@ services:
     entrypoint: ["ckan", "-c", "/srv/app/ckan.ini", "harvester", "gather-consumer"]
   
   fetch-consumer:
+    dns:
+      - 192.168.10.1
+      - 8.8.8.8
+    extra_hosts:
+      - "estadisticas.arte-consultores.com:217.76.135.60"
     build:
       context: ../
       dockerfile: dockerfiles/ckan/Dockerfile
@@ -115,8 +135,8 @@ services:
       - CKAN_SITE_URL=http://ckan:5000'      
       - CKAN___SECRET_KEY=una-clave-segura  # clave dummy para correcta iniciar del ckan worker
     depends_on:
-      db:
-        condition: service_healthy
+      # db:
+      #   condition: service_healthy
       redis:
         condition: service_healthy
     networks:
@@ -127,28 +147,28 @@ services:
       - site_packages:/usr/lib/python3.10/site-packages    
     entrypoint: ["ckan", "-c", "/srv/app/ckan.ini", "harvester", "fetch-consumer"]
       
-  db:
-    build:
-      context: postgresql/
-    networks:
-      - ckan-net
-    environment:
-      - POSTGRES_USER
-      - POSTGRES_PASSWORD
-      - POSTGRES_DB
-      - CKAN_DB_USER
-      - CKAN_DB_PASSWORD
-      - CKAN_DB
-      - DATASTORE_READONLY_USER
-      - DATASTORE_READONLY_PASSWORD
-      - DATASTORE_DB
-    ports:
-      - "5432:5432"
-    volumes:
-      - pg_data:/var/lib/postgresql/data
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
+  # db:
+  #   build:
+  #     context: postgresql/
+  #   networks:
+  #     - ckan-net
+  #   environment:
+  #     - POSTGRES_USER
+  #     - POSTGRES_PASSWORD
+  #     - POSTGRES_DB
+  #     - CKAN_DB_USER
+  #     - CKAN_DB_PASSWORD
+  #     - CKAN_DB
+  #     - DATASTORE_READONLY_USER
+  #     - DATASTORE_READONLY_PASSWORD
+  #     - DATASTORE_DB
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - pg_data:/var/lib/postgresql/data
+  #   restart: unless-stopped
+  #   healthcheck:
+  #     test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
 
   solr:
     networks:

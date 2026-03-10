@@ -13,11 +13,34 @@ CKAN supports Flask-DebugToolbar for development debugging. This toolbar provide
 
 ### Prerequisites
 
+* Se deberá de comparar y verificar la configuración de .env, realizar una copia de seguridad y modificar las variables
+necesarias para su carga en local, ver el fichero dev.env donde se puede ver el ejemplo donde se usa DESA, su base de
+datos, cmetadata y la IP de un host dentro de la red de Arte.
+
+* Se debe de modificar el nombre de la configuración para las base de datos, las propiedades son: 
+CKAN_SQLALCHEMY_URL
+CKAN_DATASTORE_WRITE_URL
+CKAN_DATASTORE_READ_URL
+CKANEXT__XLOADER__JOBS_DB__URI
+
+* Comprobar que la aplicación se levante en localhost o con la IP dada por la VPN corporativa, las propiedades en .env a verificar:
+CKAN_SITE_URL
+CKANEXT__PAGE_URL
+CKANEXT__DCAT__BASE_URI
+CKANEXT__CAS__APPLICATION_URL
+
+* Comprobar en la configuración JSON de la extensión ckanext-edatosscheming, la siguiente propiedad:
+siteURL
+
+* Comprobar las rutas de los endpoints de en la configuración JSON de las extensiones por si ha cambiado.
+
+
 Flask-DebugToolbar is already installed in the Docker image (`Flask-DebugToolbar 0.16.0`). If not present:
 
 ```bash
-cd docker/ckan-docker
-docker compose exec ckan pip install flask-debugtoolbar
+
+docker compose -f dockerfiles/docker-compose.dev.yml exec ckan pip install flask-debugtoolbar
+docker compose -f dockerfiles/docker-compose.dev.yml -u root apt install vim -y
 ```
 
 ### Step-by-Step Activation
@@ -25,13 +48,12 @@ docker compose exec ckan pip install flask-debugtoolbar
 #### 1. Enable Debug Mode in ckan.ini
 
 ```bash
-cd docker/ckan-docker
-docker compose exec -u root ckan sed -i 's/^debug = false/debug = true/' /srv/app/ckan.ini
+docker compose -f dockerfiles/docker-compose.dev.yml -u root ckan sed -i 's/^debug = false/debug = true/' /srv/app/ckan.ini
 ```
 
 **Verify:**
 ```bash
-docker compose exec ckan grep "^debug" /srv/app/ckan.ini
+docker compose -f dockerfiles/docker-compose.dev.yml exec ckan grep "^debug" /srv/app/ckan.ini
 # Should show: debug = true
 ```
 
@@ -52,7 +74,7 @@ CKAN__LOGGER_CKANEXT__LEVEL=DEBUG
 Flask-DebugToolbar requires CKAN to run in **single-process mode**:
 
 ```bash
-docker compose exec ckan ps aux | grep uwsgi
+docker compose -f dockerfiles/docker-compose.dev.yml exec ckan ps aux | grep uwsgi
 ```
 
 If you see multiple worker processes, Flask-DebugToolbar may not work correctly.
@@ -60,13 +82,13 @@ If you see multiple worker processes, Flask-DebugToolbar may not work correctly.
 #### 4. Restart CKAN
 
 ```bash
-docker compose restart ckan
+docker compose -f dockerfiles/docker-compose.dev.yml restart ckan
 ```
 
 Wait 30-60 seconds for CKAN to become healthy:
 
 ```bash
-docker compose ps ckan
+docker compose -f dockerfiles/docker-compose.dev.yml ps ckan
 # STATUS should show: Up X seconds (healthy)
 ```
 
@@ -101,7 +123,7 @@ The **Templates** panel is the most useful for theme development:
 
 #### Locating Template Files
 
-Templates are searched in this **priority order**:
+Templates are searched in this **priority order**, the order of the configured extentions matter :
 
 1. **Your theme** (highest priority):
    ```
@@ -122,7 +144,7 @@ Templates are searched in this **priority order**:
 
 ```bash
 # Enter container
-docker compose exec ckan bash
+docker compose -f dockerfiles/docker-compose.dev.yml exec ckan bash
 
 # Find a specific template
 find /srv/app/src -name "read_base.html"
@@ -151,13 +173,13 @@ exit
 
 ```bash
 # Verify ckan.ini
-docker compose exec ckan grep "^debug" /srv/app/ckan.ini
+docker compose -f dockerfiles/docker-compose.dev.yml exec ckan grep "^debug" /srv/app/ckan.ini
 
 # Verify environment variables
-docker compose exec ckan env | grep -E "DEBUG|CKAN.*DEBUG"
+docker compose -f dockerfiles/docker-compose.dev.yml exec ckan env | grep -E "DEBUG|CKAN.*DEBUG"
 
 # Check logs for debug confirmation
-docker compose logs ckan --tail 100 | grep -i "debug"
+docker compose -f dockerfiles/docker-compose.dev.yml logs ckan --tail 100 | grep -i "debug"
 ```
 
 You should see log entries like:
@@ -168,7 +190,7 @@ You should see log entries like:
 #### Test Flask-DebugToolbar Installation
 
 ```bash
-docker compose exec ckan python3 -c "import flask_debugtoolbar; print('Flask-DebugToolbar installed')"
+docker compose -f dockerfiles/docker-compose.dev.yml exec ckan python3 -c "import flask_debugtoolbar; print('Flask-DebugToolbar installed')"
 ```
 
 ### Troubleshooting
@@ -179,12 +201,12 @@ docker compose exec ckan python3 -c "import flask_debugtoolbar; print('Flask-Deb
 
 ```bash
 # Check actual debug value (not commented out)
-docker compose exec ckan grep "^debug" /srv/app/ckan.ini
+docker compose -f dockerfiles/docker-compose.dev.yml exec ckan grep "^debug" /srv/app/ckan.ini
 
 # Should show: debug = true
 # If shows: debug = false, then fix it:
-docker compose exec -u root ckan sed -i 's/^debug = false/debug = true/' /srv/app/ckan.ini
-docker compose restart ckan
+docker compose -f dockerfiles/docker-compose.dev.yml exec-u root ckan sed -i 's/^debug = false/debug = true/' /srv/app/ckan.ini
+docker compose -f dockerfiles/docker-compose.dev.yml restart ckan
 ```
 
 **Cause 2: JavaScript errors in browser**
@@ -197,7 +219,7 @@ docker compose restart ckan
 
 Flask-DebugToolbar doesn't work with multiple WSGI workers. Check uWSGI configuration:
 ```bash
-docker compose exec ckan grep -E "processes|workers" /srv/app/ckan.ini
+docker compose -f dockerfiles/docker-compose.dev.yml exec ckan grep -E "processes|workers" /srv/app/ckan.ini
 ```
 
 #### Problem: Templates Panel is Empty
@@ -209,7 +231,7 @@ This means no Jinja2 templates were rendered. Try navigating to a dataset page: 
 If Flask-DebugToolbar redirects from `localhost` to `192.168.10.110`, check `siteURL` in theme config:
 
 ```bash
-docker compose exec ckan cat /srv/app/src/ckanext-edatostheme/ckanext/edatostheme/etc/config.json | grep siteURL
+docker compose -f dockerfiles/docker-compose.dev.yml exec ckan cat /srv/app/src/ckanext-edatostheme/ckanext/edatostheme/etc/config.json | grep siteURL
 ```
 
 Should be:
@@ -259,19 +281,19 @@ Maps to container:
 
 ```bash
 # Enable debug mode
-docker compose exec -u root ckan sed -i 's/debug = false/debug = true/' /srv/app/ckan.ini
+docker compose -f dockerfiles/docker-compose.dev.yml exec-u root ckan sed -i 's/debug = false/debug = true/' /srv/app/ckan.ini
 docker compose restart ckan
 
 # Disable debug mode
-docker compose exec -u root ckan sed -i 's/debug = true/debug = false/' /srv/app/ckan.ini
+docker compose -f dockerfiles/docker-compose.dev.yml exec-u root ckan sed -i 's/debug = true/debug = false/' /srv/app/ckan.ini
 docker compose restart ckan
 
 # Find template
-docker compose exec ckan find /srv/app/src -name "template_name.html"
+docker compose -f dockerfiles/docker-compose.dev.yml exec ckan find /srv/app/src -name "template_name.html"
 
 # View logs
 docker compose logs ckan -f
 
 # Check debug status
-docker compose exec ckan grep "^debug" /srv/app/ckan.ini
+docker compose -f dockerfiles/docker-compose.dev.yml exec ckan grep "^debug" /srv/app/ckan.ini
 ```
