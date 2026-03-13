@@ -4,7 +4,7 @@
         "navbarPathKey": "metamac.app.style.header.url",
         "footerPathKey": "metamac.app.style.footer.url",
         "appName": "Open Data Catalog",
-        "siteURL": "https://192.168.10.110:8443/",
+        "siteURL": "https://LOCALHOST:8443/",
         "htmlCodeClass": "edatos-custom-header",
         "groupPaginationLimit": 24,
         "favicon": "metamac.app.style.favicon.url",

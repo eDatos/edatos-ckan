@@ -20,11 +20,6 @@ services:
       - "0.0.0.0:${NGINX_SSLPORT_HOST}:${NGINX_SSLPORT}"
     
   ckan:
-    dns:
-      - 192.168.10.1
-      - 8.8.8.8
-    extra_hosts:
-      - "estadisticas.arte-consultores.com:217.76.135.60"
     build:
       context: ../
       dockerfile: dockerfiles/ckan/Dockerfile
@@ -56,11 +51,6 @@ services:
       retries: 3
   
   jobs-worker:
-    dns:
-      - 192.168.10.1
-      - 8.8.8.8
-    extra_hosts:
-      - "estadisticas.arte-consultores.com:217.76.135.60"
     build:
       context: ../
       dockerfile: dockerfiles/ckan/Dockerfile.worker
@@ -86,11 +76,6 @@ services:
     entrypoint: ["ckan", "-c", "/srv/app/ckan.ini", "jobs", "worker"]
   
   gather-consumer:
-    dns:
-      - 192.168.10.1
-      - 8.8.8.8
-    extra_hosts:
-      - "estadisticas.arte-consultores.com:217.76.135.60"
     build:
       context: ../
       dockerfile: dockerfiles/ckan/Dockerfile.worker
@@ -116,11 +101,6 @@ services:
     entrypoint: ["ckan", "-c", "/srv/app/ckan.ini", "harvester", "gather-consumer"]
   
   fetch-consumer:
-    dns:
-      - 192.168.10.1
-      - 8.8.8.8
-    extra_hosts:
-      - "estadisticas.arte-consultores.com:217.76.135.60"
     build:
       context: ../
       dockerfile: dockerfiles/ckan/Dockerfile
