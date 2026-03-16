@@ -1,5 +1,6 @@
   stages:
     - build
+    - push_image
 
   variables:
     DOCKER_REGISTRY: docker.arte-consultores.com
@@ -24,3 +25,14 @@
       - docker build --cache-from docker.arte-consultores.com/edatos/ckan:latest
         --tag docker.arte-consultores.com/edatos/ckan:latest -f dockerfiles/ckan/Dockerfile .
       - docker push docker.arte-consultores.com/edatos/ckan:latest
+
+  trigger_ckan_stack:
+    stage: deploy
+    only:
+      - develop
+    needs:
+      - job: push_image
+    trigger:
+      project: istac/ckan-stack
+      branch: develop
+      strategy: depend
