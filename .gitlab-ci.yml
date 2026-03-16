@@ -7,8 +7,9 @@
   build image:
     stage: build
     tags: ["docker"]
-    - if: $CI_PIPELINE_SOURCE == "web"
-      when: manual
+    rules:
+       - if: $CI_PIPELINE_SOURCE == "web"
+         when: manual
     image: docker:24.0.5
     variables:
       DOCKER_HOST: ""
