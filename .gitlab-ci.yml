@@ -1,6 +1,5 @@
   stages:
     - build
-    - publish
 
   variables:
     DOCKER_REGISTRY: docker.arte-consultores.com
