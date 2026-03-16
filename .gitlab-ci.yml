@@ -28,8 +28,9 @@
 
   trigger_ckan_stack:
     stage: deploy
-    only:
-      - develop
+    rules:
+       - if: $CI_PIPELINE_SOURCE == "web"
+         when: manual
     needs:
       - job: push_image
     trigger:
