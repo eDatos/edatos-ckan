@@ -25,7 +25,3 @@
         --tag docker.arte-consultores.com/edatos/ckan:1.0.0 --tag docker.arte-consultores.com/edatos/ckan:latest -f dockerfiles/ckan/Dockerfile .
       - docker push docker.arte-consultores.com/edatos/ckan:1.0.0
       - docker push docker.arte-consultores.com/edatos/ckan:latest
-    artifacts:
-      reports:
-        dotenv: build.env
-      expire_in: 1 hour
