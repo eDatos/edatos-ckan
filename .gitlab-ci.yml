@@ -1,39 +1,40 @@
-  stages:
-    - build
-    - push_image
+stages:
+  - build
+  - push_image
+  - deploy
 
+variables:
+  DOCKER_REGISTRY: docker.arte-consultores.com
+
+build image:
+  stage: build
+  tags: ["docker"]
+  rules:
+     - if: $CI_PIPELINE_SOURCE == "web"
+       when: manual
+  image: docker:24.0.5
   variables:
-    DOCKER_REGISTRY: docker.arte-consultores.com
+    DOCKER_HOST: ""
+  services:
+    - name: docker:24.0.5-dind
+  before_script:
+    - docker login docker.arte-consultores.com --username app-jenkins --password app-jenkins
+  script:
+    - pwd
+    - ls -la
+    - find . -maxdepth 4 -type f | sort
+    - docker build --cache-from docker.arte-consultores.com/edatos/ckan:latest
+      --tag docker.arte-consultores.com/edatos/ckan:latest -f dockerfiles/ckan/Dockerfile .
+    - docker push docker.arte-consultores.com/edatos/ckan:latest
 
-  build image:
-    stage: build
-    tags: ["docker"]
-    rules:
-       - if: $CI_PIPELINE_SOURCE == "web"
-         when: manual
-    image: docker:24.0.5
-    variables:
-      DOCKER_HOST: ""
-    services:
-      - name: docker:24.0.5-dind
-    before_script:
-      - docker login docker.arte-consultores.com --username app-jenkins --password app-jenkins
-    script:
-      - pwd
-      - ls -la
-      - find . -maxdepth 4 -type f | sort
-      - docker build --cache-from docker.arte-consultores.com/edatos/ckan:latest
-        --tag docker.arte-consultores.com/edatos/ckan:latest -f dockerfiles/ckan/Dockerfile .
-      - docker push docker.arte-consultores.com/edatos/ckan:latest
-
-  trigger_ckan_stack:
-    stage: deploy
-    rules:
-       - if: $CI_PIPELINE_SOURCE == "web"
-         when: manual
-    needs:
-      - job: push_image
-    trigger:
-      project: istac/ckan-stack
-      branch: develop
-      strategy: depend
+trigger_ckan_stack:
+  stage: deploy
+  rules:
+     - if: $CI_PIPELINE_SOURCE == "web"
+       when: manual
+  needs:
+    - job: build image
+  trigger:
+    project: istac/ckan-stack
+    branch: develop
+    strategy: depend
