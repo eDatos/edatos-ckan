@@ -1,0 +1,72 @@
+stages:
+  - develop
+  - release
+  - deploy
+
+variables:
+  DOCKER_REGISTRY: docker.arte-consultores.com
+
+build image:
+  stage: develop
+  tags: ["docker"]
+  rules:
+     - if: $CI_PIPELINE_SOURCE == "web"
+       when: manual
+  image: docker:24.0.5
+  variables:
+    DOCKER_HOST: ""
+  services:
+    - name: docker:24.0.5-dind
+  before_script:
+    - docker login docker.arte-consultores.com --username app-jenkins --password app-jenkins
+  script:
+    - docker build --cache-from docker.arte-consultores.com/edatos/ckan:latest
+      --tag docker.arte-consultores.com/edatos/ckan:latest -f dockerfiles/ckan/Dockerfile .
+    - docker push docker.arte-consultores.com/edatos/ckan:latest
+    - docker build --cache-from docker.arte-consultores.com/edatos/ckan-worker:latest
+      --tag docker.arte-consultores.com/edatos/ckan-worker:latest -f dockerfiles/ckan/Dockerfile.worker .
+    - docker push docker.arte-consultores.com/edatos/ckan-worker:latest
+
+release:
+  stage: release
+  tags: ["docker"]
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: always
+    - if: $CI_PIPELINE_SOURCE == "web" && $CI_COMMIT_TAG
+      when: manual
+  image: docker:24.0.5
+  variables:
+    DOCKER_HOST: ""
+  services:
+    - name: docker:24.0.5-dind
+  before_script:
+    - docker login docker.arte-consultores.com --username app-jenkins --password app-jenkins
+  script:
+    - docker build --cache-from docker.arte-consultores.com/edatos/ckan:$CI_COMMIT_TAG
+      --tag docker.arte-consultores.com/edatos/ckan:$CI_COMMIT_TAG -f dockerfiles/ckan/Dockerfile .
+    - docker push docker.arte-consultores.com/edatos/ckan:$CI_COMMIT_TAG
+    - docker build --cache-from docker.arte-consultores.com/edatos/ckan-worker:$CI_COMMIT_TAG
+      --tag docker.arte-consultores.com/edatos/ckan-worker:$CI_COMMIT_TAG -f dockerfiles/ckan/Dockerfile.worker .
+    - docker push docker.arte-consultores.com/edatos/ckan-worker:$CI_COMMIT_TAG
+
+trigger ckan-stack develop:
+  stage: deploy
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "web"
+      when: manual
+  trigger:
+    project: istac/infraestructura/ckan-stack
+    branch: develop
+
+trigger ckan-stack release:
+  stage: deploy
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: manual
+  trigger:
+    project: istac/infraestructura/ckan-stack
+    branch: develop
+    strategy: depend
+  variables:
+    VERSION: $CI_COMMIT_TAG
