@@ -1,5 +1,5 @@
 stages:
-  - build
+  - develop
   - push_image
   - deploy
 
@@ -7,7 +7,7 @@ variables:
   DOCKER_REGISTRY: docker.arte-consultores.com
 
 build image:
-  stage: build
+  stage: develop
   tags: ["docker"]
   rules:
      - if: $CI_PIPELINE_SOURCE == "web"
