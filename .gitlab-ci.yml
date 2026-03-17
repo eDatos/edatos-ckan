@@ -29,8 +29,6 @@ trigger_ckan_stack:
   rules:
      - if: $CI_PIPELINE_SOURCE == "web"
        when: manual
-  needs:
-    - job: build image
   trigger:
     project: istac/ckan-stack
     branch: develop
