@@ -1,6 +1,7 @@
 stages:
   - develop
   - release
+  - deploy
 
 variables:
   DOCKER_REGISTRY: docker.arte-consultores.com
@@ -48,3 +49,23 @@ release:
     - docker build --cache-from docker.arte-consultores.com/edatos/ckan-worker:$CI_COMMIT_TAG
       --tag docker.arte-consultores.com/edatos/ckan-worker:$CI_COMMIT_TAG -f dockerfiles/ckan/Dockerfile.worker .
     - docker push docker.arte-consultores.com/edatos/ckan-worker:$CI_COMMIT_TAG
+
+trigger ckan-stack develop:
+  stage: deploy
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "web"
+      when: manual
+  trigger:
+    project: istac/infraestructura/ckan-stack
+    branch: develop
+
+trigger ckan-stack release:
+  stage: deploy
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: manual
+    - if: $CI_PIPELINE_SOURCE == "web" && $CI_COMMIT_TAG
+      when: manual
+  trigger:
+    project: istac/infraestructura/ckan-stack
+    branch: develop
