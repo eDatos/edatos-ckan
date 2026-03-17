@@ -20,9 +20,6 @@ build image:
   before_script:
     - docker login docker.arte-consultores.com --username app-jenkins --password app-jenkins
   script:
-    - pwd
-    - ls -la
-    - find . -maxdepth 4 -type f | sort
     - docker build --cache-from docker.arte-consultores.com/edatos/ckan:latest
       --tag docker.arte-consultores.com/edatos/ckan:latest -f dockerfiles/ckan/Dockerfile .
     - docker push docker.arte-consultores.com/edatos/ckan:latest
