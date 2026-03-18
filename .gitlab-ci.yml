@@ -18,9 +18,7 @@ variables:
   services:
     - name: docker:24.0.5-dind
   before_script:
-    - docker login $DOCKER_REGISTRY --username app-jenkins --password app-jenkins
-
-.build_images_script:
+    - docker login $DOCKER_REGISTRY --username app-jenkins --password $ARTE_DOCKER_REGISTRY_PASS
   script:
     - docker build --cache-from $CKAN_IMAGE:$IMAGE_TAG
       --tag $CKAN_IMAGE:$IMAGE_TAG -f dockerfiles/ckan/Dockerfile .
@@ -45,7 +43,6 @@ build image:
       when: manual
   variables:
     IMAGE_TAG: latest
-  script: !reference [.build_images_script, script]
 
 release:
   extends: .docker_job
@@ -57,7 +54,6 @@ release:
       when: manual
   variables:
     IMAGE_TAG: $CI_COMMIT_TAG
-  script: !reference [.build_images_script, script]
 
 trigger ckan-stack develop:
   extends: .trigger_ckan_stack
