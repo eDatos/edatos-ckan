@@ -60,14 +60,20 @@ def get_freq_tags(lang='tags_es'):
     
 
 def get_tag(tag_id):
-    tag_dict = toolkit.get_action('tag_show')(
-        {}, {'id': tag_id})
-    return tag_dict
+    try:
+        tag_dict = toolkit.get_action('tag_show')(
+            {}, {'id': tag_id})
+        return tag_dict
+    except toolkit.ObjectNotFound:
+        return None
 
 def get_group(group_id):
-    group_dict = toolkit.get_action('group_show')(
-        {}, {'id': group_id})
-    return group_dict
+    try:
+        group_dict = toolkit.get_action('group_show')(
+            {}, {'id': group_id})
+        return group_dict
+    except toolkit.ObjectNotFound:
+        return None
 
 def get_license(license_id):
     return Package.get_license_register().get(license_id)
