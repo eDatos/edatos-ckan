@@ -5,68 +5,72 @@ stages:
 
 variables:
   DOCKER_REGISTRY: docker.arte-consultores.com
+  CKAN_IMAGE: ${DOCKER_REGISTRY}/edatos/ckan
+  WORKER_IMAGE: ${DOCKER_REGISTRY}/edatos/ckan-worker
 
-build image:
-  stage: develop
+# ── Templates ──────────────────────────────────────────────────────────────
+
+.docker_job:
   tags: ["docker"]
-  rules:
-     - if: $CI_PIPELINE_SOURCE == "web"
-       when: manual
   image: docker:24.0.5
   variables:
     DOCKER_HOST: ""
   services:
     - name: docker:24.0.5-dind
   before_script:
-    - docker login docker.arte-consultores.com --username app-jenkins --password app-jenkins
+    - docker login $DOCKER_REGISTRY --username app-jenkins --password app-jenkins
+
+.build_images_script:
   script:
-    - docker build --cache-from docker.arte-consultores.com/edatos/ckan:latest
-      --tag docker.arte-consultores.com/edatos/ckan:latest -f dockerfiles/ckan/Dockerfile .
-    - docker push docker.arte-consultores.com/edatos/ckan:latest
-    - docker build --cache-from docker.arte-consultores.com/edatos/ckan-worker:latest
-      --tag docker.arte-consultores.com/edatos/ckan-worker:latest -f dockerfiles/ckan/Dockerfile.worker .
-    - docker push docker.arte-consultores.com/edatos/ckan-worker:latest
+    - docker build --cache-from $CKAN_IMAGE:$IMAGE_TAG
+      --tag $CKAN_IMAGE:$IMAGE_TAG -f dockerfiles/ckan/Dockerfile .
+    - docker push $CKAN_IMAGE:$IMAGE_TAG
+    - docker build --cache-from $WORKER_IMAGE:$IMAGE_TAG
+      --tag $WORKER_IMAGE:$IMAGE_TAG -f dockerfiles/ckan/Dockerfile.worker .
+    - docker push $WORKER_IMAGE:$IMAGE_TAG
+
+.trigger_ckan_stack:
+  stage: deploy
+  trigger:
+    project: istac/infraestructura/ckan-stack
+    branch: develop
+
+# ── Jobs ───────────────────────────────────────────────────────────────────
+
+build image:
+  extends: .docker_job
+  stage: develop
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "web"
+      when: manual
+  variables:
+    IMAGE_TAG: latest
+  script: !reference [.build_images_script, script]
 
 release:
+  extends: .docker_job
   stage: release
-  tags: ["docker"]
   rules:
     - if: $CI_COMMIT_TAG
       when: always
     - if: $CI_PIPELINE_SOURCE == "web" && $CI_COMMIT_TAG
       when: manual
-  image: docker:24.0.5
   variables:
-    DOCKER_HOST: ""
-  services:
-    - name: docker:24.0.5-dind
-  before_script:
-    - docker login docker.arte-consultores.com --username app-jenkins --password app-jenkins
-  script:
-    - docker build --cache-from docker.arte-consultores.com/edatos/ckan:$CI_COMMIT_TAG
-      --tag docker.arte-consultores.com/edatos/ckan:$CI_COMMIT_TAG -f dockerfiles/ckan/Dockerfile .
-    - docker push docker.arte-consultores.com/edatos/ckan:$CI_COMMIT_TAG
-    - docker build --cache-from docker.arte-consultores.com/edatos/ckan-worker:$CI_COMMIT_TAG
-      --tag docker.arte-consultores.com/edatos/ckan-worker:$CI_COMMIT_TAG -f dockerfiles/ckan/Dockerfile.worker .
-    - docker push docker.arte-consultores.com/edatos/ckan-worker:$CI_COMMIT_TAG
+    IMAGE_TAG: $CI_COMMIT_TAG
+  script: !reference [.build_images_script, script]
 
 trigger ckan-stack develop:
-  stage: deploy
+  extends: .trigger_ckan_stack
   rules:
     - if: $CI_PIPELINE_SOURCE == "web"
       when: manual
-  trigger:
-    project: istac/infraestructura/ckan-stack
-    branch: develop
 
 trigger ckan-stack release:
-  stage: deploy
+  extends: .trigger_ckan_stack
   rules:
     - if: $CI_COMMIT_TAG
       when: manual
   trigger:
-    project: istac/infraestructura/ckan-stack
-    branch: develop
     strategy: depend
   variables:
     VERSION: $CI_COMMIT_TAG
