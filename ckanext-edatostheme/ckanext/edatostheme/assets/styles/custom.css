@@ -1,94 +1,14 @@
-.homepage .module-search .module-content,
-.tags {
-	background-color: #0072A2 !important;
-	opacity: 0.80;
-}
-
-.homepage .module-search,
-.box {
-	background-color: none !important;
-	background: none !important;
-	margin-bottom: 20px;
-}
-
-.counter-box {
-	padding-bottom: 80px;
-}
-
-
-.site-footer {
-	background-color: #59656e !important;
-	background-image: none;
-}
-
-
-.footer-title {
-	text-transform: uppercase;
-	font-weight: bold;
-	font-size: 1.1em;
-}
-
-.attrib {
-	font-size: .8em;
-	margin-top: 1rem;
-}
-
-.fleft {
-	float: left;
-}
-
-.fright {
-	float: right;
-}
-
-.hero {
-	background-image: none;
-}
+/* ============================================================
+   1. RESET / BASE
+   Tipografía base, body background, reset mínimo
+   ============================================================ */
 
 body {
-	background-image: None;
-	background-color: #eeeeee !important;
+	background-image: none;
+	background-color: var(--color-body-bg) !important;
 	background-size: cover;
 	background-position: center center;
-	padding: 0px !important;
-}
-
-.navigation .nav-pills li a,
-.navigation .nav-pills li.active a {
-	background-color: transparent;
-	color: #ffffff;
-}
-
-.navigation .nav-pills li a:hover,
-.navigation .nav-pills li.active a {
-	background-color: #008bd0;
-	color: #ffffff;
-}
-
-
-.istac-app-header.istac-title-bar .account ul li a {
-	display: block;
-	color: #59656e;
-	font-size: 16px;
-	font-weight: initial;
-	padding: 0 10px;
-	line-height: 31px;
-}
-
-
-.istac-app-header.istac-title-bar .account ul li a:hover {
-	color: #ffffff;
-	background-color: #008bd0;
-	text-decoration: none;
-}
-
-a.tag:hover {
-	color: #fff;
-	background-color: #004568;
-	border: 0px;
-	-webkit-box-shadow: inset 0 1px 0 #3d97b3;
-	-moz-box-shadow: inset 0 1px 0 #3d97b3;
-	box-shadow: inset 0 1px 0 #3d97b3;
+	padding: 0 !important;
 }
 
 a:hover,
@@ -96,50 +16,16 @@ a:focus {
 	text-decoration: none;
 }
 
-.site-footer,
-.site-footer label,
-.site-footer small,
-.site-footer a {
-	color: #ffffff;
+input,
+select,
+textarea {
+	color: var(--color-text-base);
 }
 
 
-.btn-primary {
-	background-image: none;
-	background-color: #004678;
-	color: #ffffff;
-}
-
-.open>.dropdown-toggle.btn-primary,
-.open>.dropdown-toggle.btn-primary:focus,
-.open>.dropdown-toggle.btn-primary:hover {
-	color: #ffffff;
-	background-color: #004678;
-	background-image: none;
-	border-color: #004678;
-}
-
-.btn-primary:hover,
-.btn-primary:focus,
-.btn-primary:active,
-.btn-primary.active,
-.btn-primary.disabled,
-.btn-primary[disabled] {
-	color: #ffffff;
-	background-color: #004678;
-}
-
-.homepage .module-search {
-	margin: 100px 0 20px 0;
-}
-
-.search-form .search-input.search-giant button {
-	margin-top: -13px;
-}
-
-.istac-app-header.istac-title-bar .account ul li {
-	border-left: 1px solid #dddddd;
-}
+/* ============================================================
+   2. LAYOUT — Container, Grid, Main
+   ============================================================ */
 
 [role=main],
 .main {
@@ -148,130 +34,9 @@ a:focus {
 	min-height: 700px;
 }
 
-.nav-item.active>a,
-.nav-aside li.active a,
-.istac-app-header.istac-title-bar .account ul li a.btn-datasets {
-	background-color: #8098A7;
-	color: #FFFFFF;
-	min-width: 90px;
-	text-align: center;
-}
-
-
-.istac-app-header.istac-title-bar .account ul li a.btn-datasets:hover,
-.istac-app-header.istac-title-bar .account ul li.active a.btn-datasets {
-	background-color: #008bd0;
-	color: #FFFFFF;
-}
-
-.resource-item:hover {
-	background-color: #eeeeee;
-}
-
-.nav-item.active>a::before,
-.nav-aside li.active a::before {
-	content: ' ';
-	position: absolute;
-	top: 0;
-	right: -10px;
-	width: 0;
-	height: 0;
-	border-top: 17px solid transparent;
-	border-bottom: 17px solid transparent;
-	border-left: 10px solid #008bd0;
-	background-image: none;
-}
-
-.nav-item.active>a:hover,
-.nav-aside li.active a:hover {
-	color: #ffffff;
-	background-color: #008bd0;
-}
-
-.home-app {
-	font-size: 20px;
-	font-weight: 500;
-	color: #59656e !important;
-	padding-top: 10px;
-	padding-left: 36px;
-	padding-bottom: 10px;
-}
-
-.title-icon {
-	border-radius: 50%;
-	border: 1px solid;
-	border-top-color: currentcolor;
-	border-right-color: currentcolor;
-	border-bottom-color: currentcolor;
-	border-left-color: currentcolor;
-	border-color: inherit;
-	font-size: 17px;
-	width: 20px;
-	height: 20px;
-	display: inline-flex;
-	justify-content: center;
-	align-items: center;
-	margin-right: 2px;
-}
-
-.media-heading {
-	text-align: center;
-}
-
-.image a:hover {
-	text-decoration: none;
-}
-
-.istac-app-header.istac-title-bar .nav-collapse {
-	margin-right: 36px;
-}
-
-
-.media-item.group-home-item {
-	position: relative;
-	float: left;
-	width: 120px;
-	padding: 5px 0px 5px 0px;
-	margin: 6px 0px 6px 0px;
-	background: none;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	border-radius: 3px;
-	height: auto;
-	list-style: none;
-}
-
-.media-item h3 {
-	font-size: 15px;
-	font-weight: normal;
-	hyphens: unset;
-}
-
-.media-grid {
-	margin: 0px !important;
-	padding: 12px 0px;
-	background: none !important;
-	background-color: rgb(255, 255, 255, 0.7) !important;
-	display: flex;
-	flex-flow: wrap;
-	justify-content: flex-start;
-}
-
-.count-all-datasets h1 {
-	text-align: center;
-	color: #59656e;
-	margin: 0px;
-	padding: 15px;
-	background-color: #FFFFFF;
-}
-
-.media-view.no-border {
-	border: none !important;
-}
-
 @media only screen and (min-width: 1399px) {
 	.container {
-		width: 1400px;
+		width: var(--container-max-width);
 	}
 
 	.span6 {
@@ -283,14 +48,21 @@ a:focus {
 	}
 
 	.span12 {
-		width: 1400px;
+		width: var(--container-max-width);
 	}
 }
 
 .span12 {
-	margin: 0px !important;
+	margin: 0 !important;
 }
 
+@media only screen and (max-width: 767px) {
+	[class*="span"],
+	.uneditable-input[class*="span"],
+	.row-fluid [class*="span"] {
+		float: left;
+	}
+}
 
 .context-info .nums {
 	display: flex;
@@ -299,59 +71,234 @@ a:focus {
 	justify-content: center;
 }
 
-@media only screen and (max-width: 767px) {
-
-	[class*="span"],
-	.uneditable-input[class*="span"],
-	.row-fluid [class*="span"] {
-		float: left;
-	}
+.fleft {
+	float: left;
 }
 
-table th:first-child {
-	width: 10% !important;
-	;
+.fright {
+	float: right;
 }
 
-.module.module-narrow.social,
-.module.module-narrow.module-shallow.license {
-	margin: 0px !important;
+.attrib {
+	font-size: var(--font-size-xs);
+	margin-top: var(--spacing-md);
 }
 
-div.input-prepend input:nth-child(4) {
+
+/* ============================================================
+   3. NAVEGACIÓN — Navbar, Header white bar, Dropdown
+   ============================================================ */
+
+.istac-app-header.istac-title-bar .account ul li {
+	border-left: 1px solid var(--color-gray-border);
+}
+
+.istac-app-header.istac-title-bar .account ul li a {
+	display: block;
+	color: var(--color-gray-dark);
+	font-size: var(--font-size-lg);
+	font-weight: initial;
+	padding: 0 var(--spacing-sm);
+	line-height: 31px;
+}
+
+.istac-app-header.istac-title-bar .account ul li a:hover {
+	color: var(--color-white);
+	background-color: var(--color-primary-hover);
+	text-decoration: none;
+}
+
+.istac-app-header.istac-title-bar .account ul li a.btn-datasets,
+.nav-item.active > a,
+.nav-aside li.active a {
+	background-color: var(--color-nav-active);
+	color: var(--color-white);
+	min-width: 90px;
+	text-align: center;
+}
+
+.istac-app-header.istac-title-bar .account ul li a.btn-datasets:hover,
+.istac-app-header.istac-title-bar .account ul li.active a.btn-datasets {
+	background-color: var(--color-primary-hover);
+	color: var(--color-white);
+}
+
+.istac-app-header.istac-title-bar .nav-collapse {
+	margin-right: 36px;
+}
+
+.navigation .nav-pills li a,
+.navigation .nav-pills li.active a {
+	background-color: transparent;
+	color: var(--color-white);
+}
+
+.navigation .nav-pills li a:hover,
+.navigation .nav-pills li.active a {
+	background-color: var(--color-primary-hover);
+	color: var(--color-white);
+}
+
+nav.navigation li a.btn-datasets {
+	background-color: var(--color-primary-dark);
+	color: var(--color-white);
+}
+
+nav.navigation div ul li {
+	border-left: unset;
+}
+
+.nav-item.active > a::before,
+.nav-aside li.active a::before {
+	content: ' ';
+	position: absolute;
+	top: 0;
+	right: -10px;
+	width: 0;
+	height: 0;
+	border-top: 17px solid transparent;
+	border-bottom: 17px solid transparent;
+	border-left: 10px solid var(--color-primary-hover);
+	background-image: none;
+}
+
+.nav-item.active > a:hover,
+.nav-aside li.active a:hover {
+	color: var(--color-white);
+	background-color: var(--color-primary-hover);
+}
+
+.istac-navbar .navbar-toggleable-lg .navbar-collapse {
+	height: var(--navbar-height);
+}
+
+.istac-navbar .navbar-brand.logo {
+	padding: 20px 36px 10px 36px;
+}
+
+#istac-app-header-content {
+	padding-top: var(--spacing-sm);
+}
+
+.edatos-custom-app-header {
+	background-color: var(--color-white);
+	display: flex;
+	flex-direction: row-reverse;
+	padding: var(--spacing-sm) var(--spacing-sm) var(--spacing-sm) 0;
+}
+
+#edatos-custom-header {
+	align-items: end !important;
+	flex-flow: column !important;
+}
+
+.collapsable-menu ul {
+	display: flex;
+	gap: var(--spacing-xs);
+	margin-bottom: 0;
+}
+
+#language-selector {
+	padding: var(--spacing-xs);
+}
+
+/* Dropdown */
+.dropdown-menu {
+	position: absolute;
+	top: 100%;
+	z-index: 1000;
+	display: none;
+	float: right;
+	min-width: 160px;
+	margin-top: 0 !important;
+	padding-top: var(--spacing-sm);
+	padding-bottom: var(--spacing-sm);
+	font-size: var(--font-size-base);
+	text-align: right;
+	list-style: none;
+	background-color: var(--color-primary-dark);
+	-webkit-box-shadow: var(--shadow-dropdown);
+	box-shadow: var(--shadow-dropdown);
+	right: 0;
+	left: unset;
+	border-radius: var(--border-radius-sm) 0 var(--border-radius-sm) var(--border-radius-sm);
+	border: unset;
+}
+
+.dropdown-menu li {
 	width: 100%;
+	margin: 0;
+	padding: 0;
 }
 
-div.input-prepend input:nth-child(2) {
-	width: 60%;
+.dropdown-menu li a {
+	color: var(--color-white);
+	display: block;
+	padding: var(--spacing-sm) var(--spacing-md);
+	text-decoration: none;
+	width: 100%;
+	box-sizing: border-box;
 }
 
+.dropdown-menu li a:hover {
+	background-color: var(--color-primary-hover);
+	color: var(--color-white);
+}
 
-input,
-select,
-textarea {
-	color: #333333;
+.dropdown-menu.abrir {
+	-webkit-transition: var(--transition-fast);
+	-moz-transition: var(--transition-fast);
+	-ms-transition: var(--transition-fast);
+	-o-transition: var(--transition-fast);
+	transition: var(--transition-fast);
+	transition-property: opacity, visibility;
+	visibility: visible;
+	opacity: 1;
+	display: flex;
+	flex-flow: column;
+	flex-wrap: nowrap;
+	justify-content: flex-start;
+	-webkit-transform: translateY(0);
+	-ms-transform: translateY(0);
+	transform: translateY(0);
+	pointer-events: initial;
+	text-align: left;
+}
+
+/* Botón hamburguesa navbar */
+.btn.btn-navbar {
+	background-color: var(--color-primary-dark);
+	font-size: var(--font-size-base);
+	color: var(--color-white);
+}
+
+button.btn.btn-navbar {
+	background-image: none;
+	border-style: none;
+	box-shadow: none;
+	padding-left: var(--spacing-md);
 }
 
 .navbar-collapse.in {
 	display: block !important;
 }
 
+/* Responsive navbar */
 @media (max-width: 1199px) {
 	.logo.hidden-lg-down {
 		display: none !important;
 	}
 
 	#istac-app-header-content {
-		padding-top: 0px !important;
+		padding-top: 0 !important;
 	}
 
 	.dropdown-menu {
-		-webkit-transition: 0.5s;
-		-moz-transition: 0.5s;
-		-ms-transition: 0.5s;
-		-o-transition: 0.5s;
-		transition: 0.5s;
+		-webkit-transition: var(--transition-base);
+		-moz-transition: var(--transition-base);
+		-ms-transition: var(--transition-base);
+		-o-transition: var(--transition-base);
+		transition: var(--transition-base);
 		transition-property: height;
 	}
 
@@ -367,8 +314,8 @@ textarea {
 	}
 
 	.home-app {
-		padding-left: 16px;
-		padding-bottom: 0px;
+		padding-left: var(--spacing-md);
+		padding-bottom: 0;
 	}
 
 	.istac-navbar .nav-link .border {
@@ -376,11 +323,15 @@ textarea {
 		left: -2rem;
 	}
 
+	.istac-navbar .navbar-brand.logo,
+	.istac-navbar .istac-navbar-toggler {
+		padding: 20px 36px 10px 36px !important;
+	}
 }
 
 @media (max-width: 767px) {
 	a.logo img.logo-corto {
-		padding: 10px;
+		padding: var(--spacing-sm);
 	}
 }
 
@@ -394,11 +345,132 @@ textarea {
 	}
 }
 
-.btn.btn-navbar {
-	background-color: #004678;
-	font-size: 14px;
-	color: #ffffff
+
+/* ============================================================
+   4. HOME — Hero, Search module, Categories
+   ============================================================ */
+
+.hero {
+	background-image: none;
 }
+
+.homepage .module-search .module-content,
+.tags {
+	background-color: var(--color-primary-transparent) !important;
+}
+
+.homepage .module-search,
+.box {
+	background-color: transparent !important;
+	background: transparent !important;
+	margin-bottom: var(--spacing-md);
+}
+
+.homepage .module-search {
+	margin-top: var(--hero-search-margin-top);
+	margin-bottom: var(--spacing-md);
+}
+
+.search-form .search-input.search-giant button {
+	margin-top: -13px;
+}
+
+.counter-box {
+	padding-bottom: 80px;
+}
+
+.count-all-datasets h1 {
+	text-align: center;
+	color: var(--color-gray-dark);
+	margin: 0;
+	padding: var(--spacing-md);
+	background-color: var(--color-white);
+}
+
+/* Category cards */
+.home-app {
+	font-size: var(--font-size-xl);
+	font-weight: var(--font-weight-medium);
+	color: var(--color-gray-dark) !important;
+	padding-top: var(--spacing-sm);
+	padding-left: 36px;
+	padding-bottom: var(--spacing-sm);
+}
+
+.media-item.group-home-item {
+	position: relative;
+	float: left;
+	width: 120px;
+	padding: 5px 0;
+	margin: 6px 0;
+	background: none;
+	border-radius: var(--border-radius-sm);
+	height: auto;
+	list-style: none;
+}
+
+.media-grid {
+	margin: 0 !important;
+	padding: 12px 0;
+	background: none !important;
+	background-color: var(--color-white-semi) !important;
+	display: flex;
+	flex-flow: wrap;
+	justify-content: flex-start;
+}
+
+.media-view.no-border {
+	border: none !important;
+}
+
+
+/* ============================================================
+   5. CARDS — Dataset cards, Group cards, Organization cards
+   ============================================================ */
+
+.media-heading {
+	text-align: center;
+}
+
+.media-item h3 {
+	font-size: var(--font-size-md);
+	font-weight: normal;
+	hyphens: unset;
+}
+
+.title-icon {
+	border-radius: 50%;
+	border: 1px solid;
+	border-color: inherit;
+	font-size: 17px;
+	width: 20px;
+	height: 20px;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	margin-right: 2px;
+}
+
+.image a:hover {
+	text-decoration: none;
+}
+
+.module.module-narrow.social,
+.module.module-narrow.module-shallow.license {
+	margin: 0 !important;
+}
+
+
+/* ============================================================
+   6. SIDEBAR / FILTROS — Facets, Filter panels
+   ============================================================ */
+
+/* Los estilos de facets/sidebar se añadirán en Slice 5 tras inspección en Docker */
+
+
+/* ============================================================
+   7. DATASET DETAIL — Metadata, Tabs, Resources, Format badges
+   ============================================================ */
 
 #dataset-resources li.resource-item {
 	display: flex !important;
@@ -408,124 +480,62 @@ textarea {
 
 #dataset-resources li.resource-item .btn-group {
 	position: inherit;
-	top: 0px;
-	right: 0px;
+	top: 0;
+	right: 0;
+}
+
+.resource-item:hover {
+	background-color: var(--color-gray-light);
 }
 
 .additional-info .module-content:first-child table th:first-child {
 	width: 50% !important;
 }
 
-nav.navigation li a.btn-datasets {
-	background-color: #004678;
-	color: white;
-}
-
-nav.navigation div ul li {
-	border-left: unset;
-}
-
-button.btn.btn-navbar {
-	background-image: none;
-	border-style: none;
-	box-shadow: none;
-	padding-left: 1rem;
-}
-
-
-.dropdown-menu {
-	position: absolute;
-	top: 100%;
-	z-index: 1000;
-	display: none;
-	float: right;
-	min-width: 160px;
-	margin-top: 0px !important;
-	padding-top: 10px;
-	padding-bottom: 10px;
-	font-size: 14px;
-	text-align: right;
-	list-style: none;
-	background-color: #004678;
-	-webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-	right: 0;
-	left: unset;
-	border-radius: 5px 0px 5px 5px !important;
-	border: unset;
-}
-
-.dropdown-menu li {
-	width: 100%;
-	margin: 0;
-	padding: 0;
-}
-
-.dropdown-menu li a {
-	color: white;
-	display: block;
-	padding: 10px 15px;
-	text-decoration: none;
-	width: 100%;
-	box-sizing: border-box;
-}
-
-.dropdown-menu li a:hover {
-	background-color: #008bd0;
-	color: #FFFFFF
-}
-
-.dropdown-menu.abrir {
-	-webkit-transition: 0.1s;
-	-moz-transition: 0.1s;
-	-ms-transition: 0.1s;
-	-o-transition: 0.1s;
-	transition: 0.1s;
-	transition-property: opacity, visibility;
-	visibility: visible;
-	opacity: 1;
-	display: flex;
-	flex-flow: column;
-	flex-wrap: nowrap;
-	justify-content: flex-start;
-	-webkit-transform: translateY(0px);
-	-ms-transform: translateY(0px);
-	transform: translateY(0px);
-	pointer-events: initial;
-	text-align: left;
-}
-
-.badge {
-	background-color: #0072A2 !important;
-}
-
-.istac-navbar .navbar-toggleable-lg .navbar-collapse {
-	height: 70px;
-}
-
-#istac-app-header-content {
-	padding-top: 8px;
-}
-
-.istac-navbar .navbar-brand.logo {
-	padding: 20px 36px 10px 36px;
-}
-
-@media (max-width: 1199px) {
-
-	.istac-navbar .navbar-brand.logo,
-	.istac-navbar .istac-navbar-toggler {
-		padding: 20px 36px 10px 36px !important;
-	}
-}
-
-.modal.fade.in {
-	margin-top: 0px !important;
-	top: 0% !important;
+table th:first-child {
+	width: 10% !important;
 }
 
 div.ckanext-showcase-image-container {
-	margin: 20px;
+	margin: var(--spacing-md);
+}
+
+
+/* ============================================================
+   8. FORMULARIOS — Inputs, Buttons, Select, Textarea
+   ============================================================ */
+
+.btn-primary {
+	background-image: none;
+	background-color: var(--color-primary-dark);
+	color: var(--color-white);
+}
+
+.open > .dropdown-toggle.btn-primary,
+.open > .dropdown-toggle.btn-primary:focus,
+.open > .dropdown-toggle.btn-primary:hover {
+	color: var(--color-white);
+	background-color: var(--color-primary-dark);
+	background-image: none;
+	border-color: var(--color-primary-dark);
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.btn-primary.disabled,
+.btn-primary[disabled] {
+	color: var(--color-white);
+	background-color: var(--color-primary-dark);
+}
+
+div.input-prepend input:nth-child(4) {
+	width: 100%;
+}
+
+div.input-prepend input:nth-child(2) {
+	width: 60%;
 }
 
 .js .image-upload #field-image-upload {
@@ -533,32 +543,62 @@ div.ckanext-showcase-image-container {
 	opacity: 1;
 }
 
-.collapsable-menu ul {
-	display: flex;
-	gap: 5px;
-	margin-bottom: 0;
+
+/* ============================================================
+   9. COMPONENTES GLOBALES — Badges, Tags, Alerts, Modals
+   ============================================================ */
+
+.badge {
+	background-color: var(--color-primary) !important;
 }
 
-selector#language-selector {
-	padding: 4px;
+a.tag:hover {
+	color: var(--color-white);
+	background-color: var(--color-primary-dark);
+	border: 0;
+	-webkit-box-shadow: inset 0 1px 0 var(--color-primary-hover);
+	-moz-box-shadow: inset 0 1px 0 var(--color-primary-hover);
+	box-shadow: inset 0 1px 0 var(--color-primary-hover);
 }
 
-.edatos-custom-app-header {
-	background-color: white;
-	display: flex;
-	flex-direction: row-reverse;
-	padding: 0.5rem 0.5rem 0.5rem 0px;
+.modal.fade.in {
+	margin-top: 0 !important;
+	top: 0 !important;
 }
 
-#edatos-custom-header {
-	align-items: end !important;
-	flex-flow: column !important;
-}
-
+/* Font Awesome 6 Pro */
 .fa {
 	font-family: "Font Awesome 6 Pro" !important;
 	font-weight: 100 !important;
 }
+
+
+/* ============================================================
+   10. FOOTER
+   ============================================================ */
+
+.site-footer {
+	background-color: var(--color-gray-dark) !important;
+	background-image: none;
+}
+
+.site-footer,
+.site-footer label,
+.site-footer small,
+.site-footer a {
+	color: var(--color-white);
+}
+
+.footer-title {
+	text-transform: uppercase;
+	font-weight: var(--font-weight-bold);
+	font-size: 1.1em;
+}
+
+
+/* ============================================================
+   11. FORMAT ICONS — Sprite de iconos de recursos
+   ============================================================ */
 
 .format-label {
 	background: url("../../sprite-resource-icons.png") no-repeat 0 0;
