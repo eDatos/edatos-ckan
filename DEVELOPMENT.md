@@ -301,7 +301,7 @@ docker compose -f dockerfiles/docker-compose.yml restart ckan
 docker compose -f dockerfiles/docker-compose.yml exec ckan find /srv/app/src -name "nombre_plantilla.html"
 
 # Ver logs
-docker compose logs ckan -f
+docker compose -f dockerfiles/docker-compose.yml logs ckan -f
 
 # Comprobar estado del debug
 docker compose -f dockerfiles/docker-compose.yml exec ckan grep "^debug" /srv/app/ckan.ini
