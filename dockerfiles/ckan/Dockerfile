@@ -92,9 +92,6 @@ RUN mkdir -p /docker-entrypoint.d /srv/app/docker/bin
 # Copy custom initialization scripts
 COPY --chown=ckan-sys:ckan-sys dockerfiles/ckan/docker-entrypoint.d/* /docker-entrypoint.d/
 
-# Copy bin scripts for entrypoint
-COPY --chown=ckan-sys:ckan-sys dockerfiles/ckan/bin/ /srv/app/docker/bin/
-
 # Normalizar finales de línea (CRLF -> LF) para scripts copiados desde Windows
 RUN find /docker-entrypoint.d -type f \( -name "*.sh" -o -name "*.py" \) -exec sed -i 's/\r$//' {} + && \
     find /srv/app/docker/bin -type f \( -name "*.sh" -o -name "*.py" \) -exec sed -i 's/\r$//' {} +
