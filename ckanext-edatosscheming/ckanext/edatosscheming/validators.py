@@ -343,7 +343,7 @@ def multilanguage_url(field, schema):
             if value:
                 return
             else:
-                prefix = field['autogeneration_field']
+                prefix = field.get('autogeneration_field')
                 if not prefix:
                     prefix = DEFAULT_TITLE_FIELD
 
