@@ -24,7 +24,6 @@
         if (abierto && currentButton === button) {
             cerrar_menu(button);
         } else {
-            // Cerrar el anterior si existe
             if (currentButton && currentButton !== button) {
                 cerrar_menu(currentButton);
             }
@@ -32,9 +31,8 @@
         }
     }
 
-    // Cerrar menú cuando hace click fuera
     document.addEventListener('click', function(event) {
-        if (currentButton && !currentButton.contains(event.target) && 
+        if (currentButton && !currentButton.contains(event.target) &&
             !currentButton.nextElementSibling.contains(event.target)) {
             cerrar_menu(currentButton);
         }
@@ -42,137 +40,108 @@
 </script>
 
 {% block header_account_container_content %}
-{% if c.userobj %}
-    <div class="navbar-collapse">
-        {% block header_site_navigation %}
-            <nav class="section navigation">
-                <div class="account avatar authed" data-module="me" data-me="{{ c.userobj.id }}">
-                    <ul class="nav nav-pills">
-                        <ul class="dropdown btn-group">
-                            <li class="nav">
-                                <button onclick="toggle_collapsable_menu(this)" class="btn btn-navbar" type="button"
-                                    title="{{ _('Options') }}">
-                                    {{ _('Options') }}
-                                    <span class="fa fa-chevron-down"></span>
-                                </button>
-                                <ul class=" dropdown-menu">
-                                    {% block header_account_logged %}
-                                    {% if c.userobj.sysadmin %}
-                                    <li>
-                                        <a href="{{ h.url_for('admin.index') }}" title="{{ _('Sysadmin settings') }}">
-                                            <i class="fa fa-gavel" aria-hidden="true"></i>
-                                            <span class="text">{{ _('Admin') }}</span>
-                                        </a>
-                                    </li>
-                                    {% endif %}
-                                    <li>
-                                        <a href="{{ h.url_for('user.read', id=c.userobj.name) }}" class="image"
-                                            title="{{ _('View profile') }}">
-                                            <i class="fa fa-user" aria-hidden="true"></i>
-                                            <span class="username">{{ c.userobj.display_name }}</span>
-                                        </a>
-                                    </li>
-                                    {% set new_activities = h.new_activities() %}
-                                    <li class="notifications {% if new_activities > 0 %}notifications-important{% endif %}">
-                                        {% set notifications_tooltip = ngettext('Dashboard (%(num)d new item)', 'Dashboard
-                                        (%(num)d
-                                        new items)',
-                                        new_activities) %}
-                                        <a href="{{ h.url_for('dashboard.groups') }}" title="{{ notifications_tooltip }}">
-                                            <i class="fa fa-tachometer" aria-hidden="true"></i>
-                                            <span class="text">{{ _('Dashboard') }}</span>
-                                            <span class="badge">{{ new_activities }}</span>
-                                        </a>
-                                    </li>
-                                    {% block header_account_settings_link %}
-                                    <li>
-                                        <a href="{{ h.url_for('user.edit', id=c.userobj.name) }}"
-                                            title="{{ _('Edit settings') }}">
-                                            <i class="fa fa-cog" aria-hidden="true"></i>
-                                            <span class="text">{{ _('Settings') }}</span>
-                                        </a>
-                                    </li>
-                                    {% endblock %}
-                                    {% block header_site_navigation_tabs_3 %}
-                                    {#{{ h.build_nav_main(('search', _('Datasets'))) }}#}
-                                    <li>
-                                      <a class="btn-datasets" href="{{ h.url_for('dataset.search') }}"
-                                          title="{{ _('Datasets') }}">
-                                          <i class="fa fa-fw fa-thin fa-server" aria-hidden="true"></i>
-                                          {{ _('Datasets-home') }}
-                                      </a>
-                                    </li>
-                                    <li>
-                                        <a class="btn-datasets" href="{{ h.url_for('/showcase') }}"
-                                            title="{{ _('Showcases') }}">
-                                            <i class="fa fa-object-group" aria-hidden="true"></i>
-                                            {{ _('Showcases') }}
-                                        </a>
-                                    </li>
-                                    {% endblock %}
-                                    {% block header_account_log_out_link %}
-                                    <li>
-                                        <a href="{{ h.url_for('/user/_logout') }}" title="{{ _('Log out') }}">
-                                            <i class="fa fa-sign-out" aria-hidden="true"></i>
-                                            <span class="text">{{ _('Log out') }}</span>
-                                        </a>
-                                    </li>
-                                    {% endblock %}
-                                    {% endblock %}
-                                </ul>
-                                <span class=""></span>
-                            </li>
-                        </ul>
-                    </ul>
-                </div>
-            </nav>
-        {% endblock %}
-    </div>
-{% else %}
-    {% block header_site_navigation_no_log %}
-        <div class="navbar-collapse">
-            {% block header_site_navigation_no_log2 %}
-            <nav class="section navigation">
-                <ul class="nav nav-pills">
-                    <ul class="dropdown btn-group">
-                        <li class="nav">
-                            <button onclick="toggle_collapsable_menu(this)" class="btn btn-navbar" type="button"
-                                title="{{ _('Options') }}">
-                                {{ _('Options') }}
-                                <span class="fa fa-chevron-down"></span>
-                            </button>
-                            <ul class=" dropdown-menu">
-                                {% block header_site_navigation_tabs_no_log %}
-                                <li>
-                                    <a class="btn-datasets" href="{{ h.url_for('dataset.search') }}"
-                                         title="{{ _('Datasets') }}">
-                                         <i class="fa fa-fw fa-thin fa-server" aria-hidden="true"></i>
-                                         {{ _('Datasets-home') }}
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="btn-datasets" href="{{ h.url_for('/showcase') }}" title="{{ _('Showcases') }}">
-                                        <i class="fa fa-object-group" aria-hidden="true"></i>
-                                        {{ _('Showcases') }}
-                                    </a>
-                                </li>
-                                {% endblock %}
-                                {% block header_account_log_out_link_no_log %}
-                                <li>
-                                    <a href="{{ h.url_for('/user/login') }}" title="{{ _('Log in') }}">
-                                        <i class="fa fa-sign-in" aria-hidden="true"></i>
-                                        <span class="text">{{ _('Log in') }}</span>
-                                    </a>
-                                </li>
-                                {% endblock %}
-                            </ul>
-                            <span class=""></span>
+<div class="navbar-collapse">
+    <nav class="section navigation">
+
+        {# ---- Navegación principal: Inicio | Datos | Colecciones ---- #}
+        <ul class="nav nav-pills nav-main-links">
+            <li class="{{ 'active' if request.path in [h.url_for('home.index'), '/'] else '' }}">
+                <a class="btn-datasets" href="{{ h.url_for('home.index') }}" title="{{ _('Home') }}">
+                    {{ _('Home') }}
+                </a>
+            </li>
+            <li class="{{ 'active' if h.url_for('dataset.search') in request.path else '' }}">
+                <a class="btn-datasets" href="{{ h.url_for('dataset.search') }}" title="{{ _('Datasets') }}">
+                    {{ _('Datasets-home') }}
+                </a>
+            </li>
+            <li class="{{ 'active' if '/showcase' in request.path else '' }}">
+                <a class="btn-datasets" href="{{ h.url_for('/showcase') }}" title="{{ _('Showcases') }}">
+                    {{ _('Showcases') }}
+                </a>
+            </li>
+        </ul>
+
+        {# ---- Menú de cuenta (dropdown Opciones) ---- #}
+        {% if c.userobj %}
+        <div class="account avatar authed" data-module="me" data-me="{{ c.userobj.id }}">
+            <ul class="dropdown btn-group">
+                <li class="nav">
+                    <button onclick="toggle_collapsable_menu(this)" class="btn btn-navbar" type="button"
+                        title="{{ _('Options') }}">
+                        {{ _('Options') }}
+                        <span class="fa fa-chevron-down"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        {% block header_account_logged %}
+                        {% if c.userobj.sysadmin %}
+                        <li>
+                            <a href="{{ h.url_for('admin.index') }}" title="{{ _('Sysadmin settings') }}">
+                                <i class="fa fa-gavel" aria-hidden="true"></i>
+                                <span class="text">{{ _('Admin') }}</span>
+                            </a>
                         </li>
+                        {% endif %}
+                        <li>
+                            <a href="{{ h.url_for('user.read', id=c.userobj.name) }}" class="image"
+                                title="{{ _('View profile') }}">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                                <span class="username">{{ c.userobj.display_name }}</span>
+                            </a>
+                        </li>
+                        {% set new_activities = h.new_activities() %}
+                        <li class="notifications {% if new_activities > 0 %}notifications-important{% endif %}">
+                            {% set notifications_tooltip = ngettext('Dashboard (%(num)d new item)', 'Dashboard (%(num)d new items)', new_activities) %}
+                            <a href="{{ h.url_for('dashboard.groups') }}" title="{{ notifications_tooltip }}">
+                                <i class="fa fa-tachometer" aria-hidden="true"></i>
+                                <span class="text">{{ _('Dashboard') }}</span>
+                                <span class="badge">{{ new_activities }}</span>
+                            </a>
+                        </li>
+                        {% block header_account_settings_link %}
+                        <li>
+                            <a href="{{ h.url_for('user.edit', id=c.userobj.name) }}"
+                                title="{{ _('Edit settings') }}">
+                                <i class="fa fa-cog" aria-hidden="true"></i>
+                                <span class="text">{{ _('Settings') }}</span>
+                            </a>
+                        </li>
+                        {% endblock %}
+                        {% block header_account_log_out_link %}
+                        <li>
+                            <a href="{{ h.url_for('/user/_logout') }}" title="{{ _('Log out') }}">
+                                <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                <span class="text">{{ _('Log out') }}</span>
+                            </a>
+                        </li>
+                        {% endblock %}
+                        {% endblock %}
                     </ul>
-                </ul>
-            </nav>
-            {% endblock %}
+                </li>
+            </ul>
         </div>
-    {% endblock %}
-{% endif %}
+        {% else %}
+        <ul class="dropdown btn-group">
+            <li class="nav">
+                <button onclick="toggle_collapsable_menu(this)" class="btn btn-navbar" type="button"
+                    title="{{ _('Options') }}">
+                    {{ _('Options') }}
+                    <span class="fa fa-chevron-down"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    {% block header_account_log_out_link_no_log %}
+                    <li>
+                        <a href="{{ h.url_for('/user/login') }}" title="{{ _('Log in') }}">
+                            <i class="fa fa-sign-in" aria-hidden="true"></i>
+                            <span class="text">{{ _('Log in') }}</span>
+                        </a>
+                    </li>
+                    {% endblock %}
+                </ul>
+            </li>
+        </ul>
+        {% endif %}
+
+    </nav>
+</div>
 {% endblock %}

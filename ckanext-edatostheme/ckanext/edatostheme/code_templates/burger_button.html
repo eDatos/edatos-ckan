@@ -1,32 +1,32 @@
 <script>
-    let abierto = false;
-    const menus = document.getElementsByClassName("collapsable-menu");
+(function() {
+    let burgerAbierto = false;
+    const burgerMenus = document.getElementsByClassName("collapsable-menu");
 
-    function abrir_menu() {
-        for (let menu of menus) {
+    function abrir_burger() {
+        for (let menu of burgerMenus) {
             menu.classList.add("abrir");
         }
-        abierto = true;
+        burgerAbierto = true;
     }
 
-    function cerrar_menu() {
-        for (let menu of menus) {
+    function cerrar_burger() {
+        for (let menu of burgerMenus) {
             menu.classList.remove("abrir");
         }
-        abierto = false;
+        burgerAbierto = false;
     }
 
-    function toggle_collapsable_menu() {
-        if (abierto) {
-            cerrar_menu();
-            return;
+    window.toggle_burger_menu = function() {
+        if (burgerAbierto) {
+            cerrar_burger();
         } else {
-            abrir_menu();
-            return;
+            abrir_burger();
         }
-    }
+    };
+})();
 </script>
 
-<button onclick="toggle_collapsable_menu()" class="btn btn-navbar" type="button">
+<button onclick="toggle_burger_menu()" class="btn btn-navbar" type="button">
     <span class="fa fa-bars"></span>
 </button>
