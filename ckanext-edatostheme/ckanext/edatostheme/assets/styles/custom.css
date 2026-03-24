@@ -628,13 +628,36 @@ nav.section.navigation {
 .homepage .module-search,
 .box {
 	background-color: transparent !important;
-	background: transparent !important;
 	margin-bottom: var(--spacing-md);
 }
 
 .homepage .module-search {
 	margin-top: var(--hero-search-margin-top);
 	margin-bottom: var(--spacing-md);
+          background-image: url('../../search-background.png');
+          background-size: cover;
+          background-position: center center;
+          background-repeat: no-repeat;
+          background-size: cover;
+}
+
+.module-search::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: var(--edatos-color-accent-100);
+    opacity: 0.8;
+    z-index: 1;
+    border-radius: var(--border-radius-m);
+}
+
+.module-search > * {
+	position: relative;
+	z-index: 2;
+}
+
+{
+	
 }
 
 .search-form .search-input.search-giant button {
@@ -853,6 +876,12 @@ div.ckanext-showcase-image-container {
 	background-color: var(--color-primary-hover);
 }
 
+.search-form .search-input input {
+    margin: 0;
+    width: 100%;
+    height: auto;
+    background: white;
+}
 /* ---- Inputs y formularios ---- */
 
 .form-control,
