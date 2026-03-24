@@ -246,7 +246,7 @@ nav.navigation div ul li {
 .navigation .nav-main-links li.active a.btn-datasets {
 	font-weight: var(--font-weight-bold) !important;
 	color: var(--color-primary-dark) !important;
-	border-bottom-color: var(--color-accent) !important;
+	border-bottom: 6px solid var(--Colors-accent, #009BD7);
 }
 
 /* Contenedor del nav: links izquierda, Opciones derecha */

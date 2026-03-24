@@ -10,8 +10,8 @@
                         {{ _('Home') }}
                     </a>
                 </li>
-                <li class="{{ 'active' if h.url_for('dataset.search') in request.path else '' }}">
-                    <a class="btn-datasets" href="{{ h.url_for('dataset.search') }}" title="{{ _('Datasets') }}">
+                <li class="{{ 'active' if '/dataset/' in request.path else '' }}">
+                    <a class="btn-datasets" href="{{ h.url_for('/dataset/') }}" title="{{ _('Datasets') }}">
                         {{ _('Datasets-home') }}
                     </a>
                 </li>
