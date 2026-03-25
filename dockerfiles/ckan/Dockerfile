@@ -83,9 +83,6 @@ RUN for f in src/ckanext-edatosscheming/ckanext/edatosscheming/schemas_templates
 
 USER root
 
-# Se anhade la ruta del endpoint de DCAT al ini de CKAN ruta especifica para el cliente
-RUN sed -i '/^\[app:main\]/a\ckanext.dcat.catalog_endpoint = /catalog/dcat/catalog.{_format}' /srv/app/ckan.ini
-
 # Create necessary directories
 RUN mkdir -p /docker-entrypoint.d /srv/app/docker/bin
 
