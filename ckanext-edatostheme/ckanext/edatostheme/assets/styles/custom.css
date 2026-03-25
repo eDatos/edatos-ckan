@@ -620,6 +620,10 @@ nav.section.navigation {
 	background-image: none;
 }
 
+.hero-nav {
+	padding-bottom: 20px;
+}
+
 .homepage .module-search .module-content,
 .tags {
 	background-color: var(--color-primary-transparent) !important;

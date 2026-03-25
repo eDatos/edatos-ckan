@@ -25,8 +25,6 @@ FOOTER_PATH = os.path.join(dirname, '../templates/footer.html')
 HEADER_PATH = os.path.join(dirname, '../templates/header_meta.html')
 FAVICON_PATH = os.path.join(dirname, '../public/favicon.ico')
 SCRIPT_PATH = os.path.join(dirname, '../assets/js/i18n.js')
-HEADER_WHITE_BAR_PATH = os.path.join(
-    dirname, '../code_templates/header_white_bar.html')
 BURGER_BUTTON_PATH = os.path.join(
     dirname, '../code_templates/burger_button.html')
 SCRIPT_TEMPLATE = os.path.join(dirname, '../code_templates/i18n.js')
@@ -290,21 +288,12 @@ def get_altered_header(header, json_config):
     :param json_config: Fichero de configuracion cargado como
                         un diccionario JSON
     """
-    container_class = json_config['metadata']['htmlCodeClass']
     alteredHeader = header
 
-    with codecs.open(HEADER_WHITE_BAR_PATH, 'r', encoding='utf8') as white_bar_file:
-        code = white_bar_file.read()
-        # Annadimos los botones en la barra blanca
-        soup = BeautifulSoup(alteredHeader, 'html.parser')
-        container = soup.find(id=container_class)
-        container.append(BeautifulSoup(code, 'html.parser'))
-        alteredHeader = soup.prettify('utf-8')
-
-        # Annadimos el boton hamburguesa
-        soup = BeautifulSoup(alteredHeader, 'html.parser')
-        container = soup.find(
-            class_='d-flex justify-content-end align-items-center')
+    # Annadimos el boton hamburguesa
+    soup = BeautifulSoup(alteredHeader, 'html.parser')
+    container = soup.find(
+        class_='d-flex justify-content-end align-items-center')
 
     if container is not None:
         with codecs.open(BURGER_BUTTON_PATH, 'r', encoding='utf8') as burger_button_file:
