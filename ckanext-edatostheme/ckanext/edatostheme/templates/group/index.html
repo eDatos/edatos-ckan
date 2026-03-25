@@ -1,5 +1,8 @@
 {% extends "page.html" %}
 
+{% block toolbar %}
+  {% snippet 'home/snippets/hero_nav.html' %}
+{% endblock %}
 
 {% block subtitle %}{{ h.humanize_entity_type('group', group_type, 'page title') or _('Groups') }}{% endblock %}
 

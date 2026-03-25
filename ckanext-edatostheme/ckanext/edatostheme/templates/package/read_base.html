@@ -3,6 +3,10 @@
 {% set showcase_dataset_showcase_list_route = 'showcase_blueprint.dataset_showcase_list' %}
 {% set default_group_type = h.default_group_type('group') %}
 
+{% block toolbar %}
+  {% snippet 'home/snippets/hero_nav.html' %}
+{% endblock %}
+
 {% block subtitle %}{{ h.dataset_display_name(pkg) }} {{ g.template_title_delimiter }} {{ super() }}{% endblock %}
 
 {% block head_extras -%}

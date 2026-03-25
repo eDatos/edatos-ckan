@@ -1,5 +1,9 @@
 {% extends "page.html" %}
 
+{% block toolbar %}
+  {% snippet 'home/snippets/hero_nav.html' %}
+{% endblock %}
+
 {% set pkg = pkg_dict %}
 {% set name = h.get_translated(pkg, 'title') %}
 {% set editor = h.showcase_get_wysiwyg_editor() %}
