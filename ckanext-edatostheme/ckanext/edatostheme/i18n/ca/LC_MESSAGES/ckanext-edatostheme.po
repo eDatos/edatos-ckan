@@ -2711,8 +2711,8 @@ msgid "E.g. environment"
 msgstr "p.ex. medi ambient"
 
 #: ckan/templates/home/snippets/search.html:6
-msgid "Search data"
-msgstr "Cercar dades"
+msgid "What data do you need?"
+msgstr "Quines dades necessites?"
 
 #: ckan/templates/home/snippets/search.html:16
 msgid "Popular tags"
