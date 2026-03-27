@@ -3273,6 +3273,18 @@ msgstr "Ej: ambiente"
 msgid "What data do you need?"
 msgstr "¿Qué datos necesitas?"
 
+#: ckanext/edatostheme/templates/home/snippets/search.html
+msgid "Quick access to"
+msgstr "Acceso rápido a"
+
+#: ckanext/edatostheme/templates/home/snippets/search.html
+msgid "open datasets"
+msgstr "conjuntos de datos abiertos"
+
+#: ckanext/edatostheme/templates/home/snippets/search.html
+msgid "All"
+msgstr "Todos"
+
 #: ckan/templates/home/snippets/search.html:16
 msgid "Popular tags"
 msgstr "Etiquetas populares"

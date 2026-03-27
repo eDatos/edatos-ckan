@@ -1,4 +1,87 @@
 /* ============================================================
+   0. DESIGN TOKENS — Variables CSS
+   ============================================================ */
+
+:root {
+  /* Colores primarios */
+  --color-primary: #0072A2;
+  --color-primary-dark: #004678;
+  --color-primary-hover: #008bd0;
+  --color-primary-transparent: rgba(0, 114, 162, 0.80);
+  --color-accent: var(--edatos-color-accent-100, #009BD7);
+
+  /* Colores neutros */
+  --color-gray-dark: #59656e;
+  --color-gray-medium: #aaaaaa;
+  --color-gray-light: #eeeeee;
+  --color-gray-border: #dddddd;
+  --color-white: #ffffff;
+  --color-white-semi: rgba(255, 255, 255, 0.70);
+  --color-black: #000000;
+
+  /* Colores de estado */
+  --color-success: #5cb85c;
+  --color-warning: #f0ad4e;
+  --color-danger: #d9534f;
+  --color-info: #5bc0de;
+
+  /* Colores semánticos UI */
+  --color-body-bg: #eeeeee;
+  --color-text-base: #333333;
+  --color-text-muted: #59656e;
+  --color-nav-active: #8098a7;
+  --color-hero-bg: var(--edatos-color-accent-100, #009BD7);
+  --color-showcase-accent: #e57200;
+
+  /* Tipografía */
+  --font-size-xs: 12px;
+  --font-size-sm: 13px;
+  --font-size-base: 14px;
+  --font-size-md: 15px;
+  --font-size-lg: 16px;
+  --font-size-xl: 20px;
+  --font-size-xxl: 24px;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+  --line-height-base: 1.5;
+
+  /* Espaciado */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-xxl: 48px;
+
+  /* Bordes */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  --border-color: #dddddd;
+  --border-width: 1px;
+
+  /* Sombras */
+  --shadow-card: 0 2px 4px rgba(0, 0, 0, 0.10);
+  --shadow-card-hover: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --shadow-dropdown: 0 2px 8px rgba(0, 0, 0, 0.12);
+
+  /* Layout */
+  --container-max-width: 1400px;
+  --sidebar-width: 220px;
+  --navbar-height: 70px;
+  --hero-search-margin-top: 100px;
+  --card-padding: 16px;
+
+  /* Tipografía — familia */
+  --font-family-base: inherit;
+
+  /* Transiciones */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.2s ease;
+}
+
+/* ============================================================
    1. RESET / BASE
    Tipografía base, body background, reset mínimo
    ============================================================ */
@@ -246,7 +329,7 @@ nav.navigation div ul li {
 .navigation .nav-main-links li.active a.btn-datasets {
 	font-weight: var(--font-weight-bold) !important;
 	color: var(--color-primary-dark) !important;
-	border-bottom: 6px solid var(--Colors-accent, #009BD7);
+	border-bottom: 6px solid var(--color-accent);
 }
 
 /* Contenedor del nav: links izquierda, Opciones derecha */
@@ -616,8 +699,10 @@ nav.section.navigation {
    4. HOME — Hero, Search module, Categories
    ============================================================ */
 
-.hero {
-	background-image: none;
+.hero,
+.main.hero {
+	background-image: none !important;
+	background-color: var(--color-body-bg);
 }
 
 .hero-nav {
@@ -631,7 +716,36 @@ nav.section.navigation {
 	margin: 0 0 var(--spacing-md) 0;
 }
 
-.homepage .module-search .module-content,
+.search-filters {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--spacing-xs);
+	justify-content: center;
+	padding: var(--spacing-sm) 0;
+}
+
+.search-filters .filter-tag {
+	background: transparent;
+	border: 1px solid rgba(255, 255, 255, 0.6);
+	color: var(--color-white);
+	border-radius: 20px;
+	padding: 4px 14px;
+	font-size: var(--font-size-sm);
+	text-decoration: none;
+	transition: background 0.15s, color 0.15s;
+}
+
+.search-filters .filter-tag.active,
+.search-filters .filter-tag:hover {
+	background: var(--color-white);
+	color: var(--color-primary-dark);
+	border-color: var(--color-white);
+}
+
+.homepage .module-search .module-content {
+	background-color: transparent !important;
+}
+
 .tags {
 	background-color: var(--color-primary-transparent) !important;
 }
@@ -643,23 +757,25 @@ nav.section.navigation {
 }
 
 .homepage .module-search {
-	margin-top: var(--hero-search-margin-top);
-	margin-bottom: var(--spacing-md);
-          background-image: url('../../search-background.png');
-          background-size: cover;
-          background-position: center center;
-          background-repeat: no-repeat;
-          background-size: cover;
+	position: relative;
+	margin-bottom: 0;
+	background-image: url('../../search-background.png');
+	background-size: cover;
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+
+.module-search .heading {
+	text-align: center;
 }
 
 .module-search::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-color: var(--edatos-color-accent-100);
-    opacity: 0.8;
-    z-index: 1;
-    border-radius: var(--border-radius-m);
+	content: "";
+	position: absolute;
+	inset: 0;
+	background-color: var(--edatos-color-accent-100, #009BD7);
+	z-index: 1;
+	border-radius: var(--border-radius-md);
 }
 
 .module-search > * {
@@ -713,6 +829,41 @@ nav.section.navigation {
 	display: flex;
 	flex-flow: wrap;
 	justify-content: flex-start;
+}
+
+.categories-section {
+	background-color: var(--color-white);
+	padding: var(--spacing-md) 0;
+}
+
+.categories-grid {
+	list-style: none;
+	margin: 0;
+	padding: var(--spacing-md);
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: var(--spacing-md);
+}
+
+.category-item,
+.categories-grid .media-item.group-home-item {
+	list-style: none;
+	width: auto;
+	float: none;
+	margin: 0;
+	padding: 0;
+}
+
+@media (max-width: 992px) {
+	.categories-grid {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+@media (max-width: 600px) {
+	.categories-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
 }
 
 .media-view.no-border {

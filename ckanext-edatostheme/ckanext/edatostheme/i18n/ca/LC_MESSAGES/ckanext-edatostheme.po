@@ -2714,6 +2714,18 @@ msgstr "p.ex. medi ambient"
 msgid "What data do you need?"
 msgstr "Quines dades necessites?"
 
+#: ckanext/edatostheme/templates/home/snippets/search.html
+msgid "Quick access to"
+msgstr "Accés ràpid a"
+
+#: ckanext/edatostheme/templates/home/snippets/search.html
+msgid "open datasets"
+msgstr "conjunts de dades oberts"
+
+#: ckanext/edatostheme/templates/home/snippets/search.html
+msgid "All"
+msgstr "Tots"
+
 #: ckan/templates/home/snippets/search.html:16
 msgid "Popular tags"
 msgstr "Etiquetes freqüents"

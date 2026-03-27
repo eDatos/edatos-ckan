@@ -19,16 +19,15 @@
       </button>
     </div>
   </form>
-  <div class="tags">
-    <h3>{{ _('Popular tags') }}</h3>
+  <div class="search-filters">
+    {% set active_tag = request.args.get(lang, '') %}
+    {# Botón "Todos" — activo cuando no hay filtro de etiqueta #}
+    <a class="filter-tag {{ 'active' if not active_tag else '' }}" href="{{ h.url_for(dataset_type ~ '.search') }}">{{ _('All') }}</a>
+    {# Etiquetas dinámicas cargadas desde h.edatos_get_freq_tags #}
     {% for tag in tags %}
       {% if tag != delink %}
-        {% if tag.active %}
-          {% set href = h.remove_url_param('dataset', tag, controller='dataset', action='search', extras=extras, alternative_url=alternative_url) %}
-        {% else %}
-          {% set href = h.add_url_param(controller='dataset', action='search', new_params={lang: tag}, extras=extras, alternative_url=alternative_url) %}
-        {% endif %}
-        <a class="tag" href="{{ href }}">{{ tag }}</a>
+        {% set href = h.url_for(dataset_type ~ '.search', **{lang: tag}) %}
+        <a class="filter-tag {{ 'active' if active_tag == tag else '' }}" href="{{ href }}">{{ tag }}</a>
       {% endif %}
     {% endfor %}
   </div>
