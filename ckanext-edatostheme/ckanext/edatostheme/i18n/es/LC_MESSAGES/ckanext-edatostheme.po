@@ -4149,7 +4149,7 @@ msgstr "Previsualización de Recurso"
 
 #: ckan/templates/package/snippets/resources_list.html:13
 msgid "Data and Resources"
-msgstr "Distribuciones"
+msgstr "Datos"
 
 #: ckan/templates/package/snippets/resources_list.html:30
 msgid "This dataset has no data"
@@ -4880,3 +4880,7 @@ msgstr "Aviso Legal del ISTAC"
 #: ckanext/template/snippets/facet_list.html:74
 msgid "Aviso Legal del IBESTAT"
 msgstr "Aviso Legal del IBESTAT"
+
+#: ckanext/edatostheme/templates/snippets/social.html
+msgid "Compartir"
+msgstr "Compartir"

@@ -978,6 +978,49 @@ nav.section.navigation {
 	vertical-align: top;
 }
 
+/* --- Metadatos table: borde exterior + primera columna 40% --- */
+section.module.additional-info {
+	border: 1px solid #ddd;
+}
+
+section.module.additional-info .module-content table,
+section.additional-info.module > table {
+	border: 1px solid #ddd;
+	border-top: none;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+section.module.additional-info table th:first-child,
+section.module.additional-info table td:first-child,
+section.additional-info.module table th:first-child,
+section.additional-info.module table td:first-child {
+	width: 40%;
+	font-weight: var(--font-weight-bold);
+}
+
+/* --- "Show more" link: full-width bar como boceto --- */
+a.show-more {
+	display: block !important;
+	text-align: center;
+	padding: 10px;
+	background: #f9f9f9;
+	border: 1px solid #ddd;
+	border-top: none;
+	font-size: var(--font-size-xs);
+	color: var(--color-primary);
+	text-decoration: none;
+}
+
+a.show-more:hover {
+	background: #f0f5fb;
+}
+
+/* --- Resource page: título h1 más compacto (boceto: 20px) --- */
+.module-resource .module-content h1.page-heading {
+	font-size: 20px;
+}
+
 /* --- Resource read: remove extra padding from module-content after heading --- */
 .module > h2.module-heading + .module-content,
 .module > div.module-heading + .module-content {
@@ -1000,6 +1043,41 @@ nav.section.navigation {
 /* --- Flush module-content with heading (no inner padding so table aligns with header bar) --- */
 .additional-info .module-content {
 	padding: 0;
+}
+
+/* --- Dataset detail: tabla additional-info flush con el heading --- */
+section.additional-info.module > table {
+	margin: 0;
+	border-top: none;
+}
+
+/* --- Dataset detail: sección "Datos" (resources) con barra azul como Metadatos --- */
+section#dataset-resources {
+	border: 1px solid #ddd;
+	margin-bottom: 20px;
+}
+
+section#dataset-resources > h2 {
+	background: var(--color-primary-dark);
+	color: var(--color-white);
+	font-size: var(--font-size-md);
+	font-weight: var(--font-weight-bold);
+	padding: 11px 16px;
+	margin: 0;
+	border-radius: 0;
+}
+
+/* --- Botón "Explorar" de recursos: outline neutro (igual que IR AL RECURSO) --- */
+#dataset-resources .btn-primary,
+#dataset-resources .btn-primary.dropdown-toggle {
+	background: white;
+	color: #444;
+	border-color: #999;
+}
+#dataset-resources .btn-primary:hover,
+#dataset-resources .btn-primary.dropdown-toggle:hover {
+	background: #f5f5f5;
+	color: #222;
 }
 
 #dataset-resources li.resource-item {
