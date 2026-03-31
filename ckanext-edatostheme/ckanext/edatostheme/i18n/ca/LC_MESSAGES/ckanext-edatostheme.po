@@ -3203,6 +3203,10 @@ msgstr ""
 msgid "Additional Information"
 msgstr "Informació addicional"
 
+#: ckanext/edatostheme/templates/package/resource_read.html
+msgid "Metadatos"
+msgstr "Metadades"
+
 #: ckan/templates/package/resource_read.html:179
 #: ckan/templates/package/snippets/additional_info.html:6
 #: ckan/templates/snippets/additional_info.html:11

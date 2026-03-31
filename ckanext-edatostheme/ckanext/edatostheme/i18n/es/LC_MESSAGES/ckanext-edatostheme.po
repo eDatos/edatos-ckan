@@ -3759,7 +3759,11 @@ msgstr ""
 
 #: ckan/templates/package/resource_read.html:144
 msgid "Additional Information"
-msgstr "Información adicional"
+msgstr "Metadatos"
+
+#: ckanext/edatostheme/templates/package/resource_read.html
+msgid "Metadatos"
+msgstr "Metadatos"
 
 #: ckan/templates/package/resource_read.html:148
 #: ckan/templates/package/snippets/additional_info.html:6
@@ -4396,7 +4400,7 @@ msgstr "Lo sentimos, no se encontraron organizaciones"
 
 #: ckan/templates/snippets/social.html:5
 msgid "Social"
-msgstr "Social"
+msgstr "Compartir"
 
 #: ckan/templates/snippets/subscribe.html:2
 msgid "Subscribe"

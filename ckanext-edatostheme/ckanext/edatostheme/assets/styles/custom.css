@@ -919,6 +919,89 @@ nav.section.navigation {
    7. DATASET DETAIL — Metadata, Tabs, Resources, Format badges
    ============================================================ */
 
+/* --- Module headings: sidebar RECURSOS, COMPARTIR, METADATOS --- */
+.module-heading {
+	background-color: var(--color-primary-dark);
+	color: var(--color-white) !important;
+	font-size: var(--font-size-xs);
+	font-weight: var(--font-weight-bold);
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	padding: 9px 14px;
+	margin: 0;
+	border-radius: 0;
+}
+
+.module-heading i {
+	display: none;
+}
+
+/* --- Sidebar nav items --- */
+.module.module-narrow .nav-simple .nav-item a {
+	display: block;
+	padding: 9px 14px;
+	font-size: var(--font-size-xs);
+	color: var(--color-primary);
+	border: 1px solid var(--color-gray-border);
+	border-top: none;
+	text-decoration: none;
+}
+
+.module.module-narrow .nav-simple .nav-item a:hover {
+	background-color: #f0f5fb;
+	text-decoration: none;
+}
+
+.module.module-narrow .nav-simple .nav-item.active a {
+	background-color: #3a5a8c;
+	color: var(--color-white);
+	font-weight: var(--font-weight-bold);
+}
+
+/* --- Resource detail: Metadatos table --- */
+.module .module-content table thead tr {
+	background-color: #f0f0f0;
+}
+
+.module .module-content table thead th {
+	font-size: var(--font-size-xs);
+	font-weight: var(--font-weight-bold);
+	color: #444;
+	border-bottom: 1px solid #ccc;
+	padding: 9px 14px;
+}
+
+.module .module-content table tbody td,
+.module .module-content table tbody th {
+	padding: 9px 14px;
+	font-size: var(--font-size-xs);
+	vertical-align: top;
+}
+
+/* --- Resource read: remove extra padding from module-content after heading --- */
+.module > h2.module-heading + .module-content,
+.module > div.module-heading + .module-content {
+	padding-top: var(--spacing-sm);
+}
+
+/* --- Metadata section heading: no uppercase, boceto style --- */
+.additional-info .metadata-heading {
+	font-size: var(--font-size-md);
+	text-transform: none;
+	letter-spacing: normal;
+	padding: 11px 16px;
+}
+
+/* --- Hide redundant h2 from ckanext-scheming inside module-content --- */
+.additional-info .module-content > h2 {
+	display: none;
+}
+
+/* --- Flush module-content with heading (no inner padding so table aligns with header bar) --- */
+.additional-info .module-content {
+	padding: 0;
+}
+
 #dataset-resources li.resource-item {
 	display: flex !important;
 	flex-flow: row nowrap;
@@ -945,6 +1028,48 @@ table th:first-child {
 
 div.ckanext-showcase-image-container {
 	margin: var(--spacing-md);
+}
+
+/* --- Resource read: no-views info box --- */
+.data-viewer-info {
+	background: #f5f5f5;
+	border: 1px solid #e0e0e0;
+	border-radius: 3px;
+	padding: 12px 16px;
+	font-size: var(--font-size-xs);
+	color: #666;
+	display: inline-block;
+}
+
+.data-viewer-info p {
+	margin: 0;
+}
+
+.data-viewer-info p + p {
+	margin-top: 8px;
+}
+
+/* --- Resource read: "Ir al recurso" button — neutral style (boceto) --- */
+.module-resource .resource-url-analytics.btn-outline-primary {
+	border-color: #999;
+	color: #444;
+	background: white;
+	font-size: var(--font-size-xs);
+}
+
+.module-resource .resource-url-analytics.btn-outline-primary:hover {
+	background: #f5f5f5;
+	border-color: #888;
+	color: #333;
+}
+
+/* --- Resource read: resource name h2 subtitle --- */
+.module-resource .module-content h2 {
+	font-size: var(--font-size-md);
+	font-weight: var(--font-weight-bold);
+	color: #333;
+	margin-top: var(--spacing-sm);
+	margin-bottom: var(--spacing-sm);
 }
 
 
