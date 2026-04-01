@@ -24,9 +24,9 @@
 {% endblock %}
 
 {% block content_primary_nav %}
-  {{ h.build_nav_icon(dataset_type ~ '.read', _('Dataset'),  id=pkg.name, icon='sitemap') }}
-  {{ h.build_nav_icon(dataset_type ~ '.groups', h.humanize_entity_type('group', default_group_type, 'content tab') or _('Groups'), id=pkg.name, icon='users') }}
-  {{ h.build_nav_icon(showcase_dataset_showcase_list_route, _('Showcases-dataset'), id=pkg.name, icon='archive') }}
+  {{ h.build_nav(dataset_type ~ '.read', _('Dataset'), id=pkg.name) }}
+  {{ h.build_nav(dataset_type ~ '.groups', h.humanize_entity_type('group', default_group_type, 'content tab') or _('Groups'), id=pkg.name) }}
+  {{ h.build_nav(showcase_dataset_showcase_list_route, _('Showcases-dataset'), id=pkg.name) }}
 {% endblock %}
 
 {% block secondary_content %}

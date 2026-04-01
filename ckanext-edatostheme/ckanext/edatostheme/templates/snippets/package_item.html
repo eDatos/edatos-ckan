@@ -42,6 +42,9 @@ Example:
           </h2>
         {% endblock %}
         {% block notes %}
+          {% if notes %}
+            <div class="notes">{{ notes }}</div>
+          {% endif %}
         {% endblock %}
       </div>
       {% block resources %}

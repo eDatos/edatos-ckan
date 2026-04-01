@@ -920,6 +920,24 @@ msgstr "Categorías"
 msgid "Tags"
 msgstr "Etiquetas"
 
+msgid "Keywords"
+msgstr "Palabras clave"
+
+msgid "Licences"
+msgstr "Licencias"
+
+msgid "Identifier"
+msgstr "Identificador"
+
+msgid "Theme"
+msgstr "Tema"
+
+msgid "Publisher URI"
+msgstr "URI del publicador"
+
+msgid "Frequency"
+msgstr "Frecuencia"
+
 #: ckan/controllers/group.py:308 ckan/controllers/home.py:64
 #: ckan/controllers/package.py:243 ckan/lib/helpers.py:836
 msgid "Formats"
