@@ -936,15 +936,51 @@ nav.section.navigation {
 	display: none;
 }
 
+/* --- Wrapper: fondo blanco sin borde (boceto) --- */
+.row.wrapper {
+	background: white !important;
+	border: none !important;
+}
+
+/* --- Columna principal: sin borde extra (el wrapper ya da el fondo blanco) --- */
+.row.wrapper > .primary {
+	background: transparent;
+	border: none;
+}
+
+/* --- Sidebar: no estirar al alto del contenido principal, solo abraza su contenido --- */
+.row.wrapper > .secondary {
+	align-self: flex-start;
+}
+
+/* --- Sidebar modules: sin recuadro (boceto: secciones planas) --- */
+.secondary .module.module-narrow {
+	background: transparent;
+	border: none;
+	margin-bottom: 6px;
+}
+
+/* --- Sidebar módulo sin heading (título del dataset): padding interno --- */
+.secondary .module.module-narrow:not(:has(.module-heading)) {
+	padding: 12px 14px;
+	font-size: var(--font-size-xs);
+	font-weight: var(--font-weight-bold);
+	color: #222;
+	line-height: 1.45;
+}
+
 /* --- Sidebar nav items --- */
 .module.module-narrow .nav-simple .nav-item a {
 	display: block;
 	padding: 9px 14px;
 	font-size: var(--font-size-xs);
 	color: var(--color-primary);
-	border: 1px solid var(--color-gray-border);
-	border-top: none;
+	border-top: 1px solid var(--color-gray-border);
 	text-decoration: none;
+}
+
+.module.module-narrow .nav-simple .nav-item:first-child a {
+	border-top: none;
 }
 
 .module.module-narrow .nav-simple .nav-item a:hover {
@@ -1025,6 +1061,12 @@ a.show-more:hover {
 .module > h2.module-heading + .module-content,
 .module > div.module-heading + .module-content {
 	padding-top: var(--spacing-sm);
+}
+
+/* --- Dataset detail: tabs flush with left edge of module (no left gap before first tab) --- */
+.module-content.page-header {
+	padding-left: 0;
+	padding-right: 0;
 }
 
 /* --- Metadata section heading: no uppercase, boceto style --- */
