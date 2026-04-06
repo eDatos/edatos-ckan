@@ -11,7 +11,7 @@
         {{ _('Private') }}
       </span>
     {% endif %}
-    <h1>
+    <h1 class="dataset-title">
       {% block page_heading %}
         {{ h.dataset_display_name(pkg) }}
         {% if pkg.state.startswith('draft') %}
@@ -36,9 +36,7 @@
       can_edit=h.check_access('package_update', {'id':pkg.id }) %}
   {% endblock %}
 
-  {% block package_tags %}
-    {% snippet "package/snippets/tags.html", tags=pkg.multilingual_tags %}
-  {% endblock %}
+  {% block package_tags %}{% endblock %}
 
   {% block package_additional_info %}
     {% snippet "package/snippets/additional_info.html", pkg_dict=pkg %}

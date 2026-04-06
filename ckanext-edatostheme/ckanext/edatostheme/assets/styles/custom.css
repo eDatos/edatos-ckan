@@ -1194,7 +1194,28 @@ h2.dataset-heading {
    7. DATASET DETAIL — Metadata, Tabs, Resources, Format badges
    ============================================================ */
 
-/* --- Module headings: sidebar RECURSOS, COMPARTIR, METADATOS --- ZONA 10 */
+/* --- ZONA 1: Título del dataset (h1) --- */
+h1.dataset-title {
+	color: #000;
+	font-family: "Open Sans", sans-serif;
+	font-size: 24px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 120%;
+	align-self: stretch;
+}
+
+/* --- ZONA 2: Descripción del dataset (.notes) --- */
+.notes {
+	color: #000;
+	font-family: "Open Sans", sans-serif;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 26px;
+}
+
+/* --- ZONA 3: Encabezado sección recursos (.module-heading en main content) --- */
 .module-heading {
 	display: flex;
 	height: 35px;
@@ -1203,10 +1224,11 @@ h2.dataset-heading {
 	gap: 10px;
 	align-self: stretch;
 	border-radius: 3px;
-	background-color: var(--color-primary-dark);
-	color: var(--color-white) !important;
+	background: var(--Colors-secondary, #004678);
+	color: #FFF !important;
 	font-family: "Open Sans", sans-serif;
 	font-size: 14px;
+	font-style: normal;
 	font-weight: 700;
 	line-height: 14px;
 	text-transform: uppercase;
@@ -1218,31 +1240,200 @@ h2.dataset-heading {
 	display: none;
 }
 
-/* --- Wrapper: fondo blanco sin borde (boceto) --- */
+/* --- ZONA 4: Item de recurso (.resource-item) --- */
+.resource-item {
+	display: flex;
+    padding: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    align-self: stretch;
+    background: var(--edatos-color-gray-5, #F2F2F2);
+}
+
+.resource-list {
+    margin: 0;
+    list-style: none;
+    padding-left: 0;
+    margin: -10px -10px 10px -10px;
+    width: 100%;
+}
+
+.resource-item .heading {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	color: var(--Colors-secondary, #004678);
+	font-family: "Open Sans", sans-serif;
+	font-size: 18px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	letter-spacing: -0.72px;
+	text-decoration: none;
+}
+
+.resource-item .heading:hover {
+	text-decoration: underline;
+	color: var(--Colors-secondary, #004678);
+}
+
+/* --- ZONA 5: Botón EXPLORAR/DESCARGAR (.btn-primary en recursos) --- */
+#dataset-resources .btn-primary,
+#dataset-resources .btn-primary.dropdown-toggle {
+	display: flex;
+	padding: 5px 10px;
+	align-items: center;
+	gap: 5px;
+	border-radius: 5px;
+	border: 1px solid var(--Colors-secondary, #004678);
+	background: #FFF;
+	color: var(--Colors-secondary, #004678);
+	text-align: center;
+	font-family: "Open Sans", sans-serif;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 300;
+	line-height: 20px;
+	text-transform: uppercase;
+}
+
+#dataset-resources .btn-primary:hover,
+#dataset-resources .btn-primary.dropdown-toggle:hover {
+	background: #f0f5fb;
+	color: var(--Colors-secondary, #004678);
+	border-color: var(--Colors-secondary, #004678);
+}
+
+/* --- ZONA 6: Ver en el explorador de estadísticas --- */
+.stats-explorer-link {
+	display: flex;
+	padding: 20px 10px;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	align-self: stretch;
+	border-radius: 0 0 5px 5px;
+	background: var(--edatos-color-gray-5, #F2F2F2);
+}
+
+.stats-explorer-link a,
+.stats-explorer-link span {
+	flex: 1 0 0;
+	color: var(--Colors-primary-100, #004678);
+	text-align: center;
+	font-family: "Open Sans", sans-serif;
+	font-size: 18px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 26px;
+	text-decoration: none;
+}
+
+.stats-explorer-link a:hover {
+	text-decoration: underline;
+	color: var(--Colors-primary-100, #004678);
+}
+
+/* --- ZONA 7: Encabezado metadatos / info adicional (.module-heading en sidebar) --- */
+.additional-info .module-heading,
+.additional-info .module-heading.metadata-heading,
+.secondary .module-heading {
+	flex: 1 0 0;
+	display: flex;
+	height: auto;
+	padding: 5px 10px;
+	justify-content: flex-start;
+	align-items: center;
+	gap: 10px;
+	align-self: stretch;
+	border-radius: 5px 5px 0 0;
+	background: var(--Colors-secondary, #004678);
+	color: #FFF !important;
+	font-family: "Open Sans", sans-serif;
+	font-size: 18px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 26px;
+	text-transform: none;
+	letter-spacing: normal;
+	margin: 0;
+}
+
+/* --- ZONA 8: Tabla metadatos — fila de cabecera Campo/Valor --- */
+.additional-info table thead tr th {
+	height: 36px;
+	padding: 5px 20px;
+	color: var(--Negro-60, #666);
+	font-family: "Open Sans", sans-serif;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 26px;
+}
+
+/* --- ZONA 9: Tabla metadatos — columna "Campo" --- */
+.additional-info table th.dataset-label,
+.additional-info table th:first-child {
+	color: var(--Negro-60, #666);
+	font-family: "Open Sans", sans-serif;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 26px;
+}
+
+.additional-info table td {
+	padding: 5px 20px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 16px;
+	line-height: 26px;
+	vertical-align: top;
+}
+
+/* --- ZONA 10: Info module (.module-content en sidebar) --- */
+.secondary .module-content {
+	color: var(--Colors-secondary, #004678);
+	font-family: "Open Sans", sans-serif;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 26px;
+}
+
+/* --- ZONA 11: Sección COMPARTIR / navegación lateral --- */
+.social .nav-item a,
+.social .nav a {
+	color: var(--Colors-secondary, #004678);
+	font-family: "Open Sans", sans-serif;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 14px;
+}
+
+/* --- Wrapper: fondo blanco sin borde --- */
 .row.wrapper {
 	background: white !important;
 	border: none !important;
 }
 
-/* --- Columna principal: sin borde extra (el wrapper ya da el fondo blanco) --- */
 .row.wrapper > .primary {
 	background: transparent;
 	border: none;
 }
 
-/* --- Sidebar: no estirar al alto del contenido principal, solo abraza su contenido --- */
 .row.wrapper > .secondary {
 	align-self: flex-start;
 }
 
-/* --- Sidebar modules: sin recuadro (boceto: secciones planas) --- */
+/* --- Sidebar modules: sin recuadro --- */
 .secondary .module.module-narrow {
 	background: transparent;
 	border: none;
 	margin-bottom: 6px;
 }
 
-/* --- Sidebar módulo sin heading (título del dataset): padding interno --- */
 .secondary .module.module-narrow:not(:has(.module-heading)) {
 	padding: 12px 14px;
 	font-size: var(--font-size-xs);
@@ -1251,7 +1442,7 @@ h2.dataset-heading {
 	line-height: 1.45;
 }
 
-/* --- Sidebar título del dataset: azul link (boceto) --- */
+/* --- Sidebar título del dataset --- */
 #package-info .module-content .heading a {
 	color: var(--color-primary);
 	text-decoration: none;
@@ -1259,34 +1450,66 @@ h2.dataset-heading {
 	font-weight: var(--font-weight-bold);
 	line-height: 1.45;
 }
+
 #package-info .module-content .heading a:hover {
 	color: var(--color-primary-hover);
 	text-decoration: underline;
 }
 
-/* --- Sidebar nav items: ver Sección 6 --- */
-
-/* --- Resource detail: Metadatos table --- */
-.module .module-content table thead tr {
-	background-color: #f0f0f0;
+/* --- Dataset detail: sección "Datos" (resources) --- */
+section#dataset-resources {
+	border: 1px solid #ddd;
+	margin-bottom: 20px;
 }
 
-.module .module-content table thead th {
-	font-size: var(--font-size-xs);
-	font-weight: var(--font-weight-bold);
-	color: #444;
-	border-bottom: 1px solid #ccc;
-	padding: 9px 14px;
+section#dataset-resources > h2 {
+	flex: 1 0 0;
+	display: flex;
+	padding: 5px 10px;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	align-self: stretch;
+	border-radius: 5px 5px 0 0;
+	background: var(--Colors-secondary, #004678);
+	color: #FFF;
+	font-family: "Open Sans", sans-serif;
+	font-size: 18px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 26px;
+	margin: 0;
+	text-transform: none;
 }
 
-.module .module-content table tbody td,
-.module .module-content table tbody th {
-	padding: 9px 14px;
-	font-size: var(--font-size-xs);
-	vertical-align: top;
+/* --- Cuerpo sección datos (body bajo el título) --- */
+.dataset-resources-body {
+	display: flex;
+	padding: 20px;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 15px;
+	align-self: stretch;
 }
 
-/* --- Metadatos table: borde exterior + primera columna 40% --- */
+#dataset-resources li.resource-item {
+	display: flex !important;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+	align-items: center;
+}
+
+#dataset-resources li.resource-item .btn-group {
+	position: inherit;
+	top: 0;
+	right: 0;
+}
+
+.resource-item:hover {
+	background-color: var(--color-gray-light);
+}
+
+/* --- Metadatos table: borde exterior + estructura --- */
 section.module.additional-info {
 	border: 1px solid #ddd;
 }
@@ -1307,7 +1530,30 @@ section.additional-info.module table td:first-child {
 	font-weight: var(--font-weight-bold);
 }
 
-/* --- "Show more" link: full-width bar como boceto --- */
+.additional-info .module-content:first-child table th:first-child {
+	width: 50% !important;
+}
+
+table th:first-child {
+	width: 10% !important;
+}
+
+/* --- Hide redundant h2 from ckanext-scheming inside module-content --- */
+.additional-info .module-content > h2 {
+	display: none;
+}
+
+/* --- Flush module-content with heading --- */
+.additional-info .module-content {
+	padding: 0;
+}
+
+section.additional-info.module > table {
+	margin: 0;
+	border-top: none;
+}
+
+/* --- "Show more" link --- */
 a.show-more {
 	display: block !important;
 	text-align: center;
@@ -1324,101 +1570,21 @@ a.show-more:hover {
 	background: #f0f5fb;
 }
 
-/* --- Resource page: título h1 más compacto (boceto: 20px) --- */
-.module-resource .module-content h1.page-heading {
-	font-size: 20px;
-}
-
-/* --- Resource read: remove extra padding from module-content after heading --- */
-.module > h2.module-heading + .module-content,
-.module > div.module-heading + .module-content {
-	padding-top: var(--spacing-sm);
-}
-
-/* --- Dataset detail: tabs flush with left edge of module (no left gap before first tab) --- */
+/* --- Dataset detail: tabs flush --- */
 .module-content.page-header {
 	padding-left: 0;
 	padding-right: 0;
 }
 
-/* --- Metadata section heading: no uppercase, boceto style --- */
-.additional-info .metadata-heading {
-	font-size: var(--font-size-md);
-	text-transform: none;
-	letter-spacing: normal;
-	padding: 11px 16px;
+/* --- Resource page: h1 --- */
+.module-resource .module-content h1.page-heading {
+	font-size: 20px;
 }
 
-/* --- Hide redundant h2 from ckanext-scheming inside module-content --- */
-.additional-info .module-content > h2 {
-	display: none;
-}
-
-/* --- Flush module-content with heading (no inner padding so table aligns with header bar) --- */
-.additional-info .module-content {
-	padding: 0;
-}
-
-/* --- Dataset detail: tabla additional-info flush con el heading --- */
-section.additional-info.module > table {
-	margin: 0;
-	border-top: none;
-}
-
-/* --- Dataset detail: sección "Datos" (resources) con barra azul como Metadatos --- */
-section#dataset-resources {
-	border: 1px solid #ddd;
-	margin-bottom: 20px;
-}
-
-section#dataset-resources > h2 {
-	background: var(--color-primary-dark);
-	color: var(--color-white);
-	font-size: var(--font-size-md);
-	font-weight: var(--font-weight-bold);
-	padding: 11px 16px;
-	margin: 0;
-	border-radius: 0;
-}
-
-/* --- Botón "Explorar" de recursos: outline neutro + mayúsculas (boceto) --- */
-#dataset-resources .btn-primary,
-#dataset-resources .btn-primary.dropdown-toggle {
-	background: white;
-	color: #444;
-	border-color: #999;
-	text-transform: uppercase;
-	font-size: var(--font-size-xs);
-	letter-spacing: 0.4px;
-}
-#dataset-resources .btn-primary:hover,
-#dataset-resources .btn-primary.dropdown-toggle:hover {
-	background: #f5f5f5;
-	color: #222;
-}
-
-#dataset-resources li.resource-item {
-	display: flex !important;
-	flex-flow: row nowrap;
-	justify-content: space-between;
-}
-
-#dataset-resources li.resource-item .btn-group {
-	position: inherit;
-	top: 0;
-	right: 0;
-}
-
-.resource-item:hover {
-	background-color: var(--color-gray-light);
-}
-
-.additional-info .module-content:first-child table th:first-child {
-	width: 50% !important;
-}
-
-table th:first-child {
-	width: 10% !important;
+/* --- Resource read: padding after heading --- */
+.module > h2.module-heading + .module-content,
+.module > div.module-heading + .module-content {
+	padding-top: var(--spacing-sm);
 }
 
 div.ckanext-showcase-image-container {
@@ -1444,7 +1610,7 @@ div.ckanext-showcase-image-container {
 	margin-top: 8px;
 }
 
-/* --- Metadatos: Palabras clave pills (boceto) --- */
+/* --- Metadatos: Palabras clave pills --- */
 .metadatos-tag {
 	display: inline-block;
 	padding: 2px 10px;
@@ -1456,7 +1622,7 @@ div.ckanext-showcase-image-container {
 	background: #f5f5f5;
 }
 
-/* --- Resource read: "IR AL RECURSO" button — uppercase + neutral style (boceto) --- */
+/* --- Resource read: "IR AL RECURSO" button --- */
 .module-resource .resource-url-analytics.btn-outline-primary {
 	border-color: #999;
 	color: #444;
@@ -1739,17 +1905,30 @@ a.tag:hover {
    11. FORMAT ICONS — Sprite de iconos de recursos
    ============================================================ */
 
-.format-label {
-	background: url("../../sprite-resource-icons.png") no-repeat 0 0;
+/* --- Icono de tipo de fichero (SVG + etiqueta de formato) --- */
+.resource-format-icon {
+	display: inline-flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 2px;
+	flex-shrink: 0;
 }
 
-.format-label[data-format=tsv],
-.format-label[data-format*=tsv],
-.format-label[data-format=pcaxis],
-.format-label[data-format*=pcaxis] {
-	width: 60px;
-	height: 65px;
-	background-position: -1720px -220px;
-	transform: scale(0.53);
-	margin: -14px 0 0 -14px;
+.resource-format-icon svg {
+	width: 24px;
+	height: 32px;
+	fill: var(--Colors-secondary, #004678);
+}
+
+.format-label {
+	color: var(--Colors-secondary, #004678);
+	font-family: MatryoshkaM, "Open Sans", sans-serif;
+	font-size: 18px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	letter-spacing: -0.72px;
+	background: none;
+	width: auto;
+	height: auto;
 }
