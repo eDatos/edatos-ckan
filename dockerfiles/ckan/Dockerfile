@@ -102,6 +102,10 @@ RUN chmod +x /srv/app/docker/bin/*.sh 2>/dev/null || true
 # scripts que se van a ejecutar
 RUN echo "[Dockerfile] Scripts de entrypoint disponibles:" && ls -la /docker-entrypoint.d/
 
+# Override wsgi.py to add ProxyFix (required for CSRF behind reverse proxy)
+COPY --chown=ckan-sys:ckan-sys dockerfiles/ckan/setup/wsgi.py /srv/app/wsgi.py
+RUN sed -i 's/\r$//' /srv/app/wsgi.py
+
 # Apply any patches needed to CKAN core or any of the built extensions (not the
 # runtime mounted ones)
 COPY --chown=ckan-sys:ckan-sys dockerfiles/ckan/patches ${APP_DIR}/patches
