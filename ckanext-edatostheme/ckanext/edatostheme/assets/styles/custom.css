@@ -897,9 +897,77 @@ nav.section.navigation {
    5. DATASET LIST — Listado de conjuntos de datos
    ============================================================ */
 
-/* #1 — Título del dataset: azul y clicable (boceto) */
+/* ZONA 12 — Ocultar separador " - " en sidebar (clase .hidden sin regla en CKAN 2.11) */
+.hidden { display: none !important; }
+
+/* ZONA 1 — Contador de resultados (h1) */
+.search-form h1 {
+	color: #000;
+	font-family: "Open Sans", sans-serif;
+	font-size: 24px;
+	font-weight: 600;
+	line-height: 120%;
+	text-align: left;
+}
+
+/* ZONA 2 — Control de ordenación: ocultar label, estilizar select */
+.search-form .control-order-by label {
+	display: none;
+}
+.search-form .control-order-by select {
+	color: var(--color-primary-dark);
+	font-family: "Open Sans", sans-serif;
+	font-size: 14px;
+	font-weight: 300;
+	line-height: 20px;
+	text-transform: uppercase;
+}
+
+/* ZONA 3 — Barra de búsqueda */
+.search-form .input-group.search-input-group input[name="q"] {
+	height: 35px;
+	padding: 7px 20px;
+	border-radius: 5px 0 0 5px;
+	border: 1px solid #4D7EA0;
+	background: #fff;
+	color: #333;
+	font-family: "Open Sans", sans-serif;
+	font-size: 14px;
+	font-weight: 600;
+}
+.search-form .input-group.search-input-group input[name="q"]::placeholder {
+	color: #CCC;
+	font-weight: 600;
+}
+.search-form .input-group.search-input-group .btn[type="submit"] {
+	border: 1px solid #4D7EA0;
+	border-left: none;
+	border-radius: 0 5px 5px 0;
+}
+
+/* ZONA 4 — Item de dataset */
+.dataset-item {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 10px;
+	padding: 10px 0;
+	margin-bottom: 0;
+	border-bottom: 1px solid var(--color-gray-border);
+}
+
+/* ZONA 5 — Título del dataset */
+h2.dataset-heading {
+	font-family: "Open Sans", sans-serif;
+	font-size: 20px;
+	font-weight: 600;
+	line-height: 26px;
+	color: var(--color-primary-dark);
+	align-self: stretch;
+	margin: 0;
+}
 .dataset-heading a {
-	color: var(--color-primary);
+	color: var(--color-primary-dark);
 	text-decoration: none;
 }
 .dataset-heading a:hover {
@@ -907,24 +975,32 @@ nav.section.navigation {
 	text-decoration: underline;
 }
 
-/* #3 — Separador entre items: línea sólida fina en vez de dotted */
-.dataset-item {
-	border-bottom: 1px solid var(--color-gray-border);
-}
-
-/* #2 — Descripción: limitar a 2 líneas */
+/* ZONA 6 — Descripción del dataset (.notes) */
 .dataset-item .notes {
-	font-size: var(--font-size-xs);
-	color: var(--color-text-muted, #666);
-	margin-top: 4px;
+	color: #000;
+	font-family: "Open Sans", sans-serif;
+	font-size: 14px;
+	font-weight: 300;
+	line-height: 24px;
+	margin: 0;
 	overflow: hidden;
 	display: -webkit-box;
 	-webkit-line-clamp: 2;
 	-webkit-box-orient: vertical;
+	align-self: stretch;
 }
 
-/* #5 — Badges de formato: estilo Figma Listado_conjunto_datos */
+/* ZONA 7 — Etiquetas de formato (.dataset-resources a.badge) */
+.dataset-resources {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 5px;
+	margin-top: 0;
+}
 .dataset-resources a.badge {
+	display: inline-flex;
+	align-items: center;
+	padding: 0 10px;
 	background-color: #F2F2F2 !important;
 	color: #000 !important;
 	border: none;
@@ -933,18 +1009,12 @@ nav.section.navigation {
 	font-size: 14px;
 	font-weight: 300;
 	line-height: 24px;
-	padding: 2px 6px;
 	text-transform: uppercase;
 }
 .dataset-resources a.badge:hover {
 	background-color: #e0e0e0 !important;
 	color: #000 !important;
 	text-decoration: none;
-}
-
-/* #7 — Reducir espacio entre buscador y resultados */
-.primary form.search-form {
-	margin-bottom: 8px;
 }
 
 /* #4 — Icono + nombre + contador de grupo: card azul ancho completo (boceto) */
@@ -1052,24 +1122,96 @@ nav.section.navigation {
    6. SIDEBAR / FILTROS — Facets, Filter panels
    ============================================================ */
 
-/* Los estilos de facets/sidebar se añadirán en Slice 5 tras inspección en Docker */
+/* ZONA 10 — Encabezado de sección del sidebar (.module-heading) */
+/* (regla también presente en Sección 7; esta tiene precedencia para sidebar de facets) */
+
+/* ZONA 8 — Items de faceta: nav-item */
+.module.module-narrow .nav-simple .nav-item a {
+	display: flex;
+	height: 35px;
+	padding: 5px 10px 5px 20px;
+	align-items: center;
+	gap: 10px;
+	font-size: var(--font-size-xs);
+	color: var(--color-primary);
+	border-top: 1px solid var(--color-gray-border);
+	text-decoration: none;
+	box-sizing: border-box;
+}
+
+.module.module-narrow .nav-simple .nav-item:first-child a {
+	border-top: none;
+}
+
+.module.module-narrow .nav-simple .nav-item a:hover {
+	background-color: #f0f5fb;
+	text-decoration: none;
+}
+
+.module.module-narrow .nav-simple .nav-item.active a {
+	background-color: #3a5a8c;
+	color: var(--color-white);
+	font-weight: var(--font-weight-bold);
+}
+
+/* ZONA 9 — Badge numérico en sidebar */
+.module-narrow .nav-item > a .badge,
+.nav-facet .item-count.badge {
+	display: inline-flex;
+	padding: 5px;
+	justify-content: center;
+	align-items: center;
+	border-radius: 5px;
+	background: #CCC;
+	color: var(--color-primary-dark);
+	font-family: "Open Sans", sans-serif;
+	font-size: 12px;
+	font-weight: 600;
+	line-height: 14px;
+	min-width: 24px;
+}
+
+/* ZONA 11 — Enlace "Mostrar más" */
+.module-footer .read-more {
+	display: flex;
+	padding: 5px;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	border-radius: 5px;
+	background: #F2F2F2;
+	color: var(--color-primary-dark);
+	font-family: "Open Sans", sans-serif;
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 14px;
+	text-decoration: none;
+	margin: 5px;
+}
 
 
 /* ============================================================
    7. DATASET DETAIL — Metadata, Tabs, Resources, Format badges
    ============================================================ */
 
-/* --- Module headings: sidebar RECURSOS, COMPARTIR, METADATOS --- */
+/* --- Module headings: sidebar RECURSOS, COMPARTIR, METADATOS --- ZONA 10 */
 .module-heading {
+	display: flex;
+	height: 35px;
+	padding: 5px 10px;
+	align-items: center;
+	gap: 10px;
+	align-self: stretch;
+	border-radius: 3px;
 	background-color: var(--color-primary-dark);
 	color: var(--color-white) !important;
-	font-size: var(--font-size-xs);
-	font-weight: var(--font-weight-bold);
+	font-family: "Open Sans", sans-serif;
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 14px;
 	text-transform: uppercase;
-	letter-spacing: 0.5px;
-	padding: 9px 14px;
+	letter-spacing: normal;
 	margin: 0;
-	border-radius: 0;
 }
 
 .module-heading i {
@@ -1122,30 +1264,7 @@ nav.section.navigation {
 	text-decoration: underline;
 }
 
-/* --- Sidebar nav items --- */
-.module.module-narrow .nav-simple .nav-item a {
-	display: block;
-	padding: 9px 14px;
-	font-size: var(--font-size-xs);
-	color: var(--color-primary);
-	border-top: 1px solid var(--color-gray-border);
-	text-decoration: none;
-}
-
-.module.module-narrow .nav-simple .nav-item:first-child a {
-	border-top: none;
-}
-
-.module.module-narrow .nav-simple .nav-item a:hover {
-	background-color: #f0f5fb;
-	text-decoration: none;
-}
-
-.module.module-narrow .nav-simple .nav-item.active a {
-	background-color: #3a5a8c;
-	color: var(--color-white);
-	font-weight: var(--font-weight-bold);
-}
+/* --- Sidebar nav items: ver Sección 6 --- */
 
 /* --- Resource detail: Metadatos table --- */
 .module .module-content table thead tr {
