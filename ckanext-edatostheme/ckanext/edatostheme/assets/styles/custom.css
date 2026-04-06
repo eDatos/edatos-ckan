@@ -1509,7 +1509,63 @@ div.input-prepend input:nth-child(2) {
 
 
 /* ============================================================
-   9. COMPONENTES GLOBALES — Badges, Tags, Alerts, Modals
+   9. TABS — Conjuntos de datos / Acerca de (Figma Listado_conjunto_datos)
+   ============================================================ */
+
+/* Contenedor de tabs */
+.nav-tabs {
+	background-color: #E5ECF1 !important;
+	border-radius: 3px !important;
+	border-bottom: none !important;
+	padding-left: 20px;
+	height: 45px !important;
+	display: flex !important;
+	align-items: flex-end !important;
+	width: 100%;
+}
+
+/* Tab inactivo */
+.nav-tabs > li > a {
+	font-family: "Open Sans", sans-serif !important;
+	font-size: 14px !important;
+	font-weight: 300 !important;
+	font-style: normal !important;
+	line-height: normal !important;
+	color: #004678 !important;
+	background-color: transparent !important;
+	border-radius: 5px 5px 0 0 !important;
+	border: none !important;
+	padding: 9px 20px !important;
+	margin: 0 !important;
+}
+
+.nav-tabs > li > a:hover,
+.nav-tabs > li > a:focus {
+	background-color: rgba(255, 255, 255, 0.5) !important;
+	border: none !important;
+	color: #004678 !important;
+}
+
+/* Tab activo */
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+	font-family: "Open Sans", sans-serif !important;
+	font-size: 14px !important;
+	font-weight: 600 !important;
+	font-style: normal !important;
+	line-height: normal !important;
+	color: var(--Colors-secondary, #004678) !important;
+	text-align: center !important;
+	font-feature-settings: 'liga' off, 'clig' off !important;
+	background-color: #FFF !important;
+	border-radius: 5px 5px 0 0 !important;
+	border: none !important;
+	padding: 9px 20px !important;
+}
+
+/* ============================================================
+   10. COMPONENTES GLOBALES — Badges, Tags, Alerts, Modals
    ============================================================ */
 
 .badge {
