@@ -816,8 +816,21 @@ nav.section.navigation {
 	z-index: 2;
 }
 
-.search-form .search-input.search-giant button {
-	margin-top: -13px;
+.homepage .search-form .search-input.search-giant button {
+	position: relative !important;
+	top: auto !important;
+	right: auto !important;
+	display: flex !important;
+	height: 45px;
+	padding: 5px 14px;
+	justify-content: center;
+	align-items: center;
+	gap: 5px;
+	margin-top: 0;
+	align-self: center;
+	border-radius: 5px;
+	background-color: #FFF !important;
+	color: var(--color-primary-dark) !important;
 }
 
 .counter-box {
@@ -1782,11 +1795,26 @@ textarea:focus {
 }
 
 /* Buscador grande (homepage) */
+.homepage .search-input.search-giant {
+	max-width: 770px;
+	width: 100%;
+	margin: 0 auto;
+	height: 50px;
+	border-radius: 5px;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	background: #FFF;
+}
+
 .search-giant .form-control {
-	height: 46px;
+	height: 50px;
 	font-size: var(--font-size-lg);
-	border-radius: var(--border-radius-sm) 0 0 var(--border-radius-sm);
-	border-right: none;
+	padding: 7px 0 7px 16px;
+	border-radius: 5px 0 0 5px;
+	border: none;
+	background: transparent;
+	flex: 1;
 }
 
 /* Inputs específicos de formularios scheming */
