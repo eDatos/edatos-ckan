@@ -347,8 +347,9 @@ nav.navigation div ul li {
 	text-decoration: none !important;
 }
 
-/* Ítem activo: negrita + subrayado azul */
+/* Ítem activo: fondo blanco + negrita + subrayado azul */
 .navigation .nav-main-links li.active a.btn-datasets {
+	background-color: #fff !important;
 	font-weight: var(--font-weight-bold) !important;
 	color: var(--color-primary-dark) !important;
 	border-bottom: 6px solid var(--color-accent);
@@ -728,12 +729,16 @@ nav.section.navigation {
 }
 
 .hero-nav {
-	padding-bottom: 20px;
+	background-color: var(--color-white);
+	border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
+	padding: 8px 16px 0;
 }
 
 .hero-subtitle {
 	color: var(--color-white);
-	font-size: var(--font-size-lg);
+	font-size: 24px;
+	font-weight: 700;
+	line-height: 28px;
 	text-align: center;
 	margin: 0 0 var(--spacing-md) 0;
 }
@@ -772,7 +777,6 @@ nav.section.navigation {
 	background-color: var(--color-primary-transparent) !important;
 }
 
-.homepage .module-search,
 .box {
 	background-color: transparent !important;
 	margin-bottom: var(--spacing-md);
@@ -780,24 +784,31 @@ nav.section.navigation {
 
 .homepage .module-search {
 	position: relative;
+	margin-top: 0;
 	margin-bottom: 0;
-	background-image: url('../../search-background.png');
-	background-size: cover;
-	background-position: center center;
-	background-repeat: no-repeat;
+	background-color: var(--edatos-color-accent-100, #009BD7) !important;
+	border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
 }
 
 .module-search .heading {
 	text-align: center;
+	font-size: 50px;
+	font-weight: 600;
+	line-height: 110%;
+	color: var(--color-white);
 }
 
 .module-search::before {
 	content: "";
 	position: absolute;
 	inset: 0;
-	background-color: var(--edatos-color-accent-100, #009BD7);
+	background-image: url('../../search-background.png');
+	background-size: cover;
+	background-position: center center;
+	background-repeat: no-repeat;
+	opacity: 0.2;
 	z-index: 1;
-	border-radius: var(--border-radius-md);
+	border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
 }
 
 .module-search > * {
