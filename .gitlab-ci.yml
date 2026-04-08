@@ -60,6 +60,8 @@ trigger ckan-stack develop:
   rules:
     - if: $CI_PIPELINE_SOURCE == "web"
       when: manual
+  variables:
+    VERSION: latest
 
 trigger ckan-stack release:
   extends: .trigger_ckan_stack
