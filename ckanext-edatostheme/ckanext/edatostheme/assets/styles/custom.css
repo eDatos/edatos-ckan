@@ -1570,7 +1570,7 @@ section#dataset-resources > h2 {
 	flex: 1 0 0;
 	display: flex;
 	padding: 5px 10px;
-	justify-content: center;
+	justify-content: flex-start;
 	align-items: center;
 	gap: 10px;
 	align-self: stretch;
