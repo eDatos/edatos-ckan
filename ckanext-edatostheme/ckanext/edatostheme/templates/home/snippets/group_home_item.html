@@ -14,18 +14,15 @@ Example:
 {% set url = h.url_for(group.type ~ '.read', id=group.name) %}
 {% block item %}
 <li class="media-item group-home-item">
-  {% block item_inner %}
-  {% block icon %}
-    <span class="subject-area-icon group-home-icon {{ group.name}}"></span>
-  {% endblock %}
-  {% block title %}
-    <h3 class="media-heading">{{ h.get_translated(group, 'title') or group.display_name }}</h3>
-  {% endblock %}
-  {% block link %}
-    <a href="{{ url }}" title="{{ _('View {name}').format(name=h.get_translated(group, 'title') or group.display_name) }}" class="media-view no-border">
-      <span>{{ _('View {name}').format(name=h.get_translated(group, 'title') or group.display_name) }}</span>
-    </a>
-  {% endblock %}
-  {% endblock %}
+  <a href="{{ url }}" title="{{ _('View {name}').format(name=h.get_translated(group, 'title') or group.display_name) }}" class="group-home-card-link">
+    {% block item_inner %}
+    {% block icon %}
+      <i class="group-home-fa-glyph {{ group.name }}"></i>
+    {% endblock %}
+    {% block title %}
+      <h3 class="media-heading">{{ h.get_translated(group, 'title') or group.display_name }}</h3>
+    {% endblock %}
+    {% endblock %}
+  </a>
 </li>
 {% endblock %}

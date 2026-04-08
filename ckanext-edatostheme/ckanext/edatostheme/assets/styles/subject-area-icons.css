@@ -54,7 +54,7 @@
     }
 }
 @media only screen and (max-width: 992px) {
-    
+
     .subject-area-icon {
         font-size: 12vw;
     }
@@ -71,3 +71,46 @@
         font-size: 26vw;
     }
 }
+
+/* ── Home category cards: FA6 Pro thin icons via CSS ── */
+.group-home-fa-glyph {
+    font-family: "Font Awesome 6 Pro";
+    font-style: normal;
+    font-weight: 100; /* thin */
+    font-size: 47px;
+    color: var(--edatos-color-primary-100, #004678);
+    text-align: center;
+    line-height: normal;
+    display: inline-block;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.group-home-fa-glyph::before {
+    font-family: "Font Awesome 6 Pro" !important;
+    font-weight: 100 !important;
+    color: inherit !important;
+}
+
+.group-home-fa-glyph.ciencia-y-tecnologia::before  { content: '\f0c3'; } /* flask */
+.group-home-fa-glyph.comercio::before               { content: '\f07a'; } /* cart-shopping */
+.group-home-fa-glyph.cultura-ocio::before           { content: '\f630'; } /* theater-masks */
+.group-home-fa-glyph.demografia::before             { content: '\f0c0'; } /* users */
+.group-home-fa-glyph.deporte::before                { content: '\f44e'; } /* football-ball */
+.group-home-fa-glyph.economia::before               { content: '\f201'; } /* chart-line */
+.group-home-fa-glyph.educacion::before              { content: '\f19d'; } /* graduation-cap */
+.group-home-fa-glyph.empleo::before                 { content: '\f0b1'; } /* briefcase */
+.group-home-fa-glyph.energia::before                { content: '\f0e7'; } /* bolt */
+.group-home-fa-glyph.hacienda::before               { content: '\f24e'; } /* scale-balanced */
+.group-home-fa-glyph.industria::before              { content: '\f275'; } /* industry */
+.group-home-fa-glyph.legislacion-justicia::before   { content: '\f0e3'; } /* gavel */
+.group-home-fa-glyph.medio-ambiente::before         { content: '\f06c'; } /* leaf */
+.group-home-fa-glyph.medio-rural-pesca::before      { content: '\f722'; } /* tractor */
+.group-home-fa-glyph.salud::before                  { content: '\f21e'; } /* heart-pulse */
+.group-home-fa-glyph.sector-publico::before         { content: '\f66f'; } /* landmark */
+.group-home-fa-glyph.seguridad::before              { content: '\f132'; } /* shield */
+.group-home-fa-glyph.sociedad-bienestar::before     { content: '\f4be'; } /* hand-holding-heart */
+.group-home-fa-glyph.transporte::before             { content: '\f0d1'; } /* truck */
+.group-home-fa-glyph.turismo::before                { content: '\f072'; } /* plane */
+.group-home-fa-glyph.urbanismo-infraestructuras::before { content: '\f64f'; } /* city */
+.group-home-fa-glyph.vivienda::before               { content: '\f015'; } /* house */

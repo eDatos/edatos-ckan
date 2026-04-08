@@ -878,13 +878,6 @@ nav.section.navigation {
 
 .media-item.group-home-item {
 	position: relative;
-	float: left;
-	width: 120px;
-	padding: 5px 0;
-	margin: 6px 0;
-	background: none;
-	border-radius: var(--border-radius-sm);
-	height: auto;
 	list-style: none;
 }
 
@@ -899,7 +892,7 @@ nav.section.navigation {
 }
 
 .categories-section {
-	background-color: var(--color-white);
+	background-color: var(--color-gray-light, #f5f5f5);
 	padding: var(--spacing-md) 0;
 }
 
@@ -921,6 +914,51 @@ nav.section.navigation {
 	padding: 0;
 }
 
+/* Group home card link */
+.group-home-card-link {
+	display: flex;
+	padding: 20px;
+	justify-content: center;
+	align-items: center;
+	gap: 20px;
+	border-radius: 3px;
+	background-color: var(--color-white);
+	text-decoration: none;
+	transition: background-color 0.2s ease;
+}
+
+.group-home-card-link:hover {
+	background-color: var(--edatos-color-primary-100, #004678);
+	text-decoration: none;
+}
+
+.group-home-card-link:hover .group-home-fa-glyph,
+.group-home-card-link:hover .media-heading {
+	color: var(--edatos-color-white-100, #fff);
+}
+
+/* Group home icon (FA6 Pro thin) */
+.group-home-fa-glyph {
+	color: var(--edatos-color-primary-100, #004678);
+	text-align: center;
+	font-size: 47px;
+	font-style: normal;
+	font-weight: 100;
+	line-height: normal;
+	flex-shrink: 0;
+}
+
+/* Group home title */
+.categories-grid .media-item.group-home-item .media-heading {
+	color: var(--edatos-color-primary-100, #004678);
+	font-family: "Open Sans";
+	font-size: 18px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 120%;
+	margin: 0;
+}
+
 @media (max-width: 992px) {
 	.categories-grid {
 		grid-template-columns: repeat(3, 1fr);
@@ -930,6 +968,21 @@ nav.section.navigation {
 @media (max-width: 600px) {
 	.categories-grid {
 		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.group-home-card-link {
+		flex-direction: column;
+		gap: 10px;
+		padding: 14px;
+	}
+
+	.group-home-fa-glyph {
+		font-size: 36px;
+	}
+
+	.categories-grid .media-item.group-home-item .media-heading {
+		font-size: 14px;
+		text-align: center;
 	}
 }
 
