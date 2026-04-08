@@ -1516,19 +1516,30 @@ h1.dataset-title {
 	line-height: 14px;
 }
 
-/* --- Wrapper: fondo blanco sin borde --- */
+/* --- Wrapper: fondo blanco sin borde, alineado con hero-nav --- */
 .row.wrapper {
 	background: white !important;
 	border: none !important;
+	margin-left: 0 !important;
+	margin-right: 0 !important;
+}
+
+.row.wrapper > .secondary {
+	align-self: flex-start;
+	flex: 0 0 var(--sidebar-width);
+	width: var(--sidebar-width);
+	max-width: var(--sidebar-width);
+	padding-left: 0;
+	padding-right: 0;
 }
 
 .row.wrapper > .primary {
 	background: transparent;
 	border: none;
-}
-
-.row.wrapper > .secondary {
-	align-self: flex-start;
+	flex: 1 1 0;
+	min-width: 0;
+	padding-left: calc(var(--bs-gutter-x) * 0.5);
+	padding-right: 0;
 }
 
 /* --- Sidebar modules: sin recuadro --- */
