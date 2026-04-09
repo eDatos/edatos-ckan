@@ -74,28 +74,7 @@ CKAN__LOGGER_CKAN__LEVEL=DEBUG
 CKAN__LOGGER_CKANEXT__LEVEL=DEBUG
 ```
 
-#### 3. Desactivar la protección CSRF
-
-En entorno local, es necesario desactivar la protección CSRF de WTForms para que los formularios funcionen correctamente. Se deben cambiar **dos propiedades** en `ckan.ini` de `true` a `false`:
-
-- `WTF_CSRF_ENABLED = false` — Desactiva la validación de tokens CSRF.
-- `WTF_CSRF_SSL_STRICT = false` — Desactiva la comprobación de que el referrer coincida con el host en conexiones HTTPS. Sin esto, se obtiene el error `400 Bad Request: The referrer does not match the host` al acceder desde `localhost`.
-
-```bash
-docker compose -f dockerfiles/docker-compose.yml exec -u root ckan sed -i -e 's/^WTF_CSRF_ENABLED = true/WTF_CSRF_ENABLED = false/' -e 's/^WTF_CSRF_SSL_STRICT = true/WTF_CSRF_SSL_STRICT = false/' /srv/app/ckan.ini
-```
-
-**Verificar:**
-```bash
-docker compose -f dockerfiles/docker-compose.yml exec ckan grep -E "^WTF_CSRF_ENABLED|^WTF_CSRF_SSL_STRICT" /srv/app/ckan.ini
-# Debería mostrar:
-# WTF_CSRF_ENABLED = false
-# WTF_CSRF_SSL_STRICT = false
-```
-
-**⚠️ ADVERTENCIA:** Esta propiedad **NUNCA** debe estar habilitada en entornos de producción, ya que desactiva la protección contra ataques CSRF.
-
-#### 4. Requisito de proceso único
+#### 3. Requisito de proceso único
 
 Flask-DebugToolbar requiere que CKAN se ejecute en **modo de proceso único**:
 
@@ -105,7 +84,7 @@ docker compose -f dockerfiles/docker-compose.yml exec ckan ps aux | grep uwsgi
 
 Si se ven múltiples procesos worker, Flask-DebugToolbar podría no funcionar correctamente.
 
-#### 5. Reiniciar CKAN
+#### 4. Reiniciar CKAN
 
 ```bash
 docker compose -f dockerfiles/docker-compose.yml restart ckan
@@ -118,7 +97,7 @@ docker compose -f dockerfiles/docker-compose.yml ps ckan
 # El STATUS debería mostrar: Up X seconds (healthy)
 ```
 
-#### 6. Acceder a la barra de depuración
+#### 5. Acceder a la barra de depuración
 
 1. Abrir el navegador y navegar a: `https://localhost:8443/`
 2. Buscar una **pestaña/icono pequeño en el lado derecho** de la página (puede mostrar "FLDT" o el logo de Flask)
