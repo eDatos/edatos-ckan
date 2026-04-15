@@ -45,8 +45,10 @@
   {% block showcase_list %}
     {% set showcases = h.package_showcase_list(c) %}
     {% if showcases %}
-      <h3>{{ _("Showcases-dataset")  }}</h3>
-      {% snippet "edatosshowcase/snippets/showcase_list.html", packages=showcases, pkg_id=c.pkg_dict.name %}
+      <section class="recursos-relacionados-section">
+        <h2 class="recursos-relacionados-heading">{{ _("Showcases-dataset") }}</h2>
+        {% snippet "edatosshowcase/snippets/showcase_list.html", packages=showcases, pkg_id=c.pkg_dict.name %}
+      </section>
     {% endif %}
   {% endblock %}
 {% endblock %}
