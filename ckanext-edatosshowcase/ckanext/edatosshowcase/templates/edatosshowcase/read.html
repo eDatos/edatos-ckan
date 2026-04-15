@@ -101,11 +101,23 @@
 
 {% block secondary_content %}
     {% block secondary_help_content %}{% endblock %}
-    {% block package_additional_info %}
-        {% snippet 'edatosshowcase/snippets/showcase_additional_info.html', pkg=pkg, showcase_pkgs=showcase_pkgs, show_nums=true %}
-    {% endblock %}
-
-    {% block package_social %}
-        {% snippet "snippets/social.html" %}
-    {% endblock %}
+    <div class="showcase-detail-sidebar">
+        <div class="showcase-detail-title">{{ name }}</div>
+        {% block package_social %}
+            {% snippet "snippets/social.html" %}
+        {% endblock %}
+        <section class="module module-narrow module-shallow license">
+            <h2 class="module-heading">{{ _('License') }}</h2>
+            <p class="module-content">
+                {% if pkg.license_url %}
+                    <a href="{{ pkg.license_url }}" rel="dc:rights">{{ pkg.license_title }}</a>
+                {% elif pkg.license_id %}
+                    <span property="dc:rights">{{ pkg.license_title }}</span>
+                {% else %}
+                    <span>{{ _('No License Provided') }}</span>
+                {% endif %}
+            </p>
+        </section>
+    </div>
+    {% block package_additional_info %}{% endblock %}
 {% endblock %}
