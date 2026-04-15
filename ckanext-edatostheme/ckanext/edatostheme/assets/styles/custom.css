@@ -68,7 +68,7 @@
 
   /* Layout */
   --container-max-width: 1400px;
-  --sidebar-width: 220px;
+  --sidebar-width: 269px;
   --navbar-height: 70px;
   --hero-search-margin-top: 100px;
   --card-padding: 16px;
@@ -1013,12 +1013,17 @@ nav.section.navigation {
 	display: none;
 }
 .search-form .control-order-by select {
-	color: var(--color-primary-dark);
+	color: var(--Colors-primary-100, #004678);
 	font-family: "Open Sans", sans-serif;
 	font-size: 14px;
 	font-weight: 300;
 	line-height: 20px;
 	text-transform: uppercase;
+	padding: 5px 10px;
+	border-radius: 5px;
+	border: 1px solid var(--Colors-primary-100, #004678);
+	background: #fff;
+	cursor: pointer;
 }
 
 /* ZONA 3 — Barra de búsqueda */
@@ -1326,16 +1331,17 @@ h1.dataset-title {
 	padding: 5px 10px;
 	align-items: center;
 	gap: 10px;
+	flex-shrink: 0;
 	align-self: stretch;
 	border-radius: 3px;
-	background: var(--Colors-secondary, #004678);
-	color: #FFF !important;
-	font-family: "Open Sans", sans-serif;
-	font-size: 14px;
-	font-style: normal;
-	font-weight: 700;
-	line-height: 14px;
-	text-transform: uppercase;
+	background: var(--Colors-secondary, #004678) !important;
+	color: var(--edatos-color-white-100, #FFF) !important;
+	font-family: "Open Sans", sans-serif !important;
+	font-size: 14px !important;
+	font-style: normal !important;
+	font-weight: 700 !important;
+	line-height: 14px !important;
+	text-transform: uppercase !important;
 	letter-spacing: normal;
 	margin: 0;
 }
@@ -1445,21 +1451,22 @@ h1.dataset-title {
 .secondary .module-heading {
 	flex: 1 0 0;
 	display: flex;
-	height: auto;
+	height: 35px;
 	padding: 5px 10px;
 	justify-content: flex-start;
 	align-items: center;
 	gap: 10px;
+	flex-shrink: 0;
 	align-self: stretch;
-	border-radius: 5px 5px 0 0;
+	border-radius: 3px;
 	background: var(--Colors-secondary, #004678);
 	color: #FFF !important;
 	font-family: "Open Sans", sans-serif;
-	font-size: 18px;
+	font-size: 14px;
 	font-style: normal;
-	font-weight: 600;
-	line-height: 26px;
-	text-transform: none;
+	font-weight: 700;
+	line-height: 14px;
+	text-transform: uppercase;
 	letter-spacing: normal;
 	margin: 0;
 }
@@ -1503,6 +1510,34 @@ h1.dataset-title {
 	font-style: normal;
 	font-weight: 600;
 	line-height: 26px;
+}
+
+/* --- ZONA 10b: Descripción en módulos info del sidebar (helper, ¿Qué son las colecciones?) --- */
+.module.module-narrow.module-shallow .module-content {
+	display: flex;
+	height: 44px;
+	padding: 5px 10px 5px 20px;
+	align-items: center;
+	gap: 10px;
+	flex-shrink: 0;
+	flex: 1 0 0;
+	align-self: stretch;
+	color: var(--edatos-color-black-100, #000) !important;
+	font-family: "Open Sans", sans-serif !important;
+	font-size: 12px !important;
+	font-style: normal !important;
+	font-weight: 400 !important;
+	line-height: 16px !important;
+}
+
+.module.module-narrow.module-shallow .module-content p {
+	color: var(--edatos-color-black-100, #000) !important;
+	font-family: "Open Sans", sans-serif !important;
+	font-size: 12px !important;
+	font-style: normal !important;
+	font-weight: 400 !important;
+	line-height: 16px !important;
+	margin: 0;
 }
 
 /* --- ZONA 11: Sección COMPARTIR / navegación lateral --- */
@@ -2071,4 +2106,129 @@ a.tag:hover {
 	bottom: 0;
 	right: auto;
 	left: 1px;
+}
+
+
+/* ============================================================
+   SHOWCASE — Listado de colecciones (/es/showcase)
+   ============================================================ */
+
+/* Grid responsive con CSS grid (sin afectar otras páginas) */
+ul.showcase-grid {
+	display: grid !important;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 16px;
+	list-style: none;
+	padding: 12px 0 !important;
+	margin: 0 !important;
+	background: none !important;
+}
+
+/* Tarjeta colección */
+li.showcase-card {
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	border-radius: 3px;
+	background: #fff;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+	transition: box-shadow 0.2s ease;
+	width: auto !important;
+	float: none !important;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+li.showcase-card:hover {
+	box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Enlace que envuelve imagen + cuerpo */
+.showcase-card-link {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	text-decoration: none;
+	color: inherit;
+}
+
+.showcase-card-link:hover {
+	text-decoration: none;
+}
+
+/* Imagen: 160px, cover, radio superior */
+.showcase-card-image {
+	height: 160px;
+	flex-shrink: 0;
+	align-self: stretch;
+	border-radius: 3px 3px 0 0;
+	background-color: lightgray;
+	background-size: cover;
+	background-position: 50% center;
+	background-repeat: no-repeat;
+}
+
+/* Cuerpo de la tarjeta */
+.showcase-card-body {
+	display: flex;
+	flex-direction: column;
+	padding: 10px 12px;
+	gap: 6px;
+	flex: 1;
+}
+
+/* Contador de conjuntos de datos — encima del título, uppercase */
+.showcase-card-count {
+	color: var(--Negro-80, #333);
+	font-family: "Open Sans", sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	text-transform: uppercase;
+}
+
+/* Título de la colección */
+.showcase-card-title {
+	align-self: stretch;
+	color: var(--Colors-primary-100, #004678);
+	font-family: "Open Sans", sans-serif;
+	font-size: 18px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 20px;
+	text-align: left;
+	margin: 0;
+}
+
+.showcase-card-link:hover .showcase-card-title {
+	text-decoration: underline;
+}
+
+/* Descripción */
+.showcase-card-notes {
+	color: var(--edatos-color-black-100, #000);
+	font-family: "Open Sans", sans-serif;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 300;
+	line-height: 23px;
+	text-align: left;
+}
+
+.showcase-card-notes p {
+	margin: 0;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 992px) {
+	ul.showcase-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (max-width: 576px) {
+	ul.showcase-grid {
+		grid-template-columns: 1fr;
+	}
 }
