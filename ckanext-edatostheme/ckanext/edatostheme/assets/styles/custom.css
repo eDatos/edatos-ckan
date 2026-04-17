@@ -1587,8 +1587,8 @@ h1.dataset-title {
 	flex: 0 0 var(--sidebar-width);
 	width: var(--sidebar-width);
 	max-width: var(--sidebar-width);
-	padding-left: 0;
-	padding-right: 0;
+	padding: 10px;
+	margin-left: 10px;
 }
 
 .row.wrapper > .primary {
@@ -1685,6 +1685,7 @@ section#dataset-resources > h2 {
 /* --- Metadatos table: borde exterior + estructura --- */
 section.module.additional-info {
 	border: 1px solid var(--edatos-color-gray-5, #F2F2F2);
+	margin-right: 20px;
 }
 
 section.module.additional-info .module-content table,
@@ -1699,7 +1700,7 @@ section.module.additional-info table th:first-child,
 section.module.additional-info table td:first-child,
 section.additional-info.module table th:first-child,
 section.additional-info.module table td:first-child {
-	width: 40%;
+	width: 30% !important;
 	font-weight: var(--font-weight-bold);
 }
 
@@ -1716,6 +1717,7 @@ section.additional-info.module table td:first-child {
 	border-bottom: 1px solid var(--edatos-color-gray-5, #F2F2F2);
 	border-right: 1px solid var(--edatos-color-gray-5, #F2F2F2);
 	border-left: 1px solid var(--edatos-color-gray-5, #F2F2F2);
+	background-color: var(--edatos-color-white-100, #FFF) !important;
 }
 
 .additional-info table tbody tr th {
@@ -1728,7 +1730,7 @@ section.additional-info.module table td:first-child {
 }
 
 .additional-info .module-content:first-child table th:first-child {
-	width: 50% !important;
+	width: 30% !important;
 }
 
 table th:first-child {
