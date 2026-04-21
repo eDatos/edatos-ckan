@@ -4,7 +4,6 @@ stages:
   - deploy
 
 variables:
-  DOCKER_REGISTRY: docker.arte-consultores.com
   CKAN_IMAGE: ${DOCKER_REGISTRY}/edatos/ckan
   WORKER_IMAGE: ${DOCKER_REGISTRY}/edatos/ckan-worker
 
