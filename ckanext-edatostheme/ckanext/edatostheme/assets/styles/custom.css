@@ -990,7 +990,6 @@ nav.section.navigation {
 	border: none !important;
 }
 
-
 /* ============================================================
    5. DATASET LIST — Listado de conjuntos de datos
    ============================================================ */
@@ -1631,9 +1630,10 @@ h1.dataset-title {
 /* --- ZONA 10b: Descripción en módulos info del sidebar (helper, ¿Qué son las colecciones?) --- */
 .module.module-narrow.module-shallow .module-content {
 	display: flex;
-	height: 44px;
+	flex-direction: column;
+	min-height: 44px;
 	padding: 5px 10px 5px 20px;
-	align-items: center;
+	align-items: flex-start;
 	gap: 10px;
 	flex-shrink: 0;
 	flex: 1 0 0;
@@ -2661,7 +2661,7 @@ li.showcase-card:hover {
 /* Aviso legal: contenido de la sección licencia */
 .showcase-detail-sidebar .module.module-narrow.module-shallow .module-content {
 	display: flex !important;
-	height: 35px !important;
+	min-height: 35px !important;
 	width: 100% !important;
 	padding: 5px 10px 5px 20px !important;
 	align-items: center !important;
