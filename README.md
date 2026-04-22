@@ -28,27 +28,17 @@ Se han desarrollado las siguientes extensiones de CKAN:
 
 ### Prerrequisitos
 
-Crear la red Docker externa (solo la primera vez):
-```bash
-docker network create ckan-net
-```
-
 Copiar y configurar el fichero de entorno:
 ```bash
 cp dockerfiles/.env.bk dockerfiles/.env
 # Editar dockerfiles/.env con los valores correctos (BBDD, URLs, CAS...)
 ```
 
-### Generación de imágenes
-
-```bash
-docker build -f dockerfiles/ckan/Dockerfile -t docker.arte-consultores.com/istac/ckan:<version> .
-docker build -f dockerfiles/ckan/Dockerfile.worker -t docker.arte-consultores.com/istac/ckan-worker:<version> .
-```
-
 ### Despliegue en local
 
 ```bash
+docker compose -f dockerfiles/docker-compose.yml build
+
 docker compose -f dockerfiles/docker-compose.yml up -d
 ```
 
