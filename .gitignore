@@ -1,3 +1,5 @@
 *.zip
 *.tar.gz
 /tmp
+/imagenes_alisios
+/promts
