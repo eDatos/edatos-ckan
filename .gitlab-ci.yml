@@ -4,7 +4,6 @@ stages:
   - deploy
 
 variables:
-  DOCKER_REGISTRY: docker.arte-consultores.com
   CKAN_IMAGE: ${DOCKER_REGISTRY}/edatos/ckan
   WORKER_IMAGE: ${DOCKER_REGISTRY}/edatos/ckan-worker
 
@@ -60,6 +59,8 @@ trigger ckan-stack develop:
   rules:
     - if: $CI_PIPELINE_SOURCE == "web"
       when: manual
+  variables:
+    VERSION: latest
 
 trigger ckan-stack release:
   extends: .trigger_ckan_stack

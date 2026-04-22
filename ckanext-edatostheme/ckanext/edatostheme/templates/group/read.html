@@ -33,7 +33,7 @@
   {{ super() }}
   <div class="filters">
     <div>
-        {{ h.snippet('snippets/facets_i18n.html',  extras={'id':group_dict.id}) }}
+        {{ h.snippet('snippets/facets_i18n.html', facet_titles=facet_titles, search_facets=search_facets, extras={'id':group_dict.id}) }}
     </div>
     <a class="close no-text hide-filters"><i class="fa fa-times-circle"></i><span class="text">close</span></a>
   </div>

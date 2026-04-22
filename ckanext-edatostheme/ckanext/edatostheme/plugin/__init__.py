@@ -31,6 +31,7 @@ SCRIPT_TEMPLATE = os.path.join(dirname, '../code_templates/i18n.js')
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 I18N_DIR = os.path.join(HERE, "../i18n")
+APP_ID_FOR_ANALYTICS = 'ckan-catalog'
 
 def new_activities_dummy():
     """
@@ -271,9 +272,10 @@ def get_header_url(json_config):
     request_lang = get_request_lang(get_url(endpoint, cookie_key))
 
     # Enviar al mismo nivel del appName el chosenLocale
-    return "%s?appName=%s&appUrl=%s&%s=%s" % (get_url(endpoint, header_key),
+    return "%s?appName=%s&appUrl=%s&appId=%s&%s=%s" % (get_url(endpoint, header_key),
                                         title,
                                         json_config['metadata']['siteURL'],
+                                        APP_ID_FOR_ANALYTICS,
                                         get_url(endpoint, cookie_key),
                                         request_lang
                                         )

@@ -3613,7 +3613,7 @@ msgstr ""
 
 #: ckan/templates/package/snippets/resource_item.html:37
 msgid "Explore"
-msgstr "Explora"
+msgstr "Explorar"
 
 #: ckan/templates/package/snippets/resource_item.html:49
 msgid "More information"

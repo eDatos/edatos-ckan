@@ -83,17 +83,11 @@ RUN for f in src/ckanext-edatosscheming/ckanext/edatosscheming/schemas_templates
 
 USER root
 
-# Se anhade la ruta del endpoint de DCAT al ini de CKAN ruta especifica para el cliente
-RUN sed -i '/^\[app:main\]/a\ckanext.dcat.catalog_endpoint = /catalog/dcat/catalog.{_format}' /srv/app/ckan.ini
-
 # Create necessary directories
 RUN mkdir -p /docker-entrypoint.d /srv/app/docker/bin
 
 # Copy custom initialization scripts
 COPY --chown=ckan-sys:ckan-sys dockerfiles/ckan/docker-entrypoint.d/* /docker-entrypoint.d/
-
-# Copy bin scripts for entrypoint
-COPY --chown=ckan-sys:ckan-sys dockerfiles/ckan/bin/ /srv/app/docker/bin/
 
 # Normalizar finales de línea (CRLF -> LF) para scripts copiados desde Windows
 RUN find /docker-entrypoint.d -type f \( -name "*.sh" -o -name "*.py" \) -exec sed -i 's/\r$//' {} + && \

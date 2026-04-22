@@ -14,7 +14,7 @@ import ckan.plugins as p
 import ckan.plugins.toolkit as t
 import ckanext.cas.blueprints as blueprints
 from ckanext.cas.db import delete_user_entry, is_ticket_valid
-from ckan.common import g, session
+from ckan.common import g, session, logout_user
 import ckan.model as model
 
 
@@ -170,17 +170,15 @@ class CASClientPlugin(p.SingletonPlugin):
 
         environ = t.request.environ
 
-        # Check for post-logout flag to avoid immediate re-auth
         if session.get('_post_logout'):
             log.debug('Post-logout flag detected, skipping re-authentication')
             session.pop('_post_logout', None)
             g.user = None
             g.userobj = None
-            return  # Don't identify, let user stay logged out
+            return None
 
         remote_user = session.get('user')
 
-        # CRITICAL: Validate ticket BEFORE setting g.user
         if remote_user:
             log.debug(f'Checking ticket validity for user: {remote_user}')
             ticket_valid = is_ticket_valid(remote_user)
@@ -188,22 +186,19 @@ class CASClientPlugin(p.SingletonPlugin):
 
             if not ticket_valid:
                 log.debug('Ticket invalid - User logged out of CAS Server - clearing session')
-                # Clear session if ticket is invalid
                 session.clear()
                 session.modified = True
                 g.user = None
                 g.userobj = None
 
-                # Redirect to logged out page
-                if(self.CAS_ROOT_PATH is not None):
+                if self.CAS_ROOT_PATH is not None:
                     url = h.url_for('user.logged_out_page')
                     return h.redirect_to(url)
-            # Ticket is valid, set user context
+
             log.debug(f'Ticket valid for user: {remote_user}')
             g.user = remote_user
             g.userobj = model.User.get(remote_user)
         else:
-            # No user in session
             g.user = None
             g.userobj = None
 
@@ -213,10 +208,12 @@ class CASClientPlugin(p.SingletonPlugin):
             login_checkup_cookie = t.request.cookies.get(
                 self.LOGIN_CHECKUP_COOKIE, None)
             if login_checkup_cookie:
-                return
-            # log.debug('Checking if CAS session exists for user')
-            # url = self._generate_login_url(gateway=True, next=True)
-            # redirect(url)
+                return None
+
+    def authenticate(self, identity):
+        log.debug('Invoked "authenticate" method.')
+
+        return None
 
     def login(self):
         log.debug('Invoked "login" method.')
@@ -233,6 +230,8 @@ class CASClientPlugin(p.SingletonPlugin):
         if remote_user:
             log.debug(f'Deleting CAS ticket for user: {remote_user}')
             delete_user_entry(remote_user)
+
+        logout_user()
 
         # 2. Clear Flask session completely
         session.clear()
