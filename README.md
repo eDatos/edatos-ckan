@@ -29,6 +29,7 @@ Se han desarrollado las siguientes extensiones de CKAN:
 ### Prerrequisitos
 
 Copiar y configurar el fichero de entorno:
+NOTA: El proyecto [ckan-stack](https://git.arte-consultores.com/istac/infraestructura/ckan-stack) contiene las configuraciones para los distintos clientes.
 ```bash
 cp dockerfiles/.env.bk dockerfiles/.env
 # Editar dockerfiles/.env con los valores correctos (BBDD, URLs, CAS...)
