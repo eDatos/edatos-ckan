@@ -2942,3 +2942,7 @@ li.showcase-card:hover {
          border-right: none !important;
 	}
 }
+
+.filters {
+    width: 100%;
+}
