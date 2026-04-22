@@ -330,15 +330,11 @@ nav.navigation div ul li {
 	color: var(--color-primary-dark) !important;
 	font-size: var(--font-size-base) !important;
 	font-weight: var(--font-weight-medium) !important;
-	padding: 0 var(--spacing-md);
+	padding: 13px 20px;
 	border-bottom: 3px solid transparent;
 	text-decoration: none !important;
 	white-space: nowrap;
 	transition: color var(--transition-base), border-color var(--transition-base);
-	padding-top: 13px;
-    padding-bottom: 13px;
-    padding-left: 20px;
-    padding-right: 20px;
 }
 
 .navigation .nav-main-links li a.btn-datasets:hover {
@@ -753,42 +749,28 @@ nav.section.navigation {
 }
 
 .search-filters .filter-tag {
+	display: flex;
+	height: 27px;
+	padding: 1px 10px;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	border-radius: 3px;
+	background: var(--edatos-color-white-100, #FFF);
+	color: var(--Colors-primary-100, #004678);
+	font-family: "Open Sans", sans-serif;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 600;
 	line-height: 24px;
-    font-weight: 600;
-    display: flex;
-    height: 27px;
-    padding: 1px 10px;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    border-radius: 3px;
-    background: var(--edatos-color-white-100, #FFF);
-    color: var(--Colors-primary-100, #004678);
-    font-family: "'Open Sans'";
-    font-size: 14px;
-    font-style: normal;
 }
 
 .search-filters .filter-tag.active,
 .search-filters .filter-tag:hover {
-	background: var(--color-white);
-	color: var(--color-primary-dark);
-	border-color: var(--color-white);
-	border-radius: 3px;
-    border: 1px solid var(--edatos-color-white-100, #FFF);
-    background: var(--Colors-primary-100, #004678);
-    color: var(--edatos-color-white-100, #FFF);
-    text-align: center;
-    font-family: "'Open Sans'";
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 24px;
-    diplay: flex;
-    height: 27px;
-    padding: 1px 10px;
-    justify-content: center;
-    align-items: center;
+	border: 1px solid var(--edatos-color-white-100, #FFF);
+	background: var(--Colors-primary-100, #004678);
+	color: var(--edatos-color-white-100, #FFF);
+	text-align: center;
 }
 
 .homepage .module-search .module-content {
@@ -974,25 +956,9 @@ nav.section.navigation {
 	line-height: normal;
 }
 
-/* Group search count heading */
-#group-search-form h1 {
-	font-family: "Open Sans";
-	font-size: var(--font-size-xxl);
-	font-weight: 600;
-	color: var(--color-black);
-	margin: 0;
-	display: block;
-}
-
 /* Hide "Order by" on group index */
 #group-search-form .control-order-by {
 	display: none;
-}
-
-@media (max-width: 992px) {
-	.categories-grid {
-		grid-template-columns: repeat(3, 1fr);
-	}
 }
 
 @media (max-width: 600px) {
@@ -1566,68 +1532,27 @@ h1.dataset-title {
 	color: var(--Colors-primary-100, #004678);
 }
 
-/* --- ZONA 7: Encabezado sidebar (.secondary) --- */
+/* --- ZONA 7: Encabezado sidebar (.secondary) — solo diferencias vs base --- */
 .secondary .module-heading {
 	flex: 1 0 0;
-	display: flex;
-	height: 35px;
-	padding: 5px 10px;
 	justify-content: flex-start;
-	align-items: center;
-	gap: 10px;
-	flex-shrink: 0;
-	align-self: stretch;
-	border-radius: 3px;
-	background: var(--Colors-secondary, #004678);
-	color: #FFF !important;
-	font-family: "Open Sans", sans-serif;
-	font-size: 14px;
-	font-style: normal;
 	font-weight: 600;
-	line-height: 14px;
-	text-transform: uppercase;
-	letter-spacing: normal;
-	margin: 0;
 }
 
 /* --- ZONA 7b: Encabezado metadatos / secciones contenido principal --- */
 .additional-info .module-heading,
 .additional-info .module-heading.metadata-heading {
 	flex: 1 0 0;
-	display: flex;
-	height: 35px;
-	padding: 5px 10px;
 	justify-content: center !important;
-	align-items: center;
-	gap: 10px;
-	flex-shrink: 0;
-	align-self: stretch;
 	border-radius: 5px 5px 0 0 !important;
-	background: var(--Colors-secondary, #004678);
-	color: #FFF !important;
-	font-family: "Open Sans", sans-serif !important;
 	font-size: 18px !important;
-	font-style: normal !important;
 	font-weight: 600 !important;
 	line-height: 26px !important;
 	text-transform: none !important;
-	letter-spacing: normal;
-	margin: 0;
 }
 
-/* --- ZONA 8: Tabla metadatos — fila de cabecera Campo/Valor --- */
-.additional-info table thead tr th {
-	height: 36px;
-	padding: 5px 20px;
-	color: var(--Negro-60, #666);
-	font-family: "Open Sans", sans-serif;
-	font-size: 16px;
-	font-style: normal;
-	font-weight: 600;
-	line-height: 26px;
-}
-
-/* --- ZONA 9: Tabla metadatos — columna "Campo" --- */
+/* --- ZONA 8-9: Tabla metadatos — cabecera y columna "Campo" --- */
+.additional-info table thead tr th,
 .additional-info table th.dataset-label,
 .additional-info table th:first-child {
 	color: var(--Negro-60, #666);
@@ -1636,6 +1561,11 @@ h1.dataset-title {
 	font-style: normal;
 	font-weight: 600;
 	line-height: 26px;
+}
+
+.additional-info table thead tr th {
+	height: 36px;
+	padding: 5px 20px;
 }
 
 .additional-info table td {
