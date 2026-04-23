@@ -908,6 +908,7 @@ nav.section.navigation {
 	background-color: var(--edatos-color-gray-5, #f2f2f2);
 	text-decoration: none;
 	transition: background-color 0.2s ease;
+	color: var(--edatos-color-primary-100, #004678);
 }
 
 .group-home-card-link:hover {
@@ -933,7 +934,6 @@ nav.section.navigation {
 
 /* Group home title */
 .categories-grid .media-item.group-home-item .media-heading {
-	color: var(--edatos-color-primary-100, #004678);
 	font-family: "Open Sans";
 	font-size: 18px;
 	font-style: normal;
@@ -941,6 +941,11 @@ nav.section.navigation {
 	line-height: 120%;
 	text-transform: uppercase;
 	margin: 0;
+}
+
+.categories-grid .media-item.group-home-item .media-heading:hover {
+	color: white !important;
+	
 }
 
 /* Group dataset count badge */
@@ -1267,6 +1272,10 @@ h2.dataset-heading {
 
 .media-heading {
 	text-align: center;
+}
+
+.media-heading:hover {
+	color:white;
 }
 
 .media-item h3 {
