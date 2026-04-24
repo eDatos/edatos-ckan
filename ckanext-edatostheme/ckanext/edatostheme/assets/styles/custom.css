@@ -1552,7 +1552,7 @@ h1.dataset-title {
 .additional-info .module-heading,
 .additional-info .module-heading.metadata-heading {
 	flex: 1 0 0;
-	justify-content: center !important;
+	justify-content: flex-start !important;
 	border-radius: 5px 5px 0 0 !important;
 	font-size: 18px !important;
 	font-weight: 600 !important;
@@ -1841,6 +1841,14 @@ a.toggle-show.toggle-show-less {
 a.toggle-show.toggle-show-more:hover,
 a.toggle-show.toggle-show-less:hover {
 	background: var(--Colors-primary-5, #E5ECF1);
+}
+
+/* --- Group about: module-content padding --- */
+.primary .module > .module-content:not(.page-header) {
+	padding-left: 0;
+	padding-right: 0;
+	padding-top: 20px;
+	padding-bottom: 20px;
 }
 
 /* --- Dataset detail: tabs flush --- */
@@ -2799,6 +2807,7 @@ li.showcase-card:hover {
 .primary .ckanext-showcase-notes ~ h1,
 .primary h1 {
 	color: var(--Negro-100, #000);
+	text-align: left;
 	font-family: "Open Sans", sans-serif;
 	font-size: 24px;
 	font-style: normal;
