@@ -61,6 +61,7 @@
   --border-radius-lg: 12px;
   --border-color: #dddddd;
   --border-width: 1px;
+  --color-primary-5: #e5ecf1;
 
   /* Sombras */
   --shadow-card: 0 2px 4px rgba(0, 0, 0, 0.10);
@@ -2942,4 +2943,175 @@ li.showcase-card:hover {
 
 .filters {
     width: 100%;
+}
+
+/* ============================================================
+   USER PROFILE SIDEBAR — Figma: 2.1 Usuario metamac
+   ============================================================ */
+
+#user-info {
+	border: 0.5px solid #99B5C9;
+	border-radius: 5px;
+	overflow: hidden;
+	background: var(--color-white);
+	padding: 10px;
+}
+
+#user-info .module-content {
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+}
+
+/* Card azul superior: icono + nombre + divisor + bio */
+.user-profile-card {
+	background-color: var(--color-primary-dark);
+	border-radius: 10px;
+	padding: 30px 14px;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 13px;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.user-profile-fa-icon {
+	font-size: 100px;
+	color: var(--color-white);
+	line-height: 1;
+	display: block;
+}
+
+.user-profile-card .heading {
+	font-size: 24px;
+	font-weight: 600;
+	color: var(--color-white);
+	margin: 0;
+	line-height: 1.1;
+	text-align: center;
+	width: 100%;
+}
+
+.user-profile-divider {
+	border: none;
+	border-top: 1px solid rgba(255, 255, 255, 0.3);
+	width: 100%;
+	margin: 0;
+}
+
+.user-profile-bio {
+	font-size: 12px;
+	color: var(--color-white);
+	font-weight: 400;
+	line-height: 16px;
+	text-align: center;
+	padding: 0 10px;
+}
+
+.user-profile-bio p {
+	margin: 0;
+	color: var(--color-white);
+}
+
+/* Bloque de estadísticas: header + lista de items con badge */
+.user-stats-section {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
+.user-stats-header {
+	background-color: var(--color-primary-dark);
+	border-radius: 3px;
+	height: 35px;
+	display: flex;
+	align-items: center;
+	padding: 5px 10px;
+	font-size: 14px;
+	font-weight: 700;
+	color: var(--color-white);
+	white-space: nowrap;
+}
+
+.user-stats-list {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.user-stats-item {
+	background: var(--color-white);
+	border-bottom: 0.5px solid var(--color-primary-5);
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	height: 35px;
+	padding: 5px 10px 5px 20px;
+	box-sizing: border-box;
+}
+
+.user-stats-label {
+	flex: 1;
+	font-size: 14px;
+	font-weight: 400;
+	color: var(--color-primary-dark);
+	line-height: 14px;
+	white-space: nowrap;
+}
+
+.user-stats-badge {
+	background-color: #ccc;
+	border-radius: 5px;
+	padding: 5px;
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--color-primary-dark);
+	line-height: 14px;
+	min-width: 20px;
+	text-align: center;
+}
+
+/* Secciones de info: header azul + valor con borde */
+.user-info-sections {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	width: 100%;
+}
+
+.user-info-group {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
+.user-info-header {
+	background-color: var(--color-primary-dark);
+	border-radius: 3px;
+	height: 35px;
+	display: flex;
+	align-items: center;
+	padding: 5px 10px;
+	font-size: 14px;
+	font-weight: 700;
+	color: var(--color-white);
+}
+
+.user-info-value {
+	background: var(--color-white);
+	border-bottom: 0.5px solid var(--color-primary-5);
+	height: 35px;
+	display: flex;
+	align-items: center;
+	padding: 5px 10px 5px 20px;
+	font-size: 14px;
+	font-weight: 400;
+	color: var(--color-primary-dark);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	box-sizing: border-box;
 }
