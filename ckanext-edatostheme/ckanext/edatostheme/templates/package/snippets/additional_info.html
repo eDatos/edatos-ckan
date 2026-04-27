@@ -9,7 +9,19 @@
     </thead>
     <tbody>
       {% block package_additional_info_edatos %}
-        {% if pkg_dict.tags %}
+        {% if pkg_dict.multilingual_tags %}
+          {% set current_lang_tags = h.scheming_language_text(pkg_dict.multilingual_tags) %}
+          {% if current_lang_tags %}
+            <tr>
+              <th scope="row" class="dataset-label">{{ _('Keywords') }}</th>
+              <td class="dataset-details">
+                {% for tag in current_lang_tags %}
+                  <span class="metadatos-tag">{{ tag }}</span>
+                {% endfor %}
+              </td>
+            </tr>
+          {% endif %}
+        {% elif pkg_dict.tags %}
           <tr>
             <th scope="row" class="dataset-label">{{ _('Keywords') }}</th>
             <td class="dataset-details">
