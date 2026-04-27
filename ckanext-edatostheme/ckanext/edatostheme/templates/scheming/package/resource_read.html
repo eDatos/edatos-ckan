@@ -1,10 +1,8 @@
 {% ckan_extends %}
 
 {#
-  Override the additional_info_heading block from ckanext-scheming to render
-  the "Metadatos" section header with the dark-blue module-heading style
-  defined in custom.css (.module-heading.metadata-heading).
+  Remove the additional_info_heading block from ckanext-scheming because
+  the base template (package/resource_read.html) already renders the
+  "Metadatos" heading — keeping both causes duplication.
 #}
-{% block additional_info_heading %}
-  <div class="module-heading metadata-heading">{{ _('Metadatos') }}</div>
-{% endblock %}
+{% block additional_info_heading %}{% endblock %}
