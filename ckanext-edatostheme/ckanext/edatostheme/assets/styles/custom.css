@@ -3115,3 +3115,44 @@ li.showcase-card:hover {
 	text-overflow: ellipsis;
 	box-sizing: border-box;
 }
+
+/* ============================================================
+   MODAL INCRUSTAR VISTA DE RECURSO
+   ============================================================ */
+
+.resource-view-embed .modal-header {
+	background-color: var(--color-gray-dark);
+	padding: 10px 10px 10px 15px;
+	border-radius: 5px 5px 0 0;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.resource-view-embed .modal-header .modal-title {
+	color: var(--color-white);
+	font-size: 16px;
+	font-weight: 600;
+	text-transform: uppercase;
+	display: flex;
+	align-items: center;
+	gap: 5px;
+}
+
+.resource-view-embed .modal-header .btn-close {
+	filter: invert(1) grayscale(100%) brightness(200%);
+	opacity: 1;
+}
+
+.resource-view-embed .modal-body .form-control {
+	background: rgba(238, 238, 238, 0.3);
+	border: 1px solid #cccccc;
+	border-radius: 5px;
+	height: 35px;
+	font-size: 14px;
+	color: var(--color-text-base);
+}
+
+.resource-view-embed .modal-body textarea.form-control {
+	height: 100px;
+}
