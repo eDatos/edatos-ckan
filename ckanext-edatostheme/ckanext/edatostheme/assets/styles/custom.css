@@ -1477,8 +1477,8 @@ h1.dataset-title {
 
 .resource-item .heading {
 	display: flex;
-	align-items: center;
-	gap: 10px;
+	align-items: flex-end;
+	gap: 8px;
 	color: #000000;
 	font-family: "Open Sans", sans-serif;
 	font-size: 16px;
@@ -2417,21 +2417,23 @@ a.tag:hover {
 
 /* --- Icono de tipo de fichero (SVG + etiqueta superpuesta en esquina inferior derecha) --- */
 .resource-format-icon {
-	display: inline-flex;
+	display: flex;
 	flex-shrink: 0;
 	position: relative;
+	align-items: flex-end;
+	gap: 4px;
 }
 
 .resource-format-icon svg {
-	width: 40px;
-	height: 53px;
+	width: 24px;
+	height: 32px;
 }
 
 .format-label {
 	position: absolute;
 	bottom: 0;
 	color: var(--Colors-secondary, #004678);
-	font-family: MatryoshkaM, "Open Sans", sans-serif;
+	font-family: MatryoshkaM;
 	font-size: 25px;
 	font-style: normal;
 	font-weight: 400;
@@ -2447,10 +2449,10 @@ a.tag:hover {
 /* Override CKAN base CSS that positions .format-label with top/left values */
 .resource-item .format-label {
 	position: absolute;
-	top: 19px;
-	bottom: 0;
+	top: 6px;
+	bottom: -2px;
 	right: auto;
-	left: 1px;
+	left: -16px;
 	font-size: 18px;
 	color: var(--Colors-secondary, #004678);
 	letter-spacing: -0.72px;
