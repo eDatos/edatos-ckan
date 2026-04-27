@@ -2468,7 +2468,8 @@ a.tag:hover {
 ul.showcase-grid {
 	display: grid !important;
 	grid-template-columns: repeat(4, 1fr);
-	gap: 16px;
+	column-gap: 20px;
+	row-gap: 30px;
 	list-style: none;
 	padding: 12px 0 !important;
 	margin: 0 !important;
@@ -2513,24 +2514,29 @@ li.showcase-card:hover {
 	flex-shrink: 0;
 	align-self: stretch;
 	border-radius: 3px 3px 0 0;
-	background-color: lightgray;
+	background-color: var(--color-primary-10);
 	background-size: cover;
 	background-position: 50% center;
 	background-repeat: no-repeat;
 }
 
+
 /* Cuerpo de la tarjeta */
 .showcase-card-body {
 	display: flex;
 	flex-direction: column;
-	padding: 10px 12px;
-	gap: 6px;
+	padding: 20px;
+	gap: 10px;
 	flex: 1;
 }
 
 /* Contador de conjuntos de datos — encima del título, uppercase */
 .showcase-card-count {
-	color: var(--Negro-80, #333);
+	display: inline-block;
+	align-self: flex-start;
+	background-color: var(--color-primary-10);
+	padding: 2px 6px;
+	color: var(--color-text-base, #333);
 	font-family: "Open Sans", sans-serif;
 	font-size: 12px;
 	font-style: normal;
