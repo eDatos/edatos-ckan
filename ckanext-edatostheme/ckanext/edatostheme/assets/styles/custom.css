@@ -1878,6 +1878,20 @@ a.toggle-show.toggle-show-less:hover {
 .module-content.page-header {
 	padding-left: 0;
 	padding-right: 0;
+	position: relative;
+}
+
+/* --- Botón Administrar alineado con los tabs --- */
+.module-content.page-header .content_action {
+	position: absolute;
+	right: 10px;
+	top: 70%;
+	transform: translateY(-50%);
+	float: none;
+}
+
+.module-content.page-header .nav-tabs {
+	margin-right: 150px;
 }
 
 /* --- Resource page: h1 (título dataset) --- */
