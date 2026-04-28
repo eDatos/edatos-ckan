@@ -42,8 +42,10 @@
   --font-size-lg: 16px;
   --font-size-xl: 20px;
   --font-size-xxl: 24px;
+  --font-weight-light: 300;
   --font-weight-normal: 400;
   --font-weight-medium: 500;
+  --font-weight-semibold: 600;
   --font-weight-bold: 700;
   --line-height-base: 1.5;
 
@@ -330,7 +332,7 @@ nav.navigation div ul li {
 	background-color: transparent !important;
 	color: var(--color-primary-dark) !important;
 	font-size: var(--font-size-base) !important;
-	font-weight: var(--font-weight-medium) !important;
+	font-weight: var(--font-weight-light) !important;
 	padding: 13px 20px;
 	border-bottom: 3px solid transparent;
 	text-decoration: none !important;
@@ -348,7 +350,7 @@ nav.navigation div ul li {
 /* Ítem activo: fondo blanco + negrita + subrayado azul */
 .navigation .nav-main-links li.active a.btn-datasets {
 	background-color: #fff !important;
-	font-weight: var(--font-weight-bold) !important;
+	font-weight: var(--font-weight-semibold) !important;
 	color: var(--color-primary-dark) !important;
 	border-bottom: 6px solid var(--color-accent);
 }
@@ -450,20 +452,22 @@ nav.section.navigation {
 
 /* Botón hamburguesa / Opciones navbar */
 .btn.btn-navbar {
-	background-color: var(--color-primary-dark) !important;
+	background-color: transparent !important;
 	background-image: none !important;
 	font-size: var(--font-size-base) !important;
-	color: var(--color-white) !important;
-	border: none !important;
+	font-weight: var(--font-weight-light) !important;
+	color: var(--color-primary-dark) !important;
+	border: 1px solid var(--color-primary-dark) !important;
 	box-shadow: none !important;
-	padding: var(--spacing-xs) var(--spacing-md) !important;
+	padding: var(--spacing-xs) var(--spacing-sm) !important;
 	border-radius: var(--border-radius-sm) !important;
+	text-transform: uppercase;
 	cursor: pointer;
 }
 
 .btn.btn-navbar:hover {
-	background-color: var(--color-primary-hover) !important;
-	color: var(--color-white) !important;
+	background-color: var(--color-primary-5) !important;
+	color: var(--color-primary-dark) !important;
 }
 
 .navbar-collapse.in {
@@ -730,6 +734,7 @@ nav.section.navigation {
 	background-color: var(--color-white);
 	border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
 	padding: 8px 16px 0;
+	box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.05);
 }
 
 .hero-subtitle {
