@@ -1,6 +1,6 @@
 {% set header = h.edatos_get_header() %}
 
 {% block header_meta_menu %}
-    {% snippet "header_meta.html", header=header %}
+    {{ header | safe }}
 {% endblock header_meta_menu %}
 

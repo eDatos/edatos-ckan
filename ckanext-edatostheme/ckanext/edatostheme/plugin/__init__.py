@@ -241,6 +241,18 @@ def get_request_lang(cookie_value):
     return request.cookies.get(cookie_value)
 
 
+def get_theme():
+    """
+    Lee el theme del query param '?theme=' y si no existe, de la cookie 'theme'.
+    Solo devuelve el valor si es uno de los temas aceptados.
+    """
+    accepted_themes = ['ibestat', 'iecm', 'istac']
+    theme = request.args.get('theme') or request.cookies.get('theme')
+    if theme and theme in accepted_themes:
+        return theme
+    return None
+
+
 def save_header(header):
     """
     Metodo que guarda el header como template
@@ -263,22 +275,18 @@ def get_header_url(json_config):
     """
     header_key = json_config['metadata']['navbarPathKey']
     endpoint = json_config['metadata']['endpoint']
-    cookie_key = json_config['metadata']['cookieKey']
-    title_translated = _(json_config['metadata']['appName'])
     title = json_config['metadata']['appName']
+    print("args:", request.args.get('theme'))
+    print("cookie:", request.cookies.get('theme'))
+    navbar_url = get_url(endpoint, header_key)
+    url = "%s?appName=%s&appId=%s" % (navbar_url, title, APP_ID_FOR_ANALYTICS)
 
-    #cookieId, se debe usar para rescatar el label de la cookie la respuesta se debe
-    # de poner como parametro de llamada a la cabecera y el idioma que venga de la cookie
-    request_lang = get_request_lang(get_url(endpoint, cookie_key))
+    theme = get_theme()
+    print("final theme:", theme)
+    if theme:
+        url = "%s&organisation=%s" % (url, theme)
 
-    # Enviar al mismo nivel del appName el chosenLocale
-    return "%s?appName=%s&appUrl=%s&appId=%s&%s=%s" % (get_url(endpoint, header_key),
-                                        title,
-                                        json_config['metadata']['siteURL'],
-                                        APP_ID_FOR_ANALYTICS,
-                                        get_url(endpoint, cookie_key),
-                                        request_lang
-                                        )
+    return url
 
 
 def get_altered_header(header, json_config):
@@ -312,29 +320,26 @@ def get_altered_header(header, json_config):
     if div:
         span = div.find('span')
         if span and title.lower() in span.text.strip().lower():
-            span.string = f"{{{{ _('{title}') }}}}"
-            
+            span.string = _(title)
+
     alteredHeader = soup.prettify('utf-8')
 
     alteredHeader = alteredHeader.replace(b'&gt;', b'>').decode('utf8')
 
-    return "{% block header_wrapper %}" + alteredHeader + "{% endblock %}"
+    return alteredHeader
 
 
 
 def load_header():
     """
-    Metodo que carga las templates para HEADER
+    Metodo que carga el HTML del header y lo devuelve como string.
     """
     with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
         json_config = json.loads(config_file.read())
-        # Se carga el header y se guarda como template
         header = requests.get(
             url=get_header_url(json_config)).content
-        header = get_altered_header(
+        return get_altered_header(
             header=header, json_config=json_config)
-
-        save_header(header=header)
 
 # Map de vistas que se quieren restringir acceso
 REDIRECT_VIEWS = (
