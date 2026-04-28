@@ -474,16 +474,6 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         toolkit.add_public_directory(config_, '../public')
         toolkit.add_resource('../assets', 'ckanext-edatostheme')
 
-        # Registrar templates de edatostheme con máxima prioridad para que
-        # sobreescriban los de ckanext-scheming y otros plugins
-        templates_dir = os.path.join(os.path.dirname(__file__), '..', 'templates')
-        templates_dir = os.path.abspath(templates_dir)
-        extra_paths = config_.get('extra_template_paths', '')
-        if extra_paths:
-            config_['extra_template_paths'] = templates_dir + ',' + extra_paths
-        else:
-            config_['extra_template_paths'] = templates_dir
-
     # IBlueprint
     def get_blueprint(self):
         edatos = Blueprint('istac_theme', self.__module__)
