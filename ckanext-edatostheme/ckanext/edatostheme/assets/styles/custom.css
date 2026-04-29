@@ -1337,15 +1337,12 @@ h2.dataset-heading {
 	padding: 5px 10px 5px 20px;
 	align-items: center;
 	gap: 10px;
-	font-size: var(--font-size-xs);
+	font-size: var(--font-size-base);
 	color: var(--edatos-color-secondary);
-	border-top: 1px solid var(--edatos-color-primary-5, #E5ECF1);
+	border-top: none;
+	border-bottom: 0.5px solid var(--edatos-color-primary-5, #E5ECF1);
 	text-decoration: none;
 	box-sizing: border-box;
-}
-
-.module.module-narrow .nav-simple .nav-item:first-child a {
-	border-top: none;
 }
 
 .module.module-narrow .nav-simple .nav-item a:hover {
@@ -1355,8 +1352,13 @@ h2.dataset-heading {
 
 .module.module-narrow .nav-simple .nav-item.active a {
 	background-color: var(--edatos-color-primary-50, #3a5a8c);
-	color: var(--color-white);
+	color: var(--edatos-color-white-100, #FFF);
 	font-weight: var(--font-weight-bold);
+}
+
+.module.module-narrow .nav-simple .nav-item.active a .badge {
+	background: var(--edatos-color-white-100, #FFF);
+	color: var(--edatos-color-secondary-100, #004678);
 }
 
 /* ZONA 9 — Badge numérico en sidebar */
@@ -2968,6 +2970,17 @@ li.showcase-card:hover {
 
 .filters {
     width: 100%;
+}
+
+.filters > div {
+    border: 0.5px solid var(--edatos-color-secondary-100, #004678);
+    border-radius: 5px;
+    padding: 10px;
+    background: var(--edatos-color-white-100, #FFF);
+}
+
+.filters .module.module-narrow {
+    margin-bottom: 0 !important;
 }
 
 /* ============================================================
