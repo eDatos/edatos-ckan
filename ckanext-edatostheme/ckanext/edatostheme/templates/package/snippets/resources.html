@@ -46,7 +46,9 @@ Example:
                 </li>
               {% else %}
                 <li class="nav-item">
-                  <a href="{{ url }}" title="{{ h.resource_display_name(resource) }}">{{ h.resource_display_name(resource) }}</a>
+                  <a href="{{ url }}" title="{{ h.resource_display_name(resource) }}">
+                    {{ _('Format') }} {{ resource.format.lower() }}
+                  </a>
                 </li>
               {% endif %}
             {% endfor %}

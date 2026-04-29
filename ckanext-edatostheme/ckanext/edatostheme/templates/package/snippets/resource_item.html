@@ -20,8 +20,8 @@
   <a class="heading" href="{{ url }}" title="{{ res.name or res.description }}">
     <span class="resource-format-icon" property="dc:format" data-format="{{ res.format.lower() or 'data' }}">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32" fill="none" aria-hidden="true">
-        <path d="M0 4C0 1.8125 1.75 0 4 0H14V8C14 9.125 14.875 10 16 10H24V19H11C8.75 19 7 20.8125 7 23V32H4C1.75 32 0 30.25 0 28V4Z" fill="#004678"/>
-        <path d="M24 8H16V0L24 8Z" fill="#004678"/>
+        <path d="M0 4C0 1.8125 1.75 0 4 0H14V8C14 9.125 14.875 10 16 10H24V19H11C8.75 19 7 20.8125 7 23V32H4C1.75 32 0 30.25 0 28V4Z" fill="var(--edatos-color-secondary-100)"/>
+        <path d="M24 8H16V0L24 8Z" fill="var(--edatos-color-secondary-100)"/>
         <path d="M11 19H24V28C24 30.25 22.25 32 20 32H7V23C7 20.8125 8.75 19 11 19Z" fill="#C8CACE"/>
       </svg>
       <span class="format-label">{{ h.get_translated(res, 'format') }}</span>
