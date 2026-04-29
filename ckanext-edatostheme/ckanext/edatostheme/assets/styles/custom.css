@@ -1333,9 +1333,10 @@ h2.dataset-heading {
 /* ZONA 8 — Items de faceta: nav-item */
 .module.module-narrow .nav-simple .nav-item a {
 	display: flex;
-	height: 35px;
+	min-height: 35px;
 	padding: 5px 10px 5px 20px;
 	align-items: center;
+	flex-wrap: wrap;
 	gap: 10px;
 	font-size: var(--font-size-base);
 	color: var(--edatos-color-secondary);
@@ -1861,6 +1862,21 @@ a.toggle-show.toggle-show-less {
 	font-weight: 600;
 	color: var(--edatos-color-primary-100, #004678);
 	text-decoration: none;
+}
+
+.page-item.active .page-link {
+    background-color: var(--edatos-color-primary-100) !important;
+    border-color: var(--edatos-color-primary-100) !important;
+}
+
+.page-link {
+	color: var(--edatos-color-gray-40, #999) !important;
+	text-align: center;
+	font-family: "Open Sans";
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 20px; /* 142.857% */
 }
 
 a.toggle-show.toggle-show-more:hover,
@@ -2981,6 +2997,14 @@ li.showcase-card:hover {
 
 .filters .module.module-narrow {
     margin-bottom: 0 !important;
+}
+
+/* Showcase ya tiene su propio borde en .showcase-detail-sidebar */
+.showcase-detail-sidebar .filters > div {
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    background: transparent;
 }
 
 /* ============================================================
