@@ -890,7 +890,7 @@ nav.section.navigation {
 	margin: 0;
 	padding: var(--spacing-md);
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-columns: repeat(4, 1fr);
 	gap: 20px;
 }
 
@@ -906,8 +906,9 @@ nav.section.navigation {
 /* Group home card link */
 .group-home-card-link {
 	display: flex;
+	height: 89px;
 	padding: 20px;
-	justify-content: center;
+	justify-content: flex-start;
 	align-items: center;
 	gap: 20px;
 	border-radius: 3px;
@@ -915,16 +916,18 @@ nav.section.navigation {
 	text-decoration: none;
 	transition: background-color 0.2s ease;
 	color: var(--edatos-color-secondary-100, #004678);
+	box-sizing: border-box;
 }
 
 .group-home-card-link:hover {
 	background-color: var(--edatos-color-secondary-100, #004678);
 	text-decoration: none;
+	color: var(--edatos-color-white-100, #fff) !important;
 }
 
 .group-home-card-link:hover .group-home-fa-glyph,
 .group-home-card-link:hover .media-heading {
-	color: var(--edatos-color-white-100, #fff);
+	color: var(--edatos-color-white-100, #fff) !important;
 }
 
 /* Group home icon (FA6 Pro thin) */
@@ -947,6 +950,7 @@ nav.section.navigation {
 	line-height: 120%;
 	text-transform: uppercase;
 	margin: 0;
+	flex: 1;
 }
 
 .categories-grid .media-item.group-home-item .media-heading:hover {
@@ -2511,6 +2515,8 @@ ul.showcase-grid {
 	padding: 12px 0 !important;
 	margin: 0 !important;
 	background: none !important;
+	position: static !important;
+	height: auto !important;
 }
 
 /* Tarjeta colección */
@@ -2526,6 +2532,9 @@ li.showcase-card {
 	float: none !important;
 	margin: 0 !important;
 	padding: 0 !important;
+	position: static !important;
+	left: auto !important;
+	top: auto !important;
 }
 
 li.showcase-card:hover {
@@ -2601,6 +2610,7 @@ li.showcase-card:hover {
 
 /* Descripción */
 .showcase-card-notes {
+	flex: 1;
 	color: var(--edatos-color-black-100, #000);
 	font-family: "Open Sans", sans-serif;
 	font-size: 16px;
@@ -3217,4 +3227,12 @@ li.showcase-card:hover {
 
 .resource-view-embed .modal-body textarea.form-control {
 	height: 100px;
+}
+
+.nav-link, .page-header .nav-tabs li a {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: #206b82;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+    color: var(--edatos-color-secondary, #000) !important;
 }
