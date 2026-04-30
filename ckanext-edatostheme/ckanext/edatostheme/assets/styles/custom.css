@@ -1712,10 +1712,10 @@ h1.dataset-title {
 	padding-right: 0;
 }
 
-/* --- Sidebar modules: sin recuadro --- */
+/* --- Sidebar modules: con recuadro (fondo blanco + borde) --- */
 .secondary .module.module-narrow {
-	background: transparent;
-	border: none;
+	background: var(--color-white);
+	border: 1px solid var(--color-gray-border);
 	margin-bottom: 6px;
 }
 
@@ -3261,4 +3261,28 @@ li.showcase-card:hover {
     color: #206b82;
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
     color: var(--edatos-color-secondary, #000) !important;
+}
+
+/* ============================================================
+   DATASET EDIT — Panel lateral y tabs (Figma node 11515:6405)
+   ============================================================ */
+
+/* Panel lateral: borde y radio como en Figma (.Filtros) */
+.dataset-edit-secondary {
+    border: 0.5px solid var(--edatos-color-secondary-100, #004678);
+    border-radius: 5px;
+    padding: 10px;
+    background: var(--edatos-color-white-100, #FFF);
+    box-sizing: border-box;
+}
+
+/* Quitar bordes propios de módulos dentro del panel */
+.dataset-edit-secondary .module.module-narrow {
+    border: none !important;
+    margin-bottom: 0 !important;
+}
+
+/* Ocultar iconos en las pestañas de edición (Figma no los muestra) */
+.module-content.page-header .nav-tabs li a i.fa {
+    display: none;
 }
