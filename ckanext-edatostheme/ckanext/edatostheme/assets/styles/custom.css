@@ -470,6 +470,14 @@ nav.section.navigation {
 	color: var(--edatos-color-secondary-100) !important;
 }
 
+/* Botón de acción inline (ej: Añadir grupo) con visual de btn-navbar */
+.btn.btn-navbar.btn-add-group {
+	display: inline-flex !important;
+	align-items: center;
+	gap: 6px;
+	width: auto !important;
+}
+
 .navbar-collapse.in {
 	display: flex !important;
 }
@@ -881,7 +889,7 @@ nav.section.navigation {
 }
 
 .categories-section {
-	background-color: var(--color-gray-light, #f5f5f5);
+	background-color: var(--edatos-color-white, #f5f5f5);
 	padding: var(--spacing-md) 0;
 }
 
@@ -892,6 +900,10 @@ nav.section.navigation {
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
 	gap: 20px;
+}
+
+.categories-grid--3col {
+	grid-template-columns: repeat(3, 1fr);
 }
 
 .category-item,
@@ -977,7 +989,8 @@ nav.section.navigation {
 }
 
 @media (max-width: 600px) {
-	.categories-grid {
+	.categories-grid,
+	.categories-grid--3col {
 		grid-template-columns: repeat(2, 1fr);
 	}
 
@@ -1364,6 +1377,19 @@ h2.dataset-heading {
 .module.module-narrow .nav-simple .nav-item.active a .badge {
 	background: var(--edatos-color-white-100, #FFF);
 	color: var(--edatos-color-secondary-100, #004678);
+}
+
+.module-narrow .nav-item.active > a:before, .module-narrow .nav-aside li.active a:before {
+    position: absolute;
+    border-right: none;
+    border-left-color: var(--edatos-color-primary-50);
+    border-left-width: 6px;
+    border-top: 17px solid transparent;
+    border-bottom: 17px solid transparent;
+    top: 0;
+    bottom: 0;
+    width: auto;
+    height: auto;
 }
 
 /* ZONA 9 — Badge numérico en sidebar */
