@@ -401,7 +401,7 @@ nav.section.navigation {
 	font-size: var(--font-size-base);
 	text-align: right;
 	list-style: none;
-	background-color: var(--edatos-color-secondary-100);
+	background-color: var(--edatos-color-primary-100);
 	-webkit-box-shadow: var(--shadow-dropdown);
 	box-shadow: var(--shadow-dropdown);
 	right: 0;
@@ -426,7 +426,7 @@ nav.section.navigation {
 }
 
 .dropdown-menu li a:hover {
-	background-color: var(--color-primary-hover);
+	background-color: var(--edatos-color-primary-50);
 	color: var(--color-white);
 }
 
@@ -456,8 +456,8 @@ nav.section.navigation {
 	background-image: none !important;
 	font-size: var(--font-size-base) !important;
 	font-weight: var(--font-weight-light) !important;
-	color: var(--edatos-color-secondary-100) !important;
-	border: 1px solid var(--edatos-color-secondary-100) !important;
+	color: var(--edatos-color-primary-100) !important;
+	border: 1px solid var(--edatos-color-primary-100) !important;
 	box-shadow: none !important;
 	padding: var(--spacing-xs) var(--spacing-sm) !important;
 	border-radius: var(--border-radius-sm) !important;
@@ -465,10 +465,11 @@ nav.section.navigation {
 	cursor: pointer;
 }
 
-.btn.btn-navbar:hover {
-	background-color: var(--color-primary-5) !important;
-	color: var(--edatos-color-secondary-100) !important;
+button.btn.btn-navbar:hover, button.btn.btn-navbar:focus, button.btn.btn-navbar:active {
+    background-color: var(--edatos-color-primary-100) !important;
+	color: var(--edatos-color-white-100) !important;
 }
+
 
 /* Botón de acción inline (ej: Añadir grupo) con visual de btn-navbar */
 .btn.btn-navbar.btn-add-group {
