@@ -2736,6 +2736,12 @@ li.showcase-card:hover {
 	border-bottom: none !important;
 }
 
+/* Heading del módulo info (¿Qué son las categorías?) — 16px, sin uppercase */
+.showcase-detail-sidebar .module.module-narrow.module-shallow .module-heading {
+    font-size: 16px !important;
+    text-transform: none !important;
+}
+
 /* Aviso legal: contenido de la sección licencia */
 .showcase-detail-sidebar .module.module-narrow.module-shallow .module-content {
 	display: flex !important;
@@ -2757,10 +2763,10 @@ li.showcase-card:hover {
 
 .showcase-detail-sidebar .module.module-narrow.module-shallow .module-content p {
 	margin: 0 !important;
-	font-size: 14px !important;
-	font-weight: 400 !important;
-	line-height: 14px !important;
-	color: var(--edatos-color-secondary-100, #004678) !important;
+	font-size: 16px !important;
+	font-weight: 600 !important;
+	line-height: 26px !important;
+	color: #333 !important;
 }
 
 .showcase-detail-sidebar .license .module-content p a,
@@ -3336,12 +3342,12 @@ li.showcase-card:hover {
     outline: none;
 }
 
-/* 5. Botón Edit slug → rojo outline (EDITAR) */
+/* 5. Botón Edit slug → azul outline (EDITAR) */
 .slug-preview .btn.btn-default.btn-xs {
     background: transparent !important;
     background-image: none !important;
-    border: 1px solid var(--edatos-color-primary-100, #de0029) !important;
-    color: var(--edatos-color-primary-100, #de0029) !important;
+    border: 1px solid var(--edatos-color-primary-100, #004678) !important;
+    color: var(--edatos-color-primary-100, #004678) !important;
     border-radius: 5px !important;
     font-size: 14px !important;
     font-weight: 400 !important;
@@ -3352,13 +3358,13 @@ li.showcase-card:hover {
 }
 
 .slug-preview .btn.btn-default.btn-xs:hover {
-    background: var(--edatos-color-primary-100, #de0029) !important;
+    background: var(--edatos-color-primary-100, #004678) !important;
     color: #fff !important;
 }
 
 /* 6. Icono info-circle en bloques de ayuda del formulario */
 .info-block i.fa-info-circle {
-    color: var(--edatos-color-primary-100, #de0029) !important;
+    color: var(--edatos-color-primary-100, #004678) !important;
 }
 
 /* 7. Textarea con barra Markdown inferior */
@@ -3380,7 +3386,7 @@ li.showcase-card:hover {
 }
 
 .editor-info-block a {
-    color: var(--edatos-color-primary-100, #de0029) !important;
+    color: var(--edatos-color-primary-100, #004678) !important;
 }
 
 /* 8. Sidebar helper (group create/edit) — wrapper con borde secondary */
