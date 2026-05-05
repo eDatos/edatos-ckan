@@ -157,6 +157,56 @@ textarea {
 	align-items: center;
 	text-align: center;
 	justify-content: center;
+	border-top: none !important;
+}
+
+/* --- Sidebar recurso: bloque Formato con fondo azul oscuro --- */
+.secondary .module.context-info {
+	background: var(--edatos-color-secondary-100, #004678);
+	border-radius: 10px;
+	padding: 30px 10px;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.secondary .module.context-info .module-content {
+	background: transparent;
+	padding: 0;
+}
+
+.secondary .module.context-info .nums {
+	flex-direction: column;
+	gap: 13px;
+}
+
+.secondary .module.context-info .nums dl {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 13px;
+	margin: 0;
+	width: 100%;
+}
+
+.secondary .module.context-info .nums dt {
+	color: var(--edatos-color-white-100, #FFF);
+	font-size: 12px;
+	font-weight: 400;
+	line-height: 16px;
+	border-bottom: 0.5px solid rgba(255, 255, 255, 0.3);
+	width: 100%;
+	text-align: center;
+	padding-bottom: 13px;
+	margin: 0;
+}
+
+.secondary .module.context-info .nums dd {
+	color: var(--edatos-color-white-100, #FFF);
+	font-size: 24px;
+	font-weight: 600;
+	line-height: 1.1;
+	text-transform: uppercase;
+	margin: 0;
 }
 
 /* --- Group sidebar: contador de datasets (boceto) --- */
@@ -1597,6 +1647,7 @@ h1.dataset-title {
 	flex: 1 0 0;
 	justify-content: flex-start;
 	font-weight: 600;
+	background: var(--edatos-color-secondary-100, #004678) !important;
 }
 
 /* --- ZONA 7b: Encabezado metadatos / secciones contenido principal --- */
@@ -1645,6 +1696,7 @@ h1.dataset-title {
 	font-style: normal;
 	font-weight: 600;
 	line-height: 26px;
+	padding-top: 0px !important;
 }
 
 /* --- ZONA 10b: Descripción en módulos info del sidebar (helper, ¿Qué son las colecciones?) --- */
@@ -1717,8 +1769,9 @@ h1.dataset-title {
 /* --- Sidebar modules: con recuadro (fondo blanco + borde) --- */
 .secondary .module.module-narrow {
 	background: var(--color-white);
-	border: 1px solid var(--color-gray-border);
-	margin-bottom: 6px;
+	margin-bottom: 0px;
+	padding-top: 10px;
+	width: 100%;
 }
 
 .secondary .module.module-narrow:not(:has(.module-heading)) {
@@ -2105,7 +2158,8 @@ div.ckanext-showcase-image-container {
 	padding-left: 20px;
 }
 
-/* --- Sidebar: contenedor con borde blanco (filtro_recursos) --- */
+/* --- Sidebar: contenedor con borde (filtro_recursos) — read y edit --- */
+.secondary:has(.module.context-info),
 .module-resource ~ .secondary {
 	display: flex;
 	flex-direction: column;
@@ -2160,6 +2214,17 @@ div.ckanext-showcase-image-container {
 	line-height: 14px;
 	border-bottom: none;
 	clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%);
+}
+
+/* --- Botones acción recurso (wrench + dropdown): azul en lugar de rojo heredado --- */
+.secondary .resources .btn.btn-default {
+	color: var(--edatos-color-secondary-100, #004678) !important;
+	border-color: var(--edatos-color-secondary-100, #004678) !important;
+	background: var(--edatos-color-white-100, #FFF) !important;
+}
+
+.secondary .resources .btn.btn-default:hover {
+	background: var(--edatos-color-primary-5, #E5ECF1) !important;
 }
 
 /* --- Enlace social (COMPARTIR items) --- */
@@ -3407,4 +3472,104 @@ li.showcase-card:hover {
 
 .showcase-detail-sidebar .module-heading {
     border-radius: 3px !important;
+}
+
+/* ============================================================
+   RESOURCE EDIT — Botones y barra de sub-tabs
+   Figma node 11813:5303
+   ============================================================ */
+
+/* 1. Barra sub-tabs (Editar recurso / Vistas) — fondo rosa muy claro */
+header.module-content.page-header {
+    background-color: #fdf2f4 !important;
+}
+
+/* 2. Botón "Ver recurso" — outline rojo */
+header.module-content.page-header .content_action .btn {
+    background: #fff !important;
+    background-image: none !important;
+    border: 1px solid var(--edatos-color-primary-100, #de0029) !important;
+    color: var(--edatos-color-primary-100, #de0029) !important;
+    border-radius: 5px !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    font-size: 14px !important;
+    text-transform: uppercase;
+    padding: 5px 10px !important;
+}
+
+header.module-content.page-header .content_action .btn:hover {
+    background: var(--edatos-color-primary-100, #de0029) !important;
+    color: #fff !important;
+}
+
+header.module-content.page-header .content_action .btn i {
+    color: inherit !important;
+}
+
+/* 3. Botones de acción lista de recursos (wrench dropdown) — outline rojo */
+aside.secondary .module.resources .nav-simple .btn {
+    background: #fff !important;
+    background-image: none !important;
+    border: 1px solid var(--edatos-color-primary-100, #de0029) !important;
+    color: var(--edatos-color-primary-100, #de0029) !important;
+    border-radius: 5px !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    font-size: 14px !important;
+}
+
+aside.secondary .module.resources .nav-simple .btn:hover {
+    background: var(--edatos-color-primary-100, #de0029) !important;
+    color: #fff !important;
+}
+
+aside.secondary .module.resources .nav-simple .btn i {
+    color: inherit !important;
+}
+
+/* 4. Botón "Añadir nuevo recurso" — outline rojo + uppercase */
+aside.secondary .module-content > a.btn.btn-sm {
+	white-space: nowrap;
+    font-family: "Open Sans";
+    font-size: 14px !important;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    background: #fff !important;
+    background-image: none !important;
+    border: 1px solid var(--edatos-color-primary-100, #de0029) !important;
+    color: var(--edatos-color-primary-100, #de0029) !important;
+    border-radius: 5px !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    text-transform: uppercase;
+    padding: 5px 10px !important;
+}
+
+aside.secondary .module-content > a.btn.btn-sm:hover {
+    background: var(--edatos-color-primary-100, #de0029) !important;
+    color: #fff !important;
+}
+
+aside.secondary .module-content > a.btn.btn-sm i {
+    color: inherit !important;
+}
+
+/* 5. Botón "Quitar" (URL clear) — outline rojo, sin fondo sólido */
+.btn-remove-url {
+    background: #fff !important;
+    background-image: none !important;
+    border: 1px solid var(--edatos-color-primary-100, #de0029) !important;
+    color: var(--edatos-color-primary-100, #de0029) !important;
+    border-radius: 5px !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    font-size: 14px !important;
+    padding: 5px 10px !important;
+}
+
+.btn-remove-url:hover {
+    background: var(--edatos-color-primary-100, #de0029) !important;
+    color: #fff !important;
 }
