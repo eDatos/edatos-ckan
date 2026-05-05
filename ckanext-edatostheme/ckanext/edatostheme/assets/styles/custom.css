@@ -10,6 +10,7 @@
   --color-primary-transparent: rgba(0, 114, 162, 0.80);
   --color-accent: var(--edatos-color-accent-100, #009BD7);
   --color-primary-10: var(--edatos-color-primary-10, #ccdae4);
+  --edatos-color-primary-50: #4D7EA0;
 
   /* Colores neutros */
   --color-gray-dark: #59656e;
@@ -3286,4 +3287,118 @@ li.showcase-card:hover {
 /* Ocultar iconos en las pestañas de edición (Figma no los muestra) */
 .module-content.page-header .nav-tabs li a i.fa {
     display: none;
+}
+
+/* ============================================================
+   GROUP / DATASET / ORGANIZATION FORMS
+   Figma ref: 11816:6262 (Crear Grupo)
+   ============================================================ */
+
+/* 1. Labels — 18px SemiBold, sin ":" final (Bootstrap añade ":" vía ::after) */
+.form-group .form-label,
+.form-group label.control-label {
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    color: #333 !important;
+    line-height: 26px;
+}
+
+.form-group .form-label::after,
+.form-group label.control-label::after {
+    content: '' !important;
+}
+
+/* 2. Asterisco campo requerido */
+.control-required {
+    color: #bb1709 !important;
+}
+
+/* 3. Inputs y textareas — borde 0.5px secondary, radius 5px */
+.form-group input[type="text"],
+.form-group input[type="url"],
+.form-group .form-control,
+.controls input[type="text"],
+.controls input[type="url"],
+.controls .form-control {
+    border: 0.5px solid var(--edatos-color-secondary-100, #004678) !important;
+    border-radius: 5px !important;
+}
+
+/* 4. Focus — borde primary/50, sin box-shadow */
+.form-group input[type="text"]:focus,
+.form-group input[type="url"]:focus,
+.form-group .form-control:focus,
+.controls input[type="text"]:focus,
+.controls input[type="url"]:focus,
+.controls .form-control:focus {
+    border-color: var(--edatos-color-primary-50, #4d7ea0) !important;
+    box-shadow: none !important;
+    outline: none;
+}
+
+/* 5. Botón Edit slug → rojo outline (EDITAR) */
+.slug-preview .btn.btn-default.btn-xs {
+    background: transparent !important;
+    background-image: none !important;
+    border: 1px solid var(--edatos-color-primary-100, #de0029) !important;
+    color: var(--edatos-color-primary-100, #de0029) !important;
+    border-radius: 5px !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    text-transform: uppercase;
+    padding: 5px 10px !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+}
+
+.slug-preview .btn.btn-default.btn-xs:hover {
+    background: var(--edatos-color-primary-100, #de0029) !important;
+    color: #fff !important;
+}
+
+/* 6. Icono info-circle en bloques de ayuda del formulario */
+.info-block i.fa-info-circle {
+    color: var(--edatos-color-primary-100, #de0029) !important;
+}
+
+/* 7. Textarea con barra Markdown inferior */
+.controls.editor textarea.form-control {
+    border-radius: 5px 5px 0 0 !important;
+    border-bottom: none !important;
+}
+
+.editor-info-block {
+    display: block;
+    background: #f2f2f2 !important;
+    border: 0.5px solid var(--edatos-color-secondary-100, #004678) !important;
+    border-top: none !important;
+    border-radius: 0 0 5px 5px !important;
+    padding: 3px 10px !important;
+    font-size: 12px !important;
+    font-weight: 600;
+    color: #333;
+}
+
+.editor-info-block a {
+    color: var(--edatos-color-primary-100, #de0029) !important;
+}
+
+/* 8. Sidebar helper (group create/edit) — wrapper con borde secondary */
+.showcase-detail-sidebar {
+    border: 0.5px solid var(--edatos-color-secondary-100, #004678);
+    border-radius: 5px;
+    background: #fff;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.showcase-detail-sidebar .module.module-narrow {
+    border: none !important;
+    margin-bottom: 0 !important;
+}
+
+.showcase-detail-sidebar .module-heading {
+    border-radius: 3px !important;
 }
