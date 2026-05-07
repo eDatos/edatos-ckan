@@ -36,6 +36,7 @@ abort = base.abort
 CAS_NAMESPACE = 'urn:oasis:names:tc:SAML:2.0:protocol'
 XML_NAMESPACES = {'samlp': CAS_NAMESPACE}
 DATETIME_FORMAT = '%Y-%m-%dT%H:%M:%S.%fZ'
+MSG_NO_ACCESS = 'Solo se pueden autenticar los usuarios pertenecientes al equipo de EDATOS'
 
 
 def cas_logout():
@@ -157,8 +158,7 @@ def _authenticate_user(username, email, fullname, is_superuser=False):
     elif is_superuser and is_superuser == cas_plugin.CAS_MEMBER_PROPERTY:
         is_superuser = False
     else:
-        abort(
-            403, 'Solo se pueden autenticar los usuarios pertenecientes al equipo EDATOS')
+        abort(403, MSG_NO_ACCESS)
 
     if user is None:
         data_dict = {'name': str(username),
@@ -206,6 +206,14 @@ def _authenticate_user(username, email, fullname, is_superuser=False):
         session.modified = True
         delete_user_entry(user.name)
         return session.get('user')
+
+
+def _home_url_with_locale(cas_plugin):
+    """Construye la URL de inicio incluyendo el locale por defecto para evitar
+    renders intermedios en la cadena de redirecciones (p.ej. i18n.js)."""
+    locale = config.get('ckan.locale_default', 'es')
+    base = cas_plugin.CAS_APP_URL.rstrip('/')
+    return '{}/{}/'.format(base, locale)
 
 
 def cas_callback(**kwargs):
@@ -299,13 +307,22 @@ def cas_callback(**kwargs):
                 posicion_rol = 1
                 sysadmin_check = sysadmin_check.strip(separador)
                 sysadmin_check = sysadmin_check.split(separador)
-                rol = sysadmin_check[posicion_rol]
-                sysadmin = rol
+                if len(sysadmin_check) > posicion_rol:
+                    rol = sysadmin_check[posicion_rol]
+                    sysadmin = rol
                 log.debug('Rol filtrado :')
                 log.debug(sysadmin)
         else:
-            abort(
-                403, 'Solo se pueden autenticar los usuarios pertenecientes al equipo de EDATOS')
+            h.flash_error(MSG_NO_ACCESS)
+            session['login_error_msg'] = MSG_NO_ACCESS
+            session.modified = True
+            return redirect(_home_url_with_locale(cas_plugin))
+
+        if sysadmin not in [cas_plugin.CAS_ADMIN_PROPERTY, cas_plugin.CAS_MEMBER_PROPERTY]:
+            h.flash_error(MSG_NO_ACCESS)
+            session['login_error_msg'] = MSG_NO_ACCESS
+            session.modified = True
+            return redirect(_home_url_with_locale(cas_plugin))
 
         username = _authenticate_user(
             username, email, fullname, sysadmin)

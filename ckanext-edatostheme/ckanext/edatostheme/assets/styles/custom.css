@@ -797,6 +797,35 @@ button.btn.btn-navbar:hover, button.btn.btn-navbar:focus, button.btn.btn-navbar:
 	box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.05);
 }
 
+.nav-login-error {
+	flex: 1;
+	margin: 0 12px;
+	padding: 6px 12px;
+	font-size: 0.85rem;
+	border-radius: var(--border-radius-sm, 4px);
+	background-color: #f8d7da;
+	color: #842029;
+	border: 1px solid #f5c2c7;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.nav-login-error-close {
+	margin-left: auto;
+	background: none;
+	border: none;
+	color: #842029;
+	cursor: pointer;
+	padding: 0 2px;
+	line-height: 1;
+	opacity: 0.7;
+}
+
+.nav-login-error-close:hover {
+	opacity: 1;
+}
+
 .hero-subtitle {
 	color: var(--color-white);
 	font-size: 24px;
@@ -3572,4 +3601,32 @@ aside.secondary .module-content > a.btn.btn-sm i {
 .btn-remove-url:hover {
     background: var(--edatos-color-primary-100, #de0029) !important;
     color: #fff !important;
+}
+
+.edatos-alert {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: var(--edatos-spacing-y-l) var(--edatos-spacing-x-m);
+	color: var(--edatos-color-black-100);
+	background-color: var(--edatos-color-danger-25);
+	border-radius: var(--border-radius-sm);
+	font-weight: var(--edatos-font-weight-regular);
+	border: none; /* opcional para eliminar borde Bootstrap */
+}
+
+.alert.alert-danger.edatos-alert {
+	background-color: var(--edatos-color-danger-25);
+	color: var(--edatos-color-black-100) !important;
+	border: none;
+}
+
+.edatos-alert .btn-close {
+	margin-left: auto;
+}
+
+.alert-danger {
+    color: var(--edatos-color-black-100) !important;
+    background-color: var(--edatos-color-danger-25);
+    border-color: #f2c5c4;
 }
