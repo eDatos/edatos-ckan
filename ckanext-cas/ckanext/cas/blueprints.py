@@ -23,9 +23,8 @@ import ckan.model as m
 import ckan.plugins as p
 import ckan.plugins.toolkit as t
 import requests as rq
-from ckan.common import g, session
+from ckan.common import g, session, login_user
 
-from ckan.views.user import set_repoze_user
 from ckanext.cas.db import delete_entry, delete_user_entry, insert_entry
 from lxml import etree, objectify
 
@@ -43,13 +42,7 @@ def cas_logout():
     log.debug('Invoked "cas_logout" method.')
 
     url = h.url_for('user.logged_out_page', _external=True)
-
-    url_sin = h.url_for(getattr(
-        t.request.environ['repoze.who.plugins']['friendlyform'],
-        'logout_handler_path'),  _external=True)
-
-    url_return = url_sin + '?came_from=' + url
-    return h.redirect_to(url_return)
+    return h.redirect_to(url)
 
 
 def _generate_saml_request(ticket_id):
@@ -85,8 +78,8 @@ def cas_saml_callback(**kwargs):
     log.debug('Invoked "cas_saml_callback" method.')
     cas_plugin = p.get_plugin('cas')
     if t.request.method.lower() == 'get':
-        next_url = t.request.params.get('next', '/')
-        ticket = t.request.params.get(cas_plugin.TICKET_KEY)
+        next_url = t.request.args.get('next', '/')
+        ticket = t.request.args.get(cas_plugin.TICKET_KEY)
         if not ticket:
             t.response.set_cookie(cas_plugin.LOGIN_CHECKUP_COOKIE, str(time.time()),
                                   max_age=cas_plugin.LOGIN_CHECKUP_TIME)
@@ -141,7 +134,7 @@ def cas_saml_callback(**kwargs):
         insert_entry(ticket, username)
         if 'user/login' not in next_url:
             return redirect(next_url)
-        return redirect(t.h.url_for('dashboard.index', id=username))
+        return redirect(t.h.url_for('dashboard.groups', id=username))
 
     else:
         msg = 'MethodNotSupported: {0}'.format(t.request.method)
@@ -167,8 +160,6 @@ def _authenticate_user(username, email, fullname, is_superuser=False):
         abort(
             403, 'Solo se pueden autenticar los usuarios pertenecientes al equipo EDATOS')
 
-    resp = h.redirect_to(u'user.me')
-
     if user is None:
         data_dict = {'name': str(username),
                      'email': email,
@@ -189,7 +180,9 @@ def _authenticate_user(username, email, fullname, is_superuser=False):
                     {'ignore_auth': True}, user_obj)
             except Exception as e:
                 log.error(e)
-        set_repoze_user(user_obj['name'], resp)
+        login_user(m.User.get(user_obj['name']))
+        session['user'] = user_obj['name']
+        session.modified = True
         delete_user_entry(user_obj['name'])
         return user_obj['name']
     else:
@@ -208,9 +201,10 @@ def _authenticate_user(username, email, fullname, is_superuser=False):
                 log.error(e)
                 abort(500, str(e))
 
-        set_repoze_user(user.name, resp)
-        delete_user_entry(user.name)
+        login_user(user)
         session['user'] = user.name
+        session.modified = True
+        delete_user_entry(user.name)
         return session.get('user')
 
 
@@ -218,8 +212,8 @@ def cas_callback(**kwargs):
     log.debug('Invoked "cas_callback" method.')
     cas_plugin = p.get_plugin('cas')
     if t.request.method.lower() == 'get':
-        next_url = t.request.params.get('next', cas_plugin.CAS_APP_URL)
-        ticket = t.request.params.get(cas_plugin.TICKET_KEY)
+        next_url = t.request.args.get('next', cas_plugin.CAS_APP_URL)
+        ticket = t.request.args.get(cas_plugin.TICKET_KEY)
         if not ticket:
             t.response.set_cookie(cas_plugin.LOGIN_CHECKUP_COOKIE, str(time.time()),
                                   max_age=cas_plugin.LOGIN_CHECKUP_TIME)
@@ -321,8 +315,8 @@ def cas_callback(**kwargs):
             return redirect(next_url)
         log.debug('USERNAME :' + username)
         log.debug('(END CAS/CALLBACK) REDIRECTING TO ' +
-                  t.url_for('dashboard.index', id=username, _external=True))
-        return redirect(t.url_for('dashboard.index', id=username, _external=True))
+                  t.url_for('dashboard.groups', id=username, _external=True))
+        return redirect(t.url_for('dashboard.groups', id=username, _external=True))
 
     else:
         msg = 'MethodNotSupported: {0}'.format(t.request.method)
@@ -350,3 +344,25 @@ for rule in rules:
 if config.get('ckanext.cas.register_url', None):
     cas.add_url_rule('/user/register',
                      'register_url_redirect', register_url_redirect)
+
+import threading
+from ckanext.cas import db
+
+_setup_lock = threading.Lock()
+_setup_done = False
+
+@cas.before_app_request
+def ensure_setup_once():
+    global _setup_done
+    if not _setup_done:
+        with _setup_lock:
+            if not _setup_done:
+                try:
+                    db.setup()
+                    _setup_done = True
+                    log.debug("CKANext-CAS: DB setup ejecutado correctamente.")
+                except RuntimeError as e:
+                    log.debug(f"CKANext-CAS: DB setup pospuesto: {e}")
+                except Exception as e:
+                    log.exception("CKANext-CAS: Error en setup()")
+

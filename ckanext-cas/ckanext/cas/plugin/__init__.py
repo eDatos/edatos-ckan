@@ -13,9 +13,8 @@ import ckan.lib.helpers as h
 import ckan.plugins as p
 import ckan.plugins.toolkit as t
 import ckanext.cas.blueprints as blueprints
-from ckanext.cas.db import setup as db_setup
 from ckanext.cas.db import delete_user_entry, is_ticket_valid
-from ckan.common import g, session
+from ckan.common import g, session, logout_user
 import ckan.model as model
 
 
@@ -74,9 +73,7 @@ class CASClientPlugin(p.SingletonPlugin):
 
     # IConfigurable
 
-    def configure(self, config_):
-        # Setup database tables
-        db_setup()
+    def configure(self, config_):        
 
         # Load and parse user attributes mapping
         user_mapping = t.aslist(config_.get('ckanext.cas.user_mapping'))
@@ -164,8 +161,7 @@ class CASClientPlugin(p.SingletonPlugin):
 
     def update_config(self, config_):
         t.add_template_directory(config_, 'templates')
-        t.add_public_directory(config_, 'public')
-        t.add_resource('fanstatic', 'cas')
+        t.add_public_directory(config_, 'public')          
 
     # IAuthenticator
 
@@ -174,46 +170,50 @@ class CASClientPlugin(p.SingletonPlugin):
 
         environ = t.request.environ
 
+        if session.get('_post_logout'):
+            log.debug('Post-logout flag detected, skipping re-authentication')
+            session.pop('_post_logout', None)
+            g.user = None
+            g.userobj = None
+            return None
+
         remote_user = session.get('user')
 
-        g.user = remote_user
-        g.userobj = model.User.get(remote_user)
+        if remote_user:
+            log.debug(f'Checking ticket validity for user: {remote_user}')
+            ticket_valid = is_ticket_valid(remote_user)
+            log.debug(f'IS TICKET VALID ? {ticket_valid}')
 
-        log.debug('IS TICKET VALID ?')
-        log.debug(is_ticket_valid(remote_user))
-        if remote_user and not is_ticket_valid(remote_user):
-            log.debug('User logged out of CAS Server')
+            if not ticket_valid:
+                log.debug('Ticket invalid - User logged out of CAS Server - clearing session')
+                session.clear()
+                session.modified = True
+                g.user = None
+                g.userobj = None
 
-            if(self.CAS_ROOT_PATH is not None):
-                url = h.url_for('user.logged_out_page')
-                logout_path = getattr(
-                    t.request.environ['repoze.who.plugins']['friendlyform'],
-                    'logout_handler_path')
-                return h.redirect_to(
-                    '{root_path}{logout_path}?came_from={url}'
-                    .format(
-                        root_path=self.CAS_ROOT_PATH,
-                        logout_path=logout_path,
-                        url=url
-                    ))
+                if self.CAS_ROOT_PATH is not None:
+                    url = h.url_for('user.logged_out_page')
+                    return h.redirect_to(url)
 
-            url = h.url_for('user.logged_out_page')
-            return h.redirect_to(
-                getattr(
-                    t.request.environ['repoze.who.plugins']['friendlyform'],
-                    'logout_handler_path'
-                ) + '?came_from=' + url)
+            log.debug(f'Ticket valid for user: {remote_user}')
+            g.user = remote_user
+            g.userobj = model.User.get(remote_user)
+        else:
+            g.user = None
+            g.userobj = None
 
-        elif not remote_user \
+        if not remote_user \
                 and not re.match(r'.*/api(/\d+)?/action/.*', environ['PATH_INFO']) \
                 and not re.match(r'.*/dataset/.+/resource/.+/download/.+', environ['PATH_INFO']):
             login_checkup_cookie = t.request.cookies.get(
                 self.LOGIN_CHECKUP_COOKIE, None)
             if login_checkup_cookie:
-                return
-            # log.debug('Checking if CAS session exists for user')
-            # url = self._generate_login_url(gateway=True, next=True)
-            # redirect(url)
+                return None
+
+    def authenticate(self, identity):
+        log.debug('Invoked "authenticate" method.')
+
+        return None
 
     def login(self):
         log.debug('Invoked "login" method.')
@@ -226,27 +226,38 @@ class CASClientPlugin(p.SingletonPlugin):
 
         remote_user = session.get('user')
 
+        # 1. Invalidate CAS ticket in database FIRST
         if remote_user:
-            keys_to_delete = [
-                key for key in session if key.startswith('user')
-            ]
-        if keys_to_delete:
-            for key in keys_to_delete:
-                del session[key]
-                g.user = None
-                g.userobj = None
-            session.save()
-        delete_user_entry(t.c.user)
+            log.debug(f'Deleting CAS ticket for user: {remote_user}')
+            delete_user_entry(remote_user)
+
+        logout_user()
+
+        # 2. Clear Flask session completely
+        session.clear()
+        session.modified = True  # Force Flask to send Set-Cookie with empty session
+
+        # 3. Clear global context
+        g.user = None
+        g.userobj = None
+
+        # 4. Set post-logout flag to prevent immediate re-auth
+        session['_post_logout'] = True
+        session.modified = True
+
+        log.debug('Session cleared and ticket invalidated')
+
+        # 5. Redirect to CAS logout (SSO) or local logout page
         if t.asbool(config.get('ckanext.cas.single_sign_out')):
-            cas_logout_url = self.CAS_LOGOUT_URL + \
-                '?service=' + self.CAS_APP_URL + '/cas/logout'
+            # Build logout URL with service parameter for return
+            service_url = h.url_for('user.logged_out_page', qualified=True)  # _external=True
+            cas_logout_url = self.CAS_LOGOUT_URL + '?service=' + service_url
+            log.debug(f'Redirecting to CAS logout: {cas_logout_url}')
             return redirect(cas_logout_url)
-        # TODO: Refactor into helper
+
+        # Fallback: redirect to local logged out page
         url = h.url_for('user.logged_out_page')
-        return h.redirect_to(
-            getattr(
-                t.request.environ['repoze.who.plugins']['friendlyform'],
-                'logout_handler_path') + '?came_from=' + url)
+        return h.redirect_to(url)
 
     # IBlueprint
 

@@ -15,6 +15,19 @@ import logging
 log = logging.getLogger(__name__)
 
 
+def _get_locale_order():
+    """
+    Get locale_order from config, handling both string and list formats.
+    Returns a list of locales.
+    """
+    locale_order = config.get('ckan.locale_order', '')
+    if isinstance(locale_order, list):
+        return locale_order
+    elif isinstance(locale_order, str):
+        return locale_order.split() if locale_order else []
+    return []
+
+
 def dge_dataset_form_organization_list():
     """
     Get a list of all active organizations
@@ -52,7 +65,7 @@ def dge_dataset_form_value(text):
                 pass
 
         if not final_text:
-            locale_order = config.get('ckan.locale_order', '').split()
+            locale_order = _get_locale_order()
             for l in locale_order:
                 if l in text and text[l]:
                     final_text = text[l]
@@ -88,7 +101,7 @@ def dge_dataset_form_lang_and_value(text):
                 pass
 
         if not final_text:
-            locale_order = config.get('ckan.locale_order', '').split()
+            locale_order = _get_locale_order()
             for l in locale_order:
                 if l in text and text[l]:
                     final_text = text[l]

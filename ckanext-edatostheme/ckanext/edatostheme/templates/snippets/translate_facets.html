@@ -1,5 +1,11 @@
-{% do item.update({'display_name': h.scheming_choices_label(scheming_choices, item.display_name)}) if scheming_choices %}
-{% do item.update({'display_name': h.get_translated( h.edatos_get_license(item.name)._data, "title" )}) if name == "license_id" %}
-{% do item.update({'display_name': h.get_translated( h.get_organization(item.name), "title") or item.display_name}) if name == "organization" %}
-{% do item.update({'display_name': h.get_translated( h.edatos_get_group(item.name), "title") or item.display_name}) if name == "groups" %}
+{% do item.update({'display_name': h.scheming_choices_label(scheming_choices, item.display_name)}) %}
 
+{% if name == "license_id" and h.edatos_get_license(item.name) %}
+    {% do item.update({'display_name': h.get_translated( h.edatos_get_license(item.name)._data, "title" )}) %}
+{% endif %}
+{% if name == "organization" and h.get_organization(item.name) %}
+    {% do item.update({'display_name': h.get_translated( h.get_organization(item.name), "title") or item.display_name}) %}
+{% endif %}
+{% if name == "groups" and h.edatos_get_group(item.name) %}
+    {% do item.update({'display_name': h.get_translated( h.edatos_get_group(item.name), "title") or item.display_name}) %}
+{% endif %}

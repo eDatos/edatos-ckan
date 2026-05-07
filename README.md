@@ -9,27 +9,45 @@ Este repositorio contiene el código fuente de las extensiones del proyecto CKAN
 
 Se han desarrollado las siguientes extensiones de CKAN:
 
-- ckanext-cas: contiene el código para trabajar con el CAS del ISTAC, el cual ahora consulta las propiedades y roles necesarios de éste.
-- ckanext-edatostheme: contiene el código de la extensión creada para modificar los estilos del CKAN. Es la nueva versión. 
-- fichero ckan-license.json: contiene las licencias necesarias para realizar el mapeado en el ckan en los procesos de federación.
-- ckanext-gobcangroups: Se ha implementado una mejora para desvincular datasets del catálogo RDF federado de GPE
-- Carpeta /etc: Contiene los ficheros de configuración para cada entorno, ademas de los ficheros comunes en todos los entornos; gobcan_profile, fichero correspondiente al custom profile de DCAT; ckan-licenses, fichero correspondiente a las licencias configuradas en el CKAN.
+- ckanext-cas: contiene el código para trabajar con un  sistema de autenticación centralizada - CAS, que devuelve las propiedades por perfil logueado .
+- ckanext-edatostheme: contiene el código de la extensión creada para aplicar los estilos de EDATOS.
+- ckanext-edatosscheming: contiene las definiciones de esquemas y validadores personalizados para datasets, organizaciones, grupos y showcases, extensión raíz para la internacionalización de CKAN.
+- ckanext-edatosshowcase: contiene la funcionalidad de showcases, Colecciones en la aplicación.
+- ckanext-gobcangroups: contiene el código para automatizar la clasificación de conjuntos de datos en categorías.
+- Carpeta /etc: Contiene los ficheros de configuración para cada entorno, ademas de los ficheros comunes en todos los entornos (solo se usan en local, el despliegue utiliza los configurados en ckan-stack para cada cliente); gobcan_profile, fichero correspondiente al custom profile de DCAT para cumplir con la NTI; ckan-licenses, fichero correspondiente a las licencias configuradas en el CKAN.
 
 ### Deprecated
 - ckanext-istac_theme(Deprecated): vieja versión que contiene el código de la extensión creada para modificar los estilos del CKAN, se sigue el desarrollo en ckanext-edatostheme.
-- ckanext-istactranslation (Deprecated): Las traducciones se han vuelto a implementar en la extensión istac_theme <s>contiene las traducciones de la extensión de theme y se implementan en esta extensión para solventar un comportamiento por defecto de CKAN que toma las traducciones siempre de la última extensión en la lista de configuración, por lo tanto deberá estar siempre en última posición en esta.</s>
+- ckanext-istactranslation (Deprecated): Las traducciones se implementaron en la extensión istac_theme <s>contiene las traducciones de la extensión de theme y se implementan en esta extensión para solventar un comportamiento por defecto de CKAN que toma las traducciones siempre de la última extensión en la lista de configuración, por lo tanto deberá estar siempre en última posición en esta.</s>
 
 
-## Instalación
+## Instalación y despliegue en desarrollo
 ---------------------------------------------------------------
 
-El proceso de instalación y configuración de las extensiones y ficheros de configuración se explica en los manuales de configuración del proyecto.
+> Para la guía completa de depuración y desarrollo local consultar [DEVELOPMENT.md](DEVELOPMENT.md).
+
+### Prerrequisitos
+
+Copiar y configurar el fichero de entorno:
+NOTA: El proyecto [ckan-stack](https://git.arte-consultores.com/istac/infraestructura/ckan-stack) contiene las configuraciones para los distintos clientes.
+```bash
+cp dockerfiles/.env.bk dockerfiles/.env
+# Editar dockerfiles/.env con los valores correctos (BBDD, URLs, CAS...)
+```
+
+### Despliegue en local
+
+```bash
+docker compose -f dockerfiles/docker-compose.yml build
+
+docker compose -f dockerfiles/docker-compose.yml up -d
+```
 
 ## Configuración
 ---------------------------------------------------------------
 - ckanext-gobcangroups: Es necesario para su funcionamiento que la etiqueta (Tag) exista en la base de datos o sea creado, por defecto se usa la etiqueta "Manual" pero puede ser configurada con la propiedad "ckanext.gobcangroups.flag.for.delink = Manual"
 
-- ckanext-cas: La configuración de CKAN debe apuntar ahora al CAS del ISTAC y los roles/permisos del usuario son gestionados desde la gestión de permisos de ISTAC.
+- ckanext-cas: La configuración de CKAN debe apuntar ahora al CAS deseado y los roles/permisos del usuario son gestionados desde la gestión de permisos del sistema de autenticación centralizado a usar.
 Las propiedades a configurar son las siguientes:
     - ckanext.cas.admin_property = ADMINISTRADOR
     - ckanext.cas.member_property = GESTOR

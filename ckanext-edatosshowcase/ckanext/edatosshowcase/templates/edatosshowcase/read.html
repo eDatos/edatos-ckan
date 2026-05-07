@@ -1,14 +1,14 @@
 {% extends "page.html" %}
 
 {% set pkg = pkg_dict %}
-{% set name = pkg.title or pkg.name %}
+{% set name = h.get_translated(pkg, 'title') %}
 {% set editor = h.showcase_get_wysiwyg_editor() %}
 
 {% set showcase_read_route = 'showcase_blueprint.read' %}
 {% set showcase_index_route = 'showcase_blueprint.index' %}
 {% set showcase_edit_route = 'showcase_blueprint.edit' %}
 
-{% block subtitle %}{{ pkg.title or pkg.name }} - {{ _('Showcases') }}{% endblock %}
+{% block subtitle %}{{ name }} - {{ _('Showcases') }}{% endblock %}
 
 {% block styles %}
   {{ super() }}
@@ -25,7 +25,7 @@
 
 {% block head_extras -%}
     {{ super() }}
-    {% set description = h.markdown_extract(pkg.notes, extract_length=200)|forceescape %}
+    {% set description = h.markdown_extract(h.get_translated(pkg, 'notes'), extract_length=200)|forceescape %}
     <meta property="og:title" content="{{ h.dataset_display_name(pkg) }} - {{ g.site_title }}">
     <meta property="og:description" content="{{ description }}">
     <meta property="og:url" content="{{ h.full_current_url() }}">
@@ -37,7 +37,7 @@
 {% block breadcrumb_content_selected %} class="active"{% endblock %}
 
 {% block breadcrumb_content %}
-    {% set showcase = pkg.title or pkg.name %}
+    {% set showcase = h.get_translated(pkg, 'title') %}
     <li>{{ h.nav_link(_('Showcases'), named_route=showcase_index_route) }}</li>
     <li{{ self.breadcrumb_content_selected() }}>{% link_for showcase|truncate(30), named_route=showcase_read_route, id=pkg.name %}</li>
 {% endblock %}
@@ -71,25 +71,19 @@
         </h1>
 
     {% block package_notes %}
-      {% if pkg.showcase_notes_formatted and editor == 'ckeditor' %}
-        <div class="ck-content">
-          {{ pkg.showcase_notes_formatted|safe }}
-        </div>
-      {% elif pkg.showcase_notes_formatted %}
         <div class="notes embedded-content ckanext-showcase-notes">
-          {{ pkg.showcase_notes_formatted }}
+            {{ h.markdown_extract(h.get_translated(pkg, 'notes'), extract_length=200)|forceescape }}
         </div>
-      {% endif %}
     {% endblock %}
 
         {% if pkg.url %}
-            <p><a class="btn btn-primary ckanext-showcase-launch" href="{{ pkg.url }}" target="_blank"><i class="fa fa-external-link icon-external-link"></i> {{ _('Launch website') }}</a></p>
+            <p><a class="btn btn-primary ckanext-showcase-launch" href="{{ pkg.url }}" target="_blank"><i class="fa fa-external-link"></i> {{ _('Launch website') }}</a></p>
         {% endif %}
 
     {% endblock %}
 
     {% block package_tags %}
-        {% snippet "showcase/snippets/tags.html", tags=pkg.tags %}
+        {% snippet "edatosshowcase/snippets/tags.html", tags=pkg.multilingual_tags %}
     {% endblock %}
 
     {% block package_info %}

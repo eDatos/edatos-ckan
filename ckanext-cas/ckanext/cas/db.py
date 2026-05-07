@@ -2,45 +2,48 @@ import logging
 import datetime
 import sqlalchemy.exc
 import ckan.plugins.toolkit as t
-
-from ckan.model import domain_object
-from ckan.model.meta import Session, metadata, mapper
-from sqlalchemy.engine.reflection import Inspector
+from ckan.model.meta import Session, metadata
+from sqlalchemy import inspect as sa_inspect
+from sqlalchemy.orm import registry
 from sqlalchemy.exc import NoSuchTableError
 from sqlalchemy import types, Column, Table, ForeignKey, func, CheckConstraint, UniqueConstraint, Index
 
 log = logging.getLogger(__name__)
 
 cas_table = None
+mapper_registry = registry()
 
 
 def setup():
+    from ckan.model.meta import engine
+    if engine is None:
+        raise RuntimeError("CKAN database engine is not initialized. Call setup() later.")
+      
     if cas_table is None:
         define_cas_tables()
         log.debug('CAS table(s) defined in memory')
 
-        if not cas_table.exists():
-            cas_table.create()
-
+        inspector = sa_inspect(engine)
+        if not inspector.has_table(cas_table.name):
+            log.info("Creating cas table: %s", cas_table.name)
+            cas_table.create(bind=engine)        
     else:
-        log.debug('CAS table(s) already exist')
-        from ckan.model.meta import engine
-        inspector = Inspector.from_engine(engine)
+        log.debug('CAS table(s) already exist')        
+        inspector = sa_inspect(engine)
 
         try:
             inspector.get_indexes("ckanext_cas_login")
         except NoSuchTableError:
-            cas_table.create()
-
+            cas_table.create(bind=engine)        
+            
         index_names = [index['name']
                        for index in inspector.get_indexes("ckanext_cas_login")]
         if "ckanext_cas_login_ticket_id_idx" not in index_names:
-            log.debug('Creating index for ckanext_cas_login')
             Index("ckanext_cas_login_ticket_id_idx",
-                  cas_table.c.ticket_id).create()
+                  cas_table.c.ticket_id).create(bind=engine)
 
 
-class CasUser(domain_object.DomainObject):
+class CasUser:
     def __init__(self, ticket_id, user):
         self.ticket_id = ticket_id
         self.user = user
@@ -69,7 +72,7 @@ def define_cas_tables():
                              default=datetime.datetime.utcnow(), nullable=False),
                       Index('ckanext_cas_login_ticket_id_idx', 'ticket_id'))
 
-    mapper(
+    mapper_registry.map_imperatively(
         CasUser,
         cas_table
     )
@@ -80,10 +83,11 @@ def insert_entry(ticket_id, user=None):
         if user is None:
             user = t.c.user
         cas_user = CasUser(ticket_id, user)
-        cas_user.save()
+        Session.add(cas_user)
+        Session.commit()
         return True
     except sqlalchemy.exc.IntegrityError as exc:
-        reason = exc.message
+        reason = str(exc)
         log.error(reason)
         if reason.endswith('is not unique'):
             log.error('{0} already exists', exc.params[0])
@@ -94,15 +98,20 @@ def insert_entry(ticket_id, user=None):
         return False
 
 
-def delete_entry(ticket_id):
-    cas_table.delete(CasUser.ticket_id == ticket_id).execute()
+def delete_entry(ticket_id):    
+    Session.query(CasUser).filter_by(ticket_id=ticket_id).delete()
+    Session.commit()
 
 
 def delete_user_entry(user):
-    cas_table.delete(CasUser.user == user).execute()
+    Session.query(CasUser).filter_by(user=user).delete()
+    Session.commit()
 
 
 def is_ticket_valid(user):
+    if cas_table is None:
+        # Engine no inicializado
+        return False
     search = {'user': user}
     results = CasUser.get(**search)
     log.debug(results)

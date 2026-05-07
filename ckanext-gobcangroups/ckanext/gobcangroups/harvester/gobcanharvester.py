@@ -1,15 +1,11 @@
-from email.utils import quote
 import json
 import uuid
 import logging
 import hashlib
 import traceback
 
-import six
-
 import ckan.plugins as p
 import ckan.model as model
-import ckan.lib.plugins as lib_plugins
 
 from ckan.model import Package, PackageTag, Tag
 from ckanext.harvest.model import HarvestObject, HarvestObjectExtra
@@ -203,10 +199,7 @@ class GOBCANHarvester(DCATRDFHarvester):
 
             content_hash = hashlib.md5()
             if content:
-                if six.PY2:
-                    content_hash.update(content)
-                else:
-                    content_hash.update(content.encode('utf8'))
+                content_hash.update(content.encode('utf8'))
 
             if last_content_hash:
                 if content_hash.digest() == last_content_hash.digest():
@@ -360,7 +353,7 @@ class GOBCANHarvester(DCATRDFHarvester):
         existing_dataset = self._get_existing_dataset(harvest_object.guid)
 
         try:
-            package_plugin = lib_plugins.lookup_package_plugin(
+            package_plugin = p.h.lookup_package_plugin(
                 dataset.get('type', None))
             if existing_dataset:
                 package_schema = package_plugin.update_package_schema()
@@ -423,7 +416,7 @@ class GOBCANHarvester(DCATRDFHarvester):
                 self._add_dataset_to_group(dataset, context, harvest_object)
 
             else:
-                package_plugin = lib_plugins.lookup_package_plugin(
+                package_plugin = p.h.lookup_package_plugin(
                     dataset.get('type', None))
 
                 package_schema = package_plugin.create_package_schema()

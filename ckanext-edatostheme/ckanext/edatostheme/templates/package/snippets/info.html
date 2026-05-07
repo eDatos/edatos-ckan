@@ -1,16 +1,17 @@
 {#
-Displays a sidebard module with information for given package
+Displays a sidebar module with information for given package
 
-pkg    - The package dict that owns the resources.
+pkg          - The package dict that owns the resources.
+am_following - True if the user is following the package.
 
 Example:
 
-  {% snippet "package/snippets/info.html", pkg=pkg %}
+  {% snippet "package/snippets/info.html", pkg=pkg, am_following=am_following %}
 
 #}
 {% block package_info %}
   {% if pkg %}
-    <section class="module module-narrow">
+    <section id="package-info" class="module module-narrow">
       <div class="module context-info">
         <div class="module-content">
           {% block package_info_inner %}

@@ -43,4 +43,4 @@ class IstactranslationPlugin(plugins.SingletonPlugin):
         This implementation assumes the gettext domain is
         ckanext-{extension name}, hence your pot, po and mo files should be
         named ckanext-{extension name}.mo'''
-        return 'ckanext-{name}'.format(name=self.name)
+        return 'ckanext-{name}'.format(name=toolkit.config.get('ckan.plugins'))

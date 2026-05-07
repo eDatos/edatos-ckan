@@ -1,0 +1,175 @@
+volumes:
+  ckan_storage:
+  pg_data:
+  solr_data:
+  pip_cache:
+  site_packages:
+
+services:
+
+  nginx:
+    build:
+      context: nginx/
+      dockerfile: Dockerfile
+    networks:
+      - ckan-net
+    depends_on:
+      ckan:
+        condition: service_healthy
+    ports:
+      - "0.0.0.0:${NGINX_SSLPORT_HOST}:${NGINX_SSLPORT}"
+    
+  ckan:
+    build:
+      context: ../
+      dockerfile: dockerfiles/ckan/Dockerfile
+      args:
+        - TZ=${TZ}
+    networks:
+      - ckan-net
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+      solr:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./src/ckanext-edatostheme/ckanext/edatostheme/etc/config.json:/srv/app/src/ckanext-edatostheme/ckanext/edatostheme/etc/config.json
+      - ./src/ckanext-edatosscheming/ckanext/edatosscheming/etc/config.json:/srv/app/src/ckanext-edatosscheming/ckanext/edatosscheming/etc/config.json
+      - ckan_storage:/var/lib/ckan
+      - pip_cache:/root/.cache/pip
+      - site_packages:/usr/lib/python3.10/site-packages
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:5000/api/action/status_show"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+  
+  jobs-worker:
+    build:
+      context: ../
+      dockerfile: dockerfiles/ckan/Dockerfile.worker
+      args:
+        - TZ=${TZ}    
+    env_file:
+      - .env
+    environment:      
+      - CKAN__PLUGINS=datastore xloader harvest dcat dcat_rdf_harvester dcat_json_harvester dcat_json_interface envvars
+      - CKAN_SITE_URL=http://ckan:5000'      
+      - CKAN___SECRET_KEY=una-clave-segura  # clave dummy para correcta iniciar del ckan worker
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - ckan-net
+    volumes:
+      - ckan_storage:/var/lib/ckan
+      - pip_cache:/root/.cache/pip
+      - site_packages:/usr/lib/python3.10/site-packages    
+    entrypoint: ["ckan", "-c", "/srv/app/ckan.ini", "jobs", "worker"]
+  
+  gather-consumer:
+    build:
+      context: ../
+      dockerfile: dockerfiles/ckan/Dockerfile.worker
+      args:
+        - TZ=${TZ}    
+    env_file:
+      - .env
+    environment:      
+      - CKAN__PLUGINS=harvest dcat dcat_rdf_harvester dcat_json_harvester dcat_json_interface envvars
+      - CKAN_SITE_URL=http://ckan:5000'      
+      - CKAN___SECRET_KEY=una-clave-segura  # clave dummy para correcta iniciar del ckan worker
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - ckan-net
+    volumes:
+      - ckan_storage:/var/lib/ckan
+      - pip_cache:/root/.cache/pip
+      - site_packages:/usr/lib/python3.10/site-packages    
+    entrypoint: ["ckan", "-c", "/srv/app/ckan.ini", "harvester", "gather-consumer"]
+  
+  fetch-consumer:
+    build:
+      context: ../
+      dockerfile: dockerfiles/ckan/Dockerfile
+      args:
+        - TZ=${TZ}
+    deploy:
+      replicas: 3
+    env_file:
+      - .env
+    environment:      
+      - CKAN__PLUGINS=harvest dcat dcat_rdf_harvester dcat_json_harvester dcat_json_interface envvars
+      - CKAN_SITE_URL=http://ckan:5000'      
+      - CKAN___SECRET_KEY=una-clave-segura  # clave dummy para correcta iniciar del ckan worker
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - ckan-net
+    volumes:
+      - ckan_storage:/var/lib/ckan
+      - pip_cache:/root/.cache/pip
+      - site_packages:/usr/lib/python3.10/site-packages    
+    entrypoint: ["ckan", "-c", "/srv/app/ckan.ini", "harvester", "fetch-consumer"]
+      
+  db:
+    build:
+      context: postgresql/
+    networks:
+      - ckan-net
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - CKAN_DB_USER
+      - CKAN_DB_PASSWORD
+      - CKAN_DB
+      - DATASTORE_READONLY_USER
+      - DATASTORE_READONLY_PASSWORD
+      - DATASTORE_DB
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
+
+  solr:
+    networks:
+      - ckan-net
+    image: ckan/ckan-solr:${SOLR_IMAGE_VERSION}
+    ports:
+      - "0.0.0.0:8983:8983"
+    volumes:
+      - solr_data:/var/solr
+      - ./src/solr/schema.xml:/opt/solr/server/solr/configsets/ckan/conf/managed-schema:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:8983/solr/"]
+
+  redis:
+    image: redis:${REDIS_VERSION}
+    networks:
+      - ckan-net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "-e", "QUIT"]
+    
+networks:
+  ckan-net:
+    driver: bridge

@@ -32,8 +32,6 @@ def get_cmetadata_languages(endpoint, key):
     }
     header_request = requests.get(url=url, headers=headers).content
     json_header_request = json.loads(header_request)
-    print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
-    print(json_header_request)
 
     return json_header_request['value']
 
@@ -108,9 +106,6 @@ class EdatosschemingPlugin(plugins.SingletonPlugin):
         # self._languages_dataset_schemas()
         self.__languages_schemas_filler()
         toolkit.add_template_directory(config_, '../templates')
-        toolkit.add_public_directory(config_, '../public')
-        toolkit.add_resource('../fanstatic',
-                             '../ckanext-edatosscheming')
 
     # IValidatos
 

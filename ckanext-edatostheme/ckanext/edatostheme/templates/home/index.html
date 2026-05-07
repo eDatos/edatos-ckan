@@ -1,5 +1,4 @@
 {% extends "page.html" %}
-{% set homepage_style = ( g.homepage_style or '1' ) %}
 
 {% block subtitle %}{{ _("Welcome") }}{% endblock %}
 
@@ -8,7 +7,7 @@
 
 {% block content %}
   <div class="homepage layout-4">
-    <div class="container">
+    <div id="content" class="container">
       {{ self.flash() }}
     </div>
     {% block primary_content %}

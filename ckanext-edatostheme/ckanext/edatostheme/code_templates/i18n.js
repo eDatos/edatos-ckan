@@ -51,7 +51,7 @@ window.onload = function () {
         var nuevaUrl = '';
 
         if (urlArray[1] !== language) {
-            if (urlArray[2] === "home") {
+            if (urlArray[2] === "home" || !urlArray[2]) {
                 nuevaUrl = SITE_URL.concat(language,"/");
             } else {
                 nuevaUrl = SITE_URL.concat(language,"/",urlArray[2]);

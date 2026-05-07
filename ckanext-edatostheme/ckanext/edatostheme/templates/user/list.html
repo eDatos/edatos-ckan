@@ -1,5 +1,5 @@
 {% block logueado_acceso_ %}
-    {% if c.userobj %}
+    {% if g.user %}
         {% snippet "user/snippets/list.html", page=page %}
     {% else %}
         {% snippet "user/error_not_logged.html" %}
