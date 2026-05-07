@@ -35,6 +35,25 @@ HERE = os.path.abspath(os.path.dirname(__file__))
 I18N_DIR = os.path.join(HERE, "../i18n")
 APP_ID_FOR_ANALYTICS = 'ckan-catalog'
 
+def get_login_error_msg():
+    """Lee y borra el mensaje de error de login almacenado en sesión.
+    Se muestra una única vez en la página destino del redirect de CAS."""
+    from ckan.common import session
+    msg = session.pop('login_error_msg', None)
+    if msg:
+        session.modified = True
+    return msg
+
+
+def clear_login_error():
+    """Endpoint GET que borra el mensaje de error de login de la sesión."""
+    from ckan.common import session
+    from flask import jsonify
+    session.pop('login_error_msg', None)
+    session.modified = True
+    return jsonify({'ok': True}), 200
+
+
 def new_activities_dummy():
     """
     Dummy helper to prevent crashes in CKAN 2.9+ where the
@@ -493,6 +512,13 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             for route_, view_, function_ in REDIRECT_VIEWS:
                 edatos.add_url_rule(route_, view_, function_)
 
+        edatos.add_url_rule(
+            '/user/clear_login_error',
+            'clear_login_error',
+            clear_login_error,
+            methods=['GET'],
+        )
+
         return [edatos]
 
     # ITemplateHelpers
@@ -513,6 +539,7 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             'edatos_get_tag': get_tag,
             'edatos_get_freq_tags': get_freq_tags,
             'new_activities': new_activities_dummy,
+            'edatos_get_login_error_msg': get_login_error_msg,
         }
 
     # ITranslation
