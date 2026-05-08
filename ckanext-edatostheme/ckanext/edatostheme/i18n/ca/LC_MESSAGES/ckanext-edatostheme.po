@@ -5441,3 +5441,7 @@ msgstr "Avís legal de l'ISTAC"
 #: ckanext/template/snippets/facet_list.html:74
 msgid "Aviso Legal del IBESTAT"
 msgstr "Avís legal de l'IBESTAT"
+
+#: ckanext-cas/ckanext/cas/blueprints.py
+msgid "Only users belonging to the EDATOS team can authenticate"
+msgstr "Només es poden autenticar els usuaris pertanyents a l'equip d'EDATOS"
