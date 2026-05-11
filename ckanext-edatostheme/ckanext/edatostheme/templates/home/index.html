@@ -9,6 +9,15 @@
   <div class="homepage layout-4">
     <div id="content" class="container">
       {{ self.flash() }}
+      {% set login_error = h.edatos_get_login_error_msg() %}
+      {% if login_error %}
+        <div class="flash-messages">
+          <div class="alert alert-dismissible fade show alert-danger" role="alert">
+            {{ login_error }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        </div>
+      {% endif %}
     </div>
     {% block primary_content %}
       {% snippet "home/layout4.html" %}

@@ -39,9 +39,11 @@ def get_login_error_msg():
     """Lee y borra el mensaje de error de login almacenado en sesión.
     Se muestra una única vez en la página destino del redirect de CAS."""
     from ckan.common import session
+    import ckan.plugins.toolkit as t
     msg = session.pop('login_error_msg', None)
     if msg:
         session.modified = True
+        msg = t._(msg)
     return msg
 
 

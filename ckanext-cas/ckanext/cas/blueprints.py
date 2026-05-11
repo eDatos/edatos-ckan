@@ -319,14 +319,12 @@ def cas_callback(**kwargs):
                 log.debug('Rol filtrado :')
                 log.debug(sysadmin)
         else:
-            h.flash_error(t._(MSG_NO_ACCESS))
-            session['login_error_msg'] = t._(MSG_NO_ACCESS)
+            session['login_error_msg'] = MSG_NO_ACCESS
             session.modified = True
             return redirect(_home_url_with_locale(cas_plugin))
 
         if sysadmin not in [cas_plugin.CAS_ADMIN_PROPERTY, cas_plugin.CAS_MEMBER_PROPERTY]:
-            h.flash_error(t._(MSG_NO_ACCESS))
-            session['login_error_msg'] = t._(MSG_NO_ACCESS)
+            session['login_error_msg'] = MSG_NO_ACCESS
             session.modified = True
             return redirect(_home_url_with_locale(cas_plugin))
 
