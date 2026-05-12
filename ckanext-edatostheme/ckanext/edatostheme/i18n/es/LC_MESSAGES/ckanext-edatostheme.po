@@ -4866,5 +4866,5 @@ msgid "Aviso Legal del IBESTAT"
 msgstr "Aviso Legal del IBESTAT"
 
 #: ckanext-cas/ckanext/cas/blueprints.py
-msgid "Only users belonging to the EDATOS team can authenticate"
-msgstr "Solo se pueden autenticar los usuarios pertenecientes al equipo de EDATOS"
+msgid "Exclusive access for administrators"
+msgstr "Acceso exclusivo para administradores"
