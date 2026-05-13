@@ -2187,6 +2187,14 @@ div.ckanext-showcase-image-container {
 	padding-left: 20px;
 }
 
+/* Fix: cuando el sidebar usa .showcase-detail-sidebar, ese div ya tiene su propio borde;
+   se elimina el borde duplicado del .secondary exterior */
+.secondary:has(.showcase-detail-sidebar) {
+	border: none !important;
+	padding: 0 !important;
+	background: transparent !important;
+}
+
 /* --- Sidebar: contenedor con borde (filtro_recursos) — read y edit --- */
 .secondary:has(.module.context-info),
 .module-resource ~ .secondary {
@@ -2761,6 +2769,13 @@ li.showcase-card:hover {
 
 /* ---- SHOWCASE DETAIL — Sidebar panel (título, compartir, licencia) ---- */
 
+/* Fix: evitar que la regla .secondary .module.context-info aplique fondo azul al título */
+.showcase-detail-sidebar .module.context-info {
+	background: transparent !important;
+	padding: 0 !important;
+	border-radius: 0 !important;
+}
+
 .showcase-detail-sidebar {
 	display: flex;
 	width: 289px;
@@ -2842,7 +2857,7 @@ li.showcase-card:hover {
 	min-height: 35px !important;
 	width: 100% !important;
 	padding: 5px 10px 5px 20px !important;
-	align-items: center !important;
+	align-items: flex-start !important;
 	gap: 10px !important;
 	flex: none !important;
 	align-self: unset !important;
