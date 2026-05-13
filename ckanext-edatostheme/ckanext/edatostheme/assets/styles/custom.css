@@ -450,7 +450,7 @@ nav.section.navigation {
 	padding-top: var(--spacing-sm);
 	padding-bottom: var(--spacing-sm);
 	font-size: var(--font-size-base);
-	text-align: right;
+	text-align: left;
 	list-style: none;
 	background-color: var(--edatos-color-primary-100);
 	-webkit-box-shadow: var(--shadow-dropdown);
