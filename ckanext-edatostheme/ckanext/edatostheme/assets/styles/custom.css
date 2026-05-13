@@ -3527,9 +3527,9 @@ li.showcase-card:hover {
    Figma node 11813:5303
    ============================================================ */
 
-/* 1. Barra sub-tabs (Editar recurso / Vistas) — fondo rosa muy claro */
+/* 1. Barra sub-tabs (Editar recurso / Vistas)
 header.module-content.page-header {
-    background-color: #fdf2f4 !important;
+    background-color: var(--edatos-color-white-100) !important;
 }
 
 /* 2. Botón "Ver recurso" — outline rojo */
