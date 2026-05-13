@@ -295,13 +295,10 @@ def get_header_url(json_config):
     header_key = json_config['metadata']['navbarPathKey']
     endpoint = json_config['metadata']['endpoint']
     title = json_config['metadata']['appName']
-    print("args:", request.args.get('theme'))
-    print("cookie:", request.cookies.get('theme'))
     navbar_url = get_url(endpoint, header_key)
-    url = "%s?appName=%s&appId=%s" % (navbar_url, title, APP_ID_FOR_ANALYTICS)
+    url = "%s?appName=%s&appId=%s&appUrl=%s" % (navbar_url, title, APP_ID_FOR_ANALYTICS, json_config['metadata']['siteURL'])
 
     theme = get_theme()
-    print("final theme:", theme)
     if theme:
         url = "%s&organisation=%s" % (url, theme)
 
