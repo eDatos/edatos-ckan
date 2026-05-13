@@ -1641,6 +1641,10 @@ h1.dataset-title {
 	border-color: var(--edatos-color-secondary-100, #004678);
 }
 
+#dataset-resources .btn-primary.dropdown-toggle::after {
+	display: none;
+}
+
 /* --- ZONA 6: Ver en el explorador de estadísticas --- */
 .stats-explorer-link {
 	display: flex;
