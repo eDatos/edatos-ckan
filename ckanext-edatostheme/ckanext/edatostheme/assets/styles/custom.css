@@ -1842,13 +1842,13 @@ section#dataset-resources > h2 {
 	flex: 1 0 0;
 	display: flex;
 	padding: 5px 10px;
-	justify-content: center;
+	justify-content: flex-start;
 	align-items: center;
 	gap: 10px;
 	align-self: stretch;
 	border-radius: 5px 5px 0 0;
 	background: var(--edatos-color-secondary-100, #004678);
-	color: #FFF;
+	color: var(--edatos-color-white-100);
 	font-family: "Open Sans", sans-serif;
 	font-size: 18px;
 	font-style: normal;
