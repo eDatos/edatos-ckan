@@ -3055,6 +3055,10 @@ li.showcase-card:hover {
 
 /* ---- SHOWCASE DETAIL — Bloque etiquetas ---- */
 
+.showcase-tags-section {
+	margin-bottom: 20px;
+}
+
 .showcase-tags-section .tags {
 	display: flex !important;
 	padding: 10px !important;
@@ -3105,6 +3109,17 @@ li.showcase-card:hover {
 	text-decoration: none;
 }
 
+/* ---- SHOWCASE DETAIL — Encabezado sección recursos (override CKAN) ---- */
+
+.primary:has(.showcase-tags-section) .module-heading {
+	font-size: 18px !important;
+	font-weight: 600 !important;
+	text-transform: none !important;
+	border-radius: 5px !important;
+	padding: 5px 10px !important;
+	line-height: 26px !important;
+}
+
 /* ---- SHOWCASE DETAIL — Listado de recursos vinculados ---- */
 
 .recursos-list {
@@ -3121,17 +3136,18 @@ li.showcase-card:hover {
 	display: flex;
 	width: 100%;
 	min-height: 36px;
-	padding: 5px 20px;
+	padding: 5px 20px !important;
 	flex-direction: column;
 	align-items: flex-start;
 	justify-content: center;
 	box-sizing: border-box;
+	border-bottom: none !important;
 }
 
 .recursos-item a {
 	color: var(--edatos-color-secondary-100, #004678) !important;
 	font-family: "Open Sans", sans-serif;
-	font-size: 16px;
+	font-size: 16px !important;
 	font-style: normal;
 	font-weight: 300;
 	line-height: 26px;
@@ -3140,6 +3156,11 @@ li.showcase-card:hover {
 
 .recursos-item a:hover {
 	text-decoration: underline;
+}
+
+.recursos-list .recursos-item:nth-child(even) {
+	background: var(--edatos-color-gray-5, #F2F2F2);
+	border-radius: 3px;
 }
 
 @media (min-width: 768px) {
