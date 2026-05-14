@@ -2085,6 +2085,13 @@ div.ckanext-showcase-image-container {
 	line-height: 24px;
 	margin: 2px 4px 2px 0;
 	text-decoration: none;
+	cursor: pointer;
+}
+
+a.metadatos-tag:hover {
+	background: var(--edatos-color-primary-50, #4D7EA0);
+	color: var(--edatos-color-white-100, #FFF);
+	text-decoration: none;
 }
 
 /* --- Resource read: botones de acción (Editar recurso, Vistas, IR AL RECURSO) --- */

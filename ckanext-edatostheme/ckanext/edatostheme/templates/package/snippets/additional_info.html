@@ -16,7 +16,7 @@
               <th scope="row" class="dataset-label">{{ _('Keywords') }}</th>
               <td class="dataset-details">
                 {% for tag in current_lang_tags %}
-                  <span class="metadatos-tag">{{ tag }}</span>
+                  <a href="{{ h.url_for('dataset.search', q=tag) }}" class="metadatos-tag">{{ tag }}</a>
                 {% endfor %}
               </td>
             </tr>
@@ -26,7 +26,7 @@
             <th scope="row" class="dataset-label">{{ _('Keywords') }}</th>
             <td class="dataset-details">
               {% for tag in pkg_dict.tags %}
-                <span class="metadatos-tag">{{ tag.display_name }}</span>
+                <a href="{{ h.url_for('dataset.search', tags=tag.name) }}" class="metadatos-tag">{{ tag.display_name }}</a>
               {% endfor %}
             </td>
           </tr>
