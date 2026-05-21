@@ -72,6 +72,10 @@ RUN pip3 install -r src/ckanext-edatostheme/requirements.txt && \
     pip3 install -e src/ckanext-gobcangroups && \
     pip3 install -e src/ckanext-edatosshowcase
 
+# OpenTelemetry auto-instrumentation (debe instalarse al final para detectar todos los frameworks)
+RUN pip3 install opentelemetry-distro opentelemetry-exporter-otlp-proto-grpc && \
+    opentelemetry-bootstrap -a install
+
 # Generar schemas por defecto desde los templates (con locale 'es') para que
 # nunca estén vacíos durante el arranque. 
 #El entrypoint 01_fill_schemas_templates.sh

@@ -31,6 +31,10 @@ RUN  pip3 install -e git+https://github.com/ckan/ckanext-dcat.git@master#egg=cka
 RUN pip3 install -e 'git+https://github.com/ckan/ckanext-harvest.git@master#egg=ckanext-harvest' && \
     pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt
 
+# OpenTelemetry auto-instrumentation (debe instalarse al final para detectar todos los frameworks)
+RUN pip3 install opentelemetry-distro opentelemetry-exporter-otlp-proto-grpc && \
+    opentelemetry-bootstrap -a install
+
 USER root
 
 # Copy custom initialization scripts
