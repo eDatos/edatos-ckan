@@ -115,6 +115,9 @@ RUN echo "[Dockerfile] Scripts de entrypoint disponibles:" && ls -la /docker-ent
 # runtime mounted ones)
 COPY --chown=ckan-sys:ckan-sys dockerfiles/ckan/patches ${APP_DIR}/patches
 
+COPY --chown=ckan:ckan dockerfiles/ckan/setup/wsgi.py /srv/app/wsgi.py
+COPY --chown=ckan-sys:ckan-sys dockerfiles/ckan/setup/start_ckan.sh.override /srv/app/start_ckan.sh
+
 USER ckan
 
 RUN for d in $APP_DIR/patches/*; do \
