@@ -1,6 +1,16 @@
 # encoding: utf-8
 import os
 
+# Initialize OpenTelemetry before the CKAN app is created.
+# With uWSGI --lazy-apps, this file runs in each worker after fork,
+# so each worker gets a fresh gRPC connection and a live exporter thread.
+if os.environ.get('OTEL_EXPORTER_OTLP_ENDPOINT'):
+    try:
+        import opentelemetry.instrumentation.auto_instrumentation.sitecustomize  # noqa: F401
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).warning("[OTel] init failed: %s", e)
+
 from ckan.config.middleware import make_app
 from ckan.cli import CKANConfigLoader
 
