@@ -63,13 +63,8 @@ if [ $? -eq 0 ]
 then
     # Start supervisord
     supervisord --configuration /etc/supervisord.conf &
-    # Start uwsgi, wrapping with opentelemetry-instrument if an OTLP endpoint is configured
-    if [ -n "$OTEL_EXPORTER_OTLP_ENDPOINT" ]; then
-        echo "[start_ckan] OpenTelemetry enabled, wrapping uWSGI with opentelemetry-instrument"
-        sudo -u ckan -EH /srv/app/.local/bin/opentelemetry-instrument uwsgi $UWSGI_OPTS
-    else
-        sudo -u ckan -EH uwsgi $UWSGI_OPTS
-    fi
+    # Start uwsgi. OpenTelemetry is initialized inside wsgi.py per-worker (after fork)
+    sudo -u ckan -EH uwsgi $UWSGI_OPTS
 else
     echo "[prerun] failed...not starting CKAN."
 fi
