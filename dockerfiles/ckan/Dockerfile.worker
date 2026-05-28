@@ -18,6 +18,8 @@ USER ckan
 
 COPY dockerfiles/ckan/*.json .
 
+COPY --chown=ckan:ckan ckanext-edatosscheming/ src/ckanext-edatosscheming/
+
 ### XLoader ###
 RUN pip3 install -e 'git+https://github.com/ckan/ckanext-xloader.git@master#egg=ckanext-xloader' && \ 
     pip3 install -r ${APP_DIR}/src/ckanext-xloader/requirements.txt && \
@@ -30,6 +32,24 @@ RUN  pip3 install -e git+https://github.com/ckan/ckanext-dcat.git@master#egg=cka
 ### Harvester ###
 RUN pip3 install -e 'git+https://github.com/ckan/ckanext-harvest.git@master#egg=ckanext-harvest' && \
     pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt
+
+### Scheming and fluent
+RUN pip3 install -e 'git+https://github.com/ckan/ckanext-scheming.git#egg=ckanext-scheming'
+RUN pip3 install -e 'git+https://github.com/ckan/ckanext-fluent.git#egg=ckanext-fluent'
+
+### edatosscheming ###
+RUN pip3 install -r src/ckanext-edatosscheming/requirements.txt && \
+    pip3 install -e src/ckanext-edatosscheming
+
+### Generate schemas from templates (mirrors 01_fill_schemas_templates.sh).
+### Workers override the Docker ENTRYPOINT in stack.yml so entrypoint.d scripts
+### never run; schemas must be generated at build time instead.
+ARG LOCALE_DEFAULT=es
+RUN for template in src/ckanext-edatosscheming/ckanext/edatosscheming/schemas_templates/*.json; do \
+    filename=$(basename "$template"); \
+    sed "s/FILL_REQUIRED_LANGUAGE/${LOCALE_DEFAULT}/g" "$template" \
+    > "src/ckanext-edatosscheming/ckanext/edatosscheming/schemas/${filename}"; \
+    done
 
 # OpenTelemetry auto-instrumentation (debe instalarse al final para detectar todos los frameworks)
 RUN pip3 install \
