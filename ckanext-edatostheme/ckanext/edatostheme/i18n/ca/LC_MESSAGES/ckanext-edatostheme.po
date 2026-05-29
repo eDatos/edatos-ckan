@@ -5461,3 +5461,7 @@ msgstr "Avís legal de l'IBESTAT"
 #: ckanext/edatostheme/templates/snippets/social.html
 msgid "Compartir"
 msgstr "Compartir"
+
+#: ckanext/edatostheme/templates/error_document_template_admin.html
+msgid "Acceso exclusivo para personas administradoras"
+msgstr "Accés exclusiu per a persones administradores"

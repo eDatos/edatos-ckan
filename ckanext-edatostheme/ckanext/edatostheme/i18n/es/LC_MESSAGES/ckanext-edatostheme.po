@@ -4902,3 +4902,7 @@ msgstr "Aviso Legal del IBESTAT"
 #: ckanext/edatostheme/templates/snippets/social.html
 msgid "Compartir"
 msgstr "Compartir"
+
+#: ckanext/edatostheme/templates/error_document_template_admin.html
+msgid "Acceso exclusivo para personas administradoras"
+msgstr "Acceso exclusivo para personas administradoras"

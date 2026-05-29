@@ -36,7 +36,7 @@ abort = base.abort
 CAS_NAMESPACE = 'urn:oasis:names:tc:SAML:2.0:protocol'
 XML_NAMESPACES = {'samlp': CAS_NAMESPACE}
 DATETIME_FORMAT = '%Y-%m-%dT%H:%M:%S.%fZ'
-MSG_NO_ACCESS = 'Solo se pueden autenticar los usuarios pertenecientes al equipo de EDATOS'
+MSG_NO_ACCESS = 'Acceso exclusivo para personas administradoras'
 
 
 def cas_logout():

@@ -45,8 +45,7 @@ RUN pip3 install -e 'git+https://github.com/ckan/ckanext-geoview.git@v0.2.2#egg=
 RUN pip3 install -e 'git+https://github.com/ckan/ckanext-showcase.git@v1.8.4#egg=ckanext-showcase' && \
     pip3 install -r ${APP_DIR}/src/ckanext-showcase/requirements.txt
 
-### DCat ###
-#RUN  pip3 install -e git+https://github.com/ckan/ckanext-dcat.git@master#egg=ckanext-dcat && \
+### DCAT ###
 RUN  git clone --branch v2.4.2 --single-branch https://github.com/ckan/ckanext-dcat.git /srv/app/src/ckanext-dcat && \
     mv /tmp/gobcan_profile.py src/ckanext-dcat/ckanext/dcat/profiles/. && \
     echo 'gobcan_dcat_ap = "ckanext.dcat.profiles.gobcan_profile:GobCanProfile"\n' >> src/ckanext-dcat/pyproject.toml && \
@@ -71,6 +70,15 @@ RUN pip3 install -r src/ckanext-edatostheme/requirements.txt && \
     pip3 install -e src/ckanext-edatosscheming && \
     pip3 install -e src/ckanext-gobcangroups && \
     pip3 install -e src/ckanext-edatosshowcase
+
+# OpenTelemetry auto-instrumentation (debe instalarse al final para detectar todos los frameworks)
+RUN pip3 install \
+    opentelemetry-distro \
+    opentelemetry-exporter-otlp-proto-grpc \
+    opentelemetry-instrumentation-flask \
+    opentelemetry-instrumentation-sqlalchemy \
+    opentelemetry-instrumentation-requests \
+    opentelemetry-instrumentation-logging
 
 # Generar schemas por defecto desde los templates (con locale 'es') para que
 # nunca estén vacíos durante el arranque. 
@@ -105,6 +113,10 @@ RUN echo "[Dockerfile] Scripts de entrypoint disponibles:" && ls -la /docker-ent
 # Apply any patches needed to CKAN core or any of the built extensions (not the
 # runtime mounted ones)
 COPY --chown=ckan-sys:ckan-sys dockerfiles/ckan/patches ${APP_DIR}/patches
+
+COPY --chown=ckan:ckan dockerfiles/ckan/setup/wsgi.py /srv/app/wsgi.py
+COPY --chown=ckan-sys:ckan-sys dockerfiles/ckan/setup/start_ckan.sh.override /srv/app/start_ckan.sh
+RUN sed -i 's/\r$//' /srv/app/start_ckan.sh && chmod +x /srv/app/start_ckan.sh
 
 USER ckan
 
