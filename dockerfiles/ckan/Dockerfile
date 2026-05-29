@@ -45,8 +45,7 @@ RUN pip3 install -e 'git+https://github.com/ckan/ckanext-geoview.git@v0.2.2#egg=
 RUN pip3 install -e 'git+https://github.com/ckan/ckanext-showcase.git@v1.8.4#egg=ckanext-showcase' && \
     pip3 install -r ${APP_DIR}/src/ckanext-showcase/requirements.txt
 
-### DCat ###
-#RUN  pip3 install -e git+https://github.com/ckan/ckanext-dcat.git@master#egg=ckanext-dcat && \
+### DCAT ###
 RUN  git clone --branch v2.4.2 --single-branch https://github.com/ckan/ckanext-dcat.git /srv/app/src/ckanext-dcat && \
     mv /tmp/gobcan_profile.py src/ckanext-dcat/ckanext/dcat/profiles/. && \
     echo 'gobcan_dcat_ap = "ckanext.dcat.profiles.gobcan_profile:GobCanProfile"\n' >> src/ckanext-dcat/pyproject.toml && \

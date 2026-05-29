@@ -8,9 +8,6 @@ USER root
 RUN mkdir /srv/app/.local && chown ckan /srv/app/.local && \
     mkdir /srv/app/.cache && chown ckan /srv/app/.cache
 
-# Esto es para la versión 2.9
-#RUN chown ckan -R /srv/app /var/lib/ckan
-
 # Install any extensions needed by your CKAN instance
 # See Dockerfile.dev for more details and examples
 
@@ -18,18 +15,38 @@ USER ckan
 
 COPY dockerfiles/ckan/*.json .
 
+COPY --chown=ckan:ckan ckanext-edatosscheming/ src/ckanext-edatosscheming/
+
 ### XLoader ###
-RUN pip3 install -e 'git+https://github.com/ckan/ckanext-xloader.git@master#egg=ckanext-xloader' && \ 
+RUN pip3 install -e 'git+https://github.com/ckan/ckanext-xloader.git@2.2.0#egg=ckanext-xloader' && \ 
     pip3 install -r ${APP_DIR}/src/ckanext-xloader/requirements.txt && \
     pip3 install -U requests[security]
 
 ### DCAT ###
-RUN  pip3 install -e git+https://github.com/ckan/ckanext-dcat.git@master#egg=ckanext-dcat && \
+RUN  pip3 install -e git+https://github.com/ckan/ckanext-dcat.git@v2.4.2#egg=ckanext-dcat && \
     pip3 install -r ${APP_DIR}/src/ckanext-dcat/requirements.txt
 
 ### Harvester ###
-RUN pip3 install -e 'git+https://github.com/ckan/ckanext-harvest.git@master#egg=ckanext-harvest' && \
+RUN pip3 install -e 'git+https://github.com/ckan/ckanext-harvest.git@v1.6.1#egg=ckanext-harvest' && \
     pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt
+
+### Scheming and fluent
+RUN pip3 install -e 'git+https://github.com/ckan/ckanext-scheming.git#egg=ckanext-scheming'
+RUN pip3 install -e 'git+https://github.com/ckan/ckanext-fluent.git#egg=ckanext-fluent'
+
+### edatosscheming ###
+RUN pip3 install -r src/ckanext-edatosscheming/requirements.txt && \
+    pip3 install -e src/ckanext-edatosscheming
+
+### Generate schemas from templates (mirrors 01_fill_schemas_templates.sh).
+### Workers override the Docker ENTRYPOINT in stack.yml so entrypoint.d scripts
+### never run; schemas must be generated at build time instead.
+ARG LOCALE_DEFAULT=es
+RUN for template in src/ckanext-edatosscheming/ckanext/edatosscheming/schemas_templates/*.json; do \
+    filename=$(basename "$template"); \
+    sed "s/FILL_REQUIRED_LANGUAGE/${LOCALE_DEFAULT}/g" "$template" \
+    > "src/ckanext-edatosscheming/ckanext/edatosscheming/schemas/${filename}"; \
+    done
 
 # OpenTelemetry auto-instrumentation (debe instalarse al final para detectar todos los frameworks)
 RUN pip3 install \
