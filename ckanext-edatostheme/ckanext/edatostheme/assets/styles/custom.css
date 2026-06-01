@@ -602,3 +602,12 @@ selector#language-selector {
     background-color: var(--edatos-color-danger-25);
     border-color: #f2c5c4;
 }
+
+.alert.alert-dismissible.fade.show.alert-danger {
+    display: flex;
+    padding: var(--edatos-spacing-y-l) var(--edatos-spacing-x-m);
+    color: var(--edatos-color-black-100);
+    background-color: var(--edatos-color-danger-25);
+    border-radius: var(--border-radius-sm);
+    font-weight: var(--edatos-font-weight-regular);
+}
