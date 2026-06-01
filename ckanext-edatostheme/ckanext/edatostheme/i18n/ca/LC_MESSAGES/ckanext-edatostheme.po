@@ -5444,4 +5444,4 @@ msgstr "Avís legal de l'IBESTAT"
 
 #: ckanext-cas/ckanext/cas/blueprints.py
 msgid "Exclusive access for administrators"
-msgstr "Accés exclusiu per a administradors"
+msgstr "Accés exclusiu per a persones administradores"

@@ -4867,4 +4867,4 @@ msgstr "Aviso Legal del IBESTAT"
 
 #: ckanext-cas/ckanext/cas/blueprints.py
 msgid "Exclusive access for administrators"
-msgstr "Acceso exclusivo para administradores"
+msgstr "Acceso exclusivo para personas administradoras"
