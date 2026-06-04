@@ -36,6 +36,10 @@ RUN pip3 install -e 'git+https://github.com/ckan/ckanext-xloader.git@2.2.0#egg=c
 
 ### GeoView ###
 RUN pip3 install -e 'git+https://github.com/ckan/ckanext-geoview.git@v0.2.2#egg=ckanext-geoview'
+
+### Fix geoview: resource.get("name","") returns None when name key exists with None value
+RUN sed -i 's/resource\.get("name", "")\.lower()/(resource.get("name") or "").lower()/g' \
+    ${APP_DIR}/src/ckanext-geoview/ckanext/geoview/plugin/__init__.py
 #RUN git clone https://github.com/ckan/ckanext-geoview.git /srv/app/src/ckanext-geoview && \
 #    cd /srv/app/src/ckanext-geoview && \
 #    git checkout tags/0.2.2 && \
