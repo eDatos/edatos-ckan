@@ -12,11 +12,18 @@
         {% if pkg_dict.multilingual_tags %}
           {% set current_lang_tags = h.scheming_language_text(pkg_dict.multilingual_tags) %}
           {% if current_lang_tags %}
+            {% set lang = h.lang() %}
             <tr>
               <th scope="row" class="dataset-label">{{ _('Keywords') }}</th>
               <td class="dataset-details">
                 {% for tag in current_lang_tags %}
-                  <a href="{{ h.url_for('dataset.search', q=tag) }}" class="metadatos-tag">{{ tag }}</a>
+                  {% if lang == 'en' %}
+                    <a href="{{ h.url_for('dataset.search', tags_en=tag) }}" class="metadatos-tag">{{ tag }}</a>
+                  {% elif lang == 'ca' %}
+                    <a href="{{ h.url_for('dataset.search', tags_ca=tag) }}" class="metadatos-tag">{{ tag }}</a>
+                  {% else %}
+                    <a href="{{ h.url_for('dataset.search', tags_es=tag) }}" class="metadatos-tag">{{ tag }}</a>
+                  {% endif %}
                 {% endfor %}
               </td>
             </tr>
