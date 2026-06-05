@@ -500,6 +500,9 @@ nav.section.navigation {
 
 /* Botón hamburguesa / Opciones navbar */
 .btn.btn-navbar {
+	display: inline-flex !important;
+	align-items: center !important;
+	gap: 6px !important;
 	background-color: transparent !important;
 	background-image: none !important;
 	font-size: var(--font-size-base) !important;
@@ -884,6 +887,7 @@ button.btn.btn-navbar:hover, button.btn.btn-navbar:focus, button.btn.btn-navbar:
 	margin-bottom: 0;
 	background-color: var(--edatos-color-accent-100, #009BD7) !important;
 	border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
+	border: none !important;
 }
 
 .module-search .heading {
@@ -917,14 +921,15 @@ button.btn.btn-navbar:hover, button.btn.btn-navbar:focus, button.btn.btn-navbar:
 	top: auto !important;
 	right: auto !important;
 	display: flex !important;
-	height: 45px;
+	height: 50px;
 	padding: 5px 14px;
 	justify-content: center;
 	align-items: center;
 	gap: 5px;
 	margin-top: 0;
-	align-self: center;
-	border-radius: 5px;
+	align-self: stretch;
+	border-radius: 0 5px 5px 0;
+	border: none !important;
 	background-color: #FFF !important;
 	color: var(--edatos-color-secondary-100) !important;
 }
@@ -2474,16 +2479,31 @@ textarea:focus {
 	display: flex;
 	align-items: center;
 	background: #FFF;
+	border: none !important;
+	box-shadow: none !important;
+	outline: none !important;
 }
 
-.search-giant .form-control {
+.homepage .search-giant .form-control {
 	height: 50px;
 	font-size: var(--font-size-lg);
+	font-weight: 300 !important;
 	padding: 7px 0 7px 16px;
 	border-radius: 5px 0 0 5px;
-	border: none;
+	border: none !important;
 	background: transparent;
 	flex: 1;
+	box-shadow: none !important;
+}
+
+.homepage .search-giant .form-control::placeholder {
+	font-weight: 300 !important;
+}
+
+.homepage .search-giant .form-control:focus {
+	border: none !important;
+	box-shadow: none !important;
+	outline: none;
 }
 
 /* Inputs específicos de formularios scheming */
@@ -3711,4 +3731,9 @@ aside.secondary .module-content > a.btn.btn-sm i {
     color: var(--edatos-color-black-100) !important;
     background-color: var(--edatos-color-danger-25);
     border-color: #f2c5c4;
+}
+
+
+.box, .wrapper {
+    box-shadow: none !important;
 }
