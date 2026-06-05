@@ -1649,9 +1649,9 @@ h1.dataset-title {
 
 #dataset-resources .btn-primary:hover,
 #dataset-resources .btn-primary.dropdown-toggle:hover {
-	background: #f0f5fb;
-	color: var(--edatos-color-secondary-100, #004678);
-	border-color: var(--edatos-color-secondary-100, #004678);
+	background: var(--edatos-color-primary-100) !important;
+	color: var(--edatos-color-white-100) !important;
+	border-color: var(--edatos-color-primary-100, #004678);
 }
 
 #dataset-resources .btn-primary.dropdown-toggle::after {
@@ -2084,8 +2084,7 @@ div.ckanext-showcase-image-container {
 
 /* --- Metadatos: Palabras clave pills --- */
 .metadatos-tag {
-	display: inline-flex;
-	padding: 10px;
+	padding: 5px;
 	align-items: center;
 	gap: 5px;
 	border-radius: 30px;
@@ -2096,7 +2095,6 @@ div.ckanext-showcase-image-container {
 	font-size: 12px;
 	font-weight: 600;
 	line-height: 24px;
-	margin: 2px 4px 2px 0;
 	text-decoration: none;
 	cursor: pointer;
 }
