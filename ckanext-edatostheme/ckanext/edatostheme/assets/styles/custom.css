@@ -3431,6 +3431,26 @@ li.showcase-card:hover {
     margin-bottom: 0 !important;
 }
 
+/* Quitar borde de cualquier .module anidado (evita doble rectángulo) */
+.dataset-edit-secondary .module {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Anular el borde del aside.secondary en edición — .dataset-edit-secondary ya lo gestiona */
+.secondary:has(.dataset-edit-secondary) {
+    border: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+}
+
+/* Eliminar fondo oscuro del bloque context-info en vista de edición */
+.dataset-edit-secondary .module.context-info {
+    background: transparent !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+}
+
 /* Ocultar iconos en las pestañas de edición (Figma no los muestra) */
 .module-content.page-header .nav-tabs li a i.fa {
     display: none;
