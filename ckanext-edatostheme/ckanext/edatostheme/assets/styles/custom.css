@@ -1308,7 +1308,7 @@ h2.dataset-heading {
 	border-radius: 5px;
 	overflow: hidden;
 	background: var(--color-white);
-	padding: 15px;
+	padding: 0px;
 }
 
 #group-info .module-content {
@@ -1445,8 +1445,14 @@ h2.dataset-heading {
 }
 
 .module.module-narrow .nav-simple .nav-item a:hover {
-	background-color: #f0f5fb;
+	background-color: var(--edatos-color-secondary-100, #004678);
+	color: var(--edatos-color-white-100, #FFF);
 	text-decoration: none;
+}
+
+.module.module-narrow .nav-simple .nav-item a:hover .badge {
+	background: var(--edatos-color-white-100, #FFF);
+	color: var(--edatos-color-secondary-100, #004678);
 }
 
 .module.module-narrow .nav-simple .nav-item.active a {
@@ -1477,17 +1483,20 @@ h2.dataset-heading {
 .module-narrow .nav-item > a .badge,
 .nav-facet .item-count.badge {
 	display: inline-flex;
-	padding: 5px;
+	padding: 0;
 	justify-content: center;
 	align-items: center;
 	border-radius: 5px;
-	background: #CCC;
-	color: var(--edatos-color-secondary-100);
+	background: var(--edatos-color-secondary-100, #004678);
+	color: var(--edatos-color-white-100, #FFF);
 	font-family: "Open Sans", sans-serif;
 	font-size: 12px;
 	font-weight: 600;
 	line-height: 14px;
-	min-width: 24px;
+	width: 35px;
+	height: 35px;
+	min-width: 35px;
+	flex-shrink: 0;
 }
 
 /* ZONA 11 — Enlace "Mostrar más" */
@@ -2418,6 +2427,14 @@ a.metadatos-tag:hover {
     height: auto;
     background: white;
 }
+/* ---- Selector de orden (Relevancia) — hover ---- */
+#field-order-by:hover {
+	background-color: var(--edatos-color-secondary-100, #004678);
+	color: var(--edatos-color-white-100, #FFF);
+	border-color: var(--edatos-color-secondary-100, #004678);
+	cursor: pointer;
+}
+
 /* ---- Inputs y formularios ---- */
 
 .form-control,
