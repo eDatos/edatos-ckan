@@ -1487,8 +1487,8 @@ h2.dataset-heading {
 	justify-content: center;
 	align-items: center;
 	border-radius: 5px;
-	background: var(--edatos-color-secondary-100, #004678);
-	color: var(--edatos-color-white-100, #FFF);
+	background: var(--edatos-color-gray-20);
+    color: var(--edatos-color-secondary-100, #FFF);
 	font-family: "Open Sans", sans-serif;
 	font-size: 12px;
 	font-weight: 600;
@@ -1497,6 +1497,10 @@ h2.dataset-heading {
 	height: 35px;
 	min-width: 35px;
 	flex-shrink: 0;
+}
+
+.module-narrow .nav-item > a, .module-narrow .nav-aside li a {
+    color: var(--edatos-color-secondary-100) !important;
 }
 
 /* ZONA 11 — Enlace "Mostrar más" */
