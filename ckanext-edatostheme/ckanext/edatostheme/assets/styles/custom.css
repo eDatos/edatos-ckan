@@ -346,10 +346,7 @@ nav.navigation div ul li {
 }
 
 #edatos-custom-header {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	flex: 1;
+	display: none !important;
 }
 
 /* Navegación principal: Inicio  Datos  Colecciones */
@@ -1702,6 +1699,7 @@ h1.dataset-title {
 	flex: 1 0 0;
 	justify-content: flex-start !important;
 	border-radius: 5px 5px 0 0 !important;
+	border-bottom: none !important;
 	font-size: 18px !important;
 	font-weight: 600 !important;
 	line-height: 26px !important;
@@ -1909,7 +1907,6 @@ section.module.additional-info {
 section.module.additional-info .module-content table,
 section.additional-info.module > table {
 	border: 1px solid var(--edatos-color-gray-5, #F2F2F2);
-	border-top: none;
 	border-collapse: collapse;
 	width: 100%;
 }
@@ -1973,7 +1970,6 @@ table th:first-child {
 
 section.additional-info.module > table {
 	margin: 0;
-	border-top: none;
 }
 
 /* --- "Mostrar más / Hide" link (table-toggle-more module) --- */
