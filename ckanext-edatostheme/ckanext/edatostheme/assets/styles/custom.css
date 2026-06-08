@@ -436,6 +436,19 @@ nav.section.navigation {
 .account.avatar.authed,
 .navbar-collapse .btn-group {
 	position: relative;
+	display: flex;
+	align-items: center;
+	list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.navbar-collapse .btn-group > li.nav {
+	display: flex;
+	align-items: center;
+	list-style: none;
+	padding: 0;
+	margin: 0;
 }
 
 .navbar-collapse {
