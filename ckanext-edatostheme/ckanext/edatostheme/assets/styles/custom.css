@@ -1330,11 +1330,6 @@ h2.dataset-heading {
 	order: 6;
 }
 
-/* ZONA 11 — Gap entre zona de búsqueda y lista de datasets */
-.dataset-list {
-	margin-top: 30px;
-}
-
 /* #4 — Icono + nombre + contador de grupo: card azul ancho completo (boceto) */
 
 /* Panel Filtros: contenedor exterior con borde y radio según Figma */
@@ -1828,6 +1823,8 @@ h1.dataset-title {
 	margin-left: 0 !important;
 	margin-right: 0 !important;
 	gap: 10px;
+	padding-top: 10px;
+	box-shadow: 0 -6px 12px -6px rgba(0, 0, 0, 0.15) !important;
 }
 
 .row.wrapper > .secondary {
@@ -2057,10 +2054,16 @@ a.toggle-show.toggle-show-less:hover {
 	padding-bottom: 20px;
 }
 
+.page-header {
+    margin-top: 1.5rem;
+    border-bottom: 1px solid #ddd;
+    background-color: var(--edatos-color-white-100) !important;
+    border-radius: 0 3px 0 0;
+}
+
 /* --- Dataset detail: tabs flush --- */
 .module-content.page-header {
-	padding-left: 0;
-	padding-right: 0;
+	padding: 0px;
 	position: relative;
 }
 
@@ -2450,6 +2453,12 @@ a.metadatos-tag:hover {
 	color: var(--color-white);
 	border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
 	border: none;
+}
+
+.search-form {
+    margin-bottom: 0px !important;
+    padding-bottom: 25px;
+    border-bottom: 0px !important;
 }
 
 .search-form .search-input .btn:hover,
