@@ -2622,7 +2622,7 @@ div.input-prepend input:nth-child(2) {
 	font-size: 14px !important;
 	font-weight: 300 !important;
 	font-style: normal !important;
-	line-height: normal !important;
+	line-height: 20px !important;
 	color: #004678 !important;
 	background-color: transparent !important;
 	border-radius: 5px 5px 0 0 !important;
@@ -2633,9 +2633,8 @@ div.input-prepend input:nth-child(2) {
 
 .nav-tabs > li > a:hover,
 .nav-tabs > li > a:focus {
-	background-color: rgba(255, 255, 255, 0.5) !important;
+	background-color: var(--edatos-color-primary-10, #CCDAE4) !important;
 	border: none !important;
-	color: #004678 !important;
 }
 
 /* Tab activo */
@@ -3528,7 +3527,7 @@ li.showcase-card:hover {
     padding: 0.5rem 1rem;
     color: #206b82;
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
-    color: var(--edatos-color-secondary, #000) !important;
+    color: var(--edatos-color-secondary, #004678) !important;
 }
 
 /* ============================================================
@@ -3998,4 +3997,13 @@ aside.secondary .module-content > a.btn.btn-sm i {
         margin: 0 0.15rem;
         font-size: 13px;
     }
+}
+
+/* ------------------------------------------------------------------
+   SUBSECTION TABS — hover
+   ------------------------------------------------------------------ */
+.nav.nav-tabs li a:hover {
+    background-color: var(--edatos-color-primary-10) !important;
+    border-radius: 5px 5px 0px 0px !important;
+    text-decoration: none;
 }
