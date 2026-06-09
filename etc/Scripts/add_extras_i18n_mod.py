@@ -1,3 +1,4 @@
+import re
 import requests
 import json
 import sys
@@ -6,9 +7,69 @@ import csv
 from string import Template
 
 # Configuracin
-CKAN_URL = 'https://estadisticas.arte-consultores.com/catalogo'
+CKAN_URL = 'https://mgcartera.gobiernodecanarias.net/catalogos/estadisticas'
 # Configuracin
-API_KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJVZzlIQUh6MUppSzJ5QjhWdHNNU1BqdUVkQTJvVFVOODNHVzd5SldTZUVyUkZlMTFLbFdtZFVWdWRaWmIxSEpPRVVrd3FfSG1JMVdhNVNENyIsImlhdCI6MTc1ODAyOTgzMH0.To0HFTa2Qt1qGJ2qGC5B8QsFNFKzGPsHtVjEKKVCUVw'
+#P API_KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJxY3pDZ2VUQkk4Y1ZTUTlmUGhoVTR1U2ZKYWdMRGV6S25wU3ZwSHBQOXhtOFhIRXJzMjhVZFpkU29ld0J3YVRfV09FSk55Wk1jY2RVTnZ0aiIsImlhdCI6MTc4MDQ4NzEzMX0.c4q1uVePPgfvQuNAi7lC6H_t3mG0V5BS5Wha-zXEGeo'
+
+API_KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJRS1A1dXFaOFpqMVRJbGNOeC13MkJYNWV4THpCWGJCWnJLNHRueUF0eS15OEk4X0c2aGZ1NmZEUkxrWHQ1Mm5EMi1ldm9CYzJmWUJwLUVoaCIsImlhdCI6MTc4MTAxMDM3Mn0.aS85kk58MwKp-aJ_pg950yZqIcVeYjylv1UipkQDDAI'
+# ---------------------------------------------------------------------------
+# Mapeo frecuencia: string español -> {type, value} para el preset date_frequency.
+# Fuente: gobcan_profile.py _get_frequency_details.
+# type debe ser uno de: days, weeks, months, years, hours, minutes, seconds.
+# ---------------------------------------------------------------------------
+FREQUENCY_MAP = {
+    'anual':      {'type': 'years',  'value': 1},
+    'semestral':  {'type': 'months', 'value': 6},
+    'trimestral': {'type': 'months', 'value': 3},
+    'bimensual':  {'type': 'months', 'value': 2},
+    'mensual':    {'type': 'months', 'value': 1},
+    'quincenal':  {'type': 'days',   'value': 15},
+    'semanal':    {'type': 'days',   'value': 7},
+    'diaria':     {'type': 'days',   'value': 1},
+}
+
+_FREQ_VALID_TYPES = frozenset(v['type'] for v in FREQUENCY_MAP.values())
+
+def normalize_frequency(raw):
+    """Devuelve {type, value} válido para date_frequency, o None si no es mapeable.
+
+    Acepta:
+    - dict ya con type/value (devuelto por date_frequency_output): se reenvía si es válido.
+    - string español (Trimestral, Anual...): se mapea via FREQUENCY_MAP.
+    - None, dict vacío {}, string vacío -> None (campo opcional, el validador acepta None).
+    """
+    if raw is None:
+        return None
+    if isinstance(raw, dict):
+        t, v = raw.get('type'), raw.get('value')
+        if t in _FREQ_VALID_TYPES and v not in (None, ''):
+            try:
+                int(v)
+                return {'type': t, 'value': v}
+            except (ValueError, TypeError):
+                pass
+        # {} o dict con claves inválidas: enviar type/value vacíos para que el
+        # validador los acepte (ambos falsy + campo no required -> data[key]=None).
+        return {'type': '', 'value': ''}
+    if isinstance(raw, str):
+        freq_key = raw.strip().lower()
+        return FREQUENCY_MAP.get(freq_key)  # None si no está en la tabla
+    return None
+
+# ---------------------------------------------------------------------------
+# Validación de nombres de tag según reglas de CKAN:
+# 2-100 chars; letras, dígitos, espacios, guion, guion_bajo, punto.
+# ---------------------------------------------------------------------------
+_TAG_NAME_RE = re.compile(r'^[\w \-\.]{2,100}$', re.UNICODE)
+
+def valid_tag_names(tags):
+    """Extrae nombres de tag válidos de la lista core `tags` de package_show."""
+    names = []
+    for t in tags or []:
+        name = t.get('name') if isinstance(t, dict) else t
+        if isinstance(name, str) and _TAG_NAME_RE.match(name.strip()):
+            names.append(name.strip())
+    return names
 
 def get_package(package_id):
     url = '%s/api/3/action/package_show?id=%s' % (CKAN_URL,package_id)
@@ -17,7 +78,7 @@ def get_package(package_id):
         'Content-Type': 'application/json'
     }
     data = {'id': package_id}
-    response = requests.get(url, headers=headers, json=data)
+    response = requests.get(url, headers=headers, json=data, verify=False)
     if response.status_code == 200:
         return response.json()['result']
     else:
@@ -32,11 +93,23 @@ def update_package(package_id, package):
     }
     print('-------- ACTUALIZANDO PAQUETE --------')
     print(json.dumps(package, indent=4))
-    response = requests.post(url, headers=headers, json=package)
+    response = requests.post(url, headers=headers, json=package, verify=False)
     if response.status_code == 200:
         print('Paquete actualizado correctamente')
     else:
         print(f'Error al actualizar el paquete: {response.status_code} para {package_id}')
+        try:
+            error_info = response.json()
+            error_message = error_info.get('error', {}).get('message', 'Mensaje no disponible')
+            error_cause = error_info.get('error', {}).get('cause', 'Causa no disponible')
+            print(f'Número del error: {response.status_code}')
+            print(f'Mensaje: {error_message}')
+            print(f'Causa: {error_cause}')
+            print('Error Response', error_info)
+        except Exception as e:
+            print('No se pudo parsear el cuerpo de la respuesta como JSON.', error_info)
+            print(f'Error interno: {str(e)}')
+            print(f'Respuesta completa: {response.text}')
 
 def process_package(package_id):
     packageg = get_package(package_id)
@@ -46,7 +119,7 @@ def process_package(package_id):
         title_t =  {"es": p_title}
         desc_t =  {"es": p_desc if p_desc is not None else p_title}
         package = {}
-        # TITLE 
+        # TITLE
         package['title_translated'] = title_t
         # DESCRIPTION
         package['description_translated'] = desc_t
@@ -56,21 +129,30 @@ def process_package(package_id):
         spatial = None
         language = None
         contact_email = None
-        for item in packageg['extras']:
-            if item['key'] == 'publisher_uri':
-                pub = item['value']
-            if item['key'] == 'theme':
-                theme = item['value']
-            if item['key'] == 'identifier':
-                identifier = item['value']
-            if item['key'] == 'spatial_uri':
-                spatial = item['value']
-            if item['key'] == 'language':
-                language = item['value']
-            if item['key'] == 'contact_email':
-                contact_email = item['value']
+        freq_raw = None
+        if 'extras' in packageg and packageg['extras'] is not None:
+            for item in packageg['extras']:
+                if item['key'] == 'publisher_uri':
+                    pub = item['value']
+                if item['key'] == 'theme':
+                    theme = item['value']
+                if item['key'] == 'identifier':
+                    identifier = item['value']
+                if item['key'] == 'spatial_uri':
+                    spatial = item['value']
+                if item['key'] == 'language':
+                    language = item['value']
+                if item['key'] == 'contact_email':
+                    contact_email = item['value']
+                if item['key'] == 'frequency':
+                    freq_raw = item['value']
+        # frequency puede venir como extra string ("Trimestral") o como campo de primer
+        # nivel (dict {type,value} si ya pasó por date_frequency_output en el esquema nuevo).
+        if freq_raw is None:
+            freq_raw = packageg.get('frequency')
         # PUBLISHER
-        package['publisher'] = pub
+        if pub is not None:
+            package['publisher'] = pub
         # IDENTIFIER
         if identifier is not None:
             package['identifier'] = identifier
@@ -83,17 +165,32 @@ def process_package(package_id):
                 # Si ya es lista, devolver tal cual
                 package['theme'] = theme
         # SPATIAL
-        package['spatial'] = spatial
+        if spatial is not None:
+            package['spatial'] = spatial
+        # FREQUENCY: mapear string español -> {type, value}.
+        # Siempre se incluye: normalize_frequency devuelve {type,value} real si
+        # hay mapeo, o {type:'',value:''} para limpiar un {} roto almacenado.
+        # Nunca se envía None: el validador rechaza null con "Expecting JSON object".
+        package['frequency'] = normalize_frequency(freq_raw)
         # EXTRAS
         package['extras'] = []
         # IDENTIFIER
         package['id'] = packageg.get('id', '')
         # CONTACT EMAIL
-        package['contact_email'] = contact_email
+        if contact_email is not None:
+            package['contact_email'] = contact_email
+        elif 'contact_email' in packageg and packageg['contact_email'] is not None:
+            package['contact_email'] = packageg['contact_email']
         # LANGUAGE
         if language is not None:
             package['language'] = language.split(',')
-        
+        # TAGS -> multilingual_tags (asumimos español).
+        # copy_fluent_keywords_to_tags sincroniza la lista core `tags` automáticamente,
+        # así que NO se incluye `package['tags']` para evitar conflictos.
+        tag_names = valid_tag_names(packageg.get('tags'))
+        if tag_names:
+            package['multilingual_tags'] = {'es': tag_names}
+
         resources = packageg.get('resources', '')
         resources_dict = []
         for resource in resources:
@@ -112,6 +209,7 @@ def process_package(package_id):
             }
             resources_dict.append(resource_dict)
         package['resources'] = resources_dict
+        print()
         update_package(package_id, package)
 
 if __name__ == "__main__":
@@ -127,7 +225,7 @@ if __name__ == "__main__":
             reader = csv.reader(f)
             for row in reader:
                 # Admite CSV con ID como primer valor de cada fila
-                package_id = row
+                package_id = row[0].strip()
                 print(f"\n=== Procesando paquete: {package_id} ===")
                 process_package(package_id)
     elif args.package_id:
@@ -136,9 +234,12 @@ if __name__ == "__main__":
     else:
         print('Uso: python script.py <package_id>  o \n      python script.py -l <lista.csv>')
         sys.exit(1)
-        
+
 ### Uso:
-# - Solo 1 ID:  
+# - Solo 1 ID:
 #   `python script.py id_del_paquete`
-# - Archivo CSV con lista (1 ID por línea):  
+# - Archivo CSV con lista (1 ID por línea):
 #   `python script.py -l lista.csv`
+#  nohup python add_extra_i18n_mod.py -l datasets_migrar.csv &
+#   
+
