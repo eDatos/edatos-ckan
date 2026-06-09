@@ -535,7 +535,7 @@ nav.section.navigation {
 	display: inline-flex !important;
 	align-items: center !important;
 	gap: 6px !important;
-	background-color: transparent !important;
+	background-color: var(--edatos-color-white-100, #fff) !important;
 	background-image: none !important;
 	font-size: var(--font-size-base) !important;
 	font-weight: var(--font-weight-light) !important;
@@ -546,11 +546,37 @@ nav.section.navigation {
 	border-radius: var(--border-radius-sm) !important;
 	text-transform: uppercase;
 	cursor: pointer;
+	transition: background-color 0.25s, color 0.25s, border-radius 0.2s;
 }
 
-button.btn.btn-navbar:hover, button.btn.btn-navbar:focus, button.btn.btn-navbar:active {
-    background-color: var(--edatos-color-primary-100) !important;
-	color: var(--edatos-color-white-100) !important;
+/* Icono chevron: transición de rotación */
+.btn.btn-navbar i {
+	transition: transform 0.25s, color 0.25s;
+}
+
+/* Hover suave */
+button.btn.btn-navbar:hover {
+	background-color: var(--edatos-color-primary-10, #ccdae4) !important;
+	color: var(--edatos-color-primary-100) !important;
+}
+
+/* Estado abierto: detectado cuando el dropdown hermano tiene clase .abrir */
+li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar,
+li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar:hover {
+	background-color: var(--edatos-color-primary-100, #004678) !important;
+	color: var(--edatos-color-white-100, #fff) !important;
+	/* Aplana la esquina inferior derecha para conectar con el menú (alineado a la derecha) */
+	border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 var(--border-radius-sm) !important;
+}
+
+/* Iconos en estado abierto */
+li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i {
+	color: var(--edatos-color-white-100, #fff);
+}
+
+/* Chevron rotado al abrir */
+li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
+	transform: rotate(180deg);
 }
 
 
@@ -2049,7 +2075,7 @@ a.toggle-show.toggle-show-less:hover {
 /* --- Group about: module-content padding --- */
 .primary .module > .module-content:not(.page-header) {
 	padding-left: 0;
-	padding-right: 0;
+	padding-right: 20px;
 	padding-top: 20px;
 	padding-bottom: 20px;
 }
