@@ -1240,7 +1240,6 @@ h2.dataset-heading {
 	text-decoration: none;
 }
 .dataset-heading a:hover {
-	color: var(--color-primary-hover);
 	text-decoration: underline;
 }
 
