@@ -44,7 +44,7 @@
     </div>
 
     {% block page_pagination %}
-      {{ page.pager(q=q) }}
+      {{ h.edatos_pager(page, q=q) }}
     {% endblock %}
   </section>
 

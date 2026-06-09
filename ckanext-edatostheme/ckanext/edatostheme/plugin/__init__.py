@@ -33,6 +33,121 @@ HERE = os.path.abspath(os.path.dirname(__file__))
 I18N_DIR = os.path.join(HERE, "../i18n")
 APP_ID_FOR_ANALYTICS = 'ckan-catalog'
 
+def edatos_pager(page, **kwargs):
+    """Paginación con ventana deslizante de 5 páginas y ellipsis.
+
+    Comportamiento (ejemplo con 117 páginas):
+      pág   1 →       [1*][2][3][4][5] … [117] [»]   (sin «)
+      pág   4 → [«] [1][2][3][4*][5][6] … [117] [»]
+      pág   5 → [«] [1]…[3][4][5*][6][7] … [117] [»]
+      pág   7 → [«] [1]…[5][6][7*][8][9] … [117] [»]
+      pág 114 → [«] [1]…[112][113][114*][115][116][117] [»]
+      pág 116 → [«] [1]…[113][114][115][116*][117] [»]
+      pág 117 → [«] [1]…[113][114][115][116][117*]      (sin »)
+    """
+    from markupsafe import Markup
+    from ckan.lib.helpers import pager_url
+
+    if not page.last_page or page.last_page <= 1:
+        return Markup('')
+
+    first   = page.first_page   # siempre 1
+    last    = page.last_page
+    current = page.page
+
+    WINDOW = 5       # tamaño del bloque deslizante
+    HALF   = WINDOW // 2  # páginas a cada lado (= 2)
+
+    # Generador de URLs: usa el propio de la instancia o el helper de CKAN
+    url_gen = getattr(page, '_url_generator', None) or pager_url
+
+    def make_url(p):
+        params = dict(getattr(page, 'kwargs', {}))
+        params.update(kwargs)
+        params['page'] = p
+        return url_gen(**params)
+
+    # Ventana deslizante centrada en current
+    win_start = max(first, current - HALF)
+    win_end   = min(last,  current + HALF)
+
+    # Si la ventana quedó reducida por un extremo, compensar por el otro
+    if win_end - win_start < WINDOW - 1:
+        if win_start == first:
+            win_end = min(last, win_start + WINDOW - 1)
+        else:
+            win_start = max(first, win_end - WINDOW + 1)
+
+    window_pages = set(range(win_start, win_end + 1))
+    visible = sorted({first, last} | window_pages)
+
+    li_items = []
+
+    # Botón anterior (chevron izquierdo)
+    if page.previous_page:
+        li_items.append(
+            '<li class="page-item">'
+            '<a class="page-link" href="{url}">'
+            '<i class="fa-thin fa-chevrons-left"></i>'
+            '</a></li>'.format(url=make_url(page.previous_page))
+        )
+    else:
+        li_items.append(
+            '<li class="page-item disabled">'
+            '<a class="page-link">'
+            '<i class="fa-thin fa-chevrons-left"></i>'
+            '</a></li>'
+        )
+
+    # Páginas con ellipsis entre huecos
+    prev_num = None
+    for p in visible:
+        if prev_num is not None and p - prev_num > 1:
+            li_items.append(
+                '<li class="page-item page-ellipsis">'
+                '<span class="page-link">&hellip;</span>'
+                '</li>'
+            )
+        if p == current:
+            li_items.append(
+                '<li class="page-item active">'
+                '<a class="page-link">{p}</a>'
+                '</li>'.format(p=p)
+            )
+        else:
+            li_items.append(
+                '<li class="page-item">'
+                '<a class="page-link" href="{url}">{p}</a>'
+                '</li>'.format(url=make_url(p), p=p)
+            )
+        prev_num = p
+
+    # Botón siguiente (chevron derecho)
+    if page.next_page:
+        li_items.append(
+            '<li class="page-item">'
+            '<a class="page-link" href="{url}">'
+            '<i class="fa-thin fa-chevrons-right"></i>'
+            '</a></li>'.format(url=make_url(page.next_page))
+        )
+    else:
+        li_items.append(
+            '<li class="page-item disabled">'
+            '<a class="page-link">'
+            '<i class="fa-thin fa-chevrons-right"></i>'
+            '</a></li>'
+        )
+
+    html = (
+        '<div class="pagination-wrapper">'
+        '<ul class="pagination justify-content-center">'
+        + ''.join(li_items) +
+        '</ul>'
+        '</div>'
+    )
+    return Markup(html)
+
+
 def get_login_error_msg():
     """Lee y borra el mensaje de error de login almacenado en sesión.
     Se muestra una única vez en la página destino del redirect de CAS."""
@@ -531,6 +646,7 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             'edatos_get_freq_tags': get_freq_tags,
             'new_activities': new_activities_dummy,
             'edatos_get_login_error_msg': get_login_error_msg,
+            'edatos_pager': edatos_pager,
         }
 
     # ITranslation
