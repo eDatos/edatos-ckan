@@ -1578,6 +1578,18 @@ h2.dataset-heading {
 	text-decoration: underline;
 }
 
+.module-footer {
+    padding: 7px 25px 7px;
+    margin: 0;
+    border-top: 1px #ddd !important;
+}
+
+.nav-simple > li, .nav-aside > li {
+    font-size: 12px;
+    line-height: 1.1666666667em;
+    padding: 7px 25px;
+    border-bottom: 1px #ddd !important;
+}
 
 /* ============================================================
    7. DATASET DETAIL — Metadata, Tabs, Resources, Format badges
