@@ -1501,7 +1501,7 @@ h2.dataset-heading {
 
 .module.module-narrow .nav-simple .nav-item a:hover {
 	background-color: var(--edatos-color-secondary-100, #004678);
-	color: var(--edatos-color-white-100, #FFF);
+	color: var(--edatos-color-white-100, #FFF) !important;
 	text-decoration: none;
 }
 
@@ -2974,6 +2974,11 @@ li.showcase-card:hover {
 .showcase-detail-sidebar .module.module-narrow.module-shallow .module-heading {
     font-size: 16px !important;
     text-transform: none !important;
+}
+
+.module:first-child .module-heading {
+    border-radius: 3px !important;
+    border-top-width: 0;
 }
 
 /* Aviso legal: contenido de la sección licencia */
