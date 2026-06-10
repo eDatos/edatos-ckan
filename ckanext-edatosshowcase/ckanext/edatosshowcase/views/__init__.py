@@ -179,6 +179,7 @@ def index(package_type):
             item_count=query['count'],
             items_per_page=limit
         )
+        g.page = extra_vars['page'] 
         extra_vars['search_facets'] = query['search_facets']
         g.search_facets = query['search_facets']
         g.facets = query['facets']
@@ -202,6 +203,7 @@ def index(package_type):
         g.facets = {}
         extra_vars['search_facets'] = {}
         extra_vars['page'] = h.Page(collection=[])
+        g.page = extra_vars['page'] 
 
     g.search_facets_limits = {}
     for facet in extra_vars['search_facets'].keys():
@@ -450,7 +452,7 @@ def read(id):
     context = {
         'model': model,
         'session': model.Session,
-        'user': toolkit.g.user or toolkit.author,
+        'user': toolkit.g.user,
         'for_view': True,
         'auth_user_obj': toolkit.g.userobj
     }
