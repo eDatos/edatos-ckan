@@ -1642,17 +1642,6 @@ h1.dataset-title {
 	display: none;
 }
 
-/* --- ZONA 4: Item de recurso (.resource-item) --- */
-.resource-item {
-	display: flex;
-    padding: 20px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 15px;
-    align-self: stretch;
-    background: var(--edatos-color-gray-5, #F2F2F2);
-    border-radius: 0;
-}
 
 .resource-list {
     list-style: none;
@@ -1944,7 +1933,6 @@ section#dataset-resources > h2 {
 /* --- Cuerpo sección datos (body bajo el título) --- */
 .dataset-resources-body {
 	display: flex;
-	padding: 20px;
 	flex-direction: column;
 	align-items: flex-start;
 	gap: 15px;
@@ -2723,37 +2711,35 @@ a.tag:hover {
 .resource-format-icon svg {
 	width: 24px;
 	height: 32px;
+	fill: var(--edatos-color-secondary-100, #004678);
 }
 
-.format-label {
-	position: absolute;
-	bottom: 0;
-	color: var(--edatos-color-secondary-100, #004678);
-	font-family: MatryoshkaM;
-	font-size: 25px;
-	font-style: normal;
-	font-weight: 400;
-	line-height: normal;
-	letter-spacing: -0.72px;
-	background: none;
-	margin: 0;
-	padding: 1px 2px;
-	text-align: right;
-	left: 0;
-}
 
 /* Override CKAN base CSS that positions .format-label with top/left values */
-.resource-item .format-label {
-	position: absolute;
-	top: 6px;
-	bottom: -2px;
-	right: auto;
-	left: -16px;
-	font-size: 18px;
-	color: var(--edatos-color-secondary-100, #004678);
-	letter-spacing: -0.72px;
+.resource-item .resource-format-icon {
+	position: relative;
+	display: inline-block;
 }
 
+.resource-item .resource-format-icon .format-label {
+	background: none !important;
+	text-indent: 0 !important;
+	width: auto !important;
+	height: auto !important;
+	transform: translateX(-20%) !important;
+	margin: 0 !important;
+	position: absolute;
+	bottom: 3px;
+	left: 50%;
+	top: auto !important;
+	color: var(--edatos-color-secondary-100);
+	font-size: 7px;
+	font-weight: 700;
+	text-align: center;
+	white-space: nowrap;
+	line-height: 1;
+	letter-spacing: 0;
+}
 
 /* ============================================================
    SHOWCASE — Listado de colecciones (/es/showcase)
@@ -3041,6 +3027,7 @@ li.showcase-card:hover {
 	font-size: 16px;
 	font-weight: 600;
 	line-height: 26px;
+	padding-right: 10px;
 }
 
 .showcase-detail-sidebar #package-info .heading a {
@@ -3153,10 +3140,10 @@ li.showcase-card:hover {
 .primary h1 {
 	color: var(--Negro-100, #000);
 	text-align: left;
-	font-family: "Open Sans", sans-serif;
-	font-size: 24px;
+	font-family: "Open Sans";
+	font-size: var(--edatos-font-size-lg) !important;
 	font-style: normal;
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold) !important;
 	line-height: 120%;
 }
 
@@ -3527,7 +3514,7 @@ li.showcase-card:hover {
     padding: 0.5rem 1rem;
     color: #206b82;
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
-    color: var(--edatos-color-secondary, #004678) !important;
+    color: var(--edatos-color-secondary-100, #004678) !important;
 }
 
 /* ============================================================
