@@ -1770,10 +1770,10 @@ h1.dataset-title {
 .additional-info table th.dataset-label,
 .additional-info table th:first-child {
 	color: var(--Negro-60, #666);
-	font-family: "Open Sans", sans-serif;
+	font-family: "Open Sans";
 	font-size: 16px;
 	font-style: normal;
-	font-weight: 600;
+	font-weight: 600 !important;
 	line-height: 26px;
 }
 
@@ -1991,9 +1991,21 @@ section.additional-info.module table td:first-child {
 }
 
 /* Filas de datos: campo 600, valor 300 */
+/* Bootstrap 5 usa box-shadow inset con --bs-table-accent-bg para el striped,
+   no background-color, por eso es necesario neutralizar ambos. */
+.additional-info table tbody tr td,
+.additional-info table tbody tr th {
+	--bs-table-accent-bg: transparent;
+	box-shadow: none !important;
+}
+
 .additional-info table tbody tr td {
 	font-weight: 300;
-	color: var(--Negro-60, #666);
+	color: var(--Negro-60, #666) !important;
+	font-family: "'Open Sans'";
+    font-size: 16px;
+    font-style: normal;
+    line-height: 26px;
 	border-bottom: 1px solid var(--edatos-color-gray-5, #F2F2F2);
 	border-right: 1px solid var(--edatos-color-gray-5, #F2F2F2);
 	border-left: 1px solid var(--edatos-color-gray-5, #F2F2F2);
@@ -2006,7 +2018,7 @@ section.additional-info.module table td:first-child {
 	border-bottom: 1px solid var(--edatos-color-gray-5, #F2F2F2);
 	border-right: 1px solid var(--edatos-color-gray-5, #F2F2F2);
 	border-left: 1px solid var(--edatos-color-gray-5, #F2F2F2);
-	background: var(--edatos-color-white-100, #FFF);
+	background: var(--edatos-color-white-100, #FFF) !important;
 	padding: 5px 20px;
 }
 
@@ -2144,10 +2156,16 @@ div.ckanext-showcase-image-container {
 	margin-top: 8px;
 }
 
+.table > :not(:first-child) {
+    border-top: none !important;
+    /* border-top: 2px solid currentColor; */
+}
+
 /* --- Metadatos: Palabras clave pills --- */
 .metadatos-tag {
-	padding: 5px;
+	display: inline-flex;
 	align-items: center;
+	padding: 10px;
 	gap: 5px;
 	border-radius: 30px;
 	border: 1px solid var(--edatos-color-primary-50, #4D7EA0);
@@ -2157,14 +2175,28 @@ div.ckanext-showcase-image-container {
 	font-size: 12px;
 	font-weight: 600;
 	line-height: 24px;
+	white-space: nowrap;
 	text-decoration: none;
 	cursor: pointer;
+	margin: 3px 6px 3px 0;
+	height: 9px !important;
 }
 
 a.metadatos-tag:hover {
 	background: var(--edatos-color-primary-50, #4D7EA0);
 	color: var(--edatos-color-white-100, #FFF);
 	text-decoration: none;
+}
+
+/* Celda "Valor" de la fila Palabras clave: padding extra + alineación vertical */
+.additional-info table tbody tr td:has(.metadatos-tag) {
+	padding: 10px 20px;
+	vertical-align: middle;
+}
+
+/* Etiqueta "Palabras clave" alineada verticalmente al centro con las pills */
+.additional-info table tbody tr:has(.metadatos-tag) th {
+	vertical-align: middle;
 }
 
 /* --- Resource read: botones de acción (Editar recurso, Vistas, IR AL RECURSO) --- */
