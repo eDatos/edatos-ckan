@@ -1985,9 +1985,11 @@ section.additional-info.module table td:first-child {
 	border-bottom: 1px solid var(--edatos-color-gray-5, #F2F2F2);
 }
 
-/* Divisor vertical entre columna Campo y Valor en cabecera */
+/* Sin divisor vertical entre columnas (Figma no lo tiene) */
+.additional-info table thead tr th,
 .additional-info table thead tr th:first-child {
-	border-right: 1px solid var(--edatos-color-gray-5, #F2F2F2);
+	border-left: none !important;
+	border-right: none !important;
 }
 
 /* Filas de datos: campo 600, valor 300 */
@@ -2007,8 +2009,8 @@ section.additional-info.module table td:first-child {
     font-style: normal;
     line-height: 26px;
 	border-bottom: 1px solid var(--edatos-color-gray-5, #F2F2F2);
-	border-right: 1px solid var(--edatos-color-gray-5, #F2F2F2);
-	border-left: 1px solid var(--edatos-color-gray-5, #F2F2F2);
+	border-left: none !important;
+	border-right: none !important;
 	background-color: var(--edatos-color-white-100, #FFF) !important;
 }
 
@@ -2016,8 +2018,8 @@ section.additional-info.module table td:first-child {
 	font-weight: 600;
 	color: var(--Negro-60, #666);
 	border-bottom: 1px solid var(--edatos-color-gray-5, #F2F2F2);
-	border-right: 1px solid var(--edatos-color-gray-5, #F2F2F2);
-	border-left: 1px solid var(--edatos-color-gray-5, #F2F2F2);
+	border-left: none !important;
+	border-right: none !important;
 	background: var(--edatos-color-white-100, #FFF) !important;
 	padding: 5px 20px;
 }
