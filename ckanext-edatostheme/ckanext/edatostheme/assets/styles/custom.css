@@ -2806,10 +2806,6 @@ li.showcase-card {
 	display: flex;
 	flex-direction: column;
 	overflow: hidden;
-	border-radius: 3px;
-	background: var(--edatos-color-white-100);
-	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-	transition: box-shadow 0.2s ease;
 	width: auto !important;
 	float: none !important;
 	margin: 0 !important;
@@ -2817,10 +2813,6 @@ li.showcase-card {
 	position: static !important;
 	left: auto !important;
 	top: auto !important;
-}
-
-li.showcase-card:hover {
-	box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
 }
 
 /* Enlace que envuelve imagen + cuerpo */
@@ -2841,7 +2833,7 @@ li.showcase-card:hover {
 	height: 160px;
 	flex-shrink: 0;
 	align-self: stretch;
-	border-radius: 3px 3px 0 0;
+	border-radius: var(--edatos-border-radius-xs);
 	background-color: var(--color-primary-10);
 	background-size: cover;
 	background-position: 50% center;
@@ -2862,7 +2854,8 @@ li.showcase-card:hover {
 .showcase-card-count {
 	display: inline-block;
 	align-self: flex-start;
-	background-color: var(--color-primary-10);
+	white-space: nowrap;
+	background-color: var(--edatos-color-primary-10);
 	padding: 2px 6px;
 	color: var(--color-text-base, #333);
 	font-family: "Open Sans", sans-serif;
@@ -3235,6 +3228,7 @@ li.showcase-card:hover {
 }
 
 .showcase-tags-section .tags a.tag {
+	height: 29px;
 	display: inline-flex !important;
 	padding: 10px !important;
 	align-items: center;
