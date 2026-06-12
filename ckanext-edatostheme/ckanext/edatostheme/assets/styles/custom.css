@@ -1194,8 +1194,8 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 .search-form .input-group.search-input-group input[name="q"] {
 	height: 35px;
 	padding: 7px 20px;
-	border-radius: 5px 0 0 5px;
-	border: 1px solid var(--edatos-color-primary-50);
+	border-radius: var(--edatos-border-radius-sm, var(--border-radius-sm)) 0 0 var(--edatos-border-radius-sm, var(--border-radius-sm));
+	border: var(--border-width) solid var(--edatos-color-primary-50);
 	background: var(--edatos-color-white-100);
 	color: var(--edatos-color-gray-80);
 	font-family: "Open Sans", sans-serif;
@@ -1207,9 +1207,18 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	font-weight: 600;
 }
 .search-form .input-group.search-input-group .btn[type="submit"] {
-	border: 1px solid var(--edatos-color-primary-50);
+	border: var(--border-width) solid var(--edatos-color-primary-50);
 	border-left: none;
-	border-radius: 0 5px 5px 0;
+	border-radius: 0 var(--edatos-border-radius-sm, var(--border-radius-sm)) var(--edatos-border-radius-sm, var(--border-radius-sm)) 0;
+	box-shadow: none;
+	background-image: none;
+	height: 35px;
+	padding: var(--edatos-spacing-y-sm) var(--spacing-md);
+}
+.search-form .input-group.search-input-group .btn[type="submit"]:hover {
+	box-shadow: none;
+	background-color: var(--edatos-color-white-100);
+	background-image: none;
 }
 
 /* ZONA 4 — Item de dataset */
