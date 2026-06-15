@@ -39,7 +39,6 @@
   /* Tipografía */
   --font-size-xs: 12px;
   --font-size-sm: 13px;
-  --font-size-base: 14px;
   --font-size-md: 15px;
   --font-size-lg: 16px;
   --font-size-xl: 20px;
@@ -478,7 +477,7 @@ nav.section.navigation {
 	margin-top: 0 !important;
 	padding-top: var(--spacing-sm);
 	padding-bottom: var(--spacing-sm);
-	font-size: var(--font-size-base);
+	font-size: var(--edatos-font-size-sm);
 	text-align: left;
 	list-style: none;
 	background-color: var(--edatos-color-primary-100);
@@ -537,7 +536,7 @@ nav.section.navigation {
 	gap: 6px !important;
 	background-color: var(--edatos-color-white-100, #fff) !important;
 	background-image: none !important;
-	font-size: var(--font-size-base) !important;
+	font-size: var(--edatos-font-size-sm) !important;
 	font-weight: var(--font-weight-light) !important;
 	color: var(--edatos-color-primary-100) !important;
 	border: 1px solid var(--edatos-color-primary-100) !important;
@@ -698,7 +697,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	justify-content: center;
 	gap: var(--spacing-sm);
 	padding: 13px var(--spacing-md);
-	font-size: var(--font-size-base);
+	font-size: var(--edatos-font-size-sm);
 	font-weight: var(--font-weight-medium);
 	color: var(--color-gray-dark);
 	text-decoration: none;
@@ -732,7 +731,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	border: none;
 	padding: var(--spacing-sm) var(--spacing-md);
 	color: var(--color-gray-dark);
-	font-size: var(--font-size-base);
+	font-size: var(--edatos-font-size-sm);
 	cursor: pointer;
 	border-radius: var(--border-radius-sm);
 	transition: background-color var(--transition-fast);
@@ -774,7 +773,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	padding: var(--spacing-sm) var(--spacing-md);
 	color: var(--color-white);
 	text-decoration: none;
-	font-size: var(--font-size-base);
+	font-size: var(--edatos-font-size-sm);
 	transition: background-color var(--transition-fast);
 }
 
@@ -795,7 +794,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	gap: var(--spacing-sm);
 	padding: var(--spacing-sm) var(--spacing-md);
 	color: var(--edatos-color-secondary-100);
-	font-size: var(--font-size-base);
+	font-size: var(--edatos-font-size-sm);
 	font-weight: var(--font-weight-medium);
 	text-decoration: none;
 	border: var(--border-width) solid var(--edatos-color-secondary-100);
@@ -1491,21 +1490,36 @@ h2.dataset-heading {
 /* ZONA 10 — Encabezado de sección del sidebar (.module-heading) */
 /* (regla también presente en Sección 7; esta tiene precedencia para sidebar de facets) */
 
-/* ZONA 8 — Items de faceta: nav-item */
+/* ZONA 8 — Items de faceta: nav-item
+   Quitamos el padding del li y anulamos el margen negativo de CKAN para que el anchor
+   rellene exactamente el 100% del ancho de la sección (igual que el heading). */
+.module.module-narrow .nav-simple .nav-item:not(.recursos-item) {
+	padding: 0;
+}
+
 .module.module-narrow .nav-simple .nav-item a {
-	width: 100%;
+	margin: 0 !important;
+	width: 95%;
 	display: flex;
 	min-height: 35px;
 	padding: 5px 10px 5px 20px;
 	align-items: center;
-	flex-wrap: wrap;
+	flex-wrap: nowrap;
 	gap: 10px;
-	font-size: var(--font-size-base);
+	font-size: var(--edatos-font-size-sm);
 	color: var(--edatos-color-secondary);
 	border-top: none;
 	border-bottom: 0.5px solid var(--edatos-color-primary-5, #E5ECF1);
 	text-decoration: none;
 	box-sizing: border-box;
+}
+
+.module.module-narrow .nav-simple .nav-item a .item-label {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	flex: 1 1 0;
+	min-width: 0;
 }
 
 .module.module-narrow .nav-simple .nav-item a:hover {
@@ -1530,17 +1544,37 @@ h2.dataset-heading {
 	color: var(--edatos-color-secondary-100, #004678);
 }
 
+/* Anula el padding horizontal del div.module-content si existe en algún contexto. */
+.secondary .module-narrow .module-content {
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
+
+/* Botón de cierre (×) de faceta activa — sustituye fa-circle-xmark por × simple */
+.module.module-narrow .nav-item.active a .facet-close {
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	color: var(--edatos-color-white-100, #FFF);
+	position: static !important;
+	left: 0 !important;
+	float: none;
+	padding-right: 4px;
+}
+
+.module.module-narrow .nav-item.active a .facet-close i.fa-circle-xmark::before {
+	content: "\00d7" !important;
+	font-family: "Open Sans", sans-serif !important;
+	font-size: 20px;
+	font-weight: 300;
+}
+
 .module-narrow .nav-item.active > a:before, .module-narrow .nav-aside li.active a:before {
     position: absolute;
-    border-right: none;
-    border-left-color: var(--edatos-color-primary-50);
-    border-left-width: 6px;
-    border-top: 17px solid transparent;
-    border-bottom: 17px solid transparent;
-    top: 0;
-    bottom: 0;
-    width: auto;
-    height: auto;
+    content: "";
+    right: -12px;
+	border-left: 12px solid var(--edatos-color-primary-50);
+    border-top: 25px solid transparent;
 }
 
 /* ZONA 9 — Badge numérico en sidebar */
