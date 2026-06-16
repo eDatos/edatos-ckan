@@ -304,9 +304,6 @@ nav.navigation div ul li {
 	padding: 20px 36px 10px 36px;
 }
 
-#istac-app-header-content {
-	padding-top: var(--spacing-sm);
-}
 
 .edatos-custom-app-header {
 	background-color: var(--color-white);
@@ -549,25 +546,14 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 
 /* Botón de acción inline (ej: Añadir grupo) con visual de btn-navbar */
 .btn.btn-navbar.btn-add-group {
-	display: inline-flex !important;
+	display: inline-flex;
 	align-items: center;
 	gap: 6px;
-	width: auto !important;
-}
-
-.navbar-collapse.in {
-	display: flex !important;
+	width: auto;
 }
 
 /* Responsive navbar */
 @media (max-width: 1199px) {
-	.logo.hidden-lg-down {
-		display: none !important;
-	}
-
-	#istac-app-header-content {
-		padding-top: 0 !important;
-	}
 
 	.dropdown-menu {
 		-webkit-transition: var(--transition-base);
@@ -587,12 +573,6 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 		overflow: hidden;
 		height: 0;
 		padding-top: 1.5rem;
-	}
-
-	.navbar-collapse,
-	.navbar-collapse.in {
-		display: flex !important;
-		flex-wrap: wrap;
 	}
 
 	.home-app {
