@@ -93,10 +93,10 @@
 
 body {
 	background-image: none;
-	background-color: var(--color-body-bg) !important;
+	background-color: var(--color-body-bg);
 	background-size: cover;
 	background-position: center center;
-	padding: 0 !important;
+	padding: 0;
 }
 
 a:hover,
@@ -141,7 +141,7 @@ textarea {
 }
 
 .span12 {
-	margin: 0 !important;
+	margin: 0;
 }
 
 @media only screen and (max-width: 767px) {
@@ -152,13 +152,6 @@ textarea {
 	}
 }
 
-.context-info .nums {
-	display: flex;
-	align-items: center;
-	text-align: center;
-	justify-content: center;
-	border-top: none !important;
-}
 
 /* --- Sidebar recurso: bloque Formato con fondo azul oscuro --- */
 .secondary .module.context-info {
@@ -209,27 +202,6 @@ textarea {
 	margin: 0;
 }
 
-/* --- Group sidebar: contador de datasets (boceto) --- */
-#group-info .nums {
-	border-top: 1px solid var(--color-gray-border);
-	margin: 8px 10px 0;
-	padding: 10px 0 12px;
-}
-
-#group-info .nums dt {
-	font-size: var(--font-size-xs);
-	font-weight: normal;
-	color: var(--edatos-color-gray-60);
-	margin-bottom: 2px;
-}
-
-#group-info .nums dd,
-#group-info .nums dd span {
-	font-size: 28px;
-	font-weight: var(--font-weight-bold);
-	color: #222;
-	margin: 0;
-}
 
 .fleft {
 	float: left;
@@ -844,7 +816,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 
 .hero,
 .main.hero {
-	background-image: none !important;
+	background-image: none;
 	background-color: var(--color-body-bg);
 }
 
@@ -942,7 +914,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 }
 
 .homepage .module-search .module-content {
-	background-color: transparent !important;
+	background-color: transparent;
 }
 
 .tags {
@@ -950,14 +922,12 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 }
 
 .box {
-	background-color: transparent !important;
+	background-color: transparent;
 	margin-bottom: var(--spacing-md);
 }
 
 .homepage .module-search {
 	position: relative;
-	margin-top: 0;
-	margin-bottom: 0;
 	background-color: var(--edatos-color-accent-100) !important;
     border-radius: var(--border-radius-m);
     width: 100%;
@@ -2817,6 +2787,7 @@ ul.showcase-grid {
 	row-gap: 30px;
 	list-style: none;
 	padding: 12px 0;
+	height: auto !important /*se setea por medio de js position: relative;height: auto;*/;
 }
 
 /* Tarjeta colección */
@@ -2824,13 +2795,11 @@ li.showcase-card {
 	display: flex;
 	flex-direction: column;
 	overflow: hidden;
-	width: auto !important;
-	float: none !important;
-	margin: 0 !important;
-	padding: 0 !important;
-	position: static !important;
-	left: auto !important;
-	top: auto !important;
+	width: auto;
+	float: none;
+	margin: 0;
+	padding: 0;
+	position: static !important; /*se queda porque Masonry reposiciona cada tarjeta para el layout en cuadrícula*/
 }
 
 /* Enlace que envuelve imagen + cuerpo */
@@ -3203,12 +3172,12 @@ li.showcase-card {
 /* ---- SHOWCASE DETAIL — Descripción ---- */
 
 .ckanext-showcase-notes {
-	color: var(--edatos-color-black-100) !important;
+	color: var(--edatos-color-black-100);
 	font-family: "Open Sans", sans-serif;
-	font-size: var(--edatos-font-size-md) !important;
+	font-size: var(--edatos-font-size-md);
 	font-style: normal;
-	font-weight: 400 !important;
-	line-height: 26px !important;
+	font-weight: var(--edatos-font-weight-regular);
+	line-height: var(--edatos-line-height-md);
 }
 
 /* ---- SHOWCASE DETAIL — Bloque etiquetas ---- */
