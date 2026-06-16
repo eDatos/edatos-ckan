@@ -296,13 +296,6 @@ nav.navigation div ul li {
 	background-color: var(--color-primary-hover);
 }
 
-.istac-navbar .navbar-toggleable-lg .navbar-collapse {
-	height: var(--navbar-height);
-}
-
-.istac-navbar .navbar-brand.logo {
-	padding: 20px 36px 10px 36px;
-}
 
 
 .edatos-custom-app-header {
@@ -580,15 +573,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 		padding-bottom: 0;
 	}
 
-	.istac-navbar .nav-link .border {
-		position: relative;
-		left: -2rem;
-	}
 
-	.istac-navbar .navbar-brand.logo,
-	.istac-navbar .istac-navbar-toggler {
-		padding: 20px 36px 10px 36px !important;
-	}
 }
 
 @media (max-width: 767px) {
