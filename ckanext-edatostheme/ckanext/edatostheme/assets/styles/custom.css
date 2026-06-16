@@ -1016,17 +1016,17 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 .group-home-card-link:hover {
 	background-color: var(--edatos-color-secondary-100, #004678);
 	text-decoration: none;
-	color: var(--edatos-color-white-100, #fff) !important;
+	color: var(--edatos-color-white-100, #fff);
 }
 
 .group-home-card-link:hover .group-home-fa-glyph,
 .group-home-card-link:hover .media-heading {
-	color: var(--edatos-color-white-100, #fff) !important;
+	color: var(--edatos-color-white-100, #fff);
 }
 
 /* Group home icon (FA6 Pro thin) */
 .group-home-fa-glyph {
-	color: var(--edatos-color-secondary-100, #004678) !important;
+	color: var(--edatos-color-secondary-100, #004678);
 	text-align: center;
 	font-size: 47px;
 	font-style: normal;
@@ -1048,7 +1048,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 }
 
 .categories-grid .media-item.group-home-item .media-heading:hover {
-	color: var(--edatos-color-white-100) !important;
+	color: var(--edatos-color-white-100);
 }
 
 /* Group dataset count badge */
@@ -1091,9 +1091,6 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	}
 }
 
-.media-view.no-border {
-	border: none !important;
-}
 
 /* ============================================================
    5. DATASET LIST — Listado de conjuntos de datos
