@@ -19,10 +19,6 @@
   {% block resource_item_title %}
   <a class="heading" href="{{ url }}" title="{{ res.name or res.description }}">
     <span class="resource-format-icon" property="dc:format" data-format="{{ res.format.lower() or 'data' }}">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="32" viewBox="0 0 24 32" fill="none" aria-hidden="true">
-        <path d="M0 4C0 1.8125 1.75 0 4 0H14V8C14 9.125 14.875 10 16 10H24V19H11C8.75 19 7 20.8125 7 23V32H4C1.75 32 0 30.25 0 28V4ZM24 8H16V0L24 8Z" fill="var(--edatos-color-secondary-100) !important"/>
-      </svg>
-      <span class="format-label">{{ h.get_translated(res, 'format') }}</span>
     </span>
     {{ h.resource_display_name(res)}}
     {% if res.tracking_summary and res.tracking_summary.total > 50 %}
