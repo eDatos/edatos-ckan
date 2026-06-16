@@ -1097,7 +1097,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
    ============================================================ */
 
 /* ZONA 12 — Ocultar separador " - " en sidebar (clase .hidden sin regla en CKAN 2.11) */
-.hidden { display: none !important; }
+.hidden { display: none; }
 
 /* ZONA 1 — Contador de resultados (h1) */
 .search-form h1 {
@@ -1214,9 +1214,9 @@ h2.dataset-heading {
 	display: inline-flex;
 	align-items: center;
 	padding: 0 10px;
-	background-color: var(--edatos-color-gray-5) !important;
-	color: var(--edatos-color-black-100) !important;
-	border: none !important;
+	background-color: var(--edatos-color-gray-5);
+	color: var(--edatos-color-black-100);
+	border: none;
 	border-radius: 5px;
 	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-sm);
@@ -1225,8 +1225,8 @@ h2.dataset-heading {
 	text-transform: uppercase;
 }
 .dataset-resources a.badge:hover {
-	background-color: #e6e6e6 !important;
-	color: var(--edatos-color-black-100) !important;
+	background-color: #e6e6e6; /*TODO: confirmar color con lidia*/
+	color: var(--edatos-color-black-100);
 	text-decoration: none;
 }
 
