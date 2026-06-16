@@ -568,10 +568,6 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 		padding-top: 1.5rem;
 	}
 
-	.home-app {
-		padding-left: var(--spacing-md);
-		padding-bottom: 0;
-	}
 
 
 }
@@ -583,9 +579,6 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 }
 
 @media (min-width: 1200px) {
-	.logo.hidden-xl-up {
-		display: none !important;
-	}
 
 	.btn.btn-navbar {
 		display: block;
@@ -877,10 +870,6 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	background-color: transparent;
 }
 
-.tags {
-	background-color: var(--color-primary-transparent) !important;
-}
-
 .box {
 	background-color: transparent;
 	margin-bottom: var(--spacing-md);
@@ -888,7 +877,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 
 .homepage .module-search {
 	position: relative;
-	background-color: var(--edatos-color-accent-100) !important;
+	background-color: var(--edatos-color-accent-100);
     border-radius: var(--border-radius-m);
     width: 100%;
     padding: var(--edatos-spacing-x-l);
@@ -936,10 +925,10 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 }
 
 .homepage .search-form .search-input.search-giant button {
-	position: relative !important;
-	top: auto !important;
-	right: auto !important;
-	display: flex !important;
+	position: relative;
+	top: auto;
+	right: auto;
+	display: flex;
 	height: 50px;
 	padding: 5px 14px;
 	justify-content: center;
@@ -948,9 +937,9 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	margin-top: 0;
 	align-self: stretch;
 	border-radius: 0 5px 5px 0;
-	border: none !important;
-	background-color: var(--edatos-color-white-100) !important;
-	color: var(--edatos-color-secondary-100) !important;
+	border: none;
+	background-color: var(--edatos-color-white-100);
+	color: var(--edatos-color-secondary-100);
 }
 
 .counter-box {
@@ -965,15 +954,6 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	background-color: var(--color-white);
 }
 
-/* Category cards */
-.home-app {
-	font-size: var(--font-size-xl);
-	font-weight: var(--font-weight-medium);
-	color: var(--color-gray-dark) !important;
-	padding-top: var(--spacing-sm);
-	padding-left: 36px;
-	padding-bottom: var(--spacing-sm);
-}
 
 .media-item.group-home-item {
 	position: relative;
