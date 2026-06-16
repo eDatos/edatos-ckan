@@ -26,13 +26,6 @@ from flask import request as fr
 import logging
 log = logging.getLogger(__name__)
 
-# ---------------------------------------------------------------------------
-# Caché en memoria para el header externo (por idioma, con TTL).
-# Cada worker WSGI tiene su propia copia — aceptable: evitamos lock global.
-# TTL por defecto: 300 segundos. Configurable con ckanext.edatostheme.header_cache_ttl
-# ---------------------------------------------------------------------------
-_HEADER_CACHE = {}          # {lang: (timestamp_float, html_string)}
-_HEADER_CACHE_LOCK = threading.Lock()
 _REQUESTS_TIMEOUT = 10      # segundos — timeout para todas las llamadas requests.get
 
 
@@ -362,43 +355,18 @@ def load_header():
 
 def get_header_cached():
     """
-    Helper de plantilla que devuelve el HTML del header cacheado en memoria
-    por idioma, con TTL configurable (ckanext.edatostheme.header_cache_ttl,
-    por defecto 300 segundos). Ante cualquier error de red sirve el fallback
-    del fichero en disco (header_meta.html) para no romper el render.
+    Descarga, modifica y devuelve el HTML del header en cada petición,
+    sin caché. No lee ni escribe ficheros en disco.
     """
-    try:
-        lang = h.lang()
-    except Exception:
-        lang = config.get('ckan.locale_default', 'es')
-
-    ttl = int(config.get('ckanext.edatostheme.header_cache_ttl', 300))
-    now = time.time()
-
-    with _HEADER_CACHE_LOCK:
-        cached = _HEADER_CACHE.get(lang)
-        if cached and (now - cached[0]) < ttl:
-            return cached[1]
-
-    # Caché expirada o vacía — refrescar fuera del lock para no bloquear otros hilos
     try:
         with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
             json_config = json.loads(config_file.read())
         html = requests.get(
             url=get_header_url(json_config), timeout=_REQUESTS_TIMEOUT).content
-        html = get_altered_header(header=html, json_config=json_config)
-        save_header(header=html)
-        with _HEADER_CACHE_LOCK:
-            _HEADER_CACHE[lang] = (now, html)
-        return html
+        return get_altered_header(header=html, json_config=json_config)
     except Exception as exc:
-        log.warning('edatostheme: error al refrescar header (lang=%s): %s', lang, exc)
-        # Fallback: leer el fichero en disco generado en arranque
-        try:
-            with codecs.open(HEADER_PATH, 'r', encoding='utf8') as f:
-                return f.read()
-        except Exception:
-            return ''
+        log.warning('edatostheme: error al obtener header: %s', exc)
+        return ''
 
 # Map de vistas que se quieren restringir acceso
 REDIRECT_VIEWS = (
@@ -529,7 +497,6 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
     # IConfigurer
 
     def update_config(self, config_):
-        # self._load_header_footer()
         self._load_footer()
         self._load_favicon()
         self._i18n_script_filler()
