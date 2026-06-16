@@ -21,6 +21,7 @@ from ckan.model.tag import Tag
 from ckan.lib.plugins import DefaultTranslation
 from ckantoolkit import config
 from flask import Blueprint
+from flask import render_template_string
 from flask import request as fr
 
 import logging
@@ -363,7 +364,8 @@ def get_header_cached():
             json_config = json.loads(config_file.read())
         html = requests.get(
             url=get_header_url(json_config), timeout=_REQUESTS_TIMEOUT).content
-        return get_altered_header(header=html, json_config=json_config)
+        altered = get_altered_header(header=html, json_config=json_config)
+        return render_template_string(altered)
     except Exception as exc:
         log.warning('edatostheme: error al obtener header: %s', exc)
         return ''
