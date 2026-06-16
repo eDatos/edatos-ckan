@@ -318,10 +318,6 @@ nav.navigation div ul li {
 	border-bottom: var(--border-width) solid var(--color-gray-border);
 }
 
-#edatos-custom-header {
-	display: none !important;
-}
-
 /* Navegación principal: Inicio | Datos | Colecciones
    Basado en .section-tab .nav.nav-pills del sistema de diseño EDATOS */
 .navigation .nav-main-links {
@@ -329,17 +325,17 @@ nav.navigation div ul li {
 	flex-direction: row;
 	flex-wrap: nowrap;
 	align-items: center;
-	list-style: none !important;
-	margin: 0 !important;
-	padding: 8px 20px !important;
+	list-style: none;
+	margin: 0;
+	padding: 8px 20px;
 	gap: 0;
 }
 
 .navigation .nav-main-links li {
-	border-left: none !important;
-	list-style: none !important;
-	margin: 0 !important;
-	padding: 0 !important;
+	border-left: none;
+	list-style: none;
+	margin: 0;
+	padding: 0;
 	display: flex;
 	align-items: center;
 }
@@ -353,16 +349,16 @@ nav.navigation div ul li {
 .navigation .nav-main-links li a.btn-datasets {
 	display: block;
 	padding: 8px 16px;
-	background: none !important;
-	color: var(--edatos-color-secondary-100, #004678) !important;
-	font-size: var(--edatos-font-size-sm) !important;
-	font-weight: 300 !important;
+	background: none;
+	color: var(--edatos-color-secondary-100, #004678);
+	font-size: var(--edatos-font-size-sm);
+	font-weight: var(--edatos-font-weight-light);
 	font-family: "Open Sans", "Trebuchet MS", Arial, sans-serif;
 	line-height: 20px;
-	border: none !important;
-	border-bottom: none !important;
+	border: none;
+	border-bottom: none;
 	border-radius: 0;
-	text-decoration: none !important;
+	text-decoration: none;
 	white-space: nowrap;
 	box-shadow: 0px 5px 0px 0px transparent;
 	transition: box-shadow 0.2s ease, color 0.2s ease;
@@ -371,26 +367,26 @@ nav.navigation div ul li {
 
 /* Hover: subrayado azul medio */
 .navigation .nav-main-links li a.btn-datasets:hover {
-	background: none !important;
-	color: var(--edatos-color-secondary-100, #004678) !important;
-	box-shadow: 0px 5px 0px 0px var(--edatos-color-primary-50, #4D7EA0) !important;
-	border-bottom: none !important;
-	text-decoration: none !important;
+	background: none;
+	color: var(--edatos-color-secondary-100, #004678);
+	box-shadow: 0px 5px 0px 0px var(--edatos-color-primary-50, #4D7EA0);
+	border-bottom: none;
+	text-decoration: none;
 }
 
 /* Ítem activo: texto secondary + semibold + subrayado accent */
 .navigation .nav-main-links li.active a.btn-datasets {
-	background: none !important;
-	color: var(--edatos-color-secondary-100, #004678) !important;
-	font-weight: 600 !important;
-	box-shadow: 0px 5px 0px 0px var(--edatos-color-accent-100, #009BD7) !important;
-	border-bottom: none !important;
+	background: none;
+	color: var(--edatos-color-secondary-100, #004678);
+	font-weight: var(--edatos-font-weight-semibold);
+	box-shadow: 0px 5px 0px 0px var(--edatos-color-accent-100, #009BD7);
+	border-bottom: none;
 }
 
 /* Hover sobre ítem activo: mantiene el subrayado accent */
 .navigation .nav-main-links li.active a.btn-datasets:hover {
-	color: var(--edatos-color-secondary-100, #004678) !important;
-	box-shadow: 0px 5px 0px 0px var(--edatos-color-accent-100, #009BD7) !important;
+	color: var(--edatos-color-secondary-100, #004678);
+	box-shadow: 0px 5px 0px 0px var(--edatos-color-accent-100, #009BD7);
 }
 
 /* Contenedor del nav: links izquierda, Opciones derecha */
@@ -423,7 +419,7 @@ nav.section.navigation {
 }
 
 .navbar-collapse {
-	display: flex !important;
+	display: flex;
 	align-items: center;
 	width: 100%;
 }
@@ -446,7 +442,7 @@ nav.section.navigation {
 	display: none;
 	float: right;
 	min-width: 160px;
-	margin-top: 0 !important;
+	margin-top: 0;
 	padding-top: var(--spacing-sm);
 	padding-bottom: var(--spacing-sm);
 	font-size: var(--edatos-font-size-sm);
@@ -503,21 +499,20 @@ nav.section.navigation {
 
 /* Botón hamburguesa / Opciones navbar */
 .btn.btn-navbar {
-	display: inline-flex !important;
-	align-items: center !important;
-	gap: 6px !important;
-	background-color: var(--edatos-color-white-100, #fff) !important;
-	background-image: none !important;
-	font-size: var(--edatos-font-size-sm) !important;
-	font-weight: var(--font-weight-light) !important;
-	color: var(--edatos-color-secondary-100, #004678) !important;
-	border: 1px solid var(--edatos-color-secondary-100, #004678) !important;
-	box-shadow: none !important;
-	padding: var(--spacing-xs) var(--spacing-sm) !important;
-	border-radius: var(--border-radius-sm) !important;
+	align-items: center;
+	gap: 6px;
+	background-color: var(--edatos-color-white-100, #fff);
+	background-image: none;
+	font-size: var(--edatos-font-size-sm);
+	font-weight: var(--font-weight-light);
+	color: var(--edatos-color-secondary-100, #004678);
+	border: 1px solid var(--edatos-color-secondary-100, #004678);
+	box-shadow: none;
+	padding: var(--spacing-xs) var(--spacing-sm);
+	border-radius: var(--border-radius-sm);
 	text-transform: uppercase;
 	cursor: pointer;
-	margin-right: 10px !important;
+	margin-right: 10px;
 	transition: background-color 0.25s, color 0.25s, border-radius 0.2s;
 }
 
@@ -528,17 +523,17 @@ nav.section.navigation {
 
 /* Hover suave */
 button.btn.btn-navbar:hover {
-	background-color: var(--edatos-color-secondary-100) !important;
-	color: var(--edatos-color-white-100) !important;
+	background-color: var(--edatos-color-secondary-100);
+	color: var(--edatos-color-white-100);
 }
 
 /* Estado abierto: detectado cuando el dropdown hermano tiene clase .abrir */
 li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar,
 li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar:hover {
-	background-color: var(--edatos-color-secondary-100, #004678) !important;
-	color: var(--edatos-color-white-100, #fff) !important;
+	background-color: var(--edatos-color-secondary-100, #004678);
+	color: var(--edatos-color-white-100, #fff);
 	/* Aplana la esquina inferior derecha para conectar con el menú (alineado a la derecha) */
-	border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 var(--border-radius-sm) !important;
+	border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 var(--border-radius-sm);
 }
 
 /* Iconos en estado abierto */
