@@ -910,15 +910,14 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 .search-filters .filter-tag {
 	display: flex;
 	height: 27px;
-	padding: 1px 14px;
+	padding: 1px 10px;
 	justify-content: center;
 	align-items: center;
 	gap: 10px;
-	border-radius: 20px;
-	border: 1px solid rgba(255, 255, 255, 0.45);
-	background: transparent;
-	color: rgba(255, 255, 255, 0.85);
-	font-family: "Open Sans", sans-serif;
+	border-radius: 3px;
+	background: var(--edatos-color-white-100);
+	color: var(--edatos-color-primary-100);
+	font-family: "Open Sans";
 	font-size: var(--edatos-font-size-sm);
 	font-style: normal;
 	font-weight: 500;
@@ -936,8 +935,8 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 }
 
 .search-filters .filter-tag.active {
-	border: 1px solid var(--edatos-color-accent-100, #009BD7);
-	background: var(--edatos-color-accent-100, #009BD7);
+	border: 1px solid var(--edatos-color-white-100, #FFF);
+    background: var(--edatos-color-primary-100);
 	color: var(--edatos-color-white-100, #FFF);
 	text-align: center;
 }
@@ -959,9 +958,25 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	position: relative;
 	margin-top: 0;
 	margin-bottom: 0;
-	background-color: var(--edatos-color-accent-100, #009BD7) !important;
-	border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
-	border: none !important;
+	background-color: var(--edatos-color-accent-100) !important;
+    border-radius: var(--border-radius-m);
+    width: 100%;
+    padding: var(--edatos-spacing-x-l);
+    justify-content: center;
+    max-width: var(--edatos-max-container-width);
+    margin: 0 auto;
+	height: 22rem;
+}
+
+.container.search-content {
+    max-width: var(--edatos-max-container-width);
+    margin: 0 auto;
+    width: 100%;
+    padding-left: var(--edatos-spacing-x-m);
+    padding-right: var(--edatos-spacing-x-m);
+    padding-top: var(--edatos-spacing-x-m);
+    padding-bottom: var(--edatos-spacing-x-l);
+    background-color: var(--edatos-color-white-100);
 }
 
 .module-search .heading {

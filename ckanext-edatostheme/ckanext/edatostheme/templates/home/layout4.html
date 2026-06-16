@@ -3,12 +3,14 @@
     <div class="main hero">
       <div class="container">
         {% snippet 'home/snippets/hero_nav.html' %}
-        {% block search %}
-          {% snippet 'home/snippets/search.html' %}
-        {% endblock %}
-        {% block categories %}
-          {% snippet 'home/snippets/categories.html' %}
-        {% endblock %}
+        <div class="container search-content">
+          {% block search %}
+            {% snippet 'home/snippets/search.html' %}
+          {% endblock %}
+          {% block categories %}
+            {% snippet 'home/snippets/categories.html' %}
+          {% endblock %}
+        </div>
       </div>
     </div>
 </div>
