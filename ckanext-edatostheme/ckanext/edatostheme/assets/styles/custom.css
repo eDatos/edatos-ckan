@@ -1051,10 +1051,10 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 }
 
 .media-grid {
-	margin: 0 !important;
+	margin: 0;
 	padding: 12px 0;
-	background: none !important;
-	background-color: var(--color-white-semi) !important;
+	background: none;
+	background-color: var(--color-white-semi);
 	display: flex;
 	flex-flow: wrap;
 	justify-content: flex-start;
@@ -2776,8 +2776,8 @@ a.tag:hover {
 
 /* Font Awesome 6 Pro */
 .fa {
-	font-family: "Font Awesome 6 Pro" !important;
-	font-weight: 100 !important;
+	font-family: "Font Awesome 6 Pro";
+	font-weight: 100;
 }
 
 
@@ -2811,16 +2811,12 @@ a.tag:hover {
 
 /* Grid responsive con CSS grid (sin afectar otras páginas) */
 ul.showcase-grid {
-	display: grid !important;
+	display: grid;
 	grid-template-columns: repeat(4, 1fr);
 	column-gap: 20px;
 	row-gap: 30px;
 	list-style: none;
-	padding: 12px 0 !important;
-	margin: 0 !important;
-	background: none !important;
-	position: static !important;
-	height: auto !important;
+	padding: 12px 0;
 }
 
 /* Tarjeta colección */
