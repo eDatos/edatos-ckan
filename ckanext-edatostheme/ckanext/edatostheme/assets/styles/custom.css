@@ -1789,12 +1789,12 @@ h1.dataset-title {
 /* --- Wrapper: fondo blanco sin borde, alineado con hero-nav --- */
 .row.wrapper {
 	background: var(--edatos-color-white-100) !important;
-	border: none !important;
+	border: none;
 	margin-left: 0;
 	margin-right: 0;
 	gap: 10px;
 	padding-top: 10px;
-	box-shadow: 0 -6px 12px -6px rgba(0, 0, 0, 0.15) !important;
+	box-shadow: 0 -6px 12px -6px rgba(0, 0, 0, 0.15);
 }
 
 .row.wrapper > .secondary {
@@ -3686,7 +3686,7 @@ aside.secondary .module-content > a.btn.btn-sm {
 
 
 .box, .wrapper {
-    box-shadow: none !important;
+    box-shadow: none;
 }
 
 
