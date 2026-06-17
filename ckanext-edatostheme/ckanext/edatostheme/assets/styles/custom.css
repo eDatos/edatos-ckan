@@ -33,8 +33,6 @@
   --color-text-base: var(--edatos-color-gray-80, #333333);
   --color-text-muted: #59656e;
   --color-nav-active: #8098a7;
-  --color-hero-bg: var(--edatos-color-accent-100, #009BD7);
-  --color-showcase-accent: #e57200;
 
   /* Tipografía */
   --font-size-xs: 12px;
@@ -75,11 +73,6 @@
   --container-max-width: 1400px;
   --sidebar-width: 289px;
   --navbar-height: 70px;
-  --hero-search-margin-top: 100px;
-  --card-padding: 16px;
-
-  /* Tipografía — familia */
-  --font-family-base: inherit;
 
   /* Transiciones */
   --transition-fast: 0.15s ease;
@@ -202,19 +195,6 @@ textarea {
 	margin: 0;
 }
 
-
-.fleft {
-	float: left;
-}
-
-.fright {
-	float: right;
-}
-
-.attrib {
-	font-size: var(--font-size-xs);
-	margin-top: var(--spacing-md);
-}
 
 
 /* ============================================================
@@ -2817,10 +2797,8 @@ li.showcase-card {
 .showcase-detail-sidebar {
 	display: flex;
 	width: 289px;
-	padding: 20px 10px 10px 10px;
 	flex-direction: column;
 	align-items: center;
-	gap: 30px;
 	flex-shrink: 0;
 	border-radius: 5px;
 	border: 0.5px solid var(--edatos-color-secondary-100, #004678);
@@ -3625,94 +3603,55 @@ li.showcase-card {
    Figma node 11813:5303
    ============================================================ */
 
-/* 1. Botón "Ver recurso" — outline rojo */
-header.module-content.page-header .content_action .btn {
+/* Patrón compartido: botones outline primario — Resource Edit */
+header.module-content.page-header .content_action .btn,
+aside.secondary .module.resources .nav-simple .btn,
+aside.secondary .module-content > a.btn.btn-sm,
+.btn-remove-url {
     background: var(--edatos-color-white-100) !important;
     background-image: none !important;
-    border: 1px solid var(--edatos-color-primary-100, #de0029) !important;
-    color: var(--edatos-color-primary-100, #de0029) !important;
-    border-radius: 5px !important;
-    box-shadow: none !important;
-    text-shadow: none !important;
-    font-size: var(--edatos-font-size-sm) !important;
-    text-transform: uppercase;
-    padding: 5px 10px !important;
-}
-
-header.module-content.page-header .content_action .btn:hover {
-    background: var(--edatos-color-primary-100, #de0029) !important;
-    color: var(--edatos-color-white-100) !important;
-}
-
-header.module-content.page-header .content_action .btn i {
-    color: inherit !important;
-}
-
-/* 3. Botones de acción lista de recursos (wrench dropdown) — outline rojo */
-aside.secondary .module.resources .nav-simple .btn {
-    background: var(--edatos-color-white-100) !important;
-    background-image: none !important;
-    border: 1px solid var(--edatos-color-primary-100, #de0029) !important;
-    color: var(--edatos-color-primary-100, #de0029) !important;
+    border: 1px solid var(--edatos-color-primary-100) !important;
+    color: var(--edatos-color-primary-100) !important;
     border-radius: 5px !important;
     box-shadow: none !important;
     text-shadow: none !important;
     font-size: var(--edatos-font-size-sm) !important;
 }
 
-aside.secondary .module.resources .nav-simple .btn:hover {
-    background: var(--edatos-color-primary-100, #de0029) !important;
+header.module-content.page-header .content_action .btn:hover,
+aside.secondary .module.resources .nav-simple .btn:hover,
+aside.secondary .module-content > a.btn.btn-sm:hover,
+.btn-remove-url:hover {
+    background: var(--edatos-color-primary-100) !important;
     color: var(--edatos-color-white-100) !important;
 }
 
-aside.secondary .module.resources .nav-simple .btn i {
-    color: inherit !important;
-}
-
-/* 4. Botón "Añadir nuevo recurso" — outline rojo + uppercase */
-aside.secondary .module-content > a.btn.btn-sm {
-	white-space: nowrap;
-    font-family: "Open Sans";
-    font-size: var(--edatos-font-size-sm) !important;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 20px;
-    background: var(--edatos-color-white-100) !important;
-    background-image: none !important;
-    border: 1px solid var(--edatos-color-primary-100, #de0029) !important;
-    color: var(--edatos-color-primary-100, #de0029) !important;
-    border-radius: 5px !important;
-    box-shadow: none !important;
-    text-shadow: none !important;
-    text-transform: uppercase;
-    padding: 5px 10px !important;
-}
-
-aside.secondary .module-content > a.btn.btn-sm:hover {
-    background: var(--edatos-color-primary-100, #de0029) !important;
-    color: var(--edatos-color-white-100) !important;
-}
-
+header.module-content.page-header .content_action .btn i,
+aside.secondary .module.resources .nav-simple .btn i,
 aside.secondary .module-content > a.btn.btn-sm i {
     color: inherit !important;
 }
 
-/* 5. Botón "Quitar" (URL clear) — outline rojo, sin fondo sólido */
-.btn-remove-url {
-    background: var(--edatos-color-white-100) !important;
-    background-image: none !important;
-    border: 1px solid var(--edatos-color-primary-100, #de0029) !important;
-    color: var(--edatos-color-primary-100, #de0029) !important;
-    border-radius: 5px !important;
-    box-shadow: none !important;
-    text-shadow: none !important;
-    font-size: var(--edatos-font-size-sm) !important;
+/* Botón "Ver recurso" — propiedades específicas */
+header.module-content.page-header .content_action .btn {
+    text-transform: uppercase;
     padding: 5px 10px !important;
 }
 
-.btn-remove-url:hover {
-    background: var(--edatos-color-primary-100, #de0029) !important;
-    color: var(--edatos-color-white-100) !important;
+/* Botón "Añadir nuevo recurso" — propiedades específicas */
+aside.secondary .module-content > a.btn.btn-sm {
+    white-space: nowrap;
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    text-transform: uppercase;
+    padding: 5px 10px !important;
+}
+
+/* Botón "Quitar" (URL clear) — propiedades específicas */
+.btn-remove-url {
+    padding: 5px 10px !important;
 }
 
 .edatos-alert {
