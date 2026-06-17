@@ -878,7 +878,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 .homepage .module-search {
 	position: relative;
 	background-color: var(--edatos-color-accent-100);
-    border-radius: var(--border-radius-m);
+    border-radius: var(--border-radius-md);
     width: 100%;
     padding: var(--edatos-spacing-x-l);
     justify-content: center;
@@ -2029,20 +2029,6 @@ a.toggle-show.toggle-show-less {
 	text-decoration: none;
 }
 
-.page-item.active .page-link {
-    background-color: var(--edatos-color-primary-100) !important;
-    border-color: var(--edatos-color-primary-100) !important;
-}
-
-.page-link {
-	color: var(--edatos-color-gray-40) !important;
-	text-align: center;
-	font-family: "Open Sans";
-	font-size: var(--edatos-font-size-sm);
-	font-style: normal;
-	font-weight: 400;
-	line-height: 20px; /* 142.857% */
-}
 
 a.toggle-show.toggle-show-more:hover,
 a.toggle-show.toggle-show-less:hover {
@@ -3639,12 +3625,7 @@ li.showcase-card {
    Figma node 11813:5303
    ============================================================ */
 
-/* 1. Barra sub-tabs (Editar recurso / Vistas)
-header.module-content.page-header {
-    background-color: var(--edatos-color-white-100) !important;
-}
-
-/* 2. Botón "Ver recurso" — outline rojo */
+/* 1. Botón "Ver recurso" — outline rojo */
 header.module-content.page-header .content_action .btn {
     background: var(--edatos-color-white-100) !important;
     background-image: none !important;
