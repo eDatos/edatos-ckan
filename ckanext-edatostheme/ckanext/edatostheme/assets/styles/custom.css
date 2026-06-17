@@ -1572,12 +1572,12 @@ h1.dataset-title {
 	border-radius: 3px;
 	background: var(--edatos-color-secondary-100, #004678) !important;
 	color: var(--edatos-color-white-100, #FFF) !important;
-	font-family: "Open Sans", sans-serif !important;
-	font-size: var(--edatos-font-size-sm) !important;
-	font-style: normal !important;
-	font-weight: 700 !important;
-	line-height: 14px !important;
-	text-transform: uppercase !important;
+	font-family: "Open Sans", sans-serif;
+	font-size: var(--edatos-font-size-sm);
+	font-style: normal;
+	font-weight: 700;
+	line-height: 14px;
+	text-transform: uppercase;
 	letter-spacing: normal;
 	margin: 0;
 }
@@ -1703,10 +1703,10 @@ h1.dataset-title {
 	justify-content: flex-start !important;
 	border-radius: 5px 5px 0 0 !important;
 	border-bottom: none !important;
-	font-size: var(--edatos-font-size-lg) !important;
-	font-weight: 600 !important;
-	line-height: 26px !important;
-	text-transform: none !important;
+	font-size: var(--edatos-font-size-lg);
+	font-weight: 600;
+	line-height: 26px;
+	text-transform: none;
 }
 
 /* --- ZONA 8-9: Tabla metadatos — cabecera y columna "Campo" --- */
@@ -2864,8 +2864,8 @@ li.showcase-card {
 
 /* Heading del módulo info (¿Qué son las categorías?) — 16px, sin uppercase */
 .showcase-detail-sidebar .module.module-narrow.module-shallow .module-heading {
-    font-size: var(--edatos-font-size-md) !important;
-    text-transform: none !important;
+    font-size: var(--edatos-font-size-md);
+    text-transform: none;
 }
 
 .module:first-child .module-heading {
@@ -2886,17 +2886,17 @@ li.showcase-card {
 	border-bottom: 0.5px solid var(--edatos-color-primary-5, #E5ECF1) !important;
 	background: var(--edatos-color-white-100, #FFF) !important;
 	color: var(--edatos-color-secondary-100, #004678) !important;
-	font-size: var(--edatos-font-size-sm) !important;
-	font-weight: 400 !important;
-	line-height: 14px !important;
+	font-size: var(--edatos-font-size-sm);
+	font-weight: 400;
+	line-height: 14px;
 	box-sizing: border-box;
 }
 
 .showcase-detail-sidebar .module.module-narrow.module-shallow .module-content p {
 	margin: 0 !important;
-	font-size: var(--edatos-font-size-md) !important;
-	font-weight: 600 !important;
-	line-height: 26px !important;
+	font-size: var(--edatos-font-size-md);
+	font-weight: 600;
+	line-height: 26px;
 	color: var(--edatos-color-gray-80) !important;
 }
 
@@ -2921,9 +2921,9 @@ li.showcase-card {
 
 .showcase-detail-sidebar #package-info .module-content {
 	padding: 0;
-	font-size: var(--edatos-font-size-md) !important;
-	font-weight: 600 !important;
-	line-height: 26px !important;
+	font-size: var(--edatos-font-size-md);
+	font-weight: 600;
+	line-height: 26px;
 	color: var(--edatos-color-secondary-100, #004678) !important;
 }
 
@@ -3125,12 +3125,12 @@ li.showcase-card {
 /* ---- SHOWCASE DETAIL — Encabezado sección recursos (override CKAN) ---- */
 
 .primary:has(.showcase-tags-section) .module-heading {
-	font-size: var(--edatos-font-size-lg) !important;
-	font-weight: 600 !important;
-	text-transform: none !important;
+	font-size: var(--edatos-font-size-lg);
+	font-weight: 600;
+	text-transform: none;
 	border-radius: 5px !important;
 	padding: 5px 10px !important;
-	line-height: 26px !important;
+	line-height: 26px;
 }
 
 /* ---- SHOWCASE DETAIL — Listado de recursos vinculados ---- */
@@ -3490,8 +3490,8 @@ body .page-header .nav-tabs li a {
 /* 1. Labels — 18px SemiBold, sin ":" final (Bootstrap añade ":" vía ::after) */
 .form-group .form-label,
 .form-group label.control-label {
-    font-size: var(--edatos-font-size-lg) !important;
-    font-weight: 600 !important;
+    font-size: var(--edatos-font-size-lg);
+    font-weight: 600;
     color: var(--edatos-color-gray-80) !important;
     line-height: 26px;
 }
@@ -3536,8 +3536,8 @@ body .page-header .nav-tabs li a {
     border: 1px solid var(--edatos-color-primary-100, #004678) !important;
     color: var(--edatos-color-primary-100, #004678) !important;
     border-radius: 5px !important;
-    font-size: var(--edatos-font-size-sm) !important;
-    font-weight: 400 !important;
+    font-size: var(--edatos-font-size-sm);
+    font-weight: 400;
     text-transform: uppercase;
     padding: 5px 10px !important;
     box-shadow: none !important;
@@ -3613,7 +3613,7 @@ aside.secondary .module-content > a.btn.btn-sm,
     border-radius: 5px !important;
     box-shadow: none !important;
     text-shadow: none !important;
-    font-size: var(--edatos-font-size-sm) !important;
+    font-size: var(--edatos-font-size-sm);
 }
 
 header.module-content.page-header .content_action .btn:hover,
