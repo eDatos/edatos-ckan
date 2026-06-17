@@ -1758,20 +1758,20 @@ h1.dataset-title {
 	flex: 1 0 0;
 	align-self: stretch;
 	color: var(--edatos-color-black-100, #000) !important;
-	font-family: "Open Sans", sans-serif !important;
-	font-size: var(--edatos-font-size-xs) !important;
-	font-style: normal !important;
-	font-weight: 400 !important;
-	line-height: 16px !important;
+	font-family: "Open Sans", sans-serif;
+	font-size: var(--edatos-font-size-xs);
+	font-style: normal;
+	font-weight: 400;
+	line-height: 16px;
 }
 
 .module.module-narrow.module-shallow .module-content p {
 	color: var(--edatos-color-black-100, #000) !important;
-	font-family: "Open Sans", sans-serif !important;
-	font-size: var(--edatos-font-size-xs) !important;
-	font-style: normal !important;
-	font-weight: 400 !important;
-	line-height: 16px !important;
+	font-family: "Open Sans", sans-serif;
+	font-size: var(--edatos-font-size-xs);
+	font-style: normal;
+	font-weight: 400;
+	line-height: 16px;
 	margin: 0;
 }
 
@@ -2519,7 +2519,7 @@ textarea:focus {
 .homepage .search-giant .form-control {
 	height: 50px;
 	font-size: var(--font-size-lg);
-	font-weight: 300 !important;
+	font-weight: 300;
 	padding: 7px 0 7px 16px;
 	border-radius: 5px 0 0 5px;
 	border: none !important;
@@ -2529,7 +2529,7 @@ textarea:focus {
 }
 
 .homepage .search-giant .form-control::placeholder {
-	font-weight: 300 !important;
+	font-weight: 300;
 }
 
 .homepage .search-giant .form-control:focus {
@@ -3048,9 +3048,9 @@ li.showcase-card {
 	color: var(--edatos-color-black-100);
 	text-align: left;
 	font-family: "Open Sans";
-	font-size: var(--edatos-font-size-lg) !important;
+	font-size: var(--edatos-font-size-lg);
 	font-style: normal;
-	font-weight: var(--edatos-font-weight-semibold) !important;
+	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 120%;
 }
 
@@ -3567,7 +3567,7 @@ body .page-header .nav-tabs li a {
     border-top: none !important;
     border-radius: 0 0 5px 5px !important;
     padding: 3px 10px !important;
-    font-size: var(--edatos-font-size-xs) !important;
+    font-size: var(--edatos-font-size-xs);
     font-weight: 600;
     color: var(--edatos-color-gray-80);
 }
