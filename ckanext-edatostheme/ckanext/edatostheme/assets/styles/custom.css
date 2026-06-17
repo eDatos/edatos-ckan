@@ -1451,7 +1451,7 @@ h2.dataset-heading {
 	color: var(--edatos-color-secondary-100, #004678);
 }
 
-/* Botón de cierre (×) de faceta activa — sustituye fa-circle-xmark por × simple */
+/* Botón de cierre de faceta activa */
 .module.module-narrow .nav-item.active a .facet-close {
 	flex-shrink: 0;
 	display: flex;
@@ -1463,9 +1463,14 @@ h2.dataset-heading {
 	padding-right: 4px;
 }
 
-.module.module-narrow .nav-item.active a .facet-close i.fa-circle-xmark::before {
-	content: "\00d7" !important;
-	font-family: "Open Sans", sans-serif !important;
+.module.module-narrow .nav-item.active a .facet-close i.fa-circle-xmark {
+	display: none;
+}
+
+.module.module-narrow .nav-item.active a .facet-close .facet-close-x {
+	display: flex;
+	align-items: center;
+	font-family: "Open Sans", sans-serif;
 	font-size: 20px;
 	font-weight: 300;
 }
@@ -1570,8 +1575,8 @@ h1.dataset-title {
 	flex-shrink: 0;
 	align-self: stretch;
 	border-radius: 3px;
-	background: var(--edatos-color-secondary-100, #004678) !important;
-	color: var(--edatos-color-white-100, #FFF) !important;
+	background: var(--edatos-color-secondary-100, #004678);
+	color: var(--edatos-color-white-100, #FFF);
 	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-sm);
 	font-style: normal;
@@ -1693,7 +1698,7 @@ h1.dataset-title {
 	flex: 1 0 0;
 	justify-content: flex-start;
 	font-weight: 600;
-	background: var(--edatos-color-secondary-100, #004678) !important;
+	background: var(--edatos-color-secondary-100, #004678);
 }
 
 /* --- ZONA 7b: Encabezado metadatos / secciones contenido principal --- */
@@ -1788,7 +1793,7 @@ h1.dataset-title {
 
 /* --- Wrapper: fondo blanco sin borde, alineado con hero-nav --- */
 .row.wrapper {
-	background: var(--edatos-color-white-100) !important;
+	background: var(--edatos-color-white-100);
 	border: none;
 	margin-left: 0;
 	margin-right: 0;
@@ -1973,7 +1978,7 @@ section.additional-info.module table td:first-child {
 }
 
 table th:first-child {
-	width: 10% !important;
+	width: 10%;
 }
 
 /* --- Hide redundant h2 from ckanext-scheming inside module-content --- */
@@ -2026,7 +2031,7 @@ a.toggle-show.toggle-show-less:hover {
 .page-header {
     margin-top: 1.5rem;
     border-bottom: 1px solid #ddd;
-    background-color: var(--edatos-color-white-100) !important;
+    background-color: var(--edatos-color-white-100);
     border-radius: 0 3px 0 0;
 }
 
@@ -2111,7 +2116,7 @@ div.ckanext-showcase-image-container {
 	text-decoration: none;
 	cursor: pointer;
 	margin: 3px 6px 3px 0;
-	height: 9px !important;
+	height: 9px;
 }
 
 a.metadatos-tag:hover {
@@ -2643,7 +2648,7 @@ a.tag:hover {
    ============================================================ */
 
 .site-footer {
-	background-color: var(--color-gray-dark) !important;
+	background-color: var(--color-gray-dark);
 	background-image: none;
 }
 
@@ -3507,7 +3512,7 @@ body .page-header .nav-tabs li a {
 
 /* 2. Asterisco campo requerido */
 .control-required {
-    color: var(--edatos-color-danger-100) !important;
+    color: var(--edatos-color-danger-100);
 }
 
 /* 3. Inputs y textareas — borde 0.5px secondary, radius 5px */
@@ -3566,11 +3571,11 @@ body .page-header .nav-tabs li a {
 
 .editor-info-block {
     display: block;
-    background: var(--edatos-color-gray-5) !important;
-    border: 0.5px solid var(--edatos-color-secondary-100, #004678) !important;
-    border-top: none !important;
-    border-radius: 0 0 5px 5px !important;
-    padding: 3px 10px !important;
+    background: var(--edatos-color-gray-5);
+    border: 0.5px solid var(--edatos-color-secondary-100, #004678);
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    padding: 3px 10px;
     font-size: var(--edatos-font-size-xs);
     font-weight: 600;
     color: var(--edatos-color-gray-80);
@@ -3679,7 +3684,7 @@ aside.secondary .module-content > a.btn.btn-sm {
 }
 
 .alert-danger {
-    color: var(--edatos-color-black-100) !important;
+    color: var(--edatos-color-black-100);
     background-color: var(--edatos-color-danger-25);
     border-color: #f2c5c4;
 }
