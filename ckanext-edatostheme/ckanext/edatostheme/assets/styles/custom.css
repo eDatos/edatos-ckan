@@ -2227,7 +2227,7 @@ a.metadatos-tag:hover {
 
 
 /* ============================================================
-   7b. RESOURCE READ — Sidebar (filtro_recursos) + Metadata
+   8. RESOURCE READ — Sidebar (filtro_recursos) + Metadata
    ============================================================ */
 
 /* --- Gap entre sidebar y contenido principal --- */
@@ -2364,7 +2364,7 @@ a.metadatos-tag:hover {
 }
 
 /* ============================================================
-   8. FORMULARIOS — Inputs, Buttons, Select, Textarea
+   9. FORMULARIOS — Inputs, Buttons, Select, Textarea
    ============================================================ */
 
 /* ---- Botones base ---- */
@@ -2554,7 +2554,7 @@ div.input-prepend input:nth-child(2) {
 
 
 /* ============================================================
-   9. TABS — Conjuntos de datos / Acerca de (Figma Listado_conjunto_datos)
+   10. TABS — Conjuntos de datos / Acerca de (Figma Listado_conjunto_datos)
    ============================================================ */
 
 /* Contenedor de tabs */
@@ -2610,7 +2610,7 @@ body .nav-tabs > li.active > a:focus {
 }
 
 /* ============================================================
-   10. COMPONENTES GLOBALES — Badges, Tags, Alerts, Modals
+   11. COMPONENTES GLOBALES — Badges, Tags, Alerts, Modals
    ============================================================ */
 
 .badge {
@@ -2639,7 +2639,7 @@ a.tag:hover {
 
 
 /* ============================================================
-   10. FOOTER
+   12. FOOTER
    ============================================================ */
 
 .site-footer {
@@ -2663,7 +2663,7 @@ a.tag:hover {
 
 
 /* ============================================================
-   SHOWCASE — Listado de colecciones (/es/showcase)
+   13. SHOWCASE — Listado de colecciones (/es/showcase)
    ============================================================ */
 
 /* Grid responsive con CSS grid (sin afectar otras páginas) */
@@ -3222,7 +3222,7 @@ li.showcase-card {
 }
 
 /* ============================================================
-   USER PROFILE SIDEBAR — Figma: 2.1 Usuario metamac
+   14. USER PROFILE SIDEBAR — Figma: 2.1 Usuario metamac
    ============================================================ */
 
 #user-info {
@@ -3393,7 +3393,7 @@ li.showcase-card {
 }
 
 /* ============================================================
-   MODAL INCRUSTAR VISTA DE RECURSO
+   15. MODAL INCRUSTAR VISTA DE RECURSO
    ============================================================ */
 
 .resource-view-embed .modal-header {
@@ -3439,7 +3439,7 @@ body .page-header .nav-tabs li a {
 }
 
 /* ============================================================
-   DATASET EDIT — Panel lateral y tabs (Figma node 11515:6405)
+   16. DATASET EDIT — Panel lateral y tabs (Figma node 11515:6405)
    ============================================================ */
 
 /* Panel lateral: borde y radio como en Figma (.Filtros) */
@@ -3483,7 +3483,7 @@ body .page-header .nav-tabs li a {
 }
 
 /* ============================================================
-   GROUP / DATASET / ORGANIZATION FORMS
+   17. GROUP / DATASET / ORGANIZATION FORMS
    Figma ref: 11816:6262 (Crear Grupo)
    ============================================================ */
 
@@ -3597,7 +3597,7 @@ body .page-header .nav-tabs li a {
 }
 
 /* ============================================================
-   RESOURCE EDIT — Botones y barra de sub-tabs
+   18. RESOURCE EDIT — Botones y barra de sub-tabs
    Figma node 11813:5303
    ============================================================ */
 
@@ -3687,7 +3687,7 @@ aside.secondary .module-content > a.btn.btn-sm {
 
 
 /* ================================================================
-   PAGINACIÓN - Adaptación al diseño EDATOS
+   19. PAGINACIÓN - Adaptación al diseño EDATOS
    Scope exclusivo: .pagination-wrapper
    Compatible: Bootstrap 5 · Chrome · Firefox · Edge · Safari
    ================================================================ */
