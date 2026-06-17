@@ -1499,7 +1499,7 @@ h2.dataset-heading {
 }
 
 .module-narrow .nav-item > a, .module-narrow .nav-aside li a {
-    color: var(--edatos-color-secondary-100) !important;
+    color: var(--edatos-color-secondary-100);
 }
 
 /* ZONA 11 — Enlace "Mostrar más" */
@@ -1525,14 +1525,14 @@ h2.dataset-heading {
 .module-footer {
     padding: 7px 25px 7px;
     margin: 0;
-    border-top: 1px #ddd !important;
+    border-top: 1px #ddd;
 }
 
 .nav-simple > li, .nav-aside > li {
     font-size: var(--edatos-font-size-xs);
     line-height: 1.1666666667em;
     padding: 7px 25px;
-    border-bottom: 1px #ddd !important;
+    border-bottom: 1px #ddd;
 }
 
 /* ============================================================
@@ -1743,7 +1743,7 @@ h1.dataset-title {
 	font-style: normal;
 	font-weight: 600;
 	line-height: 26px;
-	padding-top: 0px !important;
+	padding-top: 0px;
 }
 
 /* --- ZONA 10b: Descripción en módulos info del sidebar (helper, ¿Qué son las colecciones?) --- */
@@ -1790,8 +1790,8 @@ h1.dataset-title {
 .row.wrapper {
 	background: var(--edatos-color-white-100) !important;
 	border: none !important;
-	margin-left: 0 !important;
-	margin-right: 0 !important;
+	margin-left: 0;
+	margin-right: 0;
 	gap: 10px;
 	padding-top: 10px;
 	box-shadow: 0 -6px 12px -6px rgba(0, 0, 0, 0.15) !important;
@@ -2445,9 +2445,9 @@ a.metadatos-tag:hover {
 }
 
 .search-form {
-    margin-bottom: 0px !important;
+    margin-bottom: 0px;
     padding-bottom: 25px;
-    border-bottom: 0px !important;
+    border-bottom: 0px;
 }
 
 .search-form .search-input .btn:hover,
@@ -2869,7 +2869,7 @@ li.showcase-card {
 }
 
 .module:first-child .module-heading {
-    border-radius: 3px !important;
+    border-radius: 3px;
     border-top-width: 0;
 }
 
@@ -3149,11 +3149,11 @@ li.showcase-card {
 	width: 100%;
 }
 
-.recursos-item {
+.nav-simple .recursos-item {
 	display: flex;
 	width: 100%;
 	min-height: 36px;
-	padding: 5px 20px !important;
+	padding: 5px 20px;
 	flex-direction: column;
 	align-items: flex-start;
 	justify-content: center;
@@ -3165,11 +3165,11 @@ li.showcase-card {
    diseñado para li con padding:7px 25px original. Como nuestro li tiene padding:5px 20px,
    el anchor queda 45px más corto que el heading. Poner el border en el li evita ese problema. */
 .nav-simple > li.recursos-item:not(:last-of-type) {
-	border-bottom: 0.5px solid var(--edatos-color-primary-5, #E5ECF1) !important;
+	border-bottom: 0.5px solid var(--edatos-color-primary-5, #E5ECF1);
 }
 
 .nav-simple > li.recursos-item:last-of-type {
-	border-bottom: none !important;
+	border-bottom: none;
 }
 
 /* Anular margin negativo de CKAN en el anchor y el border que tendría el anchor */
@@ -3179,9 +3179,9 @@ li.showcase-card {
 }
 
 .recursos-item a {
-	color: var(--edatos-color-secondary-100, #004678) !important;
+	color: var(--edatos-color-secondary-100, #004678);
 	font-family: "Open Sans", sans-serif;
-	font-size: var(--edatos-font-size-md) !important;
+	font-size: var(--edatos-font-size-md);
 	font-style: normal;
 	font-weight: 300;
 	line-height: 26px;
@@ -3198,7 +3198,7 @@ li.showcase-card {
 
 @media (min-width: 768px) {
     .wrapper:before {
-         border-right: none !important;
+         border-right: none;
 	}
 }
 
@@ -3463,8 +3463,8 @@ body .page-header .nav-tabs li a {
 
 /* Quitar borde de cualquier .module anidado (evita doble rectángulo) */
 .dataset-edit-secondary .module {
-    border: none !important;
-    box-shadow: none !important;
+    border: none;
+    box-shadow: none;
 }
 
 /* Anular el borde del aside.secondary en edición — .dataset-edit-secondary ya lo gestiona */
@@ -3496,7 +3496,7 @@ body .page-header .nav-tabs li a {
 .form-group label.control-label {
     font-size: var(--edatos-font-size-lg);
     font-weight: 600;
-    color: var(--edatos-color-gray-80) !important;
+    color: var(--edatos-color-gray-80);
     line-height: 26px;
 }
 
@@ -3577,7 +3577,7 @@ body .page-header .nav-tabs li a {
 }
 
 .editor-info-block a {
-    color: var(--edatos-color-primary-100, #004678) !important;
+    color: var(--edatos-color-primary-100, #004678);
 }
 
 /* 8. Sidebar helper (group create/edit) — wrapper con borde secondary */
@@ -3653,7 +3653,7 @@ aside.secondary .module-content > a.btn.btn-sm {
 
 /* Botón "Quitar" (URL clear) — propiedades específicas */
 .btn-remove-url {
-    padding: 5px 10px !important;
+    padding: 5px 10px;
 }
 
 .edatos-alert {
