@@ -1604,8 +1604,8 @@ h1.dataset-title {
 }
 
 #dataset-resources li.resource-item {
-	padding: 0 !important;
-	background: transparent !important;
+	padding: 0;
+	background: transparent;
 }
 
 .resource-item .heading {
@@ -1649,8 +1649,8 @@ h1.dataset-title {
 
 #dataset-resources .btn-primary:hover,
 #dataset-resources .btn-primary.dropdown-toggle:hover {
-	background: var(--edatos-color-primary-100) !important;
-	color: var(--edatos-color-white-100) !important;
+	background: var(--edatos-color-primary-100);
+	color: var(--edatos-color-white-100);
 	border-color: var(--edatos-color-primary-100, #004678);
 }
 
@@ -1700,9 +1700,9 @@ h1.dataset-title {
 .additional-info .module-heading,
 .additional-info .module-heading.metadata-heading {
 	flex: 1 0 0;
-	justify-content: flex-start !important;
-	border-radius: 5px 5px 0 0 !important;
-	border-bottom: none !important;
+	justify-content: flex-start;
+	border-radius: 5px 5px 0 0;
+	border-bottom: none;
 	font-size: var(--edatos-font-size-lg);
 	font-weight: 600;
 	line-height: 26px;
@@ -1757,7 +1757,7 @@ h1.dataset-title {
 	flex-shrink: 0;
 	flex: 1 0 0;
 	align-self: stretch;
-	color: var(--edatos-color-black-100, #000) !important;
+	color: var(--edatos-color-black-100, #000);
 	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-xs);
 	font-style: normal;
@@ -1766,7 +1766,7 @@ h1.dataset-title {
 }
 
 .module.module-narrow.module-shallow .module-content p {
-	color: var(--edatos-color-black-100, #000) !important;
+	color: var(--edatos-color-black-100, #000);
 	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-xs);
 	font-style: normal;
@@ -1919,7 +1919,7 @@ section.module.additional-info table th:first-child,
 section.module.additional-info table td:first-child,
 section.additional-info.module table th:first-child,
 section.additional-info.module table td:first-child {
-	width: 30% !important;
+	width: 30%;
 	font-weight: var(--font-weight-bold);
 }
 
@@ -1932,8 +1932,8 @@ section.additional-info.module table td:first-child {
 /* Sin divisor vertical entre columnas (Figma no lo tiene) */
 .additional-info table thead tr th,
 .additional-info table thead tr th:first-child {
-	border-left: none !important;
-	border-right: none !important;
+	border-left: none;
+	border-right: none;
 }
 
 /* Filas de datos: campo 600, valor 300 */
@@ -1947,14 +1947,14 @@ section.additional-info.module table td:first-child {
 
 .additional-info table tbody tr td {
 	font-weight: 300;
-	color: var(--edatos-color-gray-60) !important;
+	color: var(--edatos-color-gray-60);
 	font-family: "'Open Sans'";
     font-size: var(--edatos-font-size-md);
     font-style: normal;
     line-height: 26px;
 	border-bottom: 1px solid var(--edatos-color-gray-5, #F2F2F2);
-	border-left: none !important;
-	border-right: none !important;
+	border-left: none;
+	border-right: none;
 	background-color: var(--edatos-color-white-100, #FFF) !important;
 }
 
@@ -1962,14 +1962,14 @@ section.additional-info.module table td:first-child {
 	font-weight: 600;
 	color: var(--edatos-color-gray-60);
 	border-bottom: 1px solid var(--edatos-color-gray-5, #F2F2F2);
-	border-left: none !important;
-	border-right: none !important;
+	border-left: none;
+	border-right: none;
 	background: var(--edatos-color-white-100, #FFF) !important;
 	padding: 5px 20px;
 }
 
 .additional-info .module-content:first-child table th:first-child {
-	width: 30% !important;
+	width: 30%;
 }
 
 table th:first-child {
@@ -2140,9 +2140,9 @@ a.metadatos-tag:hover {
 	align-items: center;
 	gap: 5px;
 	border-radius: 5px;
-	border: 1px solid var(--edatos-color-primary-100, #004678) !important;
-	background: var(--edatos-color-white-100, #FFF) !important;
-	color: var(--edatos-color-secondary-100, #004678) !important;
+	border: 1px solid var(--edatos-color-primary-100, #004678);
+	background: var(--edatos-color-white-100, #FFF);
+	color: var(--edatos-color-secondary-100, #004678);
 	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-sm);
 	font-weight: 300;
@@ -2153,7 +2153,7 @@ a.metadatos-tag:hover {
 
 .module-resource .actions .btn:hover,
 .module-resource .actions a.btn:hover {
-	background: var(--edatos-color-primary-5, #E5ECF1) !important;
+	background: var(--edatos-color-primary-5, #E5ECF1);
 	text-decoration: none;
 }
 
@@ -2183,7 +2183,7 @@ a.metadatos-tag:hover {
 /* --- Resource read: URL --- */
 .module-resource .module-content p.text-muted.ellipsis,
 .module-resource .module-content p.text-muted.break-word {
-	color: var(--edatos-color-black-100) !important;
+	color: var(--edatos-color-black-100);
 	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-md);
 	font-weight: 300;
@@ -2193,7 +2193,7 @@ a.metadatos-tag:hover {
 
 .module-resource .module-content p.text-muted.ellipsis a,
 .module-resource .module-content p.text-muted.break-word a {
-	color: var(--edatos-color-primary-100, #004678) !important;
+	color: var(--edatos-color-primary-100, #004678);
 	font-weight: 300;
 	text-decoration: none;
 }
@@ -2238,9 +2238,9 @@ a.metadatos-tag:hover {
 /* Fix: cuando el sidebar usa .showcase-detail-sidebar, ese div ya tiene su propio borde;
    se elimina el borde duplicado del .secondary exterior */
 .secondary:has(.showcase-detail-sidebar) {
-	border: none !important;
-	padding: 0 !important;
-	background: transparent !important;
+	border: none;
+	padding: 0;
+	background: transparent;
 }
 
 /* --- Sidebar: contenedor con borde (filtro_recursos) — read y edit --- */
@@ -2252,23 +2252,23 @@ a.metadatos-tag:hover {
 	gap: 30px;
 	padding: 10px;
 	border-radius: 5px;
-	border: 0.5px solid var(--edatos-color-dark-blue-25, #99B5C9);
+	border: none;
 	background: var(--edatos-color-white-100, #FFF);
 	align-self: flex-start;
 }
 
 /* --- Módulos dentro del sidebar: sin estilo propio --- */
 .module-resource ~ .secondary .module.module-narrow {
-	background: transparent !important;
-	border: none !important;
-	margin: 0 !important;
+	background: transparent;
+	border: none;
+	margin: 0;
 	width: 100%;
 }
 
 /* --- Cabeceras de sección (RECURSOS, COMPARTIR): sin borde inferior --- */
 .module-resource ~ .secondary .module-heading {
-	border-bottom: none !important;
-	border-radius: 3px !important;
+	border-bottom: none;
+	border-radius: 3px;
 }
 
 /* --- Items de recurso (no activo) --- */
@@ -2303,13 +2303,13 @@ a.metadatos-tag:hover {
 
 /* --- Botones acción recurso (wrench + dropdown): azul en lugar de rojo heredado --- */
 .secondary .resources .btn.btn-default {
-	color: var(--edatos-color-secondary-100, #004678) !important;
-	border-color: var(--edatos-color-secondary-100, #004678) !important;
-	background: var(--edatos-color-white-100, #FFF) !important;
+	color: var(--edatos-color-secondary-100, #004678);
+	border-color: var(--edatos-color-secondary-100, #004678);
+	background: var(--edatos-color-white-100, #FFF);
 }
 
 .secondary .resources .btn.btn-default:hover {
-	background: var(--edatos-color-primary-5, #E5ECF1) !important;
+	background: var(--edatos-color-primary-5, #E5ECF1);
 }
 
 /* --- Enlace social (COMPARTIR items) --- */
@@ -2344,7 +2344,7 @@ a.metadatos-tag:hover {
 	gap: 10px;
 	border-radius: 5px;
 	background: var(--edatos-color-gray-5, #F2F2F2);
-	color: var(--edatos-color-primary-100, #004678) !important;
+	color: var(--edatos-color-primary-100, #004678);
 	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-sm);
 	font-weight: 600;
@@ -2511,9 +2511,9 @@ textarea:focus {
 	display: flex;
 	align-items: center;
 	background: var(--edatos-color-white-100);
-	border: none !important;
-	box-shadow: none !important;
-	outline: none !important;
+	border: none;
+	box-shadow: none;
+	outline: none;
 }
 
 .homepage .search-giant .form-control {
@@ -2522,10 +2522,10 @@ textarea:focus {
 	font-weight: 300;
 	padding: 7px 0 7px 16px;
 	border-radius: 5px 0 0 5px;
-	border: none !important;
+	border: none;
 	background: transparent;
 	flex: 1;
-	box-shadow: none !important;
+	box-shadow: none;
 }
 
 .homepage .search-giant .form-control::placeholder {
@@ -2533,8 +2533,8 @@ textarea:focus {
 }
 
 .homepage .search-giant .form-control:focus {
-	border: none !important;
-	box-shadow: none !important;
+	border: none;
+	box-shadow: none;
 	outline: none;
 }
 
@@ -2627,8 +2627,8 @@ a.tag:hover {
 }
 
 .modal.fade.in {
-	margin-top: 0 !important;
-	top: 0 !important;
+	margin-top: 0;
+	top: 0;
 }
 
 /* Font Awesome 6 Pro */
@@ -2790,9 +2790,9 @@ li.showcase-card {
 
 /* Fix: evitar que la regla .secondary .module.context-info aplique fondo azul al título */
 .showcase-detail-sidebar .module.context-info {
-	background: transparent !important;
-	padding: 0 !important;
-	border-radius: 0 !important;
+	background: transparent;
+	padding: 0;
+	border-radius: 0;
 }
 
 .showcase-detail-sidebar {
@@ -2819,9 +2819,9 @@ li.showcase-card {
 
 /* Módulos dentro del sidebar: sin fondo/borde propios, ocupan todo el ancho */
 .showcase-detail-sidebar .module.module-narrow {
-	background: transparent !important;
-	border: none !important;
-	margin: 0 !important;
+	background: transparent;
+	border: none;
+	margin: 0;
 	padding: 0;
 	width: 100%;
 	align-self: stretch;
@@ -2859,7 +2859,7 @@ li.showcase-card {
 }
 
 .showcase-detail-sidebar .social .nav-item {
-	border-bottom: none !important;
+	border-bottom: none;
 }
 
 /* Heading del módulo info (¿Qué son las categorías?) — 16px, sin uppercase */
@@ -2873,19 +2873,23 @@ li.showcase-card {
     border-top-width: 0;
 }
 
+.module-content > a {
+    padding: 10px;
+}
+
 /* Aviso legal: contenido de la sección licencia */
 .showcase-detail-sidebar .module.module-narrow.module-shallow .module-content {
-	display: flex !important;
-	min-height: 35px !important;
-	width: 100% !important;
-	padding: 5px 10px 5px 20px !important;
-	align-items: flex-start !important;
-	gap: 10px !important;
-	flex: none !important;
-	align-self: unset !important;
-	border-bottom: 0.5px solid var(--edatos-color-primary-5, #E5ECF1) !important;
-	background: var(--edatos-color-white-100, #FFF) !important;
-	color: var(--edatos-color-secondary-100, #004678) !important;
+	display: flex;
+	min-height: 35px;
+	width: 100%;
+	padding: 5px 10px 5px 20px;
+	align-items: flex-start;
+	gap: 10px;
+	flex: none;
+	align-self: unset;
+	border-bottom: 0.5px solid var(--edatos-color-primary-5, #E5ECF1);
+	background: var(--edatos-color-white-100, #FFF);
+	color: var(--edatos-color-secondary-100, #004678);
 	font-size: var(--edatos-font-size-sm);
 	font-weight: 400;
 	line-height: 14px;
@@ -2893,11 +2897,11 @@ li.showcase-card {
 }
 
 .showcase-detail-sidebar .module.module-narrow.module-shallow .module-content p {
-	margin: 0 !important;
+	margin: 0;
 	font-size: var(--edatos-font-size-md);
 	font-weight: 600;
 	line-height: 26px;
-	color: var(--edatos-color-gray-80) !important;
+	color: var(--edatos-color-gray-80);
 }
 
 .showcase-detail-sidebar .license .module-content p a,
@@ -2924,7 +2928,7 @@ li.showcase-card {
 	font-size: var(--edatos-font-size-md);
 	font-weight: 600;
 	line-height: 26px;
-	color: var(--edatos-color-secondary-100, #004678) !important;
+	color: var(--edatos-color-secondary-100, #004678);
 }
 
 .showcase-detail-sidebar #package-info .heading {
@@ -3128,8 +3132,8 @@ li.showcase-card {
 	font-size: var(--edatos-font-size-lg);
 	font-weight: 600;
 	text-transform: none;
-	border-radius: 5px !important;
-	padding: 5px 10px !important;
+	border-radius: 5px;
+	padding: 5px 10px;
 	line-height: 26px;
 }
 
@@ -3171,7 +3175,7 @@ li.showcase-card {
 /* Anular margin negativo de CKAN en el anchor y el border que tendría el anchor */
 .module.module-narrow .nav-simple .nav-item.recursos-item a {
 	margin: 0;
-	border-bottom: none !important;
+	border-bottom: none;
 }
 
 .recursos-item a {
@@ -3210,7 +3214,7 @@ li.showcase-card {
 }
 
 .filters .module.module-narrow {
-    margin-bottom: 0 !important;
+    margin-bottom: 0;
 }
 
 /* Showcase ya tiene su propio borde en .showcase-detail-sidebar */
@@ -3453,8 +3457,8 @@ body .page-header .nav-tabs li a {
 
 /* Quitar bordes propios de módulos dentro del panel */
 .dataset-edit-secondary .module.module-narrow {
-    border: none !important;
-    margin-bottom: 0 !important;
+    border: none;
+    margin-bottom: 0;
 }
 
 /* Quitar borde de cualquier .module anidado (evita doble rectángulo) */
@@ -3465,16 +3469,16 @@ body .page-header .nav-tabs li a {
 
 /* Anular el borde del aside.secondary en edición — .dataset-edit-secondary ya lo gestiona */
 .secondary:has(.dataset-edit-secondary) {
-    border: none !important;
-    background: transparent !important;
-    padding: 0 !important;
+    border: none;
+    background: transparent;
+    padding: 0;
 }
 
 /* Eliminar fondo oscuro del bloque context-info en vista de edición */
 .dataset-edit-secondary .module.context-info {
-    background: transparent !important;
-    border-radius: 0 !important;
-    padding: 0 !important;
+    background: transparent;
+    border-radius: 0;
+    padding: 0;
 }
 
 /* Ocultar iconos en las pestañas de edición (Figma no los muestra) */
@@ -3513,8 +3517,8 @@ body .page-header .nav-tabs li a {
 .controls input[type="text"],
 .controls input[type="url"],
 .controls .form-control {
-    border: 0.5px solid var(--edatos-color-secondary-100, #004678) !important;
-    border-radius: 5px !important;
+    border: 0.5px solid var(--edatos-color-secondary-100, #004678);
+    border-radius: 5px;
 }
 
 /* 4. Focus — borde primary/50, sin box-shadow */
@@ -3524,40 +3528,40 @@ body .page-header .nav-tabs li a {
 .controls input[type="text"]:focus,
 .controls input[type="url"]:focus,
 .controls .form-control:focus {
-    border-color: var(--edatos-color-primary-50, #4d7ea0) !important;
-    box-shadow: none !important;
+    border-color: var(--edatos-color-primary-50, #4d7ea0);
+    box-shadow: none;
     outline: none;
 }
 
 /* 5. Botón Edit slug → azul outline (EDITAR) */
 .slug-preview .btn.btn-default.btn-xs {
-    background: transparent !important;
-    background-image: none !important;
-    border: 1px solid var(--edatos-color-primary-100, #004678) !important;
-    color: var(--edatos-color-primary-100, #004678) !important;
-    border-radius: 5px !important;
+    background: transparent;
+    background-image: none;
+    border: 1px solid var(--edatos-color-primary-100, #004678);
+    color: var(--edatos-color-primary-100, #004678);
+    border-radius: 5px;
     font-size: var(--edatos-font-size-sm);
     font-weight: 400;
     text-transform: uppercase;
-    padding: 5px 10px !important;
-    box-shadow: none !important;
-    text-shadow: none !important;
+    padding: 5px 10px;
+    box-shadow: none;
+    text-shadow: none;
 }
 
 .slug-preview .btn.btn-default.btn-xs:hover {
-    background: var(--edatos-color-primary-100, #004678) !important;
-    color: var(--edatos-color-white-100) !important;
+    background: var(--edatos-color-primary-100, #004678);
+    color: var(--edatos-color-white-100);
 }
 
 /* 6. Icono info-circle en bloques de ayuda del formulario */
 .info-block i.fa-info-circle {
-    color: var(--edatos-color-primary-100, #004678) !important;
+    color: var(--edatos-color-primary-100, #004678);
 }
 
 /* 7. Textarea con barra Markdown inferior */
 .controls.editor textarea.form-control {
-    border-radius: 5px 5px 0 0 !important;
-    border-bottom: none !important;
+    border-radius: 5px 5px 0 0;
+    border-bottom: none;
 }
 
 .editor-info-block {
@@ -3588,12 +3592,12 @@ body .page-header .nav-tabs li a {
 }
 
 .showcase-detail-sidebar .module.module-narrow {
-    border: none !important;
-    margin-bottom: 0 !important;
+    border: none;
+    margin-bottom: 0;
 }
 
 .showcase-detail-sidebar .module-heading {
-    border-radius: 3px !important;
+    border-radius: 3px;
 }
 
 /* ============================================================
@@ -3606,13 +3610,13 @@ header.module-content.page-header .content_action .btn,
 aside.secondary .module.resources .nav-simple .btn,
 aside.secondary .module-content > a.btn.btn-sm,
 .btn-remove-url {
-    background: var(--edatos-color-white-100) !important;
-    background-image: none !important;
-    border: 1px solid var(--edatos-color-primary-100) !important;
-    color: var(--edatos-color-primary-100) !important;
-    border-radius: 5px !important;
-    box-shadow: none !important;
-    text-shadow: none !important;
+    background: var(--edatos-color-white-100);
+    background-image: none;
+    border: 1px solid var(--edatos-color-primary-100);
+    color: var(--edatos-color-primary-100);
+    border-radius: 5px;
+    box-shadow: none;
+    text-shadow: none;
     font-size: var(--edatos-font-size-sm);
 }
 
@@ -3620,20 +3624,20 @@ header.module-content.page-header .content_action .btn:hover,
 aside.secondary .module.resources .nav-simple .btn:hover,
 aside.secondary .module-content > a.btn.btn-sm:hover,
 .btn-remove-url:hover {
-    background: var(--edatos-color-primary-100) !important;
-    color: var(--edatos-color-white-100) !important;
+    background: var(--edatos-color-primary-100);
+    color: var(--edatos-color-white-100);
 }
 
 header.module-content.page-header .content_action .btn i,
 aside.secondary .module.resources .nav-simple .btn i,
 aside.secondary .module-content > a.btn.btn-sm i {
-    color: inherit !important;
+    color: inherit;
 }
 
 /* Botón "Ver recurso" — propiedades específicas */
 header.module-content.page-header .content_action .btn {
     text-transform: uppercase;
-    padding: 5px 10px !important;
+    padding: 5px 10px;
 }
 
 /* Botón "Añadir nuevo recurso" — propiedades específicas */
@@ -3644,7 +3648,7 @@ aside.secondary .module-content > a.btn.btn-sm {
     font-weight: 400;
     line-height: 20px;
     text-transform: uppercase;
-    padding: 5px 10px !important;
+    padding: 5px 10px;
 }
 
 /* Botón "Quitar" (URL clear) — propiedades específicas */
@@ -3666,7 +3670,7 @@ aside.secondary .module-content > a.btn.btn-sm {
 
 .alert.alert-danger.edatos-alert {
 	background-color: var(--edatos-color-danger-25);
-	color: var(--edatos-color-black-100) !important;
+	color: var(--edatos-color-black-100);
 	border: none;
 }
 
