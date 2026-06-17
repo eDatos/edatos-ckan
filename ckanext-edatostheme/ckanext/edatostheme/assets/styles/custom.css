@@ -2558,54 +2558,55 @@ div.input-prepend input:nth-child(2) {
    ============================================================ */
 
 /* Contenedor de tabs */
-.nav-tabs {
-	background-color: var(--edatos-color-primary-5, #E5ECF1) !important;
-	border-radius: 3px !important;
-	border-bottom: none !important;
+body .nav-tabs {
+	background-color: var(--edatos-color-primary-5, #E5ECF1);
+	border-radius: 3px;
+	border-bottom: none;
 	padding-left: 20px;
-	height: 45px !important;
-	display: flex !important;
-	align-items: flex-end !important;
+	height: 45px;
+	display: flex;
+	align-items: flex-end;
 	width: 100%;
 }
 
 /* Tab inactivo */
-.nav-tabs > li > a {
-	font-family: "Open Sans", sans-serif !important;
-	font-size: var(--edatos-font-size-sm) !important;
-	font-weight: 300 !important;
-	font-style: normal !important;
-	line-height: 20px !important;
-	color: var(--edatos-color-secondary-100) !important;
-	background-color: transparent !important;
-	border-radius: 5px 5px 0 0 !important;
-	border: none !important;
-	padding: 9px 20px !important;
-	margin: 0 !important;
+body .nav-tabs > li > a {
+	font-family: "Open Sans", sans-serif;
+	font-size: var(--edatos-font-size-sm);
+	font-weight: 300;
+	font-style: normal;
+	line-height: 20px;
+	color: var(--edatos-color-secondary-100);
+	background-color: transparent;
+	border-radius: 5px 5px 0 0;
+	border: none;
+	padding: 9px 20px;
+	margin: 0;
 }
 
-.nav-tabs > li > a:hover,
-.nav-tabs > li > a:focus {
-	background-color: var(--edatos-color-primary-10, #CCDAE4) !important;
-	border: none !important;
+body .nav-tabs > li > a:hover,
+body .nav-tabs > li > a:focus {
+	background-color: var(--edatos-color-primary-10, #CCDAE4);
+	border: none;
+	border-radius: 5px 5px 0 0;
 }
 
 /* Tab activo */
-.nav-tabs > li.active > a,
-.nav-tabs > li.active > a:hover,
-.nav-tabs > li.active > a:focus {
-	font-family: "Open Sans", sans-serif !important;
-	font-size: var(--edatos-font-size-sm) !important;
-	font-weight: 600 !important;
-	font-style: normal !important;
-	line-height: normal !important;
-	color: var(--edatos-color-secondary-100, #004678) !important;
-	text-align: center !important;
-	font-feature-settings: 'liga' off, 'clig' off !important;
-	background-color: var(--edatos-color-white-100) !important;
-	border-radius: 5px 5px 0 0 !important;
-	border: none !important;
-	padding: 9px 20px !important;
+body .nav-tabs > li.active > a,
+body .nav-tabs > li.active > a:hover,
+body .nav-tabs > li.active > a:focus {
+	font-family: "Open Sans", sans-serif;
+	font-size: var(--edatos-font-size-sm);
+	font-weight: 600;
+	font-style: normal;
+	line-height: normal;
+	color: var(--edatos-color-secondary-100, #004678);
+	text-align: center;
+	font-feature-settings: 'liga' off, 'clig' off;
+	background-color: var(--edatos-color-white-100);
+	border-radius: 5px 5px 0 0;
+	border: none;
+	padding: 9px 20px;
 }
 
 /* ============================================================
@@ -3865,11 +3866,3 @@ aside.secondary .module-content > a.btn.btn-sm {
     }
 }
 
-/* ------------------------------------------------------------------
-   SUBSECTION TABS — hover
-   ------------------------------------------------------------------ */
-.nav.nav-tabs li a:hover {
-    background-color: var(--edatos-color-primary-10) !important;
-    border-radius: 5px 5px 0px 0px !important;
-    text-decoration: none;
-}
