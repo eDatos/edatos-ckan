@@ -3433,12 +3433,9 @@ li.showcase-card {
 	height: 100px;
 }
 
-.nav-link, .page-header .nav-tabs li a {
-    display: block;
-    padding: 0.5rem 1rem;
-    color: #206b82;
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
-    color: var(--edatos-color-secondary-100, #004678) !important;
+body .nav-link,
+body .page-header .nav-tabs li a {
+    color: var(--edatos-color-secondary-100, #004678);
 }
 
 /* ============================================================
