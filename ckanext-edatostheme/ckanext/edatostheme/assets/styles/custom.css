@@ -1329,13 +1329,8 @@ h2.dataset-heading {
 
 #group-info .image .group-home-fa-glyph {
 	font-size: 100.365px;
-	color: var(--color-white);
+	color: var(--edatos-color-white-100);
 	align-self: stretch;
-}
-
-#group-info .image .group-home-fa-glyph::before {
-	color: var(--color-white) !important;
-	font-weight: 400 !important;
 }
 
 #group-info .image .heading {
@@ -1415,12 +1410,6 @@ h2.dataset-heading {
 	text-decoration: none;
 }
 
-.module.module-narrow.social,
-.module.module-narrow.module-shallow.license {
-	margin: 0 !important;
-}
-
-
 /* ============================================================
    6. SIDEBAR / FILTROS — Facets, Filter panels
    ============================================================ */
@@ -1436,7 +1425,7 @@ h2.dataset-heading {
 }
 
 .module.module-narrow .nav-simple .nav-item a {
-	margin: 0 !important;
+	margin: 0;
 	width: 95%;
 	display: flex;
 	min-height: 35px;
@@ -1462,7 +1451,7 @@ h2.dataset-heading {
 
 .module.module-narrow .nav-simple .nav-item a:hover {
 	background-color: var(--edatos-color-gray-5, #004678);
-	color: var(--edatos-color-secondary-100, #FFF) !important;
+	color: var(--edatos-color-secondary-100, #FFF);
 	text-decoration: none;
 }
 
@@ -1482,20 +1471,14 @@ h2.dataset-heading {
 	color: var(--edatos-color-secondary-100, #004678);
 }
 
-/* Anula el padding horizontal del div.module-content si existe en algún contexto. */
-.secondary .module-narrow .module-content {
-	padding-left: 0 !important;
-	padding-right: 0 !important;
-}
-
 /* Botón de cierre (×) de faceta activa — sustituye fa-circle-xmark por × simple */
 .module.module-narrow .nav-item.active a .facet-close {
 	flex-shrink: 0;
 	display: flex;
 	align-items: center;
 	color: var(--edatos-color-white-100, #FFF);
-	position: static !important;
-	left: 0 !important;
+	position: static;
+	left: 0;
 	float: none;
 	padding-right: 4px;
 }
@@ -2888,25 +2871,25 @@ li.showcase-card {
 
 /* Etiqueta RRSS: cada enlace de compartir */
 .showcase-detail-sidebar .social .nav-item a {
-	display: flex !important;
+	display: flex;
 	width: 100%;
 	height: 35px;
-	padding: 5px 10px 5px 20px !important;
+	padding: 5px 10px 5px 20px;
 	align-items: center;
 	gap: 10px;
-	border-top: none !important;
-	border-bottom: 0.5px solid var(--edatos-color-primary-5, #E5ECF1) !important;
-	background: var(--edatos-color-white-100, #FFF) !important;
-	color: var(--edatos-color-secondary-100, #004678) !important;
-	font-family: "Open Sans", sans-serif !important;
-	font-size: var(--edatos-font-size-sm) !important;
-	font-weight: 400 !important;
-	line-height: 14px !important;
+	border-top: none;
+	border-bottom: 0.5px solid var(--edatos-color-primary-5, #E5ECF1);
+	background: var(--edatos-color-white-100, #FFF);
+	color: var(--edatos-color-secondary-100, #004678);
+	font-family: "Open Sans", sans-serif;
+	font-size: var(--edatos-font-size-sm);
+	font-weight: 400;
+	line-height: 14px;
 	box-sizing: border-box;
 }
 
 .showcase-detail-sidebar .social .nav-item a:hover {
-	background-color: #f0f5fb !important;
+	background-color: var(--edatos-color-primary-5)
 	text-decoration: none;
 }
 
