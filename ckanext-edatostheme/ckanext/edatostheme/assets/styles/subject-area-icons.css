@@ -78,10 +78,11 @@
     font-style: normal;
     font-weight: 100; /* thin */
     font-size: 47px;
-    color: var(--edatos-color-primary-100, #004678);
+    color: var(--edatos-color-secondary-100, #004678);
     text-align: center;
     line-height: normal;
     display: inline-block;
+    flex-shrink: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -114,3 +115,9 @@
 .group-home-fa-glyph.turismo::before                { content: '\f072'; } /* plane */
 .group-home-fa-glyph.urbanismo-infraestructuras::before { content: '\f64f'; } /* city */
 .group-home-fa-glyph.vivienda::before               { content: '\f015'; } /* house */
+
+@media (max-width: 600px) {
+    .group-home-fa-glyph {
+        font-size: 36px;
+    }
+}

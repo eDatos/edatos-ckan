@@ -418,7 +418,7 @@ nav.section.navigation {
 	font-size: var(--edatos-font-size-sm);
 	text-align: left;
 	list-style: none;
-	background-color: var(--edatos-color-secondary-100);
+	background-color: var(--edatos-color-primary-100);
 	-webkit-box-shadow: var(--shadow-dropdown);
 	box-shadow: var(--shadow-dropdown);
 	right: 0;
@@ -475,8 +475,8 @@ nav.section.navigation {
 	background-image: none;
 	font-size: var(--edatos-font-size-sm);
 	font-weight: var(--font-weight-light);
-	color: var(--edatos-color-secondary-100, #004678);
-	border: 1px solid var(--edatos-color-secondary-100, #004678);
+	color: var(--edatos-color-primary-100, #004678);
+	border: 1px solid var(--edatos-color-primary-100, #004678);
 	box-shadow: none;
 	padding: var(--spacing-xs) var(--spacing-sm);
 	border-radius: var(--border-radius-sm);
@@ -493,14 +493,14 @@ nav.section.navigation {
 
 /* Hover suave */
 button.btn.btn-navbar:hover {
-	background-color: var(--edatos-color-secondary-100);
+	background-color: var(--edatos-color-primary-100);
 	color: var(--edatos-color-white-100);
 }
 
 /* Estado abierto: detectado cuando el dropdown hermano tiene clase .abrir */
 li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar,
 li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar:hover {
-	background-color: var(--edatos-color-secondary-100, #004678);
+	background-color: var(--edatos-color-primary-100, #004678);
 	color: var(--edatos-color-white-100, #fff);
 	/* Aplana la esquina inferior derecha para conectar con el menú (alineado a la derecha) */
 	border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 var(--border-radius-sm);
@@ -1004,17 +1004,6 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	color: var(--edatos-color-white-100, #fff);
 }
 
-/* Group home icon (FA6 Pro thin) */
-.group-home-fa-glyph {
-	color: var(--edatos-color-secondary-100, #004678);
-	text-align: center;
-	font-size: 47px;
-	font-style: normal;
-	font-weight: 100;
-	line-height: normal;
-	flex-shrink: 0;
-}
-
 /* Group home title */
 .categories-grid .media-item.group-home-item .media-heading {
 	font-family: "Open Sans";
@@ -1059,10 +1048,6 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 		flex-direction: column;
 		gap: 10px;
 		padding: 14px;
-	}
-
-	.group-home-fa-glyph {
-		font-size: 36px;
 	}
 
 	.categories-grid .media-item.group-home-item .media-heading {
@@ -1430,7 +1415,7 @@ h2.dataset-heading {
 }
 
 .module.module-narrow .nav-simple .nav-item a:hover {
-	background-color: var(--edatos-color-gray-5, #004678);
+	background-color: var(--edatos-color-primary-5, #004678);
 	color: var(--edatos-color-secondary-100, #FFF);
 	text-decoration: none;
 }
@@ -1478,7 +1463,7 @@ h2.dataset-heading {
 .module-narrow .nav-item.active > a:before, .module-narrow .nav-aside li.active a:before {
     position: absolute;
     content: "";
-    right: -12px;
+    right: -11px;
 	border-left: 12px solid var(--edatos-color-primary-50);
     border-top: 25px solid transparent;
 }
@@ -2469,9 +2454,9 @@ a.metadatos-tag:hover {
 }
 /* ---- Selector de orden (Relevancia) — hover ---- */
 #field-order-by:hover {
-	background-color: var(--edatos-color-secondary-100, #004678);
+	background-color: var(--edatos-color-primary-100, #004678);
 	color: var(--edatos-color-white-100, #FFF);
-	border-color: var(--edatos-color-secondary-100, #004678);
+	border-color: var(--edatos-color-primary-100, #004678);
 	cursor: pointer;
 }
 
@@ -3705,7 +3690,7 @@ aside.secondary .module-content > a.btn.btn-sm {
    1. CONTENEDOR EXTERNO
    ------------------------------------------------------------------ */
 .pagination-wrapper {
-    padding-top: 1rem;
+    padding-top: var(--edatos-spacing-y-lg);
     font-family: "Open Sans", "Trebuchet MS", Arial, sans-serif;
     font-size: var(--edatos-font-size-sm);
     font-weight: 300;
@@ -3850,7 +3835,7 @@ aside.secondary .module-content > a.btn.btn-sm {
 @media (max-width: 767.98px) {
     .pagination-wrapper .pagination .page-item .page-link,
     .pagination-wrapper .pagination li a {
-        padding: 0.45rem 1rem;
+        padding: 0.45rem var(--edatos-spacing-x-lg);
         margin: 0 0.25rem;
         font-size: var(--edatos-font-size-sm);
     }
