@@ -177,7 +177,7 @@ textarea {
 .secondary .module.context-info .nums dt {
 	color: var(--edatos-color-white-100, #FFF);
 	font-size: var(--edatos-font-size-xs);
-	font-weight: 400;
+	font-weight: var(--edatos-font-weight-regular);
 	line-height: 16px;
 	border-bottom: 0.5px solid rgba(255, 255, 255, 0.3);
 	width: 100%;
@@ -1020,7 +1020,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	font-family: "Open Sans";
 	font-size: var(--edatos-font-size-lg);
 	font-style: normal;
-	font-weight: 400;
+	font-weight: var(--edatos-font-weight-regular);
 	line-height: 120%;
 	text-transform: uppercase;
 	margin: 0;
@@ -1338,7 +1338,7 @@ h2.dataset-heading {
 #group-info .nums-inner .nums-label {
 	font-size: var(--edatos-font-size-xs);
 	color: var(--color-white);
-	font-weight: 400;
+	font-weight: var(--edatos-font-weight-regular);
 	line-height: 16px;
 }
 
@@ -1515,7 +1515,7 @@ h2.dataset-heading {
 	color: var(--edatos-color-secondary);
 	font-family: "Open Sans", sans-serif;
 	font-size: 13px;
-	font-weight: 400;
+	font-weight: var(--edatos-font-weight-regular);
 	line-height: 14px;
 	text-decoration: none;
 	text-align: center;
@@ -1561,7 +1561,7 @@ h1.dataset-title {
 	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-md);
 	font-style: normal;
-	font-weight: 400;
+	font-weight: var(--edatos-font-weight-regular);
 	line-height: 26px;
 }
 
@@ -1621,7 +1621,7 @@ h1.dataset-title {
 	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-md);
 	font-style: normal;
-	font-weight: 400;
+	font-weight: var(--edatos-font-weight-regular);
 	line-height: 26px;
 	letter-spacing: normal;
 	text-decoration: none;
@@ -1766,7 +1766,7 @@ h1.dataset-title {
 	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-xs);
 	font-style: normal;
-	font-weight: 400;
+	font-weight: var(--edatos-font-weight-regular);
 	line-height: 16px;
 }
 
@@ -1775,7 +1775,7 @@ h1.dataset-title {
 	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-xs);
 	font-style: normal;
-	font-weight: 400;
+	font-weight: var(--edatos-font-weight-regular);
 	line-height: 16px;
 	margin: 0;
 }
@@ -1787,7 +1787,7 @@ h1.dataset-title {
 	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-sm);
 	font-style: normal;
-	font-weight: 400;
+	font-weight: var(--edatos-font-weight-regular);
 	line-height: 14px;
 }
 
@@ -2279,7 +2279,7 @@ a.metadatos-tag:hover {
 /* --- Items de recurso (no activo) --- */
 .module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item a {
 	font-size: var(--edatos-font-size-sm);
-	font-weight: 400;
+	font-weight: var(--edatos-font-weight-regular);
 	line-height: 14px;
 	color: var(--edatos-color-secondary-100, #004678);
 	background: var(--edatos-color-white-100, #FFF);
@@ -2322,7 +2322,7 @@ a.metadatos-tag:hover {
 .module-resource ~ .secondary .module.social .nav a {
 	color: var(--edatos-color-secondary-100, #004678);
 	font-size: var(--edatos-font-size-sm);
-	font-weight: 400;
+	font-weight: var(--edatos-font-weight-regular);
 	line-height: 14px;
 }
 
@@ -2740,7 +2740,7 @@ li.showcase-card {
 	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-xs);
 	font-style: normal;
-	font-weight: 400;
+	font-weight: var(--edatos-font-weight-regular);
 	line-height: normal;
 	text-transform: uppercase;
 }
@@ -2853,7 +2853,7 @@ li.showcase-card {
 	color: var(--edatos-color-secondary-100, #004678);
 	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-sm);
-	font-weight: 400;
+	font-weight: var(--edatos-font-weight-regular);
 	line-height: 14px;
 	box-sizing: border-box;
 }
@@ -2896,7 +2896,7 @@ li.showcase-card {
 	background: var(--edatos-color-white-100, #FFF);
 	color: var(--edatos-color-secondary-100, #004678);
 	font-size: var(--edatos-font-size-sm);
-	font-weight: 400;
+	font-weight: var(--edatos-font-weight-regular);
 	line-height: 14px;
 	box-sizing: border-box;
 }
@@ -2913,7 +2913,7 @@ li.showcase-card {
 .showcase-detail-sidebar .license .module-content p span {
 	color: var(--edatos-color-secondary-100, #004678);
 	font-size: var(--edatos-font-size-sm);
-	font-weight: 400;
+	font-weight: var(--edatos-font-weight-regular);
 	line-height: 14px;
 	text-decoration: none;
 }
@@ -3029,7 +3029,7 @@ li.showcase-card {
 	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-xs);
 	font-style: normal;
-	font-weight: 400;
+	font-weight: var(--edatos-font-weight-regular);
 	line-height: 16px;
 }
 
@@ -3290,7 +3290,7 @@ li.showcase-card {
 .user-profile-bio {
 	font-size: var(--edatos-font-size-xs);
 	color: var(--color-white);
-	font-weight: 400;
+	font-weight: var(--edatos-font-weight-regular);
 	line-height: 16px;
 	text-align: center;
 	padding: 0 10px;
@@ -3341,7 +3341,7 @@ li.showcase-card {
 .user-stats-label {
 	flex: 1;
 	font-size: var(--edatos-font-size-sm);
-	font-weight: 400;
+	font-weight: var(--edatos-font-weight-regular);
 	color: var(--edatos-color-secondary-100);
 	line-height: 14px;
 	white-space: nowrap;
@@ -3393,7 +3393,7 @@ li.showcase-card {
 	align-items: center;
 	padding: 5px 10px 5px 20px;
 	font-size: var(--edatos-font-size-sm);
-	font-weight: 400;
+	font-weight: var(--edatos-font-weight-regular);
 	color: var(--edatos-color-secondary-100);
 	white-space: nowrap;
 	overflow: hidden;
@@ -3546,7 +3546,7 @@ body .page-header .nav-tabs li a {
     color: var(--edatos-color-primary-100, #004678);
     border-radius: 5px;
     font-size: var(--edatos-font-size-sm);
-    font-weight: 400;
+    font-weight: var(--edatos-font-weight-regular);
     text-transform: uppercase;
     padding: 5px 10px;
     box-shadow: none;
@@ -3650,7 +3650,7 @@ aside.secondary .module-content > a.btn.btn-sm {
     white-space: nowrap;
     font-family: "Open Sans";
     font-style: normal;
-    font-weight: 400;
+    font-weight: var(--edatos-font-weight-regular);
     line-height: 20px;
     text-transform: uppercase;
     padding: 5px 10px;
