@@ -1,3 +1,7 @@
+-- Nota:
+-- Este script genera las entradas necesarias para el campo "multilingual_tags" en la tabla package_extra, asegurando que todos los datasets activos tengan un array JSON válido de etiquetas i18n. Se utiliza la clave primaria (id) de la tabla package_extra para asegurar que solo se actualicen los registros correctos. Se utilizan sus propias etiquetas de la tabla tag.
+
+-- Se utiliza cuando el dataset está activo y tiene al menos un tag activo, y no tiene ya un multilingual_tags con valor real, en una instalación de un CKAN que pasa de no estar internacionalizado a uno que sí lo está, para que todos los datasets activos tengan un array JSON válido de etiquetas i18n.
 
 BEGIN;
 

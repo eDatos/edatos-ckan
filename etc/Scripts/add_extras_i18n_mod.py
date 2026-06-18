@@ -1,3 +1,17 @@
+"""
+add_extras_i18n_mod.py — Migra extras/campos de paquetes CKAN al esquema multilingüe.
+
+Uso:
+  Solo 1 ID:
+    python add_extras_i18n_mod.py id_del_paquete
+
+  Archivo CSV con lista (1 ID por línea):
+    python add_extras_i18n_mod.py -l lista.csv
+
+  En background (nohup):
+    nohup python add_extras_i18n_mod.py -l datasets_migrar.csv &
+"""
+
 import re
 import requests
 import json
@@ -7,11 +21,10 @@ import csv
 from string import Template
 
 # Configuracin
-CKAN_URL = 'https://mgcartera.gobiernodecanarias.net/catalogos/estadisticas'
-# Configuracin
-#P API_KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJxY3pDZ2VUQkk4Y1ZTUTlmUGhoVTR1U2ZKYWdMRGV6S25wU3ZwSHBQOXhtOFhIRXJzMjhVZFpkU29ld0J3YVRfV09FSk55Wk1jY2RVTnZ0aiIsImlhdCI6MTc4MDQ4NzEzMX0.c4q1uVePPgfvQuNAi7lC6H_t3mG0V5BS5Wha-zXEGeo'
+CKAN_URL = 'FILL_ME_API_URL'  # URL de la instancia CKAN
 
-API_KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJRS1A1dXFaOFpqMVRJbGNOeC13MkJYNWV4THpCWGJCWnJLNHRueUF0eS15OEk4X0c2aGZ1NmZEUkxrWHQ1Mm5EMi1ldm9CYzJmWUJwLUVoaCIsImlhdCI6MTc4MTAxMDM3Mn0.aS85kk58MwKp-aJ_pg950yZqIcVeYjylv1UipkQDDAI'
+API_KEY = 'FILL_ME_API_KEY'  # API key de la instancia CKAN con permisos de edición para los paquetes a actualizar.
+
 # ---------------------------------------------------------------------------
 # Mapeo frecuencia: string español -> {type, value} para el preset date_frequency.
 # Fuente: gobcan_profile.py _get_frequency_details.
@@ -213,9 +226,19 @@ def process_package(package_id):
         update_package(package_id, package)
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Procesar y actualizar paquetes.')
+    
+    parser = argparse.ArgumentParser(
+        description='Migra extras/campos de paquetes CKAN al esquema multilingüe.',
+        epilog=(
+            'Ejemplos:\n'
+            '  python add_extras_i18n_mod.py id_del_paquete\n'
+            '  python add_extras_i18n_mod.py -l datasets_migrar.csv\n'
+            '  nohup python add_extras_i18n_mod.py -l datasets_migrar.csv &'
+        ),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
     parser.add_argument('package_id', nargs='?', help='ID del paquete a procesar')
-    parser.add_argument('-l', '--list', help='Archivo CSV con lista de IDs')
+    parser.add_argument('-l', '--list', help='Archivo CSV con lista de IDs (1 ID por línea)')
 
     args = parser.parse_args()
 
@@ -235,11 +258,4 @@ if __name__ == "__main__":
         print('Uso: python script.py <package_id>  o \n      python script.py -l <lista.csv>')
         sys.exit(1)
 
-### Uso:
-# - Solo 1 ID:
-#   `python script.py id_del_paquete`
-# - Archivo CSV con lista (1 ID por línea):
-#   `python script.py -l lista.csv`
-#  nohup python add_extra_i18n_mod.py -l datasets_migrar.csv &
-#   
 
