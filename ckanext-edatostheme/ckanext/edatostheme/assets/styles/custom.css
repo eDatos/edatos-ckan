@@ -2621,10 +2621,13 @@ a.tag:hover {
 	top: 0;
 }
 
-/* Font Awesome 6 Pro */
+/* Font Awesome 6 Pro - prevent CKAN vendor FA6 Free from overriding */
 .fa {
-	font-family: "Font Awesome 6 Pro";
-	font-weight: 100;
+	font-family: "Font Awesome 6 Pro" !important;
+}
+
+.fa-thin, .fat {
+	font-weight: 100 !important;
 }
 
 
