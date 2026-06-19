@@ -1,6 +1,4 @@
-{% set header = h.edatos_get_header() %}
-
 {% block header_meta_menu %}
-    {{ header | safe }}
+    {{ h.edatos_get_header() | safe }}
 {% endblock header_meta_menu %}
 

@@ -2,6 +2,7 @@
 # -*- coding: UTF-8 -*-
 import codecs
 import json
+import logging
 import os
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
@@ -15,8 +16,10 @@ from ckan.model import Package
 from ckan.model.tag import Tag
 from ckan.lib.plugins import DefaultTranslation
 from ckantoolkit import config, h, _, request, abort
-from flask import Blueprint
+from flask import Blueprint, current_app
 from flask import request as fr
+
+log = logging.getLogger(__name__)
 
 
 dirname = os.path.dirname(__file__)
@@ -344,35 +347,22 @@ def get_url(endpoint, key):
     return json_header_request['value']
 
 
-def get_header_url(json_config):
+def get_request_lang(cookie_name):
     """
-    Metodo que devuelve la URL del header
-    :param json_config: Fichero de configuracion cargado como un diccionario JSON
+    Devuelve el idioma de la cookie si existe, o el idioma resuelto por CKAN, o el locale por defecto.
+    
+    :param cookie_name: Nombre de la cookie que contiene el idioma preferido del usuario
+    Fallback: idioma resuelto por CKAN en la URL o el locale por defecto configurado.
     """
-    header_key = json_config['metadata']['navbarPathKey']
-    endpoint = json_config['metadata']['endpoint']
-    title_translated = _(json_config['metadata']['appName'])
-    cookie_key = json_config['metadata'].get('cookieKey')
-
-    base_url = "%s?appName=%s&appUrl=%s" % (
-        get_url(endpoint, header_key),
-        title_translated,
-        json_config['metadata']['siteURL']
-    )
-
-    if cookie_key:
-        #cookieId, se debe usar para rescatar el label de la cookie la respuesta se debe
-        # de poner como parametro de llamada a la cabecera y el idioma que venga de la cookie
-        request_lang = get_request_lang(get_url(endpoint, cookie_key))
-
-        # Enviar al mismo nivel del appName el chosenLocale
-        return "%s&%s=%s" % (base_url, get_url(endpoint, cookie_key), request_lang)
-
-    return base_url
-
-
-def get_request_lang(cookie_value):
-    return request.cookies.get(cookie_value)
+    lang = request.cookies.get(cookie_name) if cookie_name else None
+    if not lang:
+        try:
+            lang = toolkit.h.lang()
+        except Exception:
+            lang = None
+    if not lang:
+        lang = config.get('ckan.locale_default', 'es')
+    return lang
 
 
 def get_theme():
@@ -404,10 +394,13 @@ def save_header(header):
 
 def get_header_url(json_config):
     """
-    Metodo que devuelve la URL del header
-    :param json_config: Fichero de configuracion cargado como un diccionario JSON
+    Devuelve la URL del header con el idioma del usuario.
+    
+    :param json_config: Configuracion cargada como diccionario JSON
     """
+    endpoint = json_config['metadata']['endpoint']
     header_key = json_config['metadata']['navbarPathKey']
+    cookie_key = json_config['metadata'].get('cookieKey')
     endpoint = json_config['metadata']['endpoint']
     title = json_config['metadata']['appName']
     navbar_url = get_url(endpoint, header_key)
@@ -416,6 +409,14 @@ def get_header_url(json_config):
     theme = get_theme()
     if theme:
         url = "%s&organisation=%s" % (url, theme)
+
+    # Obtener el nombre real de la cookie una sola vez
+    cookie_name = get_url(endpoint, cookie_key) if cookie_key else None
+    # Idioma del request: cookie > idioma CKAN > locale por defecto
+    request_lang = get_request_lang(cookie_name)
+
+    if cookie_name:
+        url = "%s&%s=%s" % (url, cookie_name, request_lang)
 
     return url
 
@@ -460,17 +461,31 @@ def get_altered_header(header, json_config):
     return alteredHeader
 
 
-
 def load_header():
     """
-    Metodo que carga el HTML del header y lo devuelve como string.
+    Carga el header el externo y lo devuelve como HTML listo
+    para inyectar al template. No escribe a disco: cada request obtiene
+    el header en el idioma de la cookie del usuario actual.
+    
+        1. Carga la configuración desde el archivo JSON
+        2. Obtiene la URL del header usando la configuración y el idioma del usuario
+        3. Descarga el header desde la URL obtenida
+        4. Modifica el header para incluir los botones dinámicos
+        5. Renderiza el header con Jinja2 para procesar las expresiones embebidas
+        6. Devuelve el header listo para inyectar en el template
+        
     """
-    with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
-        json_config = json.loads(config_file.read())
-        header = requests.get(
-            url=get_header_url(json_config)).content
-        return get_altered_header(
-            header=header, json_config=json_config)
+    try:
+        with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
+            json_config = json.loads(config_file.read())
+            header = requests.get(url=get_header_url(json_config)).content
+            html = get_altered_header(header=header, json_config=json_config)
+            # Renderizar expresiones Jinja2 embebidas ({{ _('...') }}, etc.)
+            rendered = current_app.jinja_env.from_string(html).render()
+            return rendered
+    except Exception as e:
+        log.error("Error al cargar el header: %s", e)
+        return ""
 
 # Map de vistas que se quieren restringir acceso
 REDIRECT_VIEWS = (
