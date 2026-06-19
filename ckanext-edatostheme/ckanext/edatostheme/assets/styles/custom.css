@@ -1648,35 +1648,6 @@ h1.dataset-title {
 	display: none;
 }
 
-/* --- ZONA 6: Ver en el explorador de estadísticas --- */
-.stats-explorer-link {
-	display: flex;
-	padding: 20px 10px;
-	justify-content: center;
-	align-items: center;
-	gap: 10px;
-	align-self: stretch;
-	border-radius: 0 0 5px 5px;
-	background: var(--edatos-color-gray-5, #F2F2F2);
-}
-
-.stats-explorer-link a,
-.stats-explorer-link span {
-	flex: 1 0 0;
-	color: var(--edatos-color-primary-100, #004678);
-	text-align: center;
-	font-family: "Open Sans", sans-serif;
-	font-size: var(--edatos-font-size-lg);
-	font-style: normal;
-	font-weight: 600;
-	line-height: 26px;
-	text-decoration: none;
-}
-
-.stats-explorer-link a:hover {
-	text-decoration: underline;
-	color: var(--edatos-color-primary-100, #004678);
-}
 
 /* --- ZONA 7: Encabezado sidebar (.secondary) — solo diferencias vs base --- */
 .secondary .module-heading {
@@ -2679,6 +2650,10 @@ li.showcase-card {
 	float: none;
 	margin: 0;
 	padding: 0;
+	border: none;
+	border-radius: 0;
+	background-color: transparent;
+	height: auto !important; /* Masonry inyecta height inline; CSS Grid controla la altura */
 	position: static !important; /*se queda porque Masonry reposiciona cada tarjeta para el layout en cuadrícula*/
 }
 
