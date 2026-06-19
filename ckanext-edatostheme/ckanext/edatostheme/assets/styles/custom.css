@@ -418,7 +418,7 @@ nav.section.navigation {
 	font-size: var(--edatos-font-size-sm);
 	text-align: left;
 	list-style: none;
-	background-color: var(--edatos-color-primary-100);
+	background-color: var(--edatos-color-secondary-100);
 	-webkit-box-shadow: var(--shadow-dropdown);
 	box-shadow: var(--shadow-dropdown);
 	right: 0;
@@ -493,17 +493,19 @@ nav.section.navigation {
 
 /* Hover suave */
 button.btn.btn-navbar:hover {
-	background-color: var(--edatos-color-primary-100);
+	background-color: var(--edatos-color-secondary-100);
 	color: var(--edatos-color-white-100);
+	border: 1px solid var(--edatos-color-secondary-100, #004678);
 }
 
 /* Estado abierto: detectado cuando el dropdown hermano tiene clase .abrir */
 li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar,
 li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar:hover {
-	background-color: var(--edatos-color-primary-100, #004678);
+	background-color: var(--edatos-color-secondary-100, #004678);
 	color: var(--edatos-color-white-100, #fff);
 	/* Aplana la esquina inferior derecha para conectar con el menú (alineado a la derecha) */
 	border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 var(--border-radius-sm);
+	border: 1px solid var(--edatos-color-secondary-100, #004678);
 }
 
 /* Iconos en estado abierto */
@@ -994,7 +996,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 }
 
 .group-home-card-link:hover {
-	background-color: var(--edatos-color-secondary-100, #004678);
+	background-color: var(--edatos-color-primary-100, #004678);
 	text-decoration: none;
 	color: var(--edatos-color-white-100, #fff);
 }
