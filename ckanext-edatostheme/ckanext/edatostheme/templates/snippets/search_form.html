@@ -61,7 +61,7 @@
           <ul id="sort-dropdown-menu" class="sort-custom-dropdown__menu" role="listbox" aria-label="{{ _('Order by') }}">
             {% for label, value in sorting %}
               {% if label and value %}
-                <li class="sort-custom-dropdown__item{% if sorting_selected == value %} sort-custom-dropdown__item--selected{% endif %}"
+                <li class="sort-custom-dropdown__item"
                     role="option"
                     data-value="{{ value }}"
                     aria-selected="{{ 'true' if sorting_selected == value else 'false' }}">
@@ -168,7 +168,10 @@
 
         closeAll();
 
-        hiddenSelect.dispatchEvent(new Event('change', { bubbles: true }));
+        var form = hiddenSelect.closest('form');
+        if (form) {
+          form.requestSubmit ? form.requestSubmit() : form.submit();
+        }
       });
     });
   }
