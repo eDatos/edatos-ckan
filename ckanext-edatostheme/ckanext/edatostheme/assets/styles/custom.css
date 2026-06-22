@@ -443,8 +443,8 @@ nav.section.navigation {
 }
 
 .dropdown-menu li a:hover {
-	background-color: var(--edatos-color-primary-50);
-	color: var(--color-white);
+	background-color: var(--edatos-color-primary-5);
+    color: var(--edatos-color-primary-100);
 }
 
 .dropdown-menu.abrir {
@@ -1099,7 +1099,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	height: 35px;
 	padding: 7px 20px;
 	border-radius: var(--edatos-border-radius-sm, var(--border-radius-sm)) 0 0 var(--edatos-border-radius-sm, var(--border-radius-sm));
-	border: var(--border-width) solid var(--edatos-color-primary-50);
+	border: var(--border-width) solid var(--edatos-color-secondary-100);
 	background: var(--edatos-color-white-100);
 	color: var(--edatos-color-gray-80);
 	font-family: "Open Sans", sans-serif;
@@ -1111,7 +1111,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	font-weight: 600;
 }
 .search-form .input-group.search-input-group .btn[type="submit"] {
-	border: var(--border-width) solid var(--edatos-color-primary-50);
+	border: var(--border-width) solid var(--edatos-color-secondary-100);
 	border-left: none;
 	border-radius: 0 var(--edatos-border-radius-sm, var(--border-radius-sm)) var(--edatos-border-radius-sm, var(--border-radius-sm)) 0;
 	box-shadow: none;
@@ -2427,9 +2427,9 @@ a.metadatos-tag:hover {
 }
 /* ---- Selector de orden (Relevancia) — hover ---- */
 #field-order-by:hover {
-	background-color: var(--edatos-color-primary-100, #004678);
+	background-color: var(--edatos-color-secondary-100, #004678);
 	color: var(--edatos-color-white-100, #FFF);
-	border-color: var(--edatos-color-primary-100, #004678);
+	border-color: var(--edatos-color-secondary-100, #004678);
 	cursor: pointer;
 }
 
@@ -3594,8 +3594,9 @@ header.module-content.page-header .content_action .btn:hover,
 aside.secondary .module.resources .nav-simple .btn:hover,
 aside.secondary .module-content > a.btn.btn-sm:hover,
 .btn-remove-url:hover {
-    background: var(--edatos-color-primary-100);
+    background: var(--edatos-color-secondary-100);
     color: var(--edatos-color-white-100);
+	border: 1px solid var(--edatos-color-secondary-100);
 }
 
 header.module-content.page-header .content_action .btn i,
