@@ -2078,6 +2078,11 @@ a.toggle-show.toggle-show-less:hover {
 	padding-bottom: 20px;
 }
 
+/* --- Cuando hay page-header (pestañas) antes del contenido, añadir padding-top --- */
+.primary .module > .module-content.page-header + .module-content {
+	padding-top: 10px;
+}
+
 .page-header {
     margin-top: 1.5rem;
     border-bottom: 1px solid #ddd;
