@@ -1020,7 +1020,6 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	font-style: normal;
 	font-weight: var(--edatos-font-weight-regular);
 	line-height: 120%;
-	text-transform: uppercase;
 	margin: 0;
 	flex: 1;
 }
@@ -2519,6 +2518,12 @@ a.metadatos-tag:hover {
     width: 100%;
     height: auto;
     background: var(--edatos-color-white-100);
+}
+
+.search-form .search-input.search-giant button i {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
 }
 /* ---- Selector de orden (Relevancia) — hover ---- */
 #field-order-by:hover {
