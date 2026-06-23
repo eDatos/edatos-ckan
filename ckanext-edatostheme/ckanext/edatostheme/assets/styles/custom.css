@@ -1244,9 +1244,6 @@ h2.dataset-heading {
 	color: var(--edatos-color-secondary-100);
 	text-decoration: none;
 }
-.dataset-heading a:hover {
-	text-decoration: underline;
-}
 
 /* ZONA 6 — Descripción del dataset (.notes) */
 .dataset-item .notes {
@@ -1285,7 +1282,7 @@ h2.dataset-heading {
 	text-transform: uppercase;
 }
 .dataset-resources a.badge:hover {
-	background-color: #e6e6e6; /*TODO: confirmar color con lidia*/
+	background-color: var(--edatos-color-primary-10);
 	color: var(--edatos-color-black-100);
 	text-decoration: none;
 }
