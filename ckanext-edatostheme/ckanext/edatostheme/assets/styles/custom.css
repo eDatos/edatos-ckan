@@ -1495,7 +1495,7 @@ h2.dataset-heading {
 	font-size: var(--edatos-font-size-sm);
 	color: var(--edatos-color-secondary);
 	border-top: none;
-	border-bottom: 0.5px solid var(--edatos-color-primary-5, #E5ECF1);
+	border-bottom: 0.5px solid var(--edatos-color-primary-10, #E5ECF1);
 	text-decoration: none;
 	box-sizing: border-box;
 }
@@ -1858,7 +1858,6 @@ h1.dataset-title {
 	flex: 0 0 var(--sidebar-width);
 	width: var(--sidebar-width);
 	max-width: var(--sidebar-width);
-	padding: 10px 0 10px 10px;
 	margin-left: 10px;
 }
 
@@ -2075,7 +2074,7 @@ a.toggle-show.toggle-show-less:hover {
 .primary .module > .module-content:not(.page-header) {
 	padding-left: 0;
 	padding-right: 20px;
-	padding-top: 20px;
+	padding-top: 0px;
 	padding-bottom: 20px;
 }
 
@@ -2306,7 +2305,6 @@ a.metadatos-tag:hover {
 	flex-direction: column;
 	align-items: center;
 	gap: 30px;
-	padding: 10px;
 	border-radius: 5px;
 	border: none;
 	background: var(--edatos-color-white-100, #FFF);
