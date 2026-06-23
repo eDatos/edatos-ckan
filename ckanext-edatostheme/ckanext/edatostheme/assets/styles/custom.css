@@ -1520,10 +1520,10 @@ h2.dataset-heading {
 	min-width: 0;
 }
 
-.module.module-narrow .nav-simple .nav-item a:hover {
-	background-color: var(--edatos-color-primary-5, #004678);
-	color: var(--edatos-color-secondary-100, #FFF);
-	text-decoration: none;
+li.nav-item:hover {
+    background-color: var(--edatos-color-primary-5, #004678);
+    color: var(--edatos-color-secondary-100, #FFF);
+    text-decoration: none;
 }
 
 .module.module-narrow .nav-simple .nav-item a:hover .badge {
