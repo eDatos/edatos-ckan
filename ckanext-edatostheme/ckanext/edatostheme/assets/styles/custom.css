@@ -338,10 +338,9 @@ nav.navigation div ul li {
 /* Hover: subrayado azul medio */
 .navigation .nav-main-links li a.btn-datasets:hover {
 	background: none;
-	color: var(--edatos-color-secondary-100, #004678);
-	box-shadow: 0px 5px 0px 0px var(--edatos-color-primary-50, #4D7EA0);
-	border-bottom: none;
 	text-decoration: none;
+	color: var(--edatos-color-secondary-100, #004678);
+	border-bottom: 6px solid var(--edatos-color-accent-100, #009BD7);
 }
 
 /* Ítem activo: texto secondary + semibold + subrayado accent */
@@ -349,14 +348,7 @@ nav.navigation div ul li {
 	background: none;
 	color: var(--edatos-color-secondary-100, #004678);
 	font-weight: var(--edatos-font-weight-semibold);
-	box-shadow: 0px 5px 0px 0px var(--edatos-color-accent-100, #009BD7);
-	border-bottom: none;
-}
-
-/* Hover sobre ítem activo: mantiene el subrayado accent */
-.navigation .nav-main-links li.active a.btn-datasets:hover {
-	color: var(--edatos-color-secondary-100, #004678);
-	box-shadow: 0px 5px 0px 0px var(--edatos-color-accent-100, #009BD7);
+	border-bottom: 6px solid var(--edatos-color-accent-100, #009BD7);
 }
 
 /* Contenedor del nav: links izquierda, Opciones derecha */
@@ -850,9 +842,9 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 }
 
 .search-filters .filter-tag:hover {
-	border: 1px solid var(--edatos-color-white-100, #FFF);
-	background: transparent;
-	color: var(--edatos-color-white-100, #FFF);
+	border: 1px solid var(--edatos-color-primary-100);
+    background: var(--edatos-color-primary-10);
+    color: var(--edatos-color-primary-100);
 	text-align: center;
 	text-decoration: none;
 }
@@ -891,7 +883,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
     width: 100%;
     padding-left: var(--edatos-spacing-x-m);
     padding-right: var(--edatos-spacing-x-m);
-    padding-top: var(--edatos-spacing-x-m);
+    padding-top: var(--edatos-spacing-x-sm);
     padding-bottom: var(--edatos-spacing-x-l);
     background-color: var(--edatos-color-white-100);
 }
@@ -970,7 +962,6 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 
 .categories-section {
 	background-color: var(--edatos-color-white-100, #f5f5f5);
-	padding: var(--spacing-md) 0;
 }
 
 .categories-grid {
