@@ -1530,6 +1530,7 @@ li.nav-item:hover {
 	background-color: var(--edatos-color-primary-50, #3a5a8c);
 	color: var(--edatos-color-white-100, #FFF);
 	font-weight: var(--font-weight-bold);
+	border-radius: 3px;
 }
 
 .module.module-narrow .nav-simple .nav-item.active a .badge {
@@ -1565,8 +1566,9 @@ li.nav-item:hover {
     position: absolute;
     content: "";
     right: -11px;
+	border-top: 20px solid transparent;
+	border-bottom: 21px solid transparent;
 	border-left: 12px solid var(--edatos-color-primary-50);
-    border-top: 25px solid transparent;
 }
 
 /* ZONA 9 — Badge numérico en sidebar */
