@@ -1483,6 +1483,12 @@ h2.dataset-heading {
 	padding: 0;
 }
 
+.module-narrow .nav-item > a:hover, .module-narrow .nav-aside li a:hover {
+    text-decoration: none;
+    background-color: transparent;
+	border-radius: 3px;
+}
+
 .module.module-narrow .nav-simple .nav-item a {
 	margin: 0;
 	width: 95%;
@@ -1512,6 +1518,7 @@ li.nav-item:hover {
     background-color: var(--edatos-color-primary-5, #004678);
     color: var(--edatos-color-secondary-100, #FFF);
     text-decoration: none;
+	border-radius: 3px;
 }
 
 .module.module-narrow .nav-simple .nav-item a:hover .badge {
@@ -1576,9 +1583,9 @@ li.nav-item:hover {
 	font-size: var(--edatos-font-size-xs);
 	font-weight: 600;
 	line-height: 14px;
-	width: 35px;
-	height: 35px;
-	min-width: 35px;
+	width: 24px;
+	height: 24px;
+	min-width: 24px;
 	flex-shrink: 0;
 }
 
