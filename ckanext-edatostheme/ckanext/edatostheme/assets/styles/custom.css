@@ -411,7 +411,7 @@ nav.section.navigation {
 	z-index: 1000;
 	display: none;
 	float: right;
-	min-width: 160px;
+	min-width: 260px;
 	margin-top: 0;
 	padding-top: var(--spacing-sm);
 	padding-bottom: var(--spacing-sm);
@@ -435,11 +435,26 @@ nav.section.navigation {
 
 .dropdown-menu li a {
 	color: var(--color-white);
-	display: block;
+	display: flex;
+	align-items: center;
+	gap: 12px;
 	padding: var(--spacing-sm) var(--spacing-md);
 	text-decoration: none;
 	width: 100%;
 	box-sizing: border-box;
+	font-family: "Open Sans";
+	font-size: var(--font-size-md);
+	font-style: normal;
+	font-weight: var(--edatos-font-weight-regular);
+	line-height: 1.4;
+	/*white-space: nowrap;*/
+}
+
+.dropdown-menu li a i {
+	flex-shrink: 0;
+	width: 20px;
+	text-align: center;
+	font-size: 16px;
 }
 
 .dropdown-menu li a:hover {
@@ -465,6 +480,7 @@ nav.section.navigation {
 	transform: translateY(0);
 	pointer-events: initial;
 	text-align: left;
+	margin-right: 10px;
 }
 
 /* Botón hamburguesa / Opciones navbar */
