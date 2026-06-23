@@ -765,7 +765,6 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 
 .hero-nav {
 	background-color: var(--color-white);
-	border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
 	padding: 0;
 	box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.05);
 	overflow: visible;
@@ -1852,6 +1851,7 @@ h1.dataset-title {
 	gap: 10px;
 	padding-top: 10px;
 	box-shadow: 0 -6px 12px -6px rgba(0, 0, 0, 0.15);
+	border-radius: 0px;
 }
 
 .row.wrapper > .secondary {
