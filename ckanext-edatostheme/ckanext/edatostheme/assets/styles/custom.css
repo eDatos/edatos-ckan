@@ -1364,7 +1364,6 @@ h2.dataset-heading {
 
 /* Panel Filtros: contenedor exterior con borde y radio según Figma */
 #group-info {
-	border: 0.5px solid var(--edatos-color-dark-blue-25);
 	border-radius: 5px;
 	overflow: hidden;
 	background: var(--color-white);
@@ -1617,7 +1616,7 @@ li.nav-item:hover {
     font-size: var(--edatos-font-size-xs);
     line-height: 1.1666666667em;
     padding: 7px 25px;
-    border-bottom: 1px #ddd;
+    border-bottom: 1px var(--edatos-color-primary-10);
 }
 
 /* ============================================================
@@ -2630,6 +2629,10 @@ body .nav-tabs {
 	display: flex;
 	align-items: flex-end;
 	width: 100%;
+}
+
+body .nav-tabs > li {
+	height: 38px;
 }
 
 /* Tab inactivo */
