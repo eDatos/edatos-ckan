@@ -3513,6 +3513,13 @@ li.showcase-card {
 body .nav-link,
 body .page-header .nav-tabs li a {
     color: var(--edatos-color-secondary-100, #004678);
+	height: 38px;
+}
+
+.page-header .nav-tabs li.active a, .page-header .nav-tabs a:hover {
+    border: none;
+    background-color: #fff;
+    border-bottom-color: transparent;
 }
 
 /* ============================================================
