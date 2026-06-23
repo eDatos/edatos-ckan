@@ -1848,7 +1848,7 @@ h1.dataset-title {
 	margin-left: 0;
 	margin-right: 0;
 	gap: 10px;
-	padding-top: 10px;
+	padding: 10px 20px 5px 20px;
 	box-shadow: 0 -6px 12px -6px rgba(0, 0, 0, 0.15);
 	border-radius: 0px;
 }
@@ -2073,7 +2073,7 @@ a.toggle-show.toggle-show-less:hover {
 /* --- Group about: module-content padding --- */
 .primary .module > .module-content:not(.page-header) {
 	padding-left: 0;
-	padding-right: 20px;
+	padding-right: 0px;
 	padding-top: 0px;
 	padding-bottom: 20px;
 }
