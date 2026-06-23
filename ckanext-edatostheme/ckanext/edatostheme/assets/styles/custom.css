@@ -2947,7 +2947,7 @@ li.showcase-card {
 /* Heading del módulo info (¿Qué son las categorías?) — 16px, sin uppercase */
 .showcase-detail-sidebar .module.module-narrow.module-shallow .module-heading {
     font-size: var(--edatos-font-size-md);
-    text-transform: none;
+    text-transform: uppercase;
 }
 
 .module:first-child .module-heading {
