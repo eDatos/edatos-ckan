@@ -435,9 +435,9 @@ nav.section.navigation {
 	width: 100%;
 	box-sizing: border-box;
 	font-family: "Open Sans";
-	font-size: var(--font-size-md);
+	font-size: var(--edatos-font-size-sm);
 	font-style: normal;
-	font-weight: var(--edatos-font-weight-regular);
+	font-weight: var(--edatos-font-weight-light);
 	line-height: 1.4;
 	/*white-space: nowrap;*/
 }
@@ -446,7 +446,8 @@ nav.section.navigation {
 	flex-shrink: 0;
 	width: 20px;
 	text-align: center;
-	font-size: 16px;
+	font-size: var(--edatos-font-size-sm);
+    font-weight: 100;
 }
 
 .dropdown-menu li a:hover {
@@ -534,7 +535,11 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	gap: 6px;
 	width: auto;
 }
-
+.dropdown-menu.show {
+    display: block;
+    min-width: 155px;
+	border-radius: var(--border-radius-sm) 0 var(--border-radius-sm) var(--border-radius-sm);
+}
 /* Responsive navbar */
 @media (max-width: 1199px) {
 
@@ -1718,34 +1723,32 @@ h1.dataset-title {
 }
 
 /* --- ZONA 5: Botón EXPLORAR/DESCARGAR (.btn-primary en recursos) --- */
-#dataset-resources .btn-primary,
-#dataset-resources .btn-primary.dropdown-toggle {
-	display: flex;
-	padding: 5px 10px;
-	align-items: center;
-	gap: 5px;
-	border-radius: 5px;
-	border: 1px solid var(--edatos-color-secondary-100, #004678);
-	background: var(--edatos-color-white-100);
-	color: var(--edatos-color-secondary-100, #004678);
-	text-align: center;
-	font-family: "Open Sans", sans-serif;
-	font-size: var(--edatos-font-size-sm);
-	font-style: normal;
-	font-weight: 300;
-	line-height: 20px;
-	text-transform: uppercase;
+
+/* Alineación derecha: sobreescribe el posicionamiento de Popper.js */
+#dataset-resources .dropdown-menu.show {
+	left: auto !important;
+	right: 0 !important;
+	top: 100% !important;
+	transform: none !important;
 }
 
-#dataset-resources .btn-primary:hover,
-#dataset-resources .btn-primary.dropdown-toggle:hover {
-	background: var(--edatos-color-primary-100);
-	color: var(--edatos-color-white-100);
-	border-color: var(--edatos-color-primary-100, #004678);
+/* Botón: aplana esquina inferior-derecha al abrir y elimina focus ring de Bootstrap */
+.btn-primary.dropdown-toggle.show {
+	border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 var(--border-radius-sm) !important;
+	box-shadow: none !important;
 }
 
-#dataset-resources .btn-primary.dropdown-toggle::after {
+/* Oculta el caret automático de Bootstrap (el icono fa-chevron-down del HTML ya cumple esa función) */
+.btn-primary.dropdown-toggle::after {
 	display: none;
+}
+
+/* Chevron: rota 180° al abrir (consistencia con btn-navbar/Opciones) */
+.btn-primary.dropdown-toggle i.fa-chevron-down {
+	transition: transform 0.25s;
+}
+.btn-primary.dropdown-toggle.show i.fa-chevron-down {
+	transform: rotate(180deg);
 }
 
 
@@ -1908,7 +1911,6 @@ h1.dataset-title {
 
 /* --- Dataset detail: sección "Datos" (resources) --- */
 section#dataset-resources {
-	border: 1px solid #ddd;
 	margin-bottom: 20px;
 	display: flex;
 	flex-direction: column;
@@ -1952,7 +1954,7 @@ section#dataset-resources > h2 {
 }
 
 #dataset-resources li.resource-item .btn-group {
-	position: inherit;
+	position: relative;
 	top: 0;
 	right: 0;
 }
@@ -2434,6 +2436,18 @@ a.metadatos-tag:hover {
 
 /* ---- Botones base ---- */
 
+.btn-check:focus + .btn-primary, .btn-primary:focus {
+    color: #fff;
+    background-color: var(--edatos-color-secondary-100);
+    border-color: var(--edatos-color-secondary-100);
+    box-shadow: none;
+}
+
+.btn-check:focus + .btn, .btn:focus {
+    outline: 0;
+    box-shadow: none;
+}
+
 .btn {
 	border-radius: var(--border-radius-sm);
 	transition: background-color var(--transition-base),
@@ -2441,23 +2455,26 @@ a.metadatos-tag:hover {
 	            color var(--transition-base);
 }
 
-.btn:focus,
-.btn:focus-visible {
-	outline: 2px solid var(--color-accent);
-	outline-offset: 2px;
-}
-
 /* Botón primario */
 .btn-primary {
 	background-image: none;
-	background-color: var(--edatos-color-secondary-100);
-	border-color: var(--edatos-color-secondary-100);
-	color: var(--color-white);
+	background-color: var(--edatos-color-white-100);
+    border-color: var(--edatos-color-primary-100);
+    color: var(--edatos-color-primary-100);
+	text-align: center;
+    font-feature-settings: 'liga' off, 'clig' off;
+    font-family: "Open Sans";
+    font-size: var(--edatos-font-size-sm);
+    font-style: normal;
+    font-weight: var(--edatos-font-weight-regular);
+    line-height: 20px;
+    /* 142.857% */
+    text-transform: uppercase;
 }
 
 .btn-primary:hover {
-	background-color: var(--color-primary-hover);
-	border-color: var(--color-primary-hover);
+	background-color: var(--edatos-color-secondary-100);
+    border-color: var(--edatos-color-secondary-100);
 	color: var(--color-white);
 }
 
