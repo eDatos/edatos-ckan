@@ -1245,6 +1245,11 @@ h2.dataset-heading {
 	align-self: stretch;
 	margin: 0;
 }
+
+.dataset-heading a:hover {
+	text-decoration: underline;
+}
+
 .dataset-heading a {
 	color: var(--edatos-color-secondary-100);
 	text-decoration: none;
