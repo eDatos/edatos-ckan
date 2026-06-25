@@ -43,7 +43,7 @@ Example:
         {% endblock %}
         {% block notes %}
           {% if notes %}
-            <div class="notes">{{ notes }}</div>
+            <div class="notes">{{ notes | striptags }}</div>
           {% endif %}
         {% endblock %}
       </div>
