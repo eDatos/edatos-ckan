@@ -1598,7 +1598,7 @@ li.nav-item:hover {
 	justify-content: center;
 	align-items: center;
 	border-radius: 5px;
-	background: var(--edatos-color-gray-20);
+	background: var(--edatos-color-gray-5);
     color: var(--edatos-color-secondary-100, #FFF);
 	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-xs);
