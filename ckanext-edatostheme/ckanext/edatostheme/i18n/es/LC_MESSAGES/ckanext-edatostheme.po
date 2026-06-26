@@ -4287,11 +4287,11 @@ msgstr "URL de Trackback"
 
 #: ckan/templates/snippets/facet_list.html:80
 msgid "Show More {facet_type}"
-msgstr "Mostrar Más {facet_type}"
+msgstr "Mostrar más {facet_type}"
 
 #: ckan/templates/snippets/facet_list.html:83
 msgid "Show Only Popular {facet_type}"
-msgstr "Mostrar Solamente Populares {facet_type}"
+msgstr "Mostrar solamente {facet_type} populares"
 
 #: ckan/templates/snippets/facet_list.html:87
 msgid "There are no {facet_type} that match this search"

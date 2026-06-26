@@ -524,7 +524,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar:hover {
 	background-color: var(--edatos-color-secondary-100, #004678);
 	color: var(--edatos-color-white-100, #fff);
 	/* Aplana la esquina inferior derecha para conectar con el menú (alineado a la derecha) */
-	border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 var(--border-radius-sm);
+	border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0;
 	border: 1px solid var(--edatos-color-secondary-100, #004678);
 }
 
@@ -1134,7 +1134,8 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-.sort-custom-dropdown__trigger:hover {
+.sort-custom-dropdown__trigger:hover,
+.sort-custom-dropdown.abrir .sort-custom-dropdown__trigger {
 	background-color: var(--edatos-color-secondary-100);
     color: var(--edatos-color-white-100);
     border: 1px solid var(--edatos-color-secondary-100, #004678);
@@ -1611,6 +1612,11 @@ li.nav-item:hover {
 	text-decoration: none;
 	text-align: center;
 	margin: 5px;
+	text-transform: lowercase;
+}
+
+.module-footer .read-more::first-letter {
+	text-transform: uppercase;
 }
 
 .module-footer .read-more:hover {
@@ -1731,8 +1737,10 @@ h1.dataset-title {
 
 /* Botón: aplana esquina inferior-derecha al abrir y elimina focus ring de Bootstrap */
 .btn-primary.dropdown-toggle.show {
-	border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 var(--border-radius-sm) !important;
+	border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0 !important;
 	box-shadow: none !important;
+	background-color: var(--edatos-color-secondary-100);
+    color: var(--edatos-color-white-100);
 }
 
 /* Oculta el caret automático de Bootstrap (el icono fa-chevron-down del HTML ya cumple esa función) */
@@ -1991,6 +1999,10 @@ section.additional-info.module table td:first-child {
 /* Filas de datos: campo 600, valor 300 */
 /* Bootstrap 5 usa box-shadow inset con --bs-table-accent-bg para el striped,
    no background-color, por eso es necesario neutralizar ambos. */
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+    --bs-table-accent-bg: var(--bs-table-striped-bg);
+    color: var(--edatos-color-gray-60);
+}
 .additional-info table tbody tr td,
 .additional-info table tbody tr th {
 	--bs-table-accent-bg: transparent;

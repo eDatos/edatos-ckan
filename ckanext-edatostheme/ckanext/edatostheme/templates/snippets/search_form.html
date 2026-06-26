@@ -168,10 +168,11 @@
 
         closeAll();
 
-        var form = hiddenSelect.closest('form');
-        if (form) {
-          form.requestSubmit ? form.requestSubmit() : form.submit();
-        }
+        // Rebuild URL replacing only the sort parameter to avoid duplicates
+        // caused by hidden fields from form.hidden_from_list(fields=fields)
+        var params = new URLSearchParams(window.location.search);
+        params.set('sort', value);
+        window.location.search = params.toString();
       });
     });
   }
