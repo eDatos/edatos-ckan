@@ -3,6 +3,7 @@
    ============================================================ */
 
 :root {
+  --bs-body-font-family: "Open Sans", sans-serif;
   /* Colores primarios */
   --color-primary: #0072A2;
   --color-primary-dark: var(--edatos-color-primary-100, #004678);
@@ -335,7 +336,6 @@ nav.navigation div ul li {
 	color: var(--edatos-color-secondary-100, #004678);
 	font-size: var(--edatos-font-size-sm);
 	font-weight: var(--edatos-font-weight-light);
-	font-family: "Open Sans", "Trebuchet MS", Arial, sans-serif;
 	line-height: 20px;
 	border: none;
 	border-bottom: none;
@@ -446,7 +446,6 @@ nav.section.navigation {
 	text-decoration: none;
 	width: 100%;
 	box-sizing: border-box;
-	font-family: "Open Sans";
 	font-size: var(--edatos-font-size-sm);
 	font-style: normal;
 	font-weight: var(--edatos-font-weight-light);
@@ -848,7 +847,6 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	border-radius: 3px;
 	background: var(--edatos-color-white-100);
 	color: var(--edatos-color-primary-100);
-	font-family: "Open Sans";
 	font-size: var(--edatos-font-size-sm);
 	font-style: normal;
 	font-weight: 500;
@@ -1031,7 +1029,6 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 
 /* Group home title */
 .categories-grid .media-item.group-home-item .media-heading {
-	font-family: "Open Sans";
 	font-size: var(--edatos-font-size-lg);
 	font-style: normal;
 	font-weight: var(--edatos-font-weight-regular);
@@ -1049,7 +1046,6 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	display: inline-block;
 	background-color: var(--color-primary-10);
 	padding: 2px 6px;
-	font-family: "Open Sans";
 	font-size: var(--font-size-xs);
 	font-weight: var(--font-weight-normal);
 	color: var(--color-text-base);
@@ -1091,7 +1087,6 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 /* ZONA 1 — Contador de resultados (h1) */
 .search-form h1 {
 	color: var(--edatos-color-black-100);
-	font-family: "Open Sans", sans-serif;
 	font-size: 24px;
 	font-weight: 600;
 	line-height: 120%;
@@ -1126,7 +1121,6 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	align-items: center;
 	gap: 8px;
 	color: var(--edatos-color-primary-100, #004678);
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-sm);
 	font-weight: 300;
 	line-height: 20px;
@@ -1181,7 +1175,6 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 .sort-custom-dropdown__item {
 	padding: 6px 12px;
 	color: var(--edatos-color-white-100, white);
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-sm);
 	font-weight: 300;
 	text-transform: uppercase;
@@ -1209,7 +1202,6 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	border: var(--border-width) solid var(--edatos-color-secondary-100);
 	background: var(--edatos-color-white-100);
 	color: var(--edatos-color-gray-80);
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-sm);
 	font-weight: 600;
 }
@@ -1249,7 +1241,6 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 
 /* ZONA 5 — Título del dataset */
 h2.dataset-heading {
-	font-family: "Open Sans", sans-serif;
 	font-size: 20px;
 	font-weight: 600;
 	line-height: 26px;
@@ -1270,7 +1261,6 @@ h2.dataset-heading {
 /* ZONA 6 — Descripción del dataset (.notes) */
 .dataset-item .notes {
 	color: var(--edatos-color-black-100);
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-sm);
 	font-weight: 300;
 	line-height: 24px;
@@ -1297,7 +1287,6 @@ h2.dataset-heading {
 	color: var(--edatos-color-black-100);
 	border: none;
 	border-radius: 5px;
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-sm);
 	font-weight: 300;
 	line-height: 24px;
@@ -1313,7 +1302,6 @@ h2.dataset-heading {
 .search-form .filtered.pill {
 	background-color: var(--edatos-color-primary-100, #004678);
 	color: var(--edatos-color-white-100);
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-sm);
 	font-weight: 600;
 	line-height: 24px;
@@ -1334,7 +1322,6 @@ h2.dataset-heading {
 /* ZONA 9 — Label "Categorías:" en la filter-list */
 .search-form .filter-list .facet {
 	color: var(--edatos-color-primary-100, #004678);
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-sm);
 	font-weight: 600;
 	line-height: 24px;
@@ -1576,7 +1563,6 @@ li.nav-item:hover {
 .module.module-narrow .nav-item.active a .facet-close .facet-close-x {
 	display: flex;
 	align-items: center;
-	font-family: "Open Sans", sans-serif;
 	font-size: 20px;
 	font-weight: 300;
 }
@@ -1600,7 +1586,6 @@ li.nav-item:hover {
 	border-radius: 5px;
 	background: var(--edatos-color-gray-5);
     color: var(--edatos-color-secondary-100, #FFF);
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-xs);
 	font-weight: 600;
 	line-height: 14px;
@@ -1620,7 +1605,6 @@ li.nav-item:hover {
 	padding: 5px 10px;
 	background: transparent;
 	color: var(--edatos-color-secondary);
-	font-family: "Open Sans", sans-serif;
 	font-size: 13px;
 	font-weight: var(--edatos-font-weight-regular);
 	line-height: 14px;
@@ -1654,7 +1638,6 @@ li.nav-item:hover {
 /* --- ZONA 1: Título del dataset (h1) --- */
 h1.dataset-title {
 	color: var(--edatos-color-black-100);
-	font-family: "Open Sans", sans-serif;
 	font-size: 24px;
 	font-style: normal;
 	font-weight: 600;
@@ -1665,7 +1648,6 @@ h1.dataset-title {
 /* --- ZONA 2: Descripción del dataset (.notes) --- */
 .notes {
 	color: var(--edatos-color-black-100);
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-md);
 	font-style: normal;
 	font-weight: var(--edatos-font-weight-regular);
@@ -1684,7 +1666,6 @@ h1.dataset-title {
 	border-radius: 3px;
 	background: var(--edatos-color-secondary-100, #004678);
 	color: var(--edatos-color-white-100, #FFF);
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-sm);
 	font-style: normal;
 	font-weight: 700;
@@ -1725,7 +1706,6 @@ h1.dataset-title {
 	align-items: flex-end;
 	gap: 8px;
 	color: var(--edatos-color-black-100);
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-md);
 	font-style: normal;
 	font-weight: var(--edatos-font-weight-regular);
@@ -1795,7 +1775,6 @@ h1.dataset-title {
 .additional-info table th.dataset-label,
 .additional-info table th:first-child {
 	color: var(--edatos-color-gray-60);
-	font-family: "Open Sans";
 	font-size: var(--edatos-font-size-md);
 	font-style: normal;
 	font-weight: 600 !important;
@@ -1809,7 +1788,6 @@ h1.dataset-title {
 
 .additional-info table td {
 	padding: 5px 20px;
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-md);
 	line-height: 26px;
 	vertical-align: top;
@@ -1819,7 +1797,6 @@ h1.dataset-title {
 /* --- ZONA 10: Info module (.module-content en sidebar) --- */
 .secondary .module-content {
 	color: var(--edatos-color-secondary-100, #004678);
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-md);
 	font-style: normal;
 	font-weight: 600;
@@ -1839,7 +1816,6 @@ h1.dataset-title {
 	flex: 1 0 0;
 	align-self: stretch;
 	color: var(--edatos-color-black-100, #000);
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-xs);
 	font-style: normal;
 	font-weight: var(--edatos-font-weight-regular);
@@ -1848,7 +1824,6 @@ h1.dataset-title {
 
 .module.module-narrow.module-shallow .module-content p {
 	color: var(--edatos-color-black-100, #000);
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-xs);
 	font-style: normal;
 	font-weight: var(--edatos-font-weight-regular);
@@ -1860,7 +1835,6 @@ h1.dataset-title {
 .social .nav-item a,
 .social .nav a {
 	color: var(--edatos-color-secondary-100, #004678);
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-sm);
 	font-style: normal;
 	font-weight: var(--edatos-font-weight-regular);
@@ -1944,7 +1918,6 @@ section#dataset-resources > h2 {
 	border-radius: 5px 5px 0 0;
 	background: var(--edatos-color-secondary-100, #004678);
 	color: var(--edatos-color-white-100);
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-lg);
 	font-style: normal;
 	font-weight: 600;
@@ -2027,7 +2000,6 @@ section.additional-info.module table td:first-child {
 .additional-info table tbody tr td {
 	font-weight: 300;
 	color: var(--edatos-color-gray-60);
-	font-family: 'Open Sans';
     font-size: var(--edatos-font-size-md);
     font-style: normal;
     line-height: 26px;
@@ -2136,7 +2108,6 @@ a.toggle-show.toggle-show-less:hover {
 /* --- Resource page: h1 (título dataset) --- */
 .module-resource .module-content h1.page-heading {
 	color: var(--edatos-color-black-100);
-	font-family: "Open Sans", sans-serif;
 	font-size: 24px;
 	font-style: normal;
 	font-weight: 600;
@@ -2187,7 +2158,6 @@ div.ckanext-showcase-image-container {
 	border: 1px solid var(--edatos-color-primary-50, #4D7EA0);
 	background: var(--edatos-color-white-100, #FFF);
 	color: var(--edatos-color-primary-50, #4D7EA0);
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-xs);
 	font-weight: 600;
 	line-height: 24px;
@@ -2227,7 +2197,6 @@ a.metadatos-tag:hover {
 	border: 1px solid var(--edatos-color-primary-100, #004678);
 	background: var(--edatos-color-white-100, #FFF);
 	color: var(--edatos-color-secondary-100, #004678);
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-sm);
 	font-weight: 300;
 	line-height: 20px;
@@ -2268,7 +2237,6 @@ a.metadatos-tag:hover {
 .module-resource .module-content p.text-muted.ellipsis,
 .module-resource .module-content p.text-muted.break-word {
 	color: var(--edatos-color-black-100);
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-md);
 	font-weight: 300;
 	line-height: 26px;
@@ -2290,7 +2258,6 @@ a.metadatos-tag:hover {
 /* --- Resource read: descripción --- */
 .module-resource .module-content .prose.notes {
 	color: var(--edatos-color-black-100);
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-md);
 	font-weight: 300;
 	line-height: 26px;
@@ -2300,7 +2267,6 @@ a.metadatos-tag:hover {
 /* --- Resource read: resource name h2 subtitle --- */
 .module-resource .module-content h2 {
 	color: var(--edatos-color-black-100);
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-lg);
 	font-style: normal;
 	font-weight: 600;
@@ -2428,7 +2394,6 @@ a.metadatos-tag:hover {
 	border-radius: 5px;
 	background: var(--edatos-color-gray-5, #F2F2F2);
 	color: var(--edatos-color-primary-100, #004678);
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-sm);
 	font-weight: 600;
 	line-height: 14px;
@@ -2479,7 +2444,6 @@ a.metadatos-tag:hover {
     color: var(--edatos-color-primary-100);
 	text-align: center;
     font-feature-settings: 'liga' off, 'clig' off;
-    font-family: "Open Sans";
     font-size: var(--edatos-font-size-sm);
     font-style: normal;
     font-weight: var(--edatos-font-weight-regular);
@@ -2679,7 +2643,6 @@ body .nav-tabs > li {
 
 /* Tab inactivo */
 body .nav-tabs > li > a {
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-sm);
 	font-weight: 300;
 	font-style: normal;
@@ -2703,7 +2666,6 @@ body .nav-tabs > li > a:focus {
 body .nav-tabs > li.active > a,
 body .nav-tabs > li.active > a:hover,
 body .nav-tabs > li.active > a:focus {
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-sm);
 	font-weight: 600;
 	font-style: normal;
@@ -2847,7 +2809,6 @@ li.showcase-card {
 	background-color: var(--edatos-color-primary-10);
 	padding: 2px 6px;
 	color: var(--color-text-base, #333);
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-xs);
 	font-style: normal;
 	font-weight: var(--edatos-font-weight-regular);
@@ -2859,7 +2820,6 @@ li.showcase-card {
 .showcase-card-title {
 	align-self: stretch;
 	color: var(--edatos-color-primary-100, #004678);
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-lg);
 	font-style: normal;
 	font-weight: 600;
@@ -2876,7 +2836,6 @@ li.showcase-card {
 .showcase-card-notes {
 	flex: 1;
 	color: var(--edatos-color-black-100, #000);
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-md);
 	font-style: normal;
 	font-weight: 300;
@@ -2926,7 +2885,6 @@ li.showcase-card {
 .showcase-detail-title {
 	width: 267px;
 	color: var(--edatos-color-secondary-100, #004678);
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-md);
 	font-style: normal;
 	font-weight: 600;
@@ -2962,7 +2920,6 @@ li.showcase-card {
 	border-bottom: 0.5px solid var(--edatos-color-primary-5, #E5ECF1);
 	background: var(--edatos-color-white-100, #FFF);
 	color: var(--edatos-color-secondary-100, #004678);
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-sm);
 	font-weight: var(--edatos-font-weight-regular);
 	line-height: 14px;
@@ -3052,7 +3009,6 @@ li.showcase-card {
 .showcase-detail-sidebar #package-info .heading {
 	width: 267px;
 	color: var(--edatos-color-secondary-100, #004678);
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-md);
 	font-weight: 600;
 	line-height: 26px;
@@ -3097,7 +3053,6 @@ li.showcase-card {
 	border-radius: 5px;
 	background: var(--edatos-color-secondary-100, #004678);
 	color: var(--edatos-color-white-100, #FFF);
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-lg);
 	font-style: normal;
 	font-weight: 600;
@@ -3138,7 +3093,6 @@ li.showcase-card {
 
 .showcase-sidebar-count-label {
 	color: var(--edatos-color-gray-80, #333);
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-xs);
 	font-style: normal;
 	font-weight: var(--edatos-font-weight-regular);
@@ -3148,7 +3102,6 @@ li.showcase-card {
 .showcase-sidebar-count-number {
 	color: var(--edatos-color-gray-80, #333);
 	text-align: center;
-	font-family: "Open Sans", sans-serif;
 	font-size: 28px;
 	font-style: normal;
 	font-weight: 600;
@@ -3168,7 +3121,6 @@ li.showcase-card {
 .primary h1 {
 	color: var(--edatos-color-black-100);
 	text-align: left;
-	font-family: "Open Sans";
 	font-size: var(--edatos-font-size-lg);
 	font-style: normal;
 	font-weight: var(--edatos-font-weight-semibold);
@@ -3179,7 +3131,6 @@ li.showcase-card {
 
 .ckanext-showcase-notes {
 	color: var(--edatos-color-black-100);
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-md);
 	font-style: normal;
 	font-weight: var(--edatos-font-weight-regular);
@@ -3230,7 +3181,6 @@ li.showcase-card {
 	border: 1px solid var(--edatos-color-primary-50, #4D7EA0);
 	background: var(--edatos-color-white-100, #FFF);
 	color: var(--edatos-color-primary-50, #4D7EA0);
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-xs);
 	font-style: normal;
 	font-weight: 600;
@@ -3297,7 +3247,6 @@ li.showcase-card {
 
 .recursos-item a {
 	color: var(--edatos-color-secondary-100, #004678);
-	font-family: "Open Sans", sans-serif;
 	font-size: var(--edatos-font-size-md);
 	font-style: normal;
 	font-weight: 300;
@@ -3768,7 +3717,6 @@ header.module-content.page-header .content_action .btn {
 /* Botón "Añadir nuevo recurso" — propiedades específicas */
 aside.secondary .module-content > a.btn.btn-sm {
     white-space: nowrap;
-    font-family: "Open Sans";
     font-style: normal;
     font-weight: var(--edatos-font-weight-regular);
     line-height: 20px;
@@ -3826,7 +3774,6 @@ aside.secondary .module-content > a.btn.btn-sm {
    ------------------------------------------------------------------ */
 .pagination-wrapper {
     padding-top: var(--edatos-spacing-y-lg);
-    font-family: "Open Sans", "Trebuchet MS", Arial, sans-serif;
     font-size: var(--edatos-font-size-sm);
     font-weight: 300;
 }
@@ -3862,7 +3809,6 @@ aside.secondary .module-content > a.btn.btn-sm {
     display: block;
     padding: 0.5rem 1.25rem;
     margin: 0 0.375rem;
-    font-family: "Open Sans", "Trebuchet MS", Arial, sans-serif;
     font-size: var(--edatos-font-size-sm);
     font-weight: 300;
     line-height: 1.5;
@@ -4006,7 +3952,6 @@ aside.secondary .module-content > a.btn.btn-sm {
 /* Etiqueta */
 .activity-type-filter__label {
     display: block;
-    font-family: "Open Sans", sans-serif;
     font-size: 14px;
     font-weight: 400;
     color: var(--color-primary-dark, #004678);
@@ -4044,7 +3989,6 @@ aside.secondary .module-content > a.btn.btn-sm {
     border-radius: 5px;
     background-color: var(--edatos-color-white-100, #ffffff);
     color: var(--edatos-color-secondary-100, #004678);
-    font-family: "Open Sans", sans-serif;
     font-size: 14px;
     font-weight: 400;
     text-align: left;
@@ -4101,7 +4045,6 @@ aside.secondary .module-content > a.btn.btn-sm {
     padding: 5px 10px;
     border-radius: 8px;
     color: var(--edatos-color-secondary-100, #004678);
-    font-family: "Open Sans", sans-serif;
     font-size: 14px;
     font-weight: 400;
     cursor: pointer;
@@ -4136,16 +4079,16 @@ aside.secondary .module-content > a.btn.btn-sm {
    del historial de dataset.
    ================================================================ */
 .activity-type-filter { margin-bottom: 15px; }
-.activity-type-filter__label { display: block; font-family: "Open Sans", sans-serif; font-size: 14px; font-weight: 400; color: var(--edatos-color-secondary-100, #004678); margin-bottom: 4px; }
+.activity-type-filter__label { display: block; font-size: 14px; font-weight: 400; color: var(--edatos-color-secondary-100, #004678); margin-bottom: 4px; }
 .activity-type-filter__native { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .activity-type-dropdown { position: relative; display: block; }
-.activity-type-dropdown__trigger { display: flex; align-items: center; justify-content: space-between; width: 100%; height: 35px; padding: 7px 10px; border: 0.5px solid var(--edatos-color-secondary-100, #004678); border-radius: 5px; background-color: var(--edatos-color-white-100, #ffffff); color: var(--edatos-color-secondary-100, #004678); font-family: "Open Sans", sans-serif; font-size: 14px; font-weight: 400; text-align: left; cursor: pointer; transition: border-radius 0.05s ease; }
+.activity-type-dropdown__trigger { display: flex; align-items: center; justify-content: space-between; width: 100%; height: 35px; padding: 7px 10px; border: 0.5px solid var(--edatos-color-secondary-100, #004678); border-radius: 5px; background-color: var(--edatos-color-white-100, #ffffff); color: var(--edatos-color-secondary-100, #004678); font-size: 14px; font-weight: 400; text-align: left; cursor: pointer; transition: border-radius 0.05s ease; }
 .activity-type-dropdown.abrir .activity-type-dropdown__trigger { border-radius: 5px 5px 0 0; border-bottom-color: transparent; }
 .activity-type-dropdown__chevron { font-size: 12px; flex-shrink: 0; transition: transform 0.2s ease; }
 .activity-type-dropdown.abrir .activity-type-dropdown__chevron { transform: rotate(180deg); }
 .activity-type-dropdown__menu { display: none; position: absolute; top: 100%; left: 0; right: 0; z-index: 1000; background-color: var(--edatos-color-white-100, #ffffff); border: 0.5px solid var(--edatos-color-secondary-100, #004678); border-top: none; border-radius: 0 0 5px 5px; box-shadow: 0 0 1.5px rgba(0,0,0,0.25); padding: 5px 15px; }
 .activity-type-dropdown.abrir .activity-type-dropdown__menu { display: block; }
-.activity-type-dropdown__item { display: flex; align-items: center; height: 35px; padding: 5px 10px; border-radius: 8px; color: var(--edatos-color-secondary-100, #004678); font-family: "Open Sans", sans-serif; font-size: 14px; font-weight: 400; cursor: pointer; transition: background-color 0.15s ease; }
+.activity-type-dropdown__item { display: flex; align-items: center; height: 35px; padding: 5px 10px; border-radius: 8px; color: var(--edatos-color-secondary-100, #004678); font-size: 14px; font-weight: 400; cursor: pointer; transition: background-color 0.15s ease; }
 .activity-type-dropdown__item:hover { background-color: var(--edatos-color-gray-5, #f2f2f2); }
 .activity-type-dropdown__item--selected { background-color: var(--edatos-color-gray-5, #f2f2f2); }
 @media (max-width: 575.98px) { .activity-type-dropdown__trigger, .activity-type-dropdown__item { font-size: 13px; } }
