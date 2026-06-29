@@ -983,6 +983,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	display: flex;
 	flex-flow: wrap;
 	justify-content: flex-start;
+	border:none;
 }
 
 .categories-section {
@@ -2557,6 +2558,7 @@ a.metadatos-tag:hover {
     font-size: 16px;
     width: 16px;
     height: 16px;
+	color: var(--edatos-color-gray-5);
 }
 /* ---- Selector de orden (Relevancia) — hover ---- */
 #field-order-by:hover {
@@ -2738,6 +2740,12 @@ a.tag:hover {
 	font-weight: 100 !important;
 }
 
+i.fa.fa-search {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    color: var(--edatos-color-gray-5);
+}
 
 /* ============================================================
    12. FOOTER
