@@ -1,6 +1,8 @@
 -- NOTA:
 -- Este script actualiza el campo "theme" de los datasets con un array JSON válido, reemplazando el valor anterior que estaba concatenado por comas. Se utiliza la clave primaria (id) de la tabla package_extra para asegurar que solo se actualicen los registros correctos.
 
+-- Se debe ejecutar para los conjuntos de datos que posean un valor en el campo "theme" que esté concatenado por comas, y que necesiten ser convertidos a un formato de array JSON válido para cumplir con los requisitos de internacionalización.
+
 -- Los IDs de los datasets se obtienen de la tabla package_extra, y se actualizan solo aquellos que tienen el campo "theme" con un valor concatenado por comas en el momento de la implementación de la internacionalización.
 
 
