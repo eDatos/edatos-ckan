@@ -241,10 +241,14 @@ textarea {
 .istac-app-header.istac-title-bar .account ul li a.btn-datasets,
 .nav-item.active > a,
 .nav-aside li.active a {
-	background-color: var(--color-nav-active);
+	background-color: var(--edatos-color-white-100);
 	color: var(--color-white);
 	min-width: 90px;
 	text-align: center;
+}
+
+.module-narrow .nav-item.active, .module-narrow .nav-aside li.active {
+    background-color: var(--edatos-color-white-100);
 }
 
 .istac-app-header.istac-title-bar .account ul li a.btn-datasets:hover,
@@ -1553,7 +1557,9 @@ li.nav-item:hover {
 	background-color: var(--edatos-color-primary-50, #3a5a8c);
 	color: var(--edatos-color-white-100, #FFF);
 	font-weight: var(--font-weight-bold);
-	border-radius: 3px;
+	width: 100%;
+	border-radius: 0;
+	clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%);
 }
 
 .module.module-narrow .nav-simple .nav-item.active a .badge {
@@ -1585,12 +1591,7 @@ li.nav-item:hover {
 }
 
 .module-narrow .nav-item.active > a:before, .module-narrow .nav-aside li.active a:before {
-    position: absolute;
-    content: "";
-    right: -11px;
-	border-top: 20px solid transparent;
-	border-bottom: 21px solid transparent;
-	border-left: 12px solid var(--edatos-color-primary-50);
+    display: none;
 }
 
 /* ZONA 9 — Badge numérico en sidebar */
