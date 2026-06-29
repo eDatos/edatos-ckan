@@ -1144,8 +1144,12 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 .sort-custom-dropdown__trigger:hover,
 .sort-custom-dropdown.abrir .sort-custom-dropdown__trigger {
 	background-color: var(--edatos-color-secondary-100);
-    color: var(--edatos-color-white-100);
-    border: 1px solid var(--edatos-color-secondary-100, #004678);
+	color: var(--edatos-color-white-100);
+	border: 1px solid var(--edatos-color-secondary-100, #004678);
+}
+
+.sort-custom-dropdown.abrir .sort-custom-dropdown__trigger {
+	border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0;
 }
 
 /* Chevron — rota al abrir */
