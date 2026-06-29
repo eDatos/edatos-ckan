@@ -1135,7 +1135,6 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	font-size: var(--edatos-font-size-sm);
 	font-weight: var(--font-weight-light);
 	line-height: var(--line-height-base);
-	text-transform: uppercase;
 	padding: var(--spacing-xs) var(--spacing-sm);
 	border-radius: var(--border-radius-sm);
 	border: 1px solid var(--edatos-color-primary-100, #004678);
@@ -1198,7 +1197,6 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	color: var(--edatos-color-white-100, white);
 	font-size: var(--edatos-font-size-sm);
 	font-weight: var(--font-weight-light);
-	text-transform: uppercase;
 	cursor: pointer;
 	white-space: nowrap;
 	transition: background-color 0.15s ease, color 0.15s ease;
@@ -1528,7 +1526,6 @@ h2.dataset-heading {
 	font-size: var(--edatos-font-size-sm);
 	color: var(--edatos-color-secondary);
 	border-top: none;
-	border-bottom: 0.5px solid var(--edatos-color-primary-10, #E5ECF1);
 	text-decoration: none;
 	box-sizing: border-box;
 }
@@ -1546,6 +1543,7 @@ li.nav-item:hover {
     color: var(--edatos-color-secondary-100, #FFF);
     text-decoration: none;
 	border-radius: 3px;
+	border: none;
 }
 
 .module.module-narrow .nav-simple .nav-item a:hover .badge {
@@ -1651,7 +1649,7 @@ li.nav-item:hover {
     font-size: var(--edatos-font-size-xs);
     line-height: 1.1666666667em;
     padding: 7px 25px;
-    border-bottom: 1px var(--edatos-color-primary-10);
+    border-bottom: 0.5px solid var(--edatos-color-primary-10, #E5ECF1);
 }
 
 /* ============================================================
@@ -1931,7 +1929,7 @@ section#dataset-resources {
 	margin-bottom: 20px;
 	display: flex;
 	flex-direction: column;
-	gap: 2px;
+	gap: 0;
 }
 
 section#dataset-resources > h2 {
@@ -1960,6 +1958,7 @@ section#dataset-resources > h2 {
 	align-items: flex-start;
 	gap: 15px;
 	align-self: stretch;
+	margin-top: 0;
 }
 
 #dataset-resources li.resource-item {
@@ -1981,7 +1980,6 @@ section#dataset-resources > h2 {
 
 /* --- Metadatos table: borde exterior + estructura --- */
 section.module.additional-info {
-	border: 1px solid var(--edatos-color-gray-5, #F2F2F2);
 	border-radius: 0 0 5px 5px;
 	overflow: hidden;
 	margin-right: 0;
@@ -1989,7 +1987,6 @@ section.module.additional-info {
 
 section.module.additional-info .module-content table,
 section.additional-info.module > table {
-	border: 1px solid var(--edatos-color-gray-5, #F2F2F2);
 	border-collapse: collapse;
 	width: 100%;
 }
@@ -2009,10 +2006,8 @@ section.additional-info.module table td:first-child {
 }
 
 /* Sin divisor vertical entre columnas (Figma no lo tiene) */
-.additional-info table thead tr th,
 .additional-info table thead tr th:first-child {
-	border-left: none;
-	border-right: none;
+	border-right: 1px solid var(--edatos-color-white-100, white);
 }
 
 /* Filas de datos: campo 600, valor 300 */
@@ -2035,8 +2030,8 @@ section.additional-info.module table td:first-child {
     font-style: normal;
     line-height: 26px;
 	border-bottom: 1px solid var(--edatos-color-gray-5, #F2F2F2);
-	border-left: none;
-	border-right: none;
+	border-left: 1px solid var(--edatos-color-gray-5, #F2F2F2);
+    border-right: 1px solid var(--edatos-color-gray-5, #F2F2F2);
 	background-color: var(--edatos-color-white-100, #FFF) !important;
 }
 
@@ -2044,8 +2039,8 @@ section.additional-info.module table td:first-child {
 	font-weight: 600;
 	color: var(--edatos-color-gray-60);
 	border-bottom: 1px solid var(--edatos-color-gray-5, #F2F2F2);
-	border-left: none;
-	border-right: none;
+	border-left: 1px solid var(--edatos-color-gray-5, #F2F2F2);
+	border-right: 1px solid var(--edatos-color-gray-5, #F2F2F2);
 	background: var(--edatos-color-white-100, #FFF) !important;
 	padding: 5px 20px;
 }
@@ -2199,7 +2194,6 @@ div.ckanext-showcase-image-container {
 	white-space: nowrap;
 	text-decoration: none;
 	cursor: pointer;
-	margin: 3px 6px 3px 0;
 	height: 9px;
 }
 
@@ -2211,7 +2205,7 @@ a.metadatos-tag:hover {
 
 /* Celda "Valor" de la fila Palabras clave: padding extra + alineación vertical */
 .additional-info table tbody tr td:has(.metadatos-tag) {
-	padding: 10px 20px;
+	padding: 0px 20px;
 	vertical-align: middle;
 }
 
@@ -2363,7 +2357,6 @@ a.metadatos-tag:hover {
 	color: var(--edatos-color-secondary-100, #004678);
 	background: var(--edatos-color-white-100, #FFF);
 	border-top: none;
-	border-bottom: 0.5px solid var(--edatos-color-primary-5, #E5ECF1);
 }
 
 .module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item:first-child a {
@@ -2977,7 +2970,7 @@ li.showcase-card {
 }
 
 .module:first-child .module-heading {
-    border-radius: 3px;
+    border-radius: 5px 5px 0 0;
     border-top-width: 0;
 }
 
