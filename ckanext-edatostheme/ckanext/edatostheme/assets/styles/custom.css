@@ -1779,6 +1779,8 @@ h1.dataset-title {
 	justify-content: flex-start;
 	font-weight: 600;
 	background: var(--edatos-color-secondary-100, #004678);
+	border-top-color: transparent;
+    border-bottom-color: transparent;
 }
 
 /* --- ZONA 7b: Encabezado metadatos / secciones contenido principal --- */
