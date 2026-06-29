@@ -1619,16 +1619,21 @@ li.nav-item:hover {
 /* ZONA 11 — Enlace "Mostrar más" */
 .module-footer .read-more {
 	display: block;
-	padding: 5px 10px;
-	background: transparent;
+	background: var(--edatos-color-gray-5);
+    border-radius: var(--edatos-border-radius-sm);
 	color: var(--edatos-color-secondary);
-	font-size: 13px;
-	font-weight: var(--edatos-font-weight-regular);
-	line-height: 14px;
-	text-decoration: none;
-	text-align: center;
-	margin: 5px;
-	text-transform: lowercase;
+	font-size: var(--edatos-font-size-sm);
+    font-weight: var(--edatos-font-weight-semibold);
+    line-height: 14px;
+    text-decoration: none;
+    text-align: center;
+    text-transform: lowercase;
+    color: var(--edatos-color-secondary-100);
+	padding: var(--edatos-spacing-y-xs);
+}
+
+.module-narrow .module-heading, .module-narrow .module-content, .module-narrow .module-footer {
+	padding: var(--edatos-spacing-x-xs);
 }
 
 .module-footer .read-more::first-letter {
@@ -1636,12 +1641,10 @@ li.nav-item:hover {
 }
 
 .module-footer .read-more:hover {
-	color: var(--color-primary-hover);
 	text-decoration: underline;
 }
 
 .module-footer {
-    padding: 7px 25px 7px;
     margin: 0;
     border-top: 1px #ddd;
 }
