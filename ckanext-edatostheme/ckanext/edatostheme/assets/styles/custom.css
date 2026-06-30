@@ -3,34 +3,32 @@
    ============================================================ */
 
 :root {
-  --bs-body-font-family: "Open Sans", sans-serif;
+  --bs-body-font-family: var(--edatos-font-family);
   /* Colores primarios */
   --color-primary: #0072A2;
   --color-primary-dark: var(--edatos-color-primary-100, #004678);
-  --color-primary-hover: #008bd0;
+  --color-primary-hover: var(--edatos-color-light-blue-100);
   --color-primary-transparent: rgba(0, 114, 162, 0.80);
   --color-accent: var(--edatos-color-accent-100, #009BD7);
   --color-primary-10: var(--edatos-color-primary-10, #ccdae4);
-  --edatos-color-primary-50: #4D7EA0;
 
   /* Colores neutros */
   --color-gray-dark: #59656e;
-  --color-gray-medium: #aaaaaa;
-  --color-gray-light: #eeeeee;
+  --color-gray-medium: var(--edatos-color-gray-40);
+  --color-gray-light: var(--edatos-color-gray-5);
   --color-gray-border: #dddddd;
   --color-white: var(--edatos-color-white-100, #ffffff);
   --color-white-semi: rgba(255, 255, 255, 0.70);
   --color-black: var(--edatos-color-black-100, #000000);
-  --edatos-color-gray-5: #F2F2F2;
 
   /* Colores de estado */
-  --color-success: #5cb85c;
-  --color-warning: #f0ad4e;
-  --color-danger: #d9534f;
-  --color-info: #5bc0de;
+  --color-success: var(--edatos-color-success-100);
+  --color-warning: var(--edatos-color-yellow-100);
+  --color-danger: var(--edatos-color-danger-100);
+  --color-info: var(--edatos-color-light-blue-50);
 
   /* Colores semánticos UI */
-  --color-body-bg: #eeeeee;
+  --color-body-bg: var(--edatos-color-gray-5);
   --color-text-base: var(--edatos-color-gray-80, #333333);
   --color-text-muted: #59656e;
   --color-nav-active: #8098a7;
@@ -51,15 +49,15 @@
 
   /* Espaciado */
   --spacing-xs: 4px;
-  --spacing-sm: 8px;
+  --spacing-sm: var(--edatos-spacing-y-sm);
   --spacing-md: 16px;
   --spacing-lg: 24px;
-  --spacing-xl: 32px;
+  --spacing-xl: var(--edatos-spacing-x-xl);
   --spacing-xxl: 48px;
 
   /* Bordes */
   --border-radius-sm: 4px;
-  --border-radius-md: 8px;
+  --border-radius-md: var(--edatos-border-radius-md);
   --border-radius-lg: 12px;
   --border-color: #dddddd;
   --border-width: var(--edatos-border-width-xs, 1px);
@@ -78,6 +76,11 @@
   /* Transiciones */
   --transition-fast: 0.15s ease;
   --transition-base: 0.2s ease;
+
+  /* Tokens CKAN propios */
+  --ckan-font-size-heading: 24px;
+  --ckan-border-radius-card: 10px;
+  --ckan-divider-on-dark: rgba(255, 255, 255, 0.3);
 }
 
 
@@ -207,7 +210,7 @@ textarea {
 .secondary .module.context-info .nums dd {
 	color: var(--edatos-color-white-100, #FFF);
 	font-size: 24px;
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 1.1;
 	text-transform: uppercase;
 	margin: 0;
@@ -258,7 +261,7 @@ textarea {
 }
 
 .istac-app-header.istac-title-bar .nav-collapse {
-	margin-right: 36px;
+	margin-right: var(--edatos-spacing-x-page);
 }
 
 /* Resetear herencia de Bootstrap/CKAN nav-pills para la barra blanca */
@@ -650,7 +653,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 }
 
 .primary-nav-link:hover {
-	color: var(--edatos-color-secondary);
+	color: var(--edatos-color-secondary-100);
 	text-decoration: none;
 	border-bottom-color: rgba(0, 155, 215, 0.4);
 }
@@ -855,7 +858,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	justify-content: center;
 	align-items: center;
 	gap: 10px;
-	border-radius: 3px;
+	border-radius: var(--edatos-border-radius-xs);
 	background: var(--edatos-color-white-100);
 	color: var(--edatos-color-primary-100);
 	font-size: var(--edatos-font-size-sm);
@@ -915,8 +918,8 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 
 .module-search .heading {
 	text-align: center;
-	font-size: 50px;
-	font-weight: 600;
+	font-size: var(--edatos-font-size-2xl);
+	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 110%;
 	color: var(--color-white);
 }
@@ -1100,7 +1103,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 .search-form h1 {
 	color: var(--edatos-color-black-100);
 	font-size: 24px;
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 120%;
 	text-align: left;
 }
@@ -1223,11 +1226,11 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	background: var(--edatos-color-white-100);
 	color: var(--edatos-color-gray-80);
 	font-size: var(--edatos-font-size-sm);
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 }
 .search-form .input-group.search-input-group input[name="q"]::placeholder {
 	color: var(--edatos-color-gray-20);
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 }
 .search-form .input-group.search-input-group .btn[type="submit"] {
 	border: var(--border-width) solid var(--edatos-color-secondary-100);
@@ -1262,7 +1265,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 /* ZONA 5 — Título del dataset */
 h2.dataset-heading {
 	font-size: 20px;
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 26px;
 	color: var(--edatos-color-secondary-100);
 	align-self: stretch;
@@ -1282,7 +1285,7 @@ h2.dataset-heading {
 .dataset-item .notes {
 	color: var(--edatos-color-black-100);
 	font-size: var(--edatos-font-size-sm);
-	font-weight: 300;
+	font-weight: var(--edatos-font-weight-light);
 	line-height: 24px;
 	margin: 0;
 	overflow: hidden;
@@ -1306,9 +1309,9 @@ h2.dataset-heading {
 	background-color: var(--edatos-color-gray-5);
 	color: var(--edatos-color-black-100);
 	border: none;
-	border-radius: 5px;
+	border-radius: var(--edatos-border-radius-sm);
 	font-size: var(--edatos-font-size-sm);
-	font-weight: 300;
+	font-weight: var(--edatos-font-weight-light);
 	line-height: 24px;
 	text-transform: uppercase;
 }
@@ -1323,7 +1326,7 @@ h2.dataset-heading {
 	background-color: var(--edatos-color-primary-100, #004678);
 	color: var(--edatos-color-white-100);
 	font-size: var(--edatos-font-size-sm);
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 24px;
 	border-radius: 30px;
 	padding: 5px 10px;
@@ -1343,7 +1346,7 @@ h2.dataset-heading {
 .search-form .filter-list .facet {
 	color: var(--edatos-color-primary-100, #004678);
 	font-size: var(--edatos-font-size-sm);
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 24px;
 }
 
@@ -1390,7 +1393,7 @@ h2.dataset-heading {
 
 /* Panel Filtros: contenedor exterior con borde y radio según Figma */
 #group-info {
-	border-radius: 5px;
+	border-radius: var(--edatos-border-radius-sm);
 	overflow: hidden;
 	background: var(--color-white);
 	padding: 0px;
@@ -1420,7 +1423,7 @@ h2.dataset-heading {
 
 #group-info .image .heading {
 	font-size: 24px;
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 	color: var(--color-white);
 	margin: 0;
 	line-height: 110%;
@@ -1449,7 +1452,7 @@ h2.dataset-heading {
 
 #group-info .nums-inner .nums-count {
 	font-size: 28px;
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 	color: var(--color-white);
 	line-height: 120%;
 	text-transform: uppercase;
@@ -1512,7 +1515,7 @@ h2.dataset-heading {
 .module-narrow .nav-item > a:hover, .module-narrow .nav-aside li a:hover {
     text-decoration: none;
     background-color: transparent;
-	border-radius: 3px;
+	border-radius: var(--edatos-border-radius-xs);
 }
 
 .module.module-narrow .nav-simple .nav-item a {
@@ -1525,7 +1528,7 @@ h2.dataset-heading {
 	flex-wrap: nowrap;
 	gap: 10px;
 	font-size: var(--edatos-font-size-sm);
-	color: var(--edatos-color-secondary);
+	color: var(--edatos-color-secondary-100);
 	border-top: none;
 	text-decoration: none;
 	box-sizing: border-box;
@@ -1543,7 +1546,7 @@ li.nav-item:hover {
     background-color: var(--edatos-color-primary-5, #004678);
     color: var(--edatos-color-secondary-100, #FFF);
     text-decoration: none;
-	border-radius: 3px;
+	border-radius: var(--edatos-border-radius-xs);
 	border: none;
 }
 
@@ -1586,7 +1589,7 @@ li.nav-item:hover {
 	display: flex;
 	align-items: center;
 	font-size: 20px;
-	font-weight: 300;
+	font-weight: var(--edatos-font-weight-light);
 }
 
 .module-narrow .nav-item.active > a:before, .module-narrow .nav-aside li.active a:before {
@@ -1600,11 +1603,11 @@ li.nav-item:hover {
 	padding: 0;
 	justify-content: center;
 	align-items: center;
-	border-radius: 5px;
+	border-radius: var(--edatos-border-radius-sm);
 	background: var(--edatos-color-gray-5);
     color: var(--edatos-color-secondary-100, #FFF);
 	font-size: var(--edatos-font-size-xs);
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 14px;
 	width: 24px;
 	height: 24px;
@@ -1621,7 +1624,7 @@ li.nav-item:hover {
 	display: block;
 	background: var(--edatos-color-gray-5);
     border-radius: var(--edatos-border-radius-sm);
-	color: var(--edatos-color-secondary);
+	color: var(--edatos-color-secondary-100);
 	font-size: var(--edatos-font-size-sm);
     font-weight: var(--edatos-font-weight-semibold);
     line-height: 14px;
@@ -1665,7 +1668,7 @@ h1.dataset-title {
 	color: var(--edatos-color-black-100);
 	font-size: 24px;
 	font-style: normal;
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 120%;
 	align-self: stretch;
 }
@@ -1688,12 +1691,12 @@ h1.dataset-title {
 	gap: 10px;
 	flex-shrink: 0;
 	align-self: stretch;
-	border-radius: 3px;
+	border-radius: var(--edatos-border-radius-xs);
 	background: var(--edatos-color-secondary-100, #004678);
 	color: var(--edatos-color-white-100, #FFF);
 	font-size: var(--edatos-font-size-sm);
 	font-style: normal;
-	font-weight: 700;
+	font-weight: var(--edatos-font-weight-bold);
 	line-height: 14px;
 	text-transform: uppercase;
 	letter-spacing: normal;
@@ -1780,7 +1783,7 @@ h1.dataset-title {
 .secondary .module-heading {
 	flex: 1 0 0;
 	justify-content: flex-start;
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 	background: var(--edatos-color-secondary-100, #004678);
 	border-top-color: transparent;
     border-bottom-color: transparent;
@@ -1794,7 +1797,7 @@ h1.dataset-title {
 	border-radius: 5px 5px 0 0;
 	border-bottom: none;
 	font-size: var(--edatos-font-size-lg);
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 26px;
 	text-transform: none;
 }
@@ -1806,7 +1809,7 @@ h1.dataset-title {
 	color: var(--edatos-color-gray-60);
 	font-size: var(--edatos-font-size-md);
 	font-style: normal;
-	font-weight: 600 !important;
+	font-weight: var(--edatos-font-weight-semibold) !important;
 	line-height: 26px;
 }
 
@@ -1828,7 +1831,7 @@ h1.dataset-title {
 	color: var(--edatos-color-secondary-100, #004678);
 	font-size: var(--edatos-font-size-md);
 	font-style: normal;
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 26px;
 	padding-top: 0px;
 }
@@ -1916,7 +1919,7 @@ h1.dataset-title {
 
 /* --- Sidebar título del dataset --- */
 #package-info .module-content .heading a {
-	color: var(--edatos-color-secondary);
+	color: var(--edatos-color-secondary-100);
 	text-decoration: none;
 	font-size: var(--font-size-xs);
 	font-weight: var(--font-weight-bold);
@@ -1949,7 +1952,7 @@ section#dataset-resources > h2 {
 	color: var(--edatos-color-white-100);
 	font-size: var(--edatos-font-size-lg);
 	font-style: normal;
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 26px;
 	margin: 0;
 	text-transform: none;
@@ -2028,7 +2031,7 @@ section.additional-info.module table td:first-child {
 }
 
 .additional-info table tbody tr td {
-	font-weight: 300;
+	font-weight: var(--edatos-font-weight-light);
 	color: var(--edatos-color-gray-60);
     font-size: var(--edatos-font-size-md);
     font-style: normal;
@@ -2040,7 +2043,7 @@ section.additional-info.module table td:first-child {
 }
 
 .additional-info table tbody tr th {
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 	color: var(--edatos-color-gray-60);
 	border-bottom: 1px solid var(--edatos-color-gray-5, #F2F2F2);
 	border-left: 1px solid var(--edatos-color-gray-5, #F2F2F2);
@@ -2083,9 +2086,9 @@ a.toggle-show.toggle-show-less {
 	text-align: center;
 	padding: 5px 10px;
 	background: var(--edatos-color-gray-5, #F2F2F2);
-	border-radius: 5px;
+	border-radius: var(--edatos-border-radius-sm);
 	font-size: var(--edatos-font-size-sm);
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 	color: var(--edatos-color-primary-100, #004678);
 	text-decoration: none;
 }
@@ -2140,7 +2143,7 @@ a.toggle-show.toggle-show-less:hover {
 	color: var(--edatos-color-black-100);
 	font-size: 24px;
 	font-style: normal;
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 120%;
 	margin-bottom: 0;
 }
@@ -2162,7 +2165,7 @@ div.ckanext-showcase-image-container {
 /* --- Resource read: no-views info box --- */
 .data-viewer-info {
 	background: var(--edatos-color-primary-5, #E5ECF1);
-	border-radius: 5px;
+	border-radius: var(--edatos-border-radius-sm);
 	padding: 20px;
 	font-size: var(--font-size-xs);
 	color: var(--edatos-color-gray-60);
@@ -2193,7 +2196,7 @@ div.ckanext-showcase-image-container {
 	background: var(--edatos-color-white-100, #FFF);
 	color: var(--edatos-color-primary-50, #4D7EA0);
 	font-size: var(--edatos-font-size-xs);
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 24px;
 	white-space: nowrap;
 	text-decoration: none;
@@ -2226,12 +2229,12 @@ a.metadatos-tag:hover {
 	justify-content: center;
 	align-items: center;
 	gap: 5px;
-	border-radius: 5px;
+	border-radius: var(--edatos-border-radius-sm);
 	border: 1px solid var(--edatos-color-primary-100, #004678);
 	background: var(--edatos-color-white-100, #FFF);
 	color: var(--edatos-color-secondary-100, #004678);
 	font-size: var(--edatos-font-size-sm);
-	font-weight: 300;
+	font-weight: var(--edatos-font-weight-light);
 	line-height: 20px;
 	text-transform: uppercase;
 	text-decoration: none;
@@ -2271,7 +2274,7 @@ a.metadatos-tag:hover {
 .module-resource .module-content p.text-muted.break-word {
 	color: var(--edatos-color-black-100);
 	font-size: var(--edatos-font-size-md);
-	font-weight: 300;
+	font-weight: var(--edatos-font-weight-light);
 	line-height: 26px;
 	max-width: 814px;
 }
@@ -2279,7 +2282,7 @@ a.metadatos-tag:hover {
 .module-resource .module-content p.text-muted.ellipsis a,
 .module-resource .module-content p.text-muted.break-word a {
 	color: var(--edatos-color-primary-100, #004678);
-	font-weight: 300;
+	font-weight: var(--edatos-font-weight-light);
 	text-decoration: none;
 }
 
@@ -2292,7 +2295,7 @@ a.metadatos-tag:hover {
 .module-resource .module-content .prose.notes {
 	color: var(--edatos-color-black-100);
 	font-size: var(--edatos-font-size-md);
-	font-weight: 300;
+	font-weight: var(--edatos-font-weight-light);
 	line-height: 26px;
 	max-width: 814px;
 }
@@ -2302,7 +2305,7 @@ a.metadatos-tag:hover {
 	color: var(--edatos-color-black-100);
 	font-size: var(--edatos-font-size-lg);
 	font-style: normal;
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 26px;
 	margin-top: var(--spacing-sm);
 	margin-bottom: var(--spacing-xs);
@@ -2333,7 +2336,7 @@ a.metadatos-tag:hover {
 	flex-direction: column;
 	align-items: center;
 	gap: 30px;
-	border-radius: 5px;
+	border-radius: var(--edatos-border-radius-sm);
 	border: none;
 	background: var(--edatos-color-white-100, #FFF);
 	align-self: flex-start;
@@ -2350,7 +2353,7 @@ a.metadatos-tag:hover {
 /* --- Cabeceras de sección (RECURSOS, COMPARTIR): sin borde inferior --- */
 .module-resource ~ .secondary .module-heading {
 	border-bottom: none;
-	border-radius: 3px;
+	border-radius: var(--edatos-border-radius-xs);
 }
 
 /* --- Items de recurso (no activo) --- */
@@ -2376,7 +2379,7 @@ a.metadatos-tag:hover {
 	background-color: var(--edatos-color-primary-50, #4D7EA0);
 	color: var(--edatos-color-white-100, #FFF);
 	font-size: var(--edatos-font-size-sm);
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 14px;
 	border-bottom: none;
 	clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%);
@@ -2404,7 +2407,7 @@ a.metadatos-tag:hover {
 
 /* --- Metadata table: etiqueta Campo --- */
 .module-resource ~ .primary .additional-info th[scope="row"] {
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 }
 
 /* --- Show more / Show less --- */
@@ -2423,11 +2426,11 @@ a.metadatos-tag:hover {
 	justify-content: center;
 	align-items: center;
 	gap: 10px;
-	border-radius: 5px;
+	border-radius: var(--edatos-border-radius-sm);
 	background: var(--edatos-color-gray-5, #F2F2F2);
 	color: var(--edatos-color-primary-100, #004678);
 	font-size: var(--edatos-font-size-sm);
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 14px;
 	text-align: center;
 	text-decoration: none;
@@ -2561,7 +2564,7 @@ a.metadatos-tag:hover {
     font-size: 16px;
     width: 16px;
     height: 16px;
-	color: var(--edatos-color-gray-5);
+	color: var(--edatos-color-gray-60);
 }
 /* ---- Selector de orden (Relevancia) — hover ---- */
 #field-order-by:hover {
@@ -2607,7 +2610,7 @@ textarea:focus {
 	width: 100%;
 	margin: 0 auto;
 	height: 50px;
-	border-radius: 5px;
+	border-radius: var(--edatos-border-radius-sm);
 	overflow: hidden;
 	display: flex;
 	align-items: center;
@@ -2620,7 +2623,7 @@ textarea:focus {
 .homepage .search-giant .form-control {
 	height: 50px;
 	font-size: var(--font-size-lg);
-	font-weight: 300;
+	font-weight: var(--edatos-font-weight-light);
 	padding: 7px 0 7px 16px;
 	border-radius: 5px 0 0 5px;
 	border: none;
@@ -2630,7 +2633,7 @@ textarea:focus {
 }
 
 .homepage .search-giant .form-control::placeholder {
-	font-weight: 300;
+	font-weight: var(--edatos-font-weight-light);
 }
 
 .homepage .search-giant .form-control:focus {
@@ -2661,7 +2664,7 @@ div.input-prepend input:nth-child(2) {
 /* Contenedor de tabs */
 body .nav-tabs {
 	background-color: var(--edatos-color-primary-5, #E5ECF1);
-	border-radius: 3px;
+	border-radius: var(--edatos-border-radius-xs);
 	border-bottom: none;
 	padding-left: 20px;
 	height: 45px;
@@ -2677,7 +2680,7 @@ body .nav-tabs > li {
 /* Tab inactivo */
 body .nav-tabs > li > a {
 	font-size: var(--edatos-font-size-sm);
-	font-weight: 300;
+	font-weight: var(--edatos-font-weight-light);
 	font-style: normal;
 	line-height: 20px;
 	color: var(--edatos-color-secondary-100);
@@ -2700,7 +2703,7 @@ body .nav-tabs > li.active > a,
 body .nav-tabs > li.active > a:hover,
 body .nav-tabs > li.active > a:focus {
 	font-size: var(--edatos-font-size-sm);
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 	font-style: normal;
 	line-height: normal;
 	color: var(--edatos-color-secondary-100, #004678);
@@ -2717,7 +2720,7 @@ body .nav-tabs > li.active > a:focus {
    ============================================================ */
 
 .badge {
-	background-color: var(--edatos-color-secondary);
+	background-color: var(--edatos-color-secondary-100);
 }
 
 a.tag:hover {
@@ -2747,7 +2750,7 @@ i.fa.fa-search {
     font-size: 16px;
     width: 16px;
     height: 16px;
-    color: var(--edatos-color-gray-5);
+    color: var(--edatos-color-gray-60);
 }
 
 /* ============================================================
@@ -2861,7 +2864,7 @@ li.showcase-card {
 	color: var(--edatos-color-primary-100, #004678);
 	font-size: var(--edatos-font-size-lg);
 	font-style: normal;
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 20px;
 	text-align: left;
 	margin: 0;
@@ -2877,7 +2880,7 @@ li.showcase-card {
 	color: var(--edatos-color-black-100, #000);
 	font-size: var(--edatos-font-size-md);
 	font-style: normal;
-	font-weight: 300;
+	font-weight: var(--edatos-font-weight-light);
 	line-height: 23px;
 	text-align: left;
 }
@@ -2915,7 +2918,7 @@ li.showcase-card {
 	flex-direction: column;
 	align-items: center;
 	flex-shrink: 0;
-	border-radius: 5px;
+	border-radius: var(--edatos-border-radius-sm);
 	border: 0.5px solid var(--edatos-color-secondary-100, #004678);
 	background: var(--edatos-color-white-100, #FFF);
 	box-sizing: border-box;
@@ -2926,7 +2929,7 @@ li.showcase-card {
 	color: var(--edatos-color-secondary-100, #004678);
 	font-size: var(--edatos-font-size-md);
 	font-style: normal;
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 26px;
 }
 
@@ -3011,7 +3014,7 @@ li.showcase-card {
 .showcase-detail-sidebar .module.module-narrow.module-shallow .module-content p {
 	margin: 0;
 	font-size: var(--edatos-font-size-md);
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 26px;
 	color: var(--edatos-color-gray-80);
 }
@@ -3040,7 +3043,7 @@ li.showcase-card {
 	width: 267px;
 	padding: 0;
 	font-size: var(--edatos-font-size-md);
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 26px;
 	color: var(--edatos-color-secondary-100, #004678);
 }
@@ -3049,14 +3052,14 @@ li.showcase-card {
 	width: 267px;
 	color: var(--edatos-color-secondary-100, #004678);
 	font-size: var(--edatos-font-size-md);
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 26px;
 }
 
 .showcase-detail-sidebar #package-info .heading a {
 	color: var(--edatos-color-secondary-100, #004678);
 	font-size: var(--edatos-font-size-md);
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 26px;
 	text-decoration: none;
 }
@@ -3089,12 +3092,12 @@ li.showcase-card {
 	justify-content: center;
 	align-items: center;
 	gap: 10px;
-	border-radius: 5px;
+	border-radius: var(--edatos-border-radius-sm);
 	background: var(--edatos-color-secondary-100, #004678);
 	color: var(--edatos-color-white-100, #FFF);
 	font-size: var(--edatos-font-size-lg);
 	font-style: normal;
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 26px;
 	margin: 0;
 	box-sizing: border-box;
@@ -3114,7 +3117,7 @@ li.showcase-card {
 	height: 160px;
 	width: 100%;
 	object-fit: cover;
-	border-radius: 3px;
+	border-radius: var(--edatos-border-radius-xs);
 	align-self: stretch;
 	display: block;
 }
@@ -3127,7 +3130,7 @@ li.showcase-card {
 	justify-content: center;
 	align-items: center;
 	align-self: stretch;
-	border-radius: 3px;
+	border-radius: var(--edatos-border-radius-xs);
 }
 
 .showcase-sidebar-count-label {
@@ -3143,7 +3146,7 @@ li.showcase-card {
 	text-align: center;
 	font-size: 28px;
 	font-style: normal;
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 120%;
 	text-transform: uppercase;
 }
@@ -3188,7 +3191,7 @@ li.showcase-card {
 	align-items: center;
 	gap: 10px;
 	align-self: stretch;
-	border-radius: 5px;
+	border-radius: var(--edatos-border-radius-sm);
 	background: var(--edatos-color-primary-5, #E5ECF1);
 }
 
@@ -3222,7 +3225,7 @@ li.showcase-card {
 	color: var(--edatos-color-primary-50, #4D7EA0);
 	font-size: var(--edatos-font-size-xs);
 	font-style: normal;
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 24px;
 	text-decoration: none;
 }
@@ -3236,9 +3239,9 @@ li.showcase-card {
 
 .primary:has(.showcase-tags-section) .module-heading {
 	font-size: var(--edatos-font-size-lg);
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 	text-transform: none;
-	border-radius: 5px;
+	border-radius: var(--edatos-border-radius-sm);
 	padding: 5px 10px;
 	line-height: 26px;
 }
@@ -3284,7 +3287,7 @@ li.nav-item.recursos-item {
 	color: var(--edatos-color-secondary-100, #004678);
 	font-size: var(--edatos-font-size-md);
 	font-style: normal;
-	font-weight: 300;
+	font-weight: var(--edatos-font-weight-light);
 	line-height: 26px;
 	text-decoration: none;
 }
@@ -3294,7 +3297,7 @@ li.nav-item.recursos-item {
 }
 
 .recursos-list .recursos-item:nth-child(even) {
-	border-radius: 3px;
+	border-radius: var(--edatos-border-radius-xs);
 }
 
 @media (min-width: 768px) {
@@ -3309,7 +3312,7 @@ li.nav-item.recursos-item {
 
 .filters > div {
     border: 0.5px solid var(--edatos-color-secondary-100, #004678);
-    border-radius: 5px;
+    border-radius: var(--edatos-border-radius-sm);
     padding: 10px;
     background: var(--edatos-color-white-100, #FFF);
 }
@@ -3332,7 +3335,7 @@ li.nav-item.recursos-item {
 
 #user-info {
 	border: 0.5px solid var(--edatos-color-dark-blue-25);
-	border-radius: 5px;
+	border-radius: var(--edatos-border-radius-sm);
 	overflow: hidden;
 	background: var(--color-white);
 	padding: 10px;
@@ -3368,7 +3371,7 @@ li.nav-item.recursos-item {
 
 .user-profile-card .heading {
 	font-size: 24px;
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 	color: var(--color-white);
 	margin: 0;
 	line-height: 1.1;
@@ -3406,13 +3409,13 @@ li.nav-item.recursos-item {
 
 .user-stats-header {
 	background-color: var(--edatos-color-secondary-100);
-	border-radius: 3px;
+	border-radius: var(--edatos-border-radius-xs);
 	height: 35px;
 	display: flex;
 	align-items: center;
 	padding: 5px 10px;
 	font-size: var(--edatos-font-size-sm);
-	font-weight: 700;
+	font-weight: var(--edatos-font-weight-bold);
 	color: var(--color-white);
 	white-space: nowrap;
 }
@@ -3445,10 +3448,10 @@ li.nav-item.recursos-item {
 
 .user-stats-badge {
 	background-color: var(--edatos-color-gray-20);
-	border-radius: 5px;
+	border-radius: var(--edatos-border-radius-sm);
 	padding: 5px;
 	font-size: var(--edatos-font-size-xs);
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 	color: var(--edatos-color-secondary-100);
 	line-height: 14px;
 	min-width: 20px;
@@ -3471,13 +3474,13 @@ li.nav-item.recursos-item {
 
 .user-info-header {
 	background-color: var(--edatos-color-secondary-100);
-	border-radius: 3px;
+	border-radius: var(--edatos-border-radius-xs);
 	height: 35px;
 	display: flex;
 	align-items: center;
 	padding: 5px 10px;
 	font-size: var(--edatos-font-size-sm);
-	font-weight: 700;
+	font-weight: var(--edatos-font-weight-bold);
 	color: var(--color-white);
 }
 
@@ -3513,7 +3516,7 @@ li.nav-item.recursos-item {
 .resource-view-embed .modal-header .modal-title {
 	color: var(--color-white);
 	font-size: var(--edatos-font-size-md);
-	font-weight: 600;
+	font-weight: var(--edatos-font-weight-semibold);
 	text-transform: uppercase;
 	display: flex;
 	align-items: center;
@@ -3528,7 +3531,7 @@ li.nav-item.recursos-item {
 .resource-view-embed .modal-body .form-control {
 	background: rgba(238, 238, 238, 0.3);
 	border: 1px solid var(--edatos-color-gray-20);
-	border-radius: 5px;
+	border-radius: var(--edatos-border-radius-sm);
 	height: 35px;
 	font-size: var(--edatos-font-size-sm);
 	color: var(--color-text-base);
@@ -3557,7 +3560,7 @@ body .page-header .nav-tabs li a {
 /* Panel lateral: borde y radio como en Figma (.Filtros) */
 .dataset-edit-secondary {
     border: 0.5px solid var(--edatos-color-secondary-100, #004678);
-    border-radius: 5px;
+    border-radius: var(--edatos-border-radius-sm);
     padding: 10px;
     background: var(--edatos-color-white-100, #FFF);
     box-sizing: border-box;
@@ -3603,7 +3606,7 @@ body .page-header .nav-tabs li a {
 .form-group .form-label,
 .form-group label.control-label {
     font-size: var(--edatos-font-size-lg);
-    font-weight: 600;
+    font-weight: var(--edatos-font-weight-semibold);
     color: var(--edatos-color-gray-80);
     line-height: 26px;
 }
@@ -3626,7 +3629,7 @@ body .page-header .nav-tabs li a {
 .controls input[type="url"],
 .controls .form-control {
     border: 0.5px solid var(--edatos-color-secondary-100, #004678);
-    border-radius: 5px;
+    border-radius: var(--edatos-border-radius-sm);
 }
 
 /* 4. Focus — borde primary/50, sin box-shadow */
@@ -3647,7 +3650,7 @@ body .page-header .nav-tabs li a {
     background-image: none;
     border: 1px solid var(--edatos-color-primary-100, #004678);
     color: var(--edatos-color-primary-100, #004678);
-    border-radius: 5px;
+    border-radius: var(--edatos-border-radius-sm);
     font-size: var(--edatos-font-size-sm);
     font-weight: var(--edatos-font-weight-regular);
     text-transform: uppercase;
@@ -3680,7 +3683,7 @@ body .page-header .nav-tabs li a {
     border-radius: 0 0 5px 5px;
     padding: 3px 10px;
     font-size: var(--edatos-font-size-xs);
-    font-weight: 600;
+    font-weight: var(--edatos-font-weight-semibold);
     color: var(--edatos-color-gray-80);
 }
 
@@ -3691,7 +3694,7 @@ body .page-header .nav-tabs li a {
 /* 8. Sidebar helper (group create/edit) — wrapper con borde secondary */
 .showcase-detail-sidebar {
     border: 0.5px solid var(--edatos-color-secondary-100, #004678);
-    border-radius: 5px;
+    border-radius: var(--edatos-border-radius-sm);
     background: var(--edatos-color-white-100);
     padding: 10px;
     display: flex;
@@ -3705,7 +3708,7 @@ body .page-header .nav-tabs li a {
 }
 
 .showcase-detail-sidebar .module-heading {
-    border-radius: 3px;
+    border-radius: var(--edatos-border-radius-xs);
 }
 
 /* ============================================================
@@ -3722,7 +3725,7 @@ aside.secondary .module-content > a.btn.btn-sm,
     background-image: none;
     border: 1px solid var(--edatos-color-primary-100);
     color: var(--edatos-color-primary-100);
-    border-radius: 5px;
+    border-radius: var(--edatos-border-radius-sm);
     box-shadow: none;
     text-shadow: none;
     font-size: var(--edatos-font-size-sm);
@@ -3810,7 +3813,7 @@ aside.secondary .module-content > a.btn.btn-sm {
 .pagination-wrapper {
     padding-top: var(--edatos-spacing-y-lg);
     font-size: var(--edatos-font-size-sm);
-    font-weight: 300;
+    font-weight: var(--edatos-font-weight-light);
 }
 
 /* ------------------------------------------------------------------
@@ -3845,7 +3848,7 @@ aside.secondary .module-content > a.btn.btn-sm {
     padding: 0.5rem 1.25rem;
     margin: 0 0.375rem;
     font-size: var(--edatos-font-size-sm);
-    font-weight: 300;
+    font-weight: var(--edatos-font-weight-light);
     line-height: 1.5;
     text-decoration: none;
     color: var(--edatos-color-gray-40);
@@ -3875,7 +3878,7 @@ aside.secondary .module-content > a.btn.btn-sm {
 .pagination-wrapper .pagination .page-item.active .page-link,
 .pagination-wrapper .pagination li.active a {
     color: var(--edatos-color-primary-100);
-    font-weight: 700;
+    font-weight: var(--edatos-font-weight-bold);
     background-color: transparent;
     border-color: var(--edatos-color-primary-100);
     box-shadow: none;
@@ -4021,7 +4024,7 @@ aside.secondary .module-content > a.btn.btn-sm {
     height: 35px;
     padding: 7px 10px;
     border: 0.5px solid var(--edatos-color-secondary-100, #004678);
-    border-radius: 5px;
+    border-radius: var(--edatos-border-radius-sm);
     background-color: var(--edatos-color-white-100, #ffffff);
     color: var(--edatos-color-secondary-100, #004678);
     font-size: 14px;
