@@ -170,7 +170,7 @@ textarea {
 /* --- Sidebar recurso: bloque Formato con fondo azul oscuro --- */
 .secondary .module.context-info {
 	background: var(--edatos-color-secondary-100, #004678);
-	border-radius: 10px;
+	border-radius: var(--ckan-border-radius-card);
 	padding: 30px 10px;
 	width: 100%;
 	box-sizing: border-box;
@@ -200,7 +200,7 @@ textarea {
 	font-size: var(--edatos-font-size-xs);
 	font-weight: var(--edatos-font-weight-regular);
 	line-height: 16px;
-	border-bottom: 0.5px solid rgba(255, 255, 255, 0.3);
+	border-bottom: 0.5px solid var(--ckan-divider-on-dark);
 	width: 100%;
 	text-align: center;
 	padding-bottom: 13px;
@@ -209,7 +209,7 @@ textarea {
 
 .secondary .module.context-info .nums dd {
 	color: var(--edatos-color-white-100, #FFF);
-	font-size: 24px;
+	font-size: var(--ckan-font-size-heading);
 	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 1.1;
 	text-transform: uppercase;
@@ -1102,7 +1102,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 /* ZONA 1 — Contador de resultados (h1) */
 .search-form h1 {
 	color: var(--edatos-color-black-100);
-	font-size: 24px;
+	font-size: var(--ckan-font-size-heading);
 	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 120%;
 	text-align: left;
@@ -1405,7 +1405,7 @@ h2.dataset-heading {
 
 #group-info .image {
 	background-color: var(--edatos-color-secondary-100);
-	border-radius: 10px;
+	border-radius: var(--ckan-border-radius-card);
 	margin: 0;
 	padding: 30px 14px;
 	text-align: center;
@@ -1422,7 +1422,7 @@ h2.dataset-heading {
 }
 
 #group-info .image .heading {
-	font-size: 24px;
+	font-size: var(--ckan-font-size-heading);
 	font-weight: var(--edatos-font-weight-semibold);
 	color: var(--color-white);
 	margin: 0;
@@ -1666,7 +1666,7 @@ li.nav-item:hover {
 /* --- ZONA 1: Título del dataset (h1) --- */
 h1.dataset-title {
 	color: var(--edatos-color-black-100);
-	font-size: 24px;
+	font-size: var(--ckan-font-size-heading);
 	font-style: normal;
 	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 120%;
@@ -2141,7 +2141,7 @@ a.toggle-show.toggle-show-less:hover {
 /* --- Resource page: h1 (título dataset) --- */
 .module-resource .module-content h1.page-heading {
 	color: var(--edatos-color-black-100);
-	font-size: 24px;
+	font-size: var(--ckan-font-size-heading);
 	font-style: normal;
 	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 120%;
@@ -3351,7 +3351,7 @@ li.nav-item.recursos-item {
 /* Card azul superior: icono + nombre + divisor + bio */
 .user-profile-card {
 	background-color: var(--edatos-color-secondary-100);
-	border-radius: 10px;
+	border-radius: var(--ckan-border-radius-card);
 	padding: 30px 14px;
 	text-align: center;
 	display: flex;
@@ -3370,7 +3370,7 @@ li.nav-item.recursos-item {
 }
 
 .user-profile-card .heading {
-	font-size: 24px;
+	font-size: var(--ckan-font-size-heading);
 	font-weight: var(--edatos-font-weight-semibold);
 	color: var(--color-white);
 	margin: 0;
@@ -3381,7 +3381,7 @@ li.nav-item.recursos-item {
 
 .user-profile-divider {
 	border: none;
-	border-top: 1px solid rgba(255, 255, 255, 0.3);
+	border-top: 1px solid var(--ckan-divider-on-dark);
 	width: 100%;
 	margin: 0;
 }
