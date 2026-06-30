@@ -1891,7 +1891,7 @@ h1.dataset-title {
 	margin-left: 0;
 	margin-right: 0;
 	gap: 10px;
-	padding: 10px 20px 5px 20px;
+	padding: var(--edatos-spacing-x-lg) var(--edatos-spacing-x-lg) var(--edatos-spacing-y-xs) var(--edatos-spacing-x-lg);
 	border-radius: 0px;
 }
 
