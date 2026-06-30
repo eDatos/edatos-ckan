@@ -1050,6 +1050,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	line-height: 120%;
 	margin: 0;
 	flex: 1;
+	text-align: left;
 }
 
 .categories-grid .media-item.group-home-item .media-heading:hover {
