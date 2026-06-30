@@ -1265,7 +1265,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	gap: 10px;
 	padding: 10px 0;
 	margin-bottom: 0;
-	border-top: 0.5px solid var(--edatos-color-dark-blue-25);
+	border-top: 0.5px solid var(--edatos-color-primary-10);
 	border-bottom: none;
 }
 
@@ -1277,6 +1277,7 @@ h2.dataset-heading {
 	color: var(--edatos-color-secondary-100);
 	align-self: stretch;
 	margin: 0;
+	padding-bottom: var(--edatos-spacing-y-xs);
 }
 
 .dataset-heading a:hover {
@@ -1308,6 +1309,7 @@ h2.dataset-heading {
 	flex-wrap: wrap;
 	gap: 5px;
 	margin-top: 0;
+	margin-bottom: var(--edatos-spacing-y-xs);
 }
 .dataset-resources a.badge {
 	display: inline-flex;
@@ -2556,9 +2558,9 @@ a.metadatos-tag:hover {
 }
 
 .search-form {
-    margin-bottom: 0px;
+    margin-bottom: var(--edatos-spacing-y-lg);
     padding-bottom: 25px;
-    border-bottom: 0px;
+    border-bottom: none;
 }
 
 .search-form .search-input .btn:hover,
