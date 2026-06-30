@@ -786,6 +786,10 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 /* ============================================================
    4. HOME — Hero, Search module, Categories
    ============================================================ */
+.homepage .hero {
+	background: none;
+	padding: 0;
+}
 
 .hero,
 .main.hero {
