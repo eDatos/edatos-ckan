@@ -799,7 +799,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	box-shadow: var(--shadow-card);
 	overflow: visible;
 	position: relative;
-	z-index: 1;
+	z-index: 10;
 }
 
 .nav-login-error {
@@ -2730,7 +2730,9 @@ body .nav-tabs > li.active > a:focus {
    ============================================================ */
 
 .badge {
-	background-color: var(--edatos-color-secondary-100);
+	color: var(--edatos-color-secondary-100);
+    border-radius: var(--edatos-border-radius-sm);
+    background: var(--edatos-color-gray-5, #F2F2F2);
 }
 
 a.tag:hover {
