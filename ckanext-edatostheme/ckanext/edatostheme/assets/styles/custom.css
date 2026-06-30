@@ -796,8 +796,10 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 .hero-nav {
 	background-color: var(--color-white);
 	padding: 0;
-	box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.05);
+	box-shadow: var(--shadow-card);
 	overflow: visible;
+	position: relative;
+	z-index: 1;
 }
 
 .nav-login-error {
@@ -1890,7 +1892,6 @@ h1.dataset-title {
 	margin-right: 0;
 	gap: 10px;
 	padding: 10px 20px 5px 20px;
-	box-shadow: 0 -6px 12px -6px rgba(0, 0, 0, 0.15);
 	border-radius: 0px;
 }
 
