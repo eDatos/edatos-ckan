@@ -1757,6 +1757,14 @@ h1.dataset-title {
 	transform: none !important;
 }
 
+/* Hover centrado en ítems EXPLORAR: Bootstrap fuerza width:100% en .dropdown-item;
+   combinado con el margin lateral de .dropdown-menu li a, el fondo se desplaza
+   asimétricamente. width:auto produce el mismo comportamiento que el botón OPCIONES
+   (márgenes laterales simétricos de --edatos-spacing-x-xs a cada lado). */
+#dataset-resources .dropdown-menu li a.dropdown-item {
+	width: auto;
+}
+
 /* Botón: aplana esquina inferior-derecha al abrir y elimina focus ring de Bootstrap */
 .btn-primary.dropdown-toggle.show {
 	border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0 !important;
