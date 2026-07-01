@@ -916,7 +916,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
     width: 100%;
     padding-left: var(--edatos-spacing-x-m);
     padding-right: var(--edatos-spacing-x-m);
-    padding-top: var(--edatos-spacing-x-sm);
+    padding-top: var(--edatos-spacing-y-lg);
     padding-bottom: var(--edatos-spacing-x-l);
     background-color: var(--edatos-color-white-100);
 }
@@ -3566,7 +3566,7 @@ body .page-header .nav-tabs li a {
 
 .page-header .nav-tabs li.active a, .page-header .nav-tabs a:hover {
     border: none;
-    background-color: #fff;
+    background-color: var(--edatos-color-primary-10);
     border-bottom-color: transparent;
 }
 
