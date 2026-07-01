@@ -65,8 +65,15 @@ RUN pip3 install -e 'git+https://github.com/ckan/ckanext-harvest.git@v1.6.1#egg=
 RUN pip3 install -e 'git+https://github.com/ckan/ckanext-scheming.git#egg=ckanext-scheming'
 RUN pip3 install -e 'git+https://github.com/ckan/ckanext-fluent.git#egg=ckanext-fluent'
 
+
+### Version unificada del proyecto (inyectada por CI desde el tag de GitLab) ###
+# Valor por defecto: 0.0.0.dev0+local  ->  graceful fallback en entornos locales.
+ARG CKAN_EDATOS_VERSION=0.0.0.dev0+local
+ENV CKAN_EDATOS_VERSION=${CKAN_EDATOS_VERSION}
+
 ### Custom plugins
 
+RUN rm -rf src/ckanext-*/*.egg-info
 RUN pip3 install -r src/ckanext-edatostheme/requirements.txt && \
     pip3 install -e src/ckanext-edatostheme && \
     pip3 install -e src/ckanext-cas && \
@@ -120,7 +127,7 @@ COPY --chown=ckan-sys:ckan-sys dockerfiles/ckan/patches ${APP_DIR}/patches
 
 COPY --chown=ckan:ckan dockerfiles/ckan/setup/wsgi.py /srv/app/wsgi.py
 COPY --chown=ckan-sys:ckan-sys dockerfiles/ckan/setup/start_ckan.sh.override /srv/app/start_ckan.sh
-RUN chmod +x /srv/app/start_ckan.sh
+RUN sed -i 's/\r$//' /srv/app/start_ckan.sh && chmod +x /srv/app/start_ckan.sh
 
 USER ckan
 

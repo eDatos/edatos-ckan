@@ -368,6 +368,13 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
     plugins.implements(plugins.ITemplateHelpers)
     plugins.implements(plugins.IPackageController, inherit=True)
     plugins.implements(plugins.IFacets)
+    plugins.implements(plugins.IActions)
+
+    # IActions
+
+    def get_actions(self):
+        from ckanext.edatostheme.actions import status_show
+        return {'status_show': status_show}
 
     # IConfigurer
 

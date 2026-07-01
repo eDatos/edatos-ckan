@@ -1,0 +1,3 @@
+*.sh text eol=lf
+*.sh.override text eol=lf
+*.py.override text eol=lf

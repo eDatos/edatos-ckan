@@ -34,7 +34,13 @@ RUN pip3 install -e 'git+https://github.com/ckan/ckanext-harvest.git@v1.6.1#egg=
 RUN pip3 install -e 'git+https://github.com/ckan/ckanext-scheming.git#egg=ckanext-scheming'
 RUN pip3 install -e 'git+https://github.com/ckan/ckanext-fluent.git#egg=ckanext-fluent'
 
+### Version unificada del proyecto (inyectada por CI desde el tag de GitLab) ###
+# Valor por defecto: 0.0.0.dev0+local  ->  graceful fallback en entornos locales.
+ARG CKAN_EDATOS_VERSION=0.0.0.dev0+local
+ENV CKAN_EDATOS_VERSION=${CKAN_EDATOS_VERSION}
+
 ### edatosscheming ###
+RUN rm -rf src/ckanext-edatosscheming/*.egg-info
 RUN pip3 install -r src/ckanext-edatosscheming/requirements.txt && \
     pip3 install -e src/ckanext-edatosscheming
 
