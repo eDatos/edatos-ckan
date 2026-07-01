@@ -71,7 +71,7 @@
                     role="option"
                     data-value="{{ value }}"
                     aria-selected="{{ 'true' if sorting_selected == value else 'false' }}">
-                  {{ label }}
+                  <span class="sort-custom-dropdown__item-text">{{ label }}</span>
                 </li>
               {% endif %}
             {% endfor %}

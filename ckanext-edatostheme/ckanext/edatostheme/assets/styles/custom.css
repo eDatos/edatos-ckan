@@ -464,6 +464,18 @@ nav.section.navigation {
 	white-space: nowrap;
 }
 
+/* Sentence case en ítems de dropdown con icono.
+   El hero nav usa <span class="text">, resource_item usa texto directo.
+   ::first-letter solo funciona en display:block/inline-block, no en flex. */
+.dropdown-menu li a span.text {
+	text-transform: lowercase;
+	display: inline-block;
+}
+
+.dropdown-menu li a span.text::first-letter {
+	text-transform: uppercase;
+}
+
 .dropdown-menu li a i {
 	flex-shrink: 0;
 	width: 20px;
@@ -513,7 +525,6 @@ nav.section.navigation {
 	box-shadow: none;
 	padding: var(--spacing-xs) var(--spacing-sm);
 	border-radius: var(--border-radius-sm);
-	text-transform: uppercase;
 	cursor: pointer;
 	margin-right: 10px;
 	transition: background-color 0.25s, color 0.25s, border-radius 0.2s;
@@ -1210,6 +1221,19 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	cursor: pointer;
 	white-space: nowrap;
 	transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+/* Sentence case: ::first-letter no funciona en display:flex,
+   por eso se usa un <span> interno con display:inline-block */
+.sort-custom-dropdown__item-text,
+.sort-custom-dropdown__current-label {
+	text-transform: lowercase;
+	display: inline-block;
+}
+
+.sort-custom-dropdown__item-text::first-letter,
+.sort-custom-dropdown__current-label::first-letter {
+	text-transform: uppercase;
 }
 
 .sort-custom-dropdown__item:hover {
