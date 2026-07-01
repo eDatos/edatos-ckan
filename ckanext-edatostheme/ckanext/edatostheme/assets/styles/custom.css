@@ -2549,8 +2549,6 @@ a.metadatos-tag:hover {
     font-style: normal;
     font-weight: var(--edatos-font-weight-regular);
     line-height: 20px;
-    /* 142.857% */
-    text-transform: uppercase;
 }
 
 .btn-primary:hover {
