@@ -3564,7 +3564,7 @@ body .page-header .nav-tabs li a {
 	height: 38px;
 }
 
-.page-header .nav-tabs li.active a, .page-header .nav-tabs a:hover {
+.page-header .nav-tabs a:hover {
     border: none;
     background-color: var(--edatos-color-primary-10);
     border-bottom-color: transparent;

@@ -959,3 +959,69 @@ docker compose logs ckan -f
 # Check debug status
 docker compose exec ckan grep "^debug" /srv/app/ckan.ini
 ```
+
+## Persistent Project Knowledge
+
+### Purpose
+
+Maintain long-term project knowledge to improve continuity across development sessions and enable both humans and AI agents to understand the project's evolution.
+
+After completing any significant task, evaluate whether the work introduces knowledge that should persist beyond the current conversation. If it does, update the appropriate document inside the `docs/` directory before finishing.
+
+### What to Document
+
+Only document information that is expected to remain valuable for future development, such as:
+
+- Architectural decisions and their rationale.
+- Design decisions and trade-offs.
+- Project conventions or coding standards.
+- Adopted patterns or anti-patterns.
+- New dependencies and why they were introduced.
+- Significant changes to the project structure.
+- Reusable implementation strategies.
+- Environment or configuration requirements.
+- Known limitations or technical debt.
+- Problems encountered and how they were resolved.
+- Lessons learned that could prevent future mistakes.
+- Any project-specific knowledge that would help future contributors or AI agents work more effectively.
+
+### Documentation Guidelines
+
+Documentation should be:
+
+- Incremental rather than rewritten from scratch.
+- Concise and focused.
+- Organized by topic within the `docs/` directory.
+- Easy to scan and maintain.
+- Consistent with existing documentation.
+
+Create new documents only when an appropriate one does not already exist.
+
+### What Not to Document
+
+Do **not** document:
+
+- Trivial code changes.
+- Temporary implementation details.
+- Information already documented elsewhere.
+- Experimental work that was discarded.
+- Self-evident code behavior.
+- Session-specific conversation history.
+
+### Decision Rule
+
+Before completing any task, ask yourself:
+
+> "Will this information still be useful to a developer or AI agent in three months?"
+
+If the answer is **yes**, persist it in the appropriate document under `docs/`.
+
+If the answer is **no**, do not create or update documentation.
+
+### Documentation Priority
+
+Prefer updating existing documentation over creating new files.
+
+When creating new documentation, choose descriptive filenames and place them in the most appropriate location within the `docs/` hierarchy.
+
+Documentation should represent enduring project knowledge, not a changelog.
