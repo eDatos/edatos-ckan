@@ -1590,9 +1590,9 @@ li.nav-item:hover {
 .module.module-narrow .nav-simple .nav-item.active a {
 	background-color: var(--edatos-color-primary-50, #3a5a8c);
 	color: var(--edatos-color-white-100, #FFF);
-	font-weight: var(--font-weight-bold);
+	font-weight: var(--edatos-font-weight-semibold);
 	width: 100%;
-	border-radius: 0;
+	border-radius: var(--edatos-border-radius-sm) 0 0 var(--edatos-border-radius-sm);
 	clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%);
 }
 
@@ -1626,6 +1626,33 @@ li.nav-item:hover {
 
 .module-narrow .nav-item.active > a:before, .module-narrow .nav-aside li.active a:before {
     display: none;
+}
+
+/* ZONA 8b — Separadores entre items de faceta en la barra de filtros
+   - Título (.module-heading): sin línea (border-top/bottom-color: transparent ya aplicado en .secondary .module-heading)
+   - Item activo: sin línea encima ni debajo; espacio en blanco mediante margin
+   - Item en hover: sin línea encima ni debajo; espacio en blanco implícito (border transparente)
+*/
+
+/* Item activo: ocultar su propia línea inferior + espacio en blanco */
+.filters .module.module-narrow .nav-simple .nav-item.active {
+    border-bottom-color: transparent;
+    margin: 0.12rem 0;
+}
+
+/* Item inmediatamente anterior al activo: ocultar su línea inferior (= línea encima del activo) */
+.filters .module.module-narrow .nav-simple .nav-item:has(+ .nav-item.active) {
+    border-bottom-color: transparent;
+}
+
+/* Item en hover: ocultar línea inferior */
+.filters .module.module-narrow .nav-simple .nav-item:not(.active):hover {
+    border-bottom-color: transparent;
+}
+
+/* Item inmediatamente anterior al hovered: ocultar su línea inferior */
+.filters .module.module-narrow .nav-simple .nav-item:has(+ .nav-item:hover) {
+    border-bottom-color: transparent;
 }
 
 /* ZONA 9 — Badge numérico en sidebar */
