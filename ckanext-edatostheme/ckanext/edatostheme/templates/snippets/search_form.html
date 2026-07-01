@@ -6,7 +6,7 @@
 {% set no_bottom_border = no_bottom_border if no_bottom_border else false %}
 {% set form_id = form_id if form_id else false %}
 
-<form {% if form_id %}id="{{ form_id }}" {% endif %}class="search-form{% if no_bottom_border %} no-bottom-border{% endif %}" hx-boost="true" hx-disinherit="hx-boost" method="get" hx-trigger="change, submit">
+<form {% if form_id %}id="{{ form_id }}" {% endif %}class="search-form{% if no_bottom_border %} no-bottom-border{% endif %}" method="get">
 
   {% block search_input %}
     <div class="input-group search-input-group">
@@ -21,7 +21,13 @@
 
   {% block search_search_fields %}
     {% if fields -%}
-      <span>{{ form.hidden_from_list(fields=fields) }}</span>
+      {% set ns = namespace(clean_fields=[]) %}
+      {% for name, value in fields %}
+        {% if name != 'q' and name != 'sort' %}
+          {% set ns.clean_fields = ns.clean_fields + [(name, value)] %}
+        {% endif %}
+      {% endfor %}
+      <span>{{ form.hidden_from_list(fields=ns.clean_fields) }}</span>
     {%- endif %}
   {% endblock %}
 
