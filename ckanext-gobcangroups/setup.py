@@ -2,6 +2,7 @@
 # Always prefer setuptools over distutils
 from setuptools import setup, find_packages
 from codecs import open  # To use a consistent encoding
+from datetime import datetime
 import os
 from os import path
 
@@ -17,7 +18,7 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # http://packaging.python.org/en/latest/tutorial.html#version
-    version=os.environ.get('CKAN_EDATOS_VERSION') or '1.0.0',
+    version=os.environ.get('CKAN_EDATOS_VERSION') or datetime.now().strftime('%d-%m-%Y-%H%M') + '-snapshot',
 
     description='''DCAT RDF modification for GOBCAN to auto add datasets to groups''',
     long_description=long_description,
