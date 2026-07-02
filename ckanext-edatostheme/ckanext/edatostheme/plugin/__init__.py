@@ -370,11 +370,8 @@ def get_theme():
     Lee el theme del query param '?theme=' y si no existe, de la cookie 'theme'.
     Solo devuelve el valor si es uno de los temas aceptados.
     """
-    accepted_themes = ['ibestat', 'iecm', 'istac']
     theme = request.args.get('theme') or request.cookies.get('theme')
-    if theme and theme in accepted_themes:
-        return theme
-    return None
+    return theme
 
 
 def save_header(header):

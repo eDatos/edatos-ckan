@@ -2822,10 +2822,6 @@ a.tag:hover {
 	font-family: "Font Awesome 6 Pro" !important;
 }
 
-.fa-thin, .fat {
-	font-weight: 100 !important;
-}
-
 i.fa.fa-search {
     font-size: 16px;
     width: 16px;
