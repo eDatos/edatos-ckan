@@ -4007,11 +4007,6 @@ aside.secondary .module-content > a.btn.btn-sm {
    ------------------------------------------------------------------ */
 .pagination-wrapper .pagination .page-item .page-link i,
 .pagination-wrapper .pagination li a i {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: var(--edatos-font-size-xs);
-    line-height: 1;
     vertical-align: middle;
     pointer-events: none;
 }
