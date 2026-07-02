@@ -2079,7 +2079,7 @@ section.module.additional-info table th:first-child,
 section.module.additional-info table td:first-child,
 section.additional-info.module table th:first-child,
 section.additional-info.module table td:first-child {
-	width: 30%;
+	width: 20%;
 	font-weight: var(--font-weight-bold);
 }
 
@@ -2130,7 +2130,7 @@ section.additional-info.module table td:first-child {
 }
 
 .additional-info .module-content:first-child table th:first-child {
-	width: 30%;
+	width: 20%;
 }
 
 table th:first-child {
