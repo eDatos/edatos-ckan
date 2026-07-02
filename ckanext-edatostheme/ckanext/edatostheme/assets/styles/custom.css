@@ -2917,9 +2917,10 @@ li.showcase-card {
 .showcase-card-body {
 	display: flex;
 	flex-direction: column;
-	padding: 20px;
+	padding: var(--edatos-spacing-y-l) 0px;
 	gap: 10px;
 	flex: 1;
+	width: 154.953px;
 }
 
 /* Contador de conjuntos de datos — encima del título, uppercase */
@@ -2927,6 +2928,9 @@ li.showcase-card {
 	display: inline-block;
 	align-self: flex-start;
 	white-space: nowrap;
+	max-width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
 	background-color: var(--edatos-color-primary-10);
 	padding: 2px 6px;
 	color: var(--color-text-base, #333);
@@ -2935,6 +2939,7 @@ li.showcase-card {
 	font-weight: var(--edatos-font-weight-regular);
 	line-height: normal;
 	text-transform: uppercase;
+	width: 154.953px;
 }
 
 /* Título de la colección */
