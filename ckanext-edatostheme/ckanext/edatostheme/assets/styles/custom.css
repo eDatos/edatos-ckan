@@ -570,6 +570,12 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	gap: 6px;
 	width: auto;
 }
+
+.btn.btn-navbar.btn-add-group:hover {
+	background-color: var(--edatos-color-secondary-100);
+	color: var(--edatos-color-white-100);
+}
+
 .dropdown-menu.show {
     display: block;
     min-width: 155px;
@@ -2195,8 +2201,10 @@ a.toggle-show.toggle-show-less:hover {
 .module-content.page-header .content_action {
 	position: absolute;
 	right: 10px;
-	top: 70%;
-	transform: translateY(-50%);
+	bottom: 0;
+	height: 44px; /* igual que nav-tabs > li */
+	display: flex;
+	align-items: center;
 	float: none;
 }
 
@@ -3791,19 +3799,23 @@ aside.secondary .module-content > a.btn.btn-sm,
     background-image: none;
     border: 1px solid var(--edatos-color-primary-100);
     color: var(--edatos-color-primary-100);
-    border-radius: var(--edatos-border-radius-sm);
+    border-radius: var(--border-radius-sm);
     box-shadow: none;
     text-shadow: none;
     font-size: var(--edatos-font-size-sm);
+	font-weight: var(--edatos-font-weight-regular);
 }
 
+/* Selectores con a.btn para mayor especificidad sobre CSS externos */
+header.module-content.page-header .content_action a.btn:hover,
 header.module-content.page-header .content_action .btn:hover,
 aside.secondary .module.resources .nav-simple .btn:hover,
 aside.secondary .module-content > a.btn.btn-sm:hover,
 .btn-remove-url:hover {
     background: var(--edatos-color-secondary-100);
+    background-color: var(--edatos-color-secondary-100);
     color: var(--edatos-color-white-100);
-	border: 1px solid var(--edatos-color-secondary-100);
+    border: 1px solid var(--edatos-color-secondary-100);
 }
 
 header.module-content.page-header .content_action .btn i,
@@ -3812,10 +3824,14 @@ aside.secondary .module-content > a.btn.btn-sm i {
     color: inherit;
 }
 
-/* Botón "Ver recurso" — propiedades específicas */
+/* Botón "Administrar" — propiedades específicas */
 header.module-content.page-header .content_action .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     text-transform: uppercase;
     padding: 5px 10px;
+    white-space: nowrap;
 }
 
 /* Botón "Añadir nuevo recurso" — propiedades específicas */
@@ -4174,4 +4190,21 @@ aside.secondary .module-content > a.btn.btn-sm {
     .activity-type-dropdown__item {
         font-size: 13px;
     }
+}
+
+/* ----------------------------------------------------------------
+   Showcase add — select nativo oculto y layout del formulario
+   ---------------------------------------------------------------- */
+.showcase-add-native-select {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.showcase-add-dropdown {
+    margin-bottom: 8px;
 }
