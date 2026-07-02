@@ -528,6 +528,7 @@ nav.section.navigation {
 	cursor: pointer;
 	margin-right: 10px;
 	transition: background-color 0.25s, color 0.25s, border-radius 0.2s;
+	text-transform: uppercase;
 }
 
 /* Icono chevron: transición de rotación */
@@ -1229,16 +1230,20 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-/* Sentence case: ::first-letter no funciona en display:flex,
-   por eso se usa un <span> interno con display:inline-block */
-.sort-custom-dropdown__item-text,
+/* Etiqueta del botón disparador — todo en mayúsculas */
 .sort-custom-dropdown__current-label {
+	text-transform: uppercase;
+	display: inline-block;
+}
+
+/* Sentence case en ítems del desplegable: ::first-letter no funciona en display:flex,
+   por eso se usa un <span> interno con display:inline-block */
+.sort-custom-dropdown__item-text {
 	text-transform: lowercase;
 	display: inline-block;
 }
 
-.sort-custom-dropdown__item-text::first-letter,
-.sort-custom-dropdown__current-label::first-letter {
+.sort-custom-dropdown__item-text::first-letter {
 	text-transform: uppercase;
 }
 
@@ -2557,6 +2562,7 @@ a.metadatos-tag:hover {
     font-style: normal;
     font-weight: var(--edatos-font-weight-regular);
     line-height: 20px;
+	text-transform: uppercase;
 }
 
 .btn-primary:hover {
