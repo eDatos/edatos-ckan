@@ -52,8 +52,8 @@ def status_show(original_action, context, data_dict):
 
     Conserva 'ckan_version' (version del core) e incorpora el campo
     nuevo 'CKAN_EDATOS_VERSION' con el formato PEP 440 compuesto:
-      <ckan_core_major.minor>+edatos.<tag_gitlab>
-    Ejemplo: "2.11+edatos.10.0.0"
+      <tag_gitlab>+ckan.<ckan_core_major.minor>
+    Ejemplo: "10.0.0+ckan.2.11"
     """
     result = original_action(context, data_dict)
     result['CKAN_EDATOS_VERSION'] = get_CKAN_EDATOS_VERSION()
