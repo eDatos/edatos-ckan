@@ -7,6 +7,7 @@ Actualmente expone:
 """
 import os
 import logging
+from datetime import datetime
 
 try:
     from importlib.metadata import version as _dist_version, PackageNotFoundError
@@ -30,18 +31,22 @@ def get_CKAN_EDATOS_VERSION():
     en tiempo de instalacion (pip install -e).  Su valor es identico
     al que muestra 'pip show ckanext-edatostheme'.
 
-    Fallback: variable de entorno CKAN_EDATOS_VERSION si el paquete
-    no esta instalado (ejecucion fuera del contenedor).
+    Fallback: variable de entorno CKAN_EDATOS_VERSION si el paquete no esta
+    instalado (ejecucion fuera del contenedor); si tampoco esta definida, se
+    genera un snapshot con fecha/hora (mismo formato que el fallback local
+    de cada setup.py) para dejar claro que no es una version de release.
     """
     try:
         return _dist_version(_CANONICAL_DIST)
     except PackageNotFoundError:
         log.warning(
             'No se encontraron metadatos de %s; '
-            'usando CKAN_EDATOS_VERSION como fallback.',
+            'usando CKAN_EDATOS_VERSION (o snapshot) como fallback.',
             _CANONICAL_DIST,
         )
-        return os.environ.get('CKAN_EDATOS_VERSION', 'unknown')
+        return os.environ.get('CKAN_EDATOS_VERSION') or (
+            datetime.now().strftime('%d-%m-%Y-%H%M') + '-snapshot'
+        )
 
 
 @toolkit.chained_action
