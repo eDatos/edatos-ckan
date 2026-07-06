@@ -17,12 +17,10 @@ from bs4 import BeautifulSoup
 from ckan.common import _, request, c
 from collections import OrderedDict
 from ckan.model import Package
-from ckan.model.tag import Tag
 from ckan.lib.plugins import DefaultTranslation
 from ckantoolkit import config
 from flask import Blueprint
 from flask import render_template_string
-from flask import request as fr
 
 import logging
 log = logging.getLogger(__name__)
@@ -34,7 +32,6 @@ abort = base.abort
 dirname = os.path.dirname(__file__)
 CONFIG_FILE_PATH = os.path.join(dirname, '../etc/config.json')
 FOOTER_PATH = os.path.join(dirname, '../templates/footer.html')
-HEADER_PATH = os.path.join(dirname, '../templates/header_meta.html')
 FAVICON_PATH = os.path.join(dirname, '../public/favicon.ico')
 SCRIPT_PATH = os.path.join(dirname, '../assets/js/i18n.js')
 HEADER_WHITE_BAR_PATH = os.path.join(
@@ -264,21 +261,6 @@ def get_request_lang(cookie_value):
     return request.cookies.get(cookie_value)
 
 
-def save_header(header):
-    """
-    Metodo que guarda el header como template
-
-    :param header: Codigo del header en formato string que se va a guardar
-    """
-
-    #header = header.replace(b'&gt;', b'>').decode('utf8')
-    #header = "{% block header_wrapper %}" + header + "{% endblock %}"
-    with codecs.open(HEADER_PATH, 'w', encoding='utf8') as header_file:
-        header_file.truncate(0)
-        header_file.seek(0)
-        header_file.write(header)
-
-
 def get_header_url(json_config):
     """
     Metodo que devuelve la URL del header
@@ -338,23 +320,7 @@ def get_altered_header(header, json_config):
     return "{% block header_wrapper %}" + alteredHeader + "{% endblock %}"
 
 
-
-def load_header():
-    """
-    Carga el header desde el endpoint externo, aplica las modificaciones y
-    lo guarda en disco (header_meta.html). Úsese únicamente en arranque
-    (update_config) como semilla. Para el render de páginas usar get_header_cached().
-    """
-    with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
-        json_config = json.loads(config_file.read())
-        header = requests.get(
-            url=get_header_url(json_config), timeout=_REQUESTS_TIMEOUT).content
-        header = get_altered_header(header=header, json_config=json_config)
-        save_header(header=header)
-        return header
-
-
-def get_header_cached():
+def get_html_header():
     """
     Descarga, modifica y devuelve el HTML del header en cada petición,
     sin caché. No lee ni escribe ficheros en disco.
@@ -409,7 +375,7 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         return "%s?appName=%s&appUrl=%s" % (get_url(endpoint, favicon_key),
                                             json_config['metadata']['appName'],
                                             json_config['metadata']['siteURL'])
-        pass
+
 
     def __save_footer(self, footer):
         """
@@ -526,7 +492,7 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             'edatostheme_get_count_all_datasets': get_count_all_datasets,
             'package_showcase_list': package_showcase_list,
             'edatostheme_get_delink_value': get_delink_value,
-            'edatos_get_header': get_header_cached,
+            'edatos_get_header': get_html_header,
             'edatos_get_facet_items_dict': get_facet_items_dict,
             'edatos_schema_get_label_for_facet': schema_get_label_for_facet,
             'edatos_get_license': get_license,
