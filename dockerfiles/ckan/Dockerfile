@@ -67,8 +67,10 @@ RUN pip3 install -e 'git+https://github.com/ckan/ckanext-fluent.git#egg=ckanext-
 
 
 ### Version unificada del proyecto (inyectada por CI desde el tag de GitLab) ###
-# Valor por defecto: 0.0.0.dev0+local  ->  graceful fallback en entornos locales.
-ARG CKAN_EDATOS_VERSION=0.0.0.dev0+local
+# Default VACIO a proposito: si no se pasa --build-arg (build local sin
+# pipeline), cada setup.py debe ver la env var vacia (falsy) para activar su
+# propio fallback de snapshot con fecha, en vez de grabar un placeholder fijo.
+ARG CKAN_EDATOS_VERSION=
 ENV CKAN_EDATOS_VERSION=${CKAN_EDATOS_VERSION}
 
 ### Custom plugins

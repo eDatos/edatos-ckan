@@ -5,7 +5,7 @@
 # Uso:
 #   sh set_version.sh [ruta_dockerfile]
 #   CI_COMMIT_TAG=10.0.0 sh set_version.sh          # -> 10.0.0+ckan.2.11
-#   sh set_version.sh                                 # -> 03-07-2026-1530-snapshot (sin tag)
+#   sh set_version.sh                                 # -> 0.0.0.dev202607031530+snapshot (sin tag)
 #
 # Requiere: sh, grep, cut, date, printf (disponibles en docker:24.0.5 / alpine).
 set -eu
@@ -15,9 +15,11 @@ DOCKERFILE="${1:-dockerfiles/ckan/Dockerfile}"
 # Sin tag de GitLab no hay version que propagar: se usa el mismo formato de
 # snapshot con fecha que el fallback local de cada setup.py, para que un build
 # manual/dev (IMAGE_TAG=latest) sea identificable a simple vista como no-release.
+# PEP 440 exige que el release sea numerico: la fecha va en el segmento 'devN'
+# (acepta cualquier cantidad de digitos) y 'snapshot' queda como local, legible.
 TAG="${CI_COMMIT_TAG:-}"
 if [ -z "$TAG" ]; then
-    printf '%s-snapshot\n' "$(date +'%d-%m-%Y-%H%M')"
+    printf '0.0.0.dev%s+snapshot\n' "$(date +'%Y%m%d%H%M')"
     exit 0
 fi
 

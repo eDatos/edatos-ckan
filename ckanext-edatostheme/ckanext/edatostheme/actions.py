@@ -45,7 +45,7 @@ def get_CKAN_EDATOS_VERSION():
             _CANONICAL_DIST,
         )
         return os.environ.get('CKAN_EDATOS_VERSION') or (
-            datetime.now().strftime('%d-%m-%Y-%H%M') + '-snapshot'
+            '0.0.0.dev' + datetime.now().strftime('%Y%m%d%H%M') + '+snapshot'
         )
 
 
