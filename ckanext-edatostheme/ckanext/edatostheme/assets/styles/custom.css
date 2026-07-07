@@ -4219,3 +4219,20 @@ aside.secondary .module-content > a.btn.btn-sm {
 .showcase-add-dropdown {
     margin-bottom: 8px;
 }
+
+/* ----------------------------------------------------------------
+   Add to group (pestaña Categorías) — select nativo oculto y layout
+   ---------------------------------------------------------------- */
+.add-to-group-native-select {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.add-to-group .activity-type-dropdown {
+    margin-bottom: 8px;
+}
