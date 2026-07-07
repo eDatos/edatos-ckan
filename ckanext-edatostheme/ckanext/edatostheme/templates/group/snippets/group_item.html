@@ -29,6 +29,12 @@ Example:
       <span class="group-dataset-count">{{ group.package_count }} {{ _('Conjuntos de datos') }}</span>
     {% endif %}
   {% endblock %}
+  {% block remove_button %}
+    {% if group.user_member %}
+      {% set remove_label = _('Unlink {name} from the dataset').format(name=group.display_name) %}
+      <input name="group_remove.{{ group.id }}" value="{{ _('Remove') }}" type="submit" class="btn btn-danger btn-sm media-edit" aria-label="{{ remove_label }}" title="{{ remove_label }}" />
+    {% endif %}
+  {% endblock %}
   {% endblock %}
 </li>
 {% endblock %}

@@ -1092,6 +1092,12 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	line-height: normal;
 }
 
+/* Botón "Quitar" pegado a la esquina inferior derecha de la card de grupo */
+.categories-grid .media-item.group-home-item .media-edit {
+	right: var(--edatos-spacing-x-xs, 8px);
+	bottom: var(--edatos-spacing-y-xs, 8px);
+}
+
 /* Hide "Order by" on group index */
 #group-search-form .control-order-by {
 	display: none;
