@@ -2344,7 +2344,15 @@ a.metadatos-tag:hover {
    con el borde superior del panel .showcase-detail-sidebar: ambos son hijos
    directos de ".row.wrapper" con el mismo top, pero ".module-content" (CKAN
    core) le añade 24px de padding-top a esta fila que el sidebar no tiene, así
-   que se cancela con un margin-top negativo del mismo valor. */
+   que se cancela con un margin-top negativo del mismo valor.
+   margin-right/width: esta fila también recupera los 24px de padding-right
+   de ".module-content" (solo para sí misma, no para el resto del contenido
+   de la card — URL, descripción, pestañas y tabla siguen con el ancho normal
+   de ".module-content", por eso el borde derecho de esta fila queda 24px
+   más afuera que el de la tabla de debajo; decisión consciente para darle
+   más ancho real al título/botones, ver Adenda 5 del spec). Con esto,
+   ".actions" ya no necesita el margen negativo que antes usaba para
+   "escapar" del padding y desbordar la propia fila (ver más abajo). */
 .module-resource .resource-heading-row {
 	display: flex;
 	align-items: flex-start;
@@ -2352,11 +2360,18 @@ a.metadatos-tag:hover {
 	flex-wrap: wrap;
 	gap: 16px;
 	margin-top: -24px;
+	margin-right: -24px;
+	width: calc(100% + 24px);
 }
 
 /* Sin min-width:0 un flex item de texto reclama su ancho "max-content"
    completo para decidir si hace falta salto de línea, empujando los
-   botones a una línea aparte aunque el título pudiera envolver texto. */
+   botones a una línea aparte aunque el título pudiera envolver texto. El
+   diseño (Figma nodo 12933:7958) pide título y botones siempre como dos
+   columnas en la misma fila, nunca apilados uno debajo del otro — ver el
+   ajuste de ".actions ul.d-flex" más abajo, que acota el ancho de la
+   columna de botones para dejarle sitio real al título en vez de depender
+   de que esta fila salte de línea. */
 .module-resource .resource-heading-titles {
 	min-width: 0;
 	flex: 1 1 0%;
@@ -2374,27 +2389,30 @@ a.metadatos-tag:hover {
 	float: none;
 	top: 0;
 	flex-shrink: 0;
-	/* El padding-right del .module-content (24px) deja demasiado hueco entre el
-	   último botón y el borde de la card; se recorta a var(--edatos-spacing-x-2xs). */
-	margin-right: calc(var(--edatos-spacing-x-2xs) - 24px);
 }
 
-/* Reparte los botones de acciones del recurso en 2 filas fijas (4 + 3): el ul
-   mezcla <li> de este repo (Editar recurso, Vistas) con otros añadidos por
-   ckanext-datastore (Diccionario de datos, DataStore, API de datos) fuera de
-   este repo, en orden de documento, así que basta con acotar el ancho del ul
-   a lo que ocupan los 4 primeros botones para que el 5º salte de línea de
-   forma natural. padding-left:0 anula el padding-left:32px heredado de <ul>
-   (que restaba espacio útil sin que se notase visualmente). 600px = ~594px
-   reales de esos 4 botones + margen; si cambian los textos (traducciones)
-   puede que haya que reajustar este valor.
+/* Ancho de la columna de botones: acota cuántos caben por fila para dejarle
+   sitio real al título en la misma línea (dos columnas, como en el Figma).
+   El ul mezcla <li> de este repo (Editar recurso, Vistas) con otros añadidos
+   por ckanext-datastore (Diccionario de datos, DataStore, API de datos)
+   fuera de este repo, en orden de documento; con 600px cabían los primeros
+   4 botones en la primera fila, pero ese ancho está pensado para cuando
+   ".module-resource" ocupa casi todo el ancho del container. Desde que el
+   sidebar de formatos comparte fila con el título (ver más arriba),
+   ".module-resource" dispone de solo ~770-820px, y reservar 600px fijos
+   para botones dejaba apenas ~170px para el título (títulos largos se
+   partían en 6-7 líneas). Se reduce a 400px (~2 botones por fila; el bloque
+   pasa a 3 filas en vez de 2) para que el título recupere un ancho legible;
+   si cambian los textos (traducciones) puede que haya que reajustar este
+   valor. padding-left:0 anula el padding-left:32px heredado de <ul> (que
+   restaba espacio útil sin que se notase visualmente).
    Además, al ser un ancho explícito (no "auto"), evita que el propio ul
-   reclame como ancho el total de los 7 botones sin envolver —lo que ocurría
+   reclame como ancho el total de los botones sin envolver —lo que ocurría
    con flex-shrink:0 y le robaba espacio al título del recurso. */
 .module-resource .actions ul.d-flex {
 	gap: 10px;
 	padding-left: 0;
-	max-width: 600px;
+	max-width: 400px;
 }
 
 /* "Ir al recurso" y "Vistas" llegan ya fusionados en un .btn-group de
@@ -2490,6 +2508,20 @@ a.metadatos-tag:hover {
 	width: 16px;
 	text-align: center;
 	flex-shrink: 0;
+}
+
+/* Figma (nodos 12937:9133 "Pantalla completa" y 12937:9138 "Incrustar") define
+   estos dos botones como cuadrados solo-icono, sin texto visible. El texto
+   ("Fullscreen"/"Embed") se mantiene en la plantilla (el <a> lo necesita como
+   nombre accesible para lectores de pantalla, ya que el icono es puramente
+   decorativo) pero se colapsa visualmente a tamaño 0 en vez de con
+   display:none, que sí lo ocultaría también del árbol de accesibilidad. El
+   icono recupera su tamaño explícito en la regla de arriba, así que no le
+   afecta heredar font-size:0 del padre. */
+.resource-view .actions .btn,
+.resource-view .actions a.btn {
+	font-size: 0;
+	gap: 0;
 }
 
 /* --- Resource read: URL --- */
