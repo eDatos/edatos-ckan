@@ -3,7 +3,7 @@
 {% block resource_view %}
   <div id="view-{{ resource_view['id'] }}" class="resource-view" data-id="{{ resource_view['id'] }}" data-title="{{ resource_view['title'] }}" data-description="{{ resource_view['descripion'] }}">
   <div class="actions">
-    <a class="btn btn-default"
+    <a class="btn btn-default resource-view-toolbar-btn"
        target="_blank"
        rel="noreferrer"
        title="{{ _('Fullscreen') }}"
@@ -11,7 +11,7 @@
       <i class="fa fa-up-right-and-down-left-from-center"></i>
       {{ _("Fullscreen") }}
     </a>
-    <a class="btn btn-default"
+    <a class="btn btn-default resource-view-toolbar-btn"
        href="#embed-{{ resource_view['id'] }}"
        title="{{ _('Embed') }}"
        data-module="resource-view-embed"

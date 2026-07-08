@@ -2524,6 +2524,98 @@ a.metadatos-tag:hover {
 	gap: 0;
 }
 
+/* --- Resource view: barra de botones de la vista "Tabla" (DataTables Buttons) ---
+   Figma (nodos 12937:9102 / 12941:9388 "Botonería") define estos botones
+   (tabla, copiar, ocultar columnas, descargar, refrescar, imprimir,
+   compartir) como BotonAccion cuadrados solo-icono — mismo patrón que
+   "Pantalla completa"/"Incrustar" de arriba. La librería DataTables
+   Buttons (extensión vendored ckanext-datatablesview, fuera de este repo,
+   cargada dentro del <iframe> de la vista) los renderiza como Bootstrap
+   ".btn.btn-secondary.btn-default" dentro de un ".dt-buttons.btn-group",
+   que por defecto de Bootstrap fusiona bordes/radios entre botones
+   contiguos (grupo "pill" clásico, con solape de -1px) y además la propia
+   extensión fuerza esa fusión con !important en el radio de los
+   ".btn-group" anidados (colvis/descarga). Se cancela esa fusión (gap de
+   10px en vez de solape, radio completo por botón) y se iguala al patrón
+   ya usado en ".resource-view .actions .btn". El caret de los desplegables
+   ("ocultar columnas"/"descargar") es el triángulo nativo de Bootstrap
+   (".dropdown-toggle::after", con "border-top-color" implícito en
+   "currentColor"), así que hereda el mismo color que el icono sin reglas
+   adicionales. */
+div.dataTables_wrapper div.dt-buttons.btn-group {
+	gap: 10px;
+}
+
+div.dataTables_wrapper div.dt-buttons .btn,
+div.dataTables_wrapper div.dt-buttons .btn-group > .btn {
+	margin-left: 0 !important;
+	border-radius: var(--edatos-border-radius-sm, 5px) !important;
+	background: var(--edatos-color-white-100, #FFF);
+	border: 1px solid var(--edatos-color-primary-100, #004678);
+	color: var(--edatos-color-primary-100, #004678) !important;
+}
+
+div.dataTables_wrapper div.dt-buttons .btn i {
+	font-size: 20px;
+	color: inherit;
+}
+
+div.dataTables_wrapper div.dt-buttons .btn:hover,
+div.dataTables_wrapper div.dt-buttons .btn:focus,
+div.dataTables_wrapper div.dt-buttons .btn.btn-default:hover,
+div.dataTables_wrapper div.dt-buttons .btn.btn-default:focus {
+	background: var(--edatos-color-primary-100, #004678) !important;
+	border-color: var(--edatos-color-white-100, #004678) !important;
+	color: var(--edatos-color-white-100, #FFF) !important;
+}
+
+/* "Pantalla completa"/"Incrustar" (".resource-view-toolbar-btn") se mueven
+   por JS (resource-view-toolbar.js) desde ".resource-view .actions", en el
+   documento padre, a esta misma fila ".dt-buttons" dentro del <iframe> de
+   la vista, para que queden en el mismo grupo de botones que pide Figma.
+   Reciben el mismo icon-only que ya aplica ".resource-view .actions .btn"
+   en el documento padre (por si el JS no llega a moverlos a tiempo). */
+div.dataTables_wrapper div.dt-buttons .btn.resource-view-toolbar-btn {
+	font-size: 0;
+}
+
+/* --- Resource view: botón "Agregar Filtro" ---
+   Figma (nodos 12937:9102 / 12941:9388 "BotonDesplegableM") define este
+   botón con icono "filter", texto y icono "angle-down" (chevron), con
+   borde/texto en color accent (#007fb0) en vez del azul primario que usa
+   ".btn-primary" en el resto del sitio. El botón lo genera en tiempo de
+   ejecución el módulo JS de CKAN core "resource-view-filters"
+   (ckan/public/base/javascript/modules/resource-view-filters.js, fuera de
+   este repo) como un <a class="btn btn-primary"> plano, sin iconos y sin
+   ningún hook para añadirlos desde una plantilla (no hay plantilla Jinja
+   que renderice este botón). Los iconos se simulan con contenido generado
+   Font Awesome vía ::before/::after en vez de tocar el JS de core. */
+.resource-view-filters > a.btn-primary {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	background-color: var(--edatos-color-white-100, #FFF);
+	border-color: var(--edatos-color-accent-100, #007fb0);
+	color: var(--edatos-color-accent-100, #007fb0);
+}
+
+.resource-view-filters > a.btn-primary::before {
+	font-weight: 900;
+	content: "\f0b0";
+}
+
+.resource-view-filters > a.btn-primary::after {
+	font-weight: 900;
+	content: "\f107";
+}
+
+.resource-view-filters > a.btn-primary:hover,
+.resource-view-filters > a.btn-primary:focus {
+	background-color: var(--edatos-color-accent-100, #007fb0);
+	border-color: var(--edatos-color-accent-100, #007fb0);
+	color: var(--edatos-color-white-100, #FFF);
+}
+
 /* --- Resource read: URL --- */
 .module-resource .module-content p.text-muted.ellipsis,
 .module-resource .module-content p.text-muted.break-word {
