@@ -1994,6 +1994,28 @@ h1.dataset-title {
 	padding-right: 0;
 }
 
+/* --- Resource read: el sidebar Formatos/Compartir debe quedar junto al
+   título+tabla (pre_primary, .module-resource), no junto a Metadatos
+   (.primary). ".module-resource" solo existe en resource_read.html, así que
+   sirve como ancla para no afectar a ninguna otra vista con sidebar (la
+   clase "no-nav" del core no se aplica aquí en esta versión de CKAN).
+   Ver specs/fix-resource-view-formats-sidebar-alignment.md */
+.row.wrapper > .module-resource {
+	order: 0;
+	flex: 1 1 0;
+	min-width: 0;
+}
+
+.row.wrapper > .module-resource ~ .secondary {
+	order: -1;
+}
+
+.row.wrapper > .module-resource ~ .primary {
+	order: 1;
+	flex: 1 1 100%;
+	width: 100%;
+}
+
 /* --- Sidebar modules: con recuadro (fondo blanco + borde) --- */
 .secondary .module.module-narrow {
 	background: var(--color-white);
