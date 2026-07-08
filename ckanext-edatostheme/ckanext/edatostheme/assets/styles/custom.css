@@ -2306,9 +2306,64 @@ a.metadatos-tag:hover {
 	vertical-align: middle;
 }
 
-/* --- Resource read: botones de acción (Editar recurso, Vistas, IR AL RECURSO) --- */
+/* --- Resource read: fila título + botones de acción ---
+   El diseño ISTAC pide el grupo de botones a la misma altura que el título
+   (h1) y alineado a la derecha, debajo del botón "Opciones" del hero-nav. */
+.module-resource .resource-heading-row {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 16px;
+}
+
+/* Sin min-width:0 un flex item de texto reclama su ancho "max-content"
+   completo para decidir si hace falta salto de línea, empujando los
+   botones a una línea aparte aunque el título pudiera envolver texto. */
+.module-resource .resource-heading-titles {
+	min-width: 0;
+	flex: 1 1 0%;
+}
+
+/* --- Resource read: botones de acción (Editar recurso, Vistas, Ir al recurso,
+   API de datos, Pantalla completa, Incrustar) --- */
+
+/* CKAN core flota ".actions" a la derecha (main.css); al pasar a ser un item
+   flex de ".resource-heading-row" el float ya no aplica, así que se anula. */
+.module-resource .actions {
+	float: none;
+	flex-shrink: 0;
+}
+
+.module-resource .actions ul.d-flex {
+	gap: 10px;
+}
+
+/* "Ir al recurso" y "Vistas" llegan ya fusionados en un .btn-group de
+   Bootstrap (bordes compartidos, sin separación); "API de datos" lo añade
+   ckanext-datastore (fuera de este repo, vía super() del bloque
+   resource_actions_inner) como <li> suelto, con el gap de 10px del ul de
+   por medio. El diseño ISTAC pide que los tres se perciban como un mismo
+   componente separado por --edatos-spacing-x-2xs, así que se desactiva la
+   fusión de Bootstrap (radio y margen negativo) y se corrige a mano el
+   hueco heredado del ul entre el grupo y "API de datos". */
+.module-resource .actions .btn-group {
+	gap: var(--edatos-spacing-x-2xs);
+}
+
+.module-resource .actions .btn-group > .btn {
+	margin-left: 0 !important;
+	border-radius: var(--edatos-border-radius-sm) !important;
+}
+
+.module-resource .actions li:has(> .btn-group) + li {
+	margin-inline-start: calc(var(--edatos-spacing-x-2xs) - 10px);
+}
+
 .module-resource .actions .btn,
-.module-resource .actions a.btn {
+.module-resource .actions a.btn,
+.resource-view .actions .btn,
+.resource-view .actions a.btn {
 	display: inline-flex;
 	padding: 5px 10px;
 	justify-content: center;
@@ -2326,28 +2381,53 @@ a.metadatos-tag:hover {
 }
 
 .module-resource .actions .btn:hover,
-.module-resource .actions a.btn:hover {
-	background: var(--edatos-color-primary-5, #E5ECF1);
+.module-resource .actions a.btn:hover,
+.resource-view .actions .btn:hover,
+.resource-view .actions a.btn:hover {
+	background: var(--edatos-color-secondary-100, #004678);
+	border-color: var(--edatos-color-secondary-100, #004678);
+	color: var(--edatos-color-white-100, #FFF);
 	text-decoration: none;
 }
 
+/* CKAN core define ".btn-default:hover"/".btn-light:hover" con background-color
+   e important (main.css), lo que gana por encima de nuestra regla anterior pese
+   a tener menos especificidad. Los botones "Pantalla completa" e "Incrustar"
+   usan btn-default, así que necesitan el mismo peso para no quedarse sin hover. */
+.module-resource .actions .btn-default:hover,
+.module-resource .actions a.btn-default:hover,
+.resource-view .actions .btn-default:hover,
+.resource-view .actions a.btn-default:hover {
+	background-color: var(--edatos-color-secondary-100, #004678) !important;
+	border-color: var(--edatos-color-secondary-100, #004678) !important;
+}
+
 .module-resource .actions .btn i,
-.module-resource .actions a.btn i {
+.module-resource .actions a.btn i,
+.resource-view .actions .btn i,
+.resource-view .actions a.btn i {
 	color: var(--edatos-color-secondary-100, #004678);
 	font-size: var(--edatos-font-size-md);
 	flex-shrink: 0;
 }
 
-/* --- Resource view: botones pantalla completa e incrustar --- */
-.resource-view .resource-view .actions {
+.module-resource .actions .btn:hover i,
+.module-resource .actions a.btn:hover i,
+.resource-view .actions .btn:hover i,
+.resource-view .actions a.btn:hover i {
+	color: var(--edatos-color-white-100, #FFF);
+}
+
+/* --- Resource view: layout de botones pantalla completa e incrustar --- */
+.resource-view .actions {
 	display: flex;
 	justify-content: flex-end;
 	align-items: flex-start;
 	gap: 10px;
 }
 
-.resource-view .resource-view .actions .btn i,
-.resource-view .resource-view .actions a.btn i {
+.resource-view .actions .btn i,
+.resource-view .actions a.btn i {
 	font-size: 20px;
 	width: 16px;
 	text-align: center;
@@ -2824,11 +2904,6 @@ a.tag:hover {
 .modal.fade.in {
 	margin-top: 0;
 	top: 0;
-}
-
-/* Font Awesome 6 Pro - prevent CKAN vendor FA6 Free from overriding */
-.fa {
-	font-family: "Font Awesome 6 Pro" !important;
 }
 
 i.fa.fa-search {

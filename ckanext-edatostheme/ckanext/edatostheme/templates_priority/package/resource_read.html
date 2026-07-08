@@ -1,0 +1,37 @@
+{% ckan_extends %}
+
+{#
+  ckanext-datastore (y ckanext-xloader, que encadena antes) definen este bloque
+  sin invocar {{ super() }}, así que cualquier override en templates/ normal de
+  edatostheme queda inalcanzable para esta ruta exacta: gana siempre la copia de
+  datastore. Se duplica aquí su marcado (ver
+  ckanext-datastore/.../package/resource_read.html) únicamente para añadir la
+  etiqueta de texto "Vistas" que pedía el diseño; ver
+  docs/templates-priority-mechanism.md para el motivo de vivir en este directorio.
+#}
+{% block download_resource_button %}
+{% if res.datastore_active %}
+    <button class="btn btn-primary dropdown-toggle" role="button" id="dropdownDownloadFormat" data-bs-toggle="dropdown" aria-expanded="false" aria-label="{{ _('list of downloadable formats') }}">
+        {{ _('Views') }}
+        <span class="caret"></span>
+      </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownDownloadFormat">
+      <li>
+        <a class="dropdown-item" href="{{ h.url_for('datastore.dump', resource_id=res.id, bom=True) }}"
+          target="_blank" rel="noreferrer"><span>CSV</span></a>
+      </li>
+      <li>
+        <a class="dropdown-item" href="{{ h.url_for('datastore.dump', resource_id=res.id, format='tsv', bom=True) }}"
+          target="_blank" rel="noreferrer"><span>TSV</span></a>
+      </li>
+      <li>
+          <a class="dropdown-item" href="{{ h.url_for('datastore.dump', resource_id=res.id, format='json') }}"
+          target="_blank" rel="noreferrer"><span>JSON</span></a>
+      </li>
+      <li>
+          <a class="dropdown-item" href="{{ h.url_for('datastore.dump', resource_id=res.id, format='xml') }}"
+          target="_blank" rel="noreferrer"><span>XML</span></a>
+      </li>
+    </ul>
+{% endif %}
+{% endblock download_resource_button %}
