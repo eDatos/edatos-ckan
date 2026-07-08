@@ -2335,10 +2335,27 @@ a.metadatos-tag:hover {
 .module-resource .actions {
 	float: none;
 	flex-shrink: 0;
+	/* El padding-right del .module-content (24px) deja demasiado hueco entre el
+	   último botón y el borde de la card; se recorta a var(--edatos-spacing-x-2xs). */
+	margin-right: calc(var(--edatos-spacing-x-2xs) - 24px);
 }
 
+/* Reparte los botones de acciones del recurso en 2 filas fijas (4 + 3): el ul
+   mezcla <li> de este repo (Editar recurso, Vistas) con otros añadidos por
+   ckanext-datastore (Diccionario de datos, DataStore, API de datos) fuera de
+   este repo, en orden de documento, así que basta con acotar el ancho del ul
+   a lo que ocupan los 4 primeros botones para que el 5º salte de línea de
+   forma natural. padding-left:0 anula el padding-left:32px heredado de <ul>
+   (que restaba espacio útil sin que se notase visualmente). 600px = ~594px
+   reales de esos 4 botones + margen; si cambian los textos (traducciones)
+   puede que haya que reajustar este valor.
+   Además, al ser un ancho explícito (no "auto"), evita que el propio ul
+   reclame como ancho el total de los 7 botones sin envolver —lo que ocurría
+   con flex-shrink:0 y le robaba espacio al título del recurso. */
 .module-resource .actions ul.d-flex {
 	gap: 10px;
+	padding-left: 0;
+	max-width: 600px;
 }
 
 /* "Ir al recurso" y "Vistas" llegan ya fusionados en un .btn-group de
