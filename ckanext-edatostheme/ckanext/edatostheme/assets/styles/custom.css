@@ -481,7 +481,9 @@ nav.section.navigation {
 	width: 20px;
 	text-align: center;
 	font-size: var(--edatos-font-size-sm);
-    font-weight: 100;
+    /* Los iconos del menú OPCIONES son Font Awesome 6 "Solid" (--edatos-font-weight-bold);
+       a peso 100 no existe el glifo y el navegador muestra el cuadro de "carácter no encontrado". */
+    font-weight: var(--edatos-font-weight-bold);
 }
 
 .dropdown-menu li a:hover {
