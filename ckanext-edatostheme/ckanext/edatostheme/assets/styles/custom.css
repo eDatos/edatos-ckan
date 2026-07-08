@@ -2339,13 +2339,19 @@ a.metadatos-tag:hover {
 
 /* --- Resource read: fila título + botones de acción ---
    El diseño ISTAC pide el grupo de botones a la misma altura que el título
-   (h1) y alineado a la derecha, debajo del botón "Opciones" del hero-nav. */
+   (h1) y alineado a la derecha, debajo del botón "Opciones" del hero-nav.
+   Además, el borde superior de esta fila (título + botones) debe coincidir
+   con el borde superior del panel .showcase-detail-sidebar: ambos son hijos
+   directos de ".row.wrapper" con el mismo top, pero ".module-content" (CKAN
+   core) le añade 24px de padding-top a esta fila que el sidebar no tiene, así
+   que se cancela con un margin-top negativo del mismo valor. */
 .module-resource .resource-heading-row {
 	display: flex;
 	align-items: flex-start;
 	justify-content: space-between;
 	flex-wrap: wrap;
 	gap: 16px;
+	margin-top: -24px;
 }
 
 /* Sin min-width:0 un flex item de texto reclama su ancho "max-content"
@@ -2359,10 +2365,14 @@ a.metadatos-tag:hover {
 /* --- Resource read: botones de acción (Editar recurso, Vistas, Ir al recurso,
    API de datos, Pantalla completa, Incrustar) --- */
 
-/* CKAN core flota ".actions" a la derecha (main.css); al pasar a ser un item
-   flex de ".resource-heading-row" el float ya no aplica, así que se anula. */
+/* CKAN core flota ".actions" a la derecha y le aplica "position: relative;
+   top: -10px;" (main.css) para compensarlo visualmente con la cabecera en el
+   layout original. Al pasar a ser un item flex de ".resource-heading-row"
+   con "align-items: flex-start", ese -10px hace que los botones queden por
+   encima del título en vez de a la misma altura, así que se anula. */
 .module-resource .actions {
 	float: none;
+	top: 0;
 	flex-shrink: 0;
 	/* El padding-right del .module-content (24px) deja demasiado hueco entre el
 	   último botón y el borde de la card; se recorta a var(--edatos-spacing-x-2xs). */
