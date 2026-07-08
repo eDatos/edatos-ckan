@@ -2,16 +2,20 @@
   'use strict';
 
   /* Figma (nodos 12937:9102 / 12941:9388 "Botonería") coloca los botones
-     "Pantalla completa" e "Incrustar" dentro de la MISMA fila que el resto
-     de botones de la tabla (tabla, copiar, ocultar columnas, descargar,
-     refrescar, imprimir, compartir). En este sitio esos dos botones se
-     renderizan en el documento padre (snippet resource_view.html), mientras
-     que la fila ".dt-buttons" la genera en tiempo de ejecución la extensión
-     vendored ckanext-datatablesview dentro del <iframe> de la vista (fuera
-     de este repo) — son documentos distintos, así que no se pueden unir con
-     CSS. Se resuelve moviendo (no clonando, para conservar los listeners ya
-     enganchados por los módulos "resource-view-embed"/enlace nativo) los
-     nodos reales al DOM del iframe una vez que su tabla ha inicializado. */
+     "Pantalla completa" e "Incrustar", y también el buscador ("Buscar:"),
+     dentro de la MISMA fila que el resto de botones de la tabla (tabla,
+     copiar, ocultar columnas, descargar, refrescar, imprimir, compartir).
+     "Pantalla completa"/"Incrustar" se renderizan en el documento padre
+     (snippet resource_view.html), mientras que ".dt-buttons" la genera en
+     tiempo de ejecución la extensión vendored ckanext-datatablesview dentro
+     del <iframe> de la vista (fuera de este repo) — son documentos
+     distintos, así que no se pueden unir con CSS. Se resuelve moviendo (no
+     clonando, para conservar los listeners ya enganchados por los módulos
+     "resource-view-embed"/enlace nativo) los nodos reales al DOM del iframe
+     una vez que su tabla ha inicializado. El buscador (".dataTables_filter")
+     en cambio ya vive en ese mismo documento del iframe, como hermano de
+     ".dt-buttons" — a ese solo hace falta moverlo dentro con un
+     "appendChild" normal, sin "adoptNode". */
   function moveButtonsIntoDtButtons(iframeDoc, buttons) {
     var dtButtons = iframeDoc.querySelector('.dt-buttons.btn-group');
     if (!dtButtons) {
@@ -25,6 +29,16 @@
       var adopted = iframeDoc.adoptNode(btn);
       dtButtons.insertBefore(adopted, anchor);
     });
+
+    /* El buscador ("Buscar:") vive en ".dataTables_filter", hermano de
+       ".dt-buttons" dentro del MISMO documento (el iframe), no hace falta
+       "adoptNode" aquí — es un simple "appendChild" al final del grupo,
+       tal como lo coloca Figma (último elemento de la fila). */
+    var filterWrap = iframeDoc.querySelector('.dataTables_filter');
+    if (filterWrap) {
+      dtButtons.appendChild(filterWrap);
+    }
+
     return true;
   }
 

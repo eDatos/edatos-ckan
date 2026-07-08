@@ -2579,6 +2579,64 @@ div.dataTables_wrapper div.dt-buttons .btn.resource-view-toolbar-btn {
 	font-size: 0;
 }
 
+/* El buscador ("Buscar:") de DataTables (".dataTables_filter"/"#dtprv_filter")
+   lo mueve resource-view-toolbar.js al final de ".dt-buttons", como último
+   elemento de la fila (igual que en Figma). Al ser ahora hijo flex de
+   ".dt-buttons" (gap:10px ya definido arriba) hace falta anular el
+   float/margen negativo con el que el vendor lo posicionaba como hermano
+   flotado de ".dataTables_length" en el layout original. */
+div.dataTables_wrapper div.dt-buttons .dataTables_filter,
+div.dataTables_wrapper div.dt-buttons #dtprv_filter {
+	float: none !important;
+	margin: 0 0 0 auto !important;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+
+/* Figma (nodo 12937:9200 "BotonAccion") no muestra la etiqueta "Buscar:"
+   que añade DataTables por defecto — sólo el icono de lupa dentro del propio
+   cuadro. El texto ("Buscar:") es un nodo de texto suelto dentro de
+   "<label>", sin ningún elemento propio que se pueda ocultar por separado,
+   así que se colapsa a "font-size:0" en el <label> (mismo truco que ya usa
+   ".resource-view .actions .btn"): el input conserva su tamaño porque
+   Bootstrap le da su propio "font-size" explícito (no heredado). El icono de
+   lupa se simula con ::before sobre el <label> (los <input> no admiten
+   pseudo-elementos) posicionado encima del propio campo, con padding-left
+   en el input para dejarle sitio. */
+div.dataTables_wrapper div.dt-buttons .dataTables_filter label {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	margin: 0;
+	font-size: 0;
+	white-space: nowrap;
+}
+
+div.dataTables_wrapper div.dt-buttons .dataTables_filter label::before {
+	position: absolute;
+	left: 10px;
+	top: 50%;
+	transform: translateY(-50%);
+	font-family: "Font Awesome 6 Free";
+	font-weight: 900;
+	font-size: 14px;
+	color: var(--edatos-color-primary-100, #004678);
+	content: "\f002";
+	pointer-events: none;
+}
+
+div.dataTables_wrapper div.dt-buttons .dataTables_filter input {
+	margin-left: 0;
+	border: 1px solid var(--edatos-color-primary-100, #004678);
+	border-radius: var(--edatos-border-radius-sm, 5px);
+	padding: 5px 10px 5px 30px;
+}
+
+div.dataTables_wrapper div.dt-buttons #filterinfoicon {
+	margin-top: 0;
+}
+
 /* --- Resource view: botón "Agregar Filtro" ---
    Figma (nodos 12937:9102 / 12941:9388 "BotonDesplegableM") define este
    botón con icono "filter", texto y icono "angle-down" (chevron), con
@@ -2600,11 +2658,13 @@ div.dataTables_wrapper div.dt-buttons .btn.resource-view-toolbar-btn {
 }
 
 .resource-view-filters > a.btn-primary::before {
+	font-family: "Font Awesome 6 Free";
 	font-weight: 900;
 	content: "\f0b0";
 }
 
 .resource-view-filters > a.btn-primary::after {
+	font-family: "Font Awesome 6 Free";
 	font-weight: 900;
 	content: "\f107";
 }
