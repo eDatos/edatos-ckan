@@ -1280,7 +1280,14 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 .search-form .input-group.search-input-group input[name="q"]::placeholder {
 	color: var(--edatos-color-gray-20);
 	font-weight: var(--edatos-font-weight-semibold);
+	font-variation-settings: "wght" 600;
 }
+
+input#field-giant-search::placeholder {
+    font-weight: var(--edatos-font-weight-regular) !important;
+    font-variation-settings: "wght" var(--edatos-font-weight-regular, 300);
+}
+
 .search-form .input-group.search-input-group .btn[type="submit"] {
 	border: var(--border-width) solid var(--edatos-color-secondary-100);
 	border-left: none;
