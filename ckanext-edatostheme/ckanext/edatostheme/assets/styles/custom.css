@@ -1193,7 +1193,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 
 /* Chevron — rota al abrir */
 .sort-custom-dropdown__chevron {
-	font-size: 10px;
+	font-size: var(--edatos-font-size-sm);
 	transition: transform 0.2s ease;
 }
 
