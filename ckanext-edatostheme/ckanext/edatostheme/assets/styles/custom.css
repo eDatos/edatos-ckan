@@ -2892,6 +2892,59 @@ div.dataTables_wrapper div.dt-buttons .resource-view-filters > a.btn-primary:foc
 	color: var(--edatos-color-white-100, #FFF) !important;
 }
 
+/* --- Resource view: "Mostrar X registros" (".dataTables_length") debajo de
+   la tabla ---
+   Figma (nodo 12941:9258) coloca el selector "Mostrar: [20] registros" bajo
+   la tabla, junto a la paginación, en vez de sobre ella. El vendor
+   (ckanext-datatablesview) lo renderiza como primer hijo de
+   ".dataTables_wrapper", antes de ".dt-buttons"/".dataTables_scroll" (la
+   tabla) — todos los hijos de ".dataTables_wrapper" son bloques en flujo
+   normal (display:block, sin flex/grid propio), así que su orden visual es
+   literalmente el orden del DOM y no se puede alterar sin, o bien mover el
+   nodo real (innecesario aquí: length y tabla viven en el MISMO documento
+   del iframe, a diferencia de los botones "Pantalla completa"/"Incrustar"
+   del bloque de arriba), o bien convertir el propio ".dataTables_wrapper" en
+   contenedor flex para poder usar "order". Se opta por la segunda vía por
+   ser CSS puro. "flex-direction:column" reproduce el mismo apilado vertical
+   a ancho completo que ya tenía en flujo normal (cada hijo sigue siendo
+   bloque, "align-items" por defecto "stretch" iguala su comportamiento), así
+   que no cambia el resto de hijos no reordenados aquí abajo. */
+div.dataTables_wrapper {
+	display: flex;
+	flex-direction: column;
+}
+
+/* Solo se reordenan los 4 hijos afectados por el movimiento; el resto
+   (".dt-buttons", ".dataTables_info", ".dataTables_processing",
+   ".dataTables_scroll" — la tabla) conserva su "order" inicial (0, el valor
+   por defecto de flex) y por tanto su posición actual, ya correcta, sobre la
+   tabla. ".dataTables_paginate" (paginación) ya vive en el vendor con
+   "margin-top:-35px", pensado para pegarse a su hermano inmediatamente
+   anterior en el orden visual (originalmente ".dataTables_info", cuando
+   ambos formaban la fila inferior clásica de DataTables). Al insertar
+   ".dataTables_length" justo antes en el nuevo orden, ese mismo margen
+   negativo lo pega a la fila de "Mostrar X registros" en su lugar — mismo
+   mecanismo del vendor, nuevo hermano anterior — sin necesidad de version
+   propia del margen. ".resourceinfo"/".sortinfo" (enlace al recurso origen y
+   orden de columna, ya situados tras la paginación en el DOM) mantienen ese
+   mismo orden relativo entre sí, solo desplazados en bloque tras el nuevo
+   dúo longitud+paginación. */
+div.dataTables_wrapper div.dataTables_length {
+	order: 1;
+}
+
+div.dataTables_wrapper div.dataTables_paginate {
+	order: 2;
+}
+
+div.dataTables_wrapper div.resourceinfo {
+	order: 3;
+}
+
+div.dataTables_wrapper div.sortinfo {
+	order: 4;
+}
+
 /* --- Resource read: URL --- */
 .module-resource .module-content p.text-muted.ellipsis,
 .module-resource .module-content p.text-muted.break-word {
