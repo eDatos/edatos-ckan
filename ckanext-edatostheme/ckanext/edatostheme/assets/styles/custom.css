@@ -2571,10 +2571,36 @@ div.dataTables_wrapper div.dt-buttons .btn {
 	width: 40px;
 	height: 30px;
 	padding: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
+/* DataTables Buttons no fija "align-items"/"justify-content" en el propio
+   <button> (solo en el icono, ver regla ".btn i" de abajo), así que sin la
+   regla de arriba el caret nativo de Bootstrap (".dropdown-toggle::after",
+   segundo hijo de "ocultar columnas"/"descargar") queda desalineado
+   verticalmente en vez de centrado junto al icono. Necesario pero no
+   suficiente: ver la nota siguiente sobre el desbordamiento horizontal. */
 div.dataTables_wrapper div.dt-buttons .btn.buttons-collection {
 	width: 61px;
+	gap: var(--edatos-spacing-x-sm, 10px);
+}
+
+/* La regla ".btn i" de abajo añade padding horizontal de 10px a cada lado
+   del icono, pensado para los botones de un solo icono (40px de ancho: 10px
+   padding + 20px icono + 10px padding = 40, sin nada más dentro). En estos
+   dos botones de "icono + caret" el icono es un hijo más del flex del
+   propio <button> (junto al ".dt-down-arrow" y al "::after" del caret), así
+   que ese mismo padding se suma también aquí: 2×10px padding + ~20px icono
+   + 10px gap + ~11px caret ≈ 71px de contenido dentro de una caja de solo
+   61px. Al desbordar, y con "justify-content:center" repartiendo el
+   desbordamiento a ambos lados, el icono se salía por la izquierda del
+   borde del botón y el caret por la derecha — pareciendo un elemento suelto
+   fuera de la caja. Se quita el padding del icono aquí porque el espaciado
+   ya lo da el "gap"/"width" del botón, no el icono. */
+div.dataTables_wrapper div.dt-buttons .btn.buttons-collection i {
+	padding: 0;
 }
 
 /* Sin display:flex + padding, el icono queda alineado a la caja de texto
@@ -2621,11 +2647,16 @@ div.dataTables_wrapper div.dt-buttons .btn.resource-view-toolbar-btn {
    elemento de la fila (igual que en Figma). Al ser ahora hijo flex de
    ".dt-buttons" (gap:10px ya definido arriba) hace falta anular el
    float/margen negativo con el que el vendor lo posicionaba como hermano
-   flotado de ".dataTables_length" en el layout original. */
+   flotado de ".dataTables_length" en el layout original.
+   OJO: no usar "margin-left:auto" aquí — en un flex-container empuja el
+   elemento hasta el borde derecho de la fila (separándolo ~40px del botón
+   "Compartir" en vez de los 10px de gap de Figma). Basta "margin:0" para
+   que el buscador quede pegado al hueco del "gap" del contenedor, como
+   cualquier otro botón de la fila. */
 div.dataTables_wrapper div.dt-buttons .dataTables_filter,
 div.dataTables_wrapper div.dt-buttons #dtprv_filter {
 	float: none !important;
-	margin: 0 0 0 auto !important;
+	margin: 0 !important;
 	display: inline-flex;
 	align-items: center;
 	gap: 6px;
@@ -2671,8 +2702,13 @@ div.dataTables_wrapper div.dt-buttons .dataTables_filter input {
 	padding: 5px 10px 5px 30px;
 }
 
+/* Figma (nodo 12937:9200 "BotonAccion" del buscador) no muestra ningún
+   icono de información junto al campo de búsqueda — sólo la lupa ya
+   simulada arriba con "::before". "#filterinfoicon" lo añade la propia
+   extensión vendor (ckanext-datatablesview, fuera de este repo) sin ningún
+   hook de plantilla para quitarlo, así que se oculta por CSS. */
 div.dataTables_wrapper div.dt-buttons #filterinfoicon {
-	margin-top: 0;
+	display: none;
 }
 
 /* --- Resource view: botón "Agregar Filtro" ---
