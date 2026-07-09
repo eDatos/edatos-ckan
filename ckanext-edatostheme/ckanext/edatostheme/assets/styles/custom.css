@@ -264,6 +264,16 @@ textarea {
 	margin-right: var(--edatos-spacing-x-page);
 }
 
+/* El header remoto (componentes-apps) usa iconos Font Awesome PRO (fa-thin/fa-grid).
+   El bundle local de CKAN carga Font Awesome FREE después en el DOM, y al tener
+   igual especificidad que la regla ".fa" de PRO, gana la cascada y sobrescribe
+   font-family/font-weight, dejando esos iconos sin glifo (se ven como "X" rota). */
+.edatos-dropdown .fa-thin,
+.edatos-dropdown-menu .fa-thin {
+	font-family: "Font Awesome 6 Pro" !important;
+	font-weight: 100 !important;
+}
+
 /* Resetear herencia de Bootstrap/CKAN nav-pills para la barra blanca */
 .navigation .nav-pills li a {
 	background-color: transparent;
