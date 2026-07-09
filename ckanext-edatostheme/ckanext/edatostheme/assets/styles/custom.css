@@ -2555,7 +2555,39 @@ div.dataTables_wrapper div.dt-buttons .btn-group > .btn {
 	color: var(--edatos-color-primary-100, #004678) !important;
 }
 
+/* Bootstrap define ".btn-group > .btn { flex: 1 1 auto }" para que los
+   botones de un grupo se repartan el ancho disponible — pensado para grupos
+   que ocupan el 100% del contenedor. Aquí ".dt-buttons" es más ancho que la
+   suma de sus botones, así que ese "flex-grow:1" los estira de forma
+   desigual (cada uno según su contenido) en vez de dejarlos al tamaño fijo
+   de Figma (40×30, o 61×30 los que llevan icono+chevron: "ocultar
+   columnas"/"descargar", identificados por ".buttons-collection"). */
+div.dataTables_wrapper div.dt-buttons .btn,
+div.dataTables_wrapper div.dt-buttons .btn-group {
+	flex: 0 0 auto;
+}
+
+div.dataTables_wrapper div.dt-buttons .btn {
+	width: 40px;
+	height: 30px;
+	padding: 0;
+}
+
+div.dataTables_wrapper div.dt-buttons .btn.buttons-collection {
+	width: 61px;
+}
+
+/* Sin display:flex + padding, el icono queda alineado a la caja de texto
+   por defecto (izquierda/baseline) en vez de centrado en el botón de 40×30
+   (o 61×30). El padding 5px/10px reproduce el hueco que deja el frame
+   "v6-icon" (20×20) dentro de "BotonAccion" en Figma: 40-2*10=20 de ancho,
+   30-2*5=20 de alto. */
 div.dataTables_wrapper div.dt-buttons .btn i {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: var(--edatos-spacing-y-xs, 5px);
+	padding: var(--edatos-spacing-y-xs, 5px) var(--edatos-spacing-x-sm, 10px);
 	font-size: 20px;
 	color: inherit;
 }
@@ -2576,6 +2608,11 @@ div.dataTables_wrapper div.dt-buttons .btn.btn-default:focus {
    Reciben el mismo icon-only que ya aplica ".resource-view .actions .btn"
    en el documento padre (por si el JS no llega a moverlos a tiempo). */
 div.dataTables_wrapper div.dt-buttons .btn.resource-view-toolbar-btn {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: var(--edatos-spacing-y-xs, 5px);
+	padding: var(--edatos-spacing-y-xs, 5px) var(--edatos-spacing-x-sm, 10px);
 	font-size: 0;
 }
 
@@ -2628,6 +2665,7 @@ div.dataTables_wrapper div.dt-buttons .dataTables_filter label::before {
 
 div.dataTables_wrapper div.dt-buttons .dataTables_filter input {
 	margin-left: 0;
+	height: 30px;
 	border: 1px solid var(--edatos-color-primary-100, #004678);
 	border-radius: var(--edatos-border-radius-sm, 5px);
 	padding: 5px 10px 5px 30px;
@@ -2651,7 +2689,10 @@ div.dataTables_wrapper div.dt-buttons #filterinfoicon {
 .resource-view-filters > a.btn-primary {
 	display: inline-flex;
 	align-items: center;
+	justify-content: center;
 	gap: 8px;
+	height: 30px;
+	padding: 0 10px;
 	background-color: var(--edatos-color-white-100, #FFF);
 	border-color: var(--edatos-color-accent-100, #007fb0);
 	color: var(--edatos-color-accent-100, #007fb0);
