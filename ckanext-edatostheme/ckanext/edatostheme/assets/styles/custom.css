@@ -2914,7 +2914,7 @@ div.dataTables_wrapper {
 	flex-direction: column;
 }
 
-/* Solo se reordenan los 4 hijos afectados por el movimiento; el resto
+/* Solo se reordena el hijo afectado por el movimiento; el resto
    (".dt-buttons", ".dataTables_info", ".dataTables_processing",
    ".dataTables_scroll" — la tabla) conserva su "order" inicial (0, el valor
    por defecto de flex) y por tanto su posición actual, ya correcta, sobre la
@@ -2925,10 +2925,7 @@ div.dataTables_wrapper {
    ".dataTables_length" justo antes en el nuevo orden, ese mismo margen
    negativo lo pega a la fila de "Mostrar X registros" en su lugar — mismo
    mecanismo del vendor, nuevo hermano anterior — sin necesidad de version
-   propia del margen. ".resourceinfo"/".sortinfo" (enlace al recurso origen y
-   orden de columna, ya situados tras la paginación en el DOM) mantienen ese
-   mismo orden relativo entre sí, solo desplazados en bloque tras el nuevo
-   dúo longitud+paginación. */
+   propia del margen. */
 div.dataTables_wrapper div.dataTables_length {
 	order: 1;
 }
@@ -2937,12 +2934,14 @@ div.dataTables_wrapper div.dataTables_paginate {
 	order: 2;
 }
 
-div.dataTables_wrapper div.resourceinfo {
-	order: 3;
-}
-
+/* ".resourceinfo" (enlace al recurso origen) y ".sortinfo" ("Sort: _id") no
+   están en el diseño de Figma bajo la tabla — se ocultan en vez de
+   reordenarse. No hay plantilla propia que los genere (los renderiza el
+   vendor dentro del iframe), así que "display:none" es la única forma de
+   quitarlos sin tocar código fuera de este repo. */
+div.dataTables_wrapper div.resourceinfo,
 div.dataTables_wrapper div.sortinfo {
-	order: 4;
+	display: none;
 }
 
 /* --- Resource read: URL --- */
