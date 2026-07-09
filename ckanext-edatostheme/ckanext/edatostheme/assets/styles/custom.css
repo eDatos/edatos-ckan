@@ -2004,6 +2004,16 @@ h1.dataset-title {
 	order: 0;
 	flex: 1 1 0;
 	min-width: 0;
+	padding: 0;
+}
+
+/* --- Resource read: quitar el padding vertical de ".module-content" (CKAN
+   core lo fija en 1.5rem en las 4 direcciones) para ganar espacio en la fila
+   de botones y que "Agregar Filtro" y el buscador de DataTables entren en la
+   misma línea. Alcance limitado a ".module-resource" (ver comentario arriba)
+   para no afectar al resto de vistas que usan ".module-content". */
+.module-resource .module-content {
+	padding: 1.5rem 0;
 }
 
 .row.wrapper > .module-resource ~ .secondary {
@@ -2544,6 +2554,21 @@ a.metadatos-tag:hover {
    adicionales. */
 div.dataTables_wrapper div.dt-buttons.btn-group {
 	gap: 10px;
+	/* La extensión vendor pone "float:right" en ".dt-buttons" (pensado para
+	   convivir con un selector de longitud "Mostrar X registros" a su
+	   izquierda en la misma fila). Aquí ".dt-buttons" ocupa toda la fila él
+	   solo, así que ese "float:right" lo despega del borde izquierdo de la
+	   tabla (hueco de ~60px) en vez de arrancar en "Agregar Filtro" pegado
+	   a la izquierda, como pide Figma. */
+	float: none;
+	/* Sin esto, "align-items" del flex container queda en su valor inicial
+	   "normal" (equivale a "stretch"): los botones no lo notan porque tienen
+	   "height:30px" explícito, pero ".dataTables_filter" no tiene altura
+	   propia y se estira a la altura de la línea (la más alta del grupo),
+	   quedando más alto que los botones (44px vs 30px) y su contenido
+	   centrado dentro de esa caja más alta — visualmente desplazado hacia
+	   abajo respecto al resto de la fila. */
+	align-items: center;
 }
 
 div.dataTables_wrapper div.dt-buttons .btn,
@@ -2582,9 +2607,35 @@ div.dataTables_wrapper div.dt-buttons .btn {
    segundo hijo de "ocultar columnas"/"descargar") queda desalineado
    verticalmente en vez de centrado junto al icono. Necesario pero no
    suficiente: ver la nota siguiente sobre el desbordamiento horizontal. */
+/* Reducido de 61px/10px (medida original de Figma) a 40px/4px: a resoluciones
+   de portátil habituales (~1366px, por debajo del breakpoint de 1399px que
+   fija ".container" a 1400px) la fila ".dt-buttons" no tiene sitio para las
+   9 acciones + buscador y el buscador salta a una segunda línea. El icono
+   (20px) + la flecha nativa de Bootstrap (~8px) siguen entrando de sobra en
+   40px; el hueco de 61px era más ancho de lo que su contenido necesitaba. */
 div.dataTables_wrapper div.dt-buttons .btn.buttons-collection {
-	width: 61px;
-	gap: var(--edatos-spacing-x-sm, 10px);
+	width: 40px;
+	gap: 4px;
+}
+
+/* ".dt-down-arrow" (segundo hijo del botón, entre el icono y el caret) lo
+   añade la extensión vendor vacío — sin contenido ni "background-image" en
+   este tema, ancho 0 — pero al ser un hijo flex más cuenta para el "gap" de
+   la regla de arriba (uno ANTES y otro DESPUÉS de él) y para el reparto de
+   "justify-content:center", sin aportar nada visual. Bootstrap añade además
+   su propio "margin-left" al "::after" (el triángulo) por encima de ese
+   "gap". Con el botón ya reducido a 40px, esos huecos de más (un "gap"
+   redundante + el margin de Bootstrap) eran justo el desbordamiento que
+   sacaba el icono por la izquierda y el caret por la derecha, fuera del
+   borde del botón. Se retira el span vacío del flujo y se anula el margin
+   del caret para que el único espaciado entre icono y caret sea el "gap"
+   ya fijado arriba. */
+div.dataTables_wrapper div.dt-buttons .btn.buttons-collection .dt-down-arrow {
+	display: none;
+}
+
+div.dataTables_wrapper div.dt-buttons .btn.buttons-collection::after {
+	margin-left: 0;
 }
 
 /* La regla ".btn i" de abajo añade padding horizontal de 10px a cada lado
@@ -2608,6 +2659,12 @@ div.dataTables_wrapper div.dt-buttons .btn.buttons-collection i {
    (o 61×30). El padding 5px/10px reproduce el hueco que deja el frame
    "v6-icon" (20×20) dentro de "BotonAccion" en Figma: 40-2*10=20 de ancho,
    30-2*5=20 de alto. */
+/* Figma (nodo 12941:9440 "BotonAccion") pide estos iconos en peso "Light"
+   (Font Awesome 6 PRO); sin esto heredan el "font-family"/"font-weight" que
+   la propia hoja FA FREE del vendor pone en ".fa" (Solid, 900), más grueso
+   que el diseño. Sólo entra en juego una vez "resource-view-toolbar.js"
+   inyecta la hoja de FA PRO en el <iframe> (ver "ensureFontAwesomeProInIframe");
+   hasta entonces el navegador no tiene esa cara y cae al Solid ya cargado. */
 div.dataTables_wrapper div.dt-buttons .btn i {
 	display: flex;
 	justify-content: center;
@@ -2615,6 +2672,8 @@ div.dataTables_wrapper div.dt-buttons .btn i {
 	gap: var(--edatos-spacing-y-xs, 5px);
 	padding: var(--edatos-spacing-y-xs, 5px) var(--edatos-spacing-x-sm, 10px);
 	font-size: 20px;
+	font-family: "Font Awesome 6 Pro";
+	font-weight: var(--edatos-font-weight-light);
 	color: inherit;
 }
 
@@ -2694,9 +2753,16 @@ div.dataTables_wrapper div.dt-buttons .dataTables_filter label::before {
 	pointer-events: none;
 }
 
+/* ".form-control-sm" (Bootstrap, hoja base del sitio) fija "min-height:
+   calc(1.5em + 0.5rem + 2px)" (~28px) en este input — un "min-height" puesto
+   por encima del "height" de abajo, gane quien gane en especificidad, así
+   que sin anularlo aquí el campo salía más bajo (~28px) que los botones de
+   30px de la fila y quedaba desalineado verticalmente. */
 div.dataTables_wrapper div.dt-buttons .dataTables_filter input {
 	margin-left: 0;
 	height: 30px;
+	min-height: 30px;
+	width: 122px;
 	border: 1px solid var(--edatos-color-primary-100, #004678);
 	border-radius: var(--edatos-border-radius-sm, 5px);
 	padding: 5px 10px 5px 30px;
@@ -2721,14 +2787,46 @@ div.dataTables_wrapper div.dt-buttons #filterinfoicon {
    este repo) como un <a class="btn btn-primary"> plano, sin iconos y sin
    ningún hook para añadirlos desde una plantilla (no hay plantilla Jinja
    que renderice este botón). Los iconos se simulan con contenido generado
-   Font Awesome vía ::before/::after en vez de tocar el JS de core. */
+   Font Awesome vía ::before/::after en vez de tocar el JS de core.
+
+   Figma coloca este botón como primer elemento de la MISMA fila que el
+   resto de botones de la tabla (nodo 12937:9102 "Botonería"), separado del
+   resto por un hueco mayor que el "gap" de 10px entre el resto de botones.
+   "resource-view-toolbar.js" mueve ".resource-view-filters" (documento
+   padre) al principio de ".dt-buttons" dentro del <iframe>, igual que ya
+   hace con "Pantalla completa"/"Incrustar". Se probó separarlo con
+   "margin-right:auto" (para no forzar "justify-content:space-between" en
+   ".dt-buttons", que rompería el "gap" del resto de botones), pero
+   ".dt-buttons" es "inline-flex" (se ajusta al ancho de su contenido): el
+   "auto" solo generaba hueco cuando el contenido, sin caber en una sola
+   línea, obligaba al navegador a fijar el ancho del contenedor al espacio
+   disponible en vez de a su ancho intrínseco — un hueco inconsistente según
+   el ancho de pantalla (a veces ausente). Se fija aquí un valor constante
+   en su lugar. */
+div.dataTables_wrapper div.dt-buttons .resource-view-filters {
+	display: inline-flex;
+	align-items: center;
+	flex: 0 0 auto;
+	margin-right: 50px;
+	/* El módulo JS de CKAN core "resource-view-filters" (fuera de este repo)
+	   le pone un "margin-bottom" propio (14px, convención genérica de
+	   "form-group"). Con ".dt-buttons" en "align-items:center" ese margen
+	   se cuenta como parte de la caja a centrar: al no tener margen arriba,
+	   el hueco de abajo empujaba el borde del botón hacia el límite
+	   superior de la fila en vez de centrarlo con el resto. */
+	margin-bottom: 0;
+}
+
+/* "gap"/"padding" reducidos frente a la medida original de Figma (8px/10px)
+   por el mismo motivo que ".buttons-collection" más abajo: a resoluciones de
+   portátil habituales el buscador no cabía en la fila y saltaba de línea. */
 .resource-view-filters > a.btn-primary {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	gap: 8px;
+	gap: 3px;
 	height: 30px;
-	padding: 0 10px;
+	padding: 0 5px;
 	background-color: var(--edatos-color-white-100, #FFF);
 	border-color: var(--edatos-color-accent-100, #007fb0);
 	color: var(--edatos-color-accent-100, #007fb0);
@@ -2751,6 +2849,37 @@ div.dataTables_wrapper div.dt-buttons #filterinfoicon {
 	background-color: var(--edatos-color-accent-100, #007fb0);
 	border-color: var(--edatos-color-accent-100, #007fb0);
 	color: var(--edatos-color-white-100, #FFF);
+}
+
+/* Una vez ".resource-view-filters" vive dentro de ".dt-buttons" (ver bloque
+   de arriba), las reglas genéricas "div.dataTables_wrapper div.dt-buttons
+   .btn" (icono cuadrado 40×30, padding:0, color/border-radius con
+   "!important") tienen más especificidad que ".resource-view-filters >
+   a.btn-primary" de arriba y lo aplastan a un cuadrado sin texto visible.
+   Se repite aquí el mismo estilo con un selector igual o más específico
+   (mismo patrón ya usado para "resource-view-toolbar-btn") para que
+   "Agregar Filtro" conserve su forma de píldora con texto, en vez de
+   quedar recortado al tamaño de icono-only del resto de botones. */
+div.dataTables_wrapper div.dt-buttons .resource-view-filters > a.btn-primary {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 3px;
+	width: auto;
+	height: 30px;
+	padding: 0 5px;
+	background-color: var(--edatos-color-white-100, #FFF) !important;
+	border-color: var(--edatos-color-accent-100, #007fb0) !important;
+	color: var(--edatos-color-accent-100, #007fb0) !important;
+	border-radius: var(--edatos-border-radius-sm, 5px) !important;
+	margin-left: 0 !important;
+}
+
+div.dataTables_wrapper div.dt-buttons .resource-view-filters > a.btn-primary:hover,
+div.dataTables_wrapper div.dt-buttons .resource-view-filters > a.btn-primary:focus {
+	background-color: var(--edatos-color-accent-100, #007fb0) !important;
+	border-color: var(--edatos-color-accent-100, #007fb0) !important;
+	color: var(--edatos-color-white-100, #FFF) !important;
 }
 
 /* --- Resource read: URL --- */
