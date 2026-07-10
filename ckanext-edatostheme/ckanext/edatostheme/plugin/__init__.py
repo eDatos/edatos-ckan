@@ -434,7 +434,13 @@ def get_app_style_css_url():
             json_config = json.loads(config_file.read())
             endpoint = json_config['metadata']['endpoint']
             css_key = json_config['metadata']['cssPathKey']
-            return get_url(endpoint, css_key)
+            url = get_url(endpoint, css_key)
+
+            theme = get_theme()
+            if theme:
+                url = "%s?organisation=%s" % (url, theme)
+
+            return url
     except Exception as e:
         log.error("Error al obtener la URL del CSS de complementos-apps: %s", e)
         return ""
