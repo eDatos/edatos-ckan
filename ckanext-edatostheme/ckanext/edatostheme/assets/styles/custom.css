@@ -2357,82 +2357,40 @@ a.metadatos-tag:hover {
 	vertical-align: middle;
 }
 
-/* --- Resource read: fila título + botones de acción ---
-   El diseño ISTAC pide el grupo de botones a la misma altura que el título
-   (h1) y alineado a la derecha, debajo del botón "Opciones" del hero-nav.
-   Además, el borde superior de esta fila (título + botones) debe coincidir
-   con el borde superior del panel .showcase-detail-sidebar: ambos son hijos
-   directos de ".row.wrapper" con el mismo top, pero ".module-content" (CKAN
-   core) le añade 24px de padding-top a esta fila que el sidebar no tiene, así
-   que se cancela con un margin-top negativo del mismo valor.
-   margin-right/width: esta fila también recupera los 24px de padding-right
-   de ".module-content" (solo para sí misma, no para el resto del contenido
-   de la card — URL, descripción, pestañas y tabla siguen con el ancho normal
-   de ".module-content", por eso el borde derecho de esta fila queda 24px
-   más afuera que el de la tabla de debajo; decisión consciente para darle
-   más ancho real al título/botones, ver Adenda 5 del spec). Con esto,
-   ".actions" ya no necesita el margen negativo que antes usaba para
-   "escapar" del padding y desbordar la propia fila (ver más abajo). */
+/* --- Resource read: fila del título ---
+   El borde superior de esta fila (solo título) debe coincidir con el borde
+   superior del panel .showcase-detail-sidebar: ambos son hijos directos de
+   ".row.wrapper" con el mismo top, pero ".module-content" (CKAN core) le
+   añade 24px de padding-top a esta fila que el sidebar no tiene, así que se
+   cancela con un margin-top negativo del mismo valor.
+   Los botones de acción ya no viven aquí (se movieron debajo de la
+   descripción, ver más abajo) — a petición de negocio se reposicionaron
+   fuera de la fila del título, revirtiendo el layout de "dos columnas en la
+   misma fila" documentado en las Adendas de
+   specs/fix-resource-view-formats-sidebar-alignment.md. */
 .module-resource .resource-heading-row {
-	display: flex;
-	align-items: flex-start;
-	justify-content: space-between;
-	flex-wrap: wrap;
-	gap: 16px;
 	margin-top: -24px;
-	margin-right: -24px;
-	width: calc(100% + 24px);
-}
-
-/* Sin min-width:0 un flex item de texto reclama su ancho "max-content"
-   completo para decidir si hace falta salto de línea, empujando los
-   botones a una línea aparte aunque el título pudiera envolver texto. El
-   diseño (Figma nodo 12933:7958) pide título y botones siempre como dos
-   columnas en la misma fila, nunca apilados uno debajo del otro — ver el
-   ajuste de ".actions ul.d-flex" más abajo, que acota el ancho de la
-   columna de botones para dejarle sitio real al título en vez de depender
-   de que esta fila salte de línea. */
-.module-resource .resource-heading-titles {
-	min-width: 0;
-	flex: 1 1 0%;
 }
 
 /* --- Resource read: botones de acción (Editar recurso, Vistas, Ir al recurso,
-   API de datos, Pantalla completa, Incrustar) --- */
+   API de datos, Pantalla completa, Incrustar) ---
+   Ahora se renderizan debajo de la URL y la descripción del recurso (no
+   junto al título), alineados a la izquierda, según lo indicado por negocio
+   tras revisar la implementación previa contra Figma. */
 
 /* CKAN core flota ".actions" a la derecha y le aplica "position: relative;
-   top: -10px;" (main.css) para compensarlo visualmente con la cabecera en el
-   layout original. Al pasar a ser un item flex de ".resource-heading-row"
-   con "align-items: flex-start", ese -10px hace que los botones queden por
-   encima del título en vez de a la misma altura, así que se anula. */
+   top: -10px;" (main.css) pensado para su layout original junto al título;
+   en la nueva posición (bloque propio debajo de la descripción) tampoco
+   aplica ese offset ni el flotado. */
 .module-resource .actions {
 	float: none;
 	top: 0;
-	flex-shrink: 0;
+	margin-top: var(--edatos-spacing-x-2xs, 8px);
 }
 
-/* Ancho de la columna de botones: acota cuántos caben por fila para dejarle
-   sitio real al título en la misma línea (dos columnas, como en el Figma).
-   El ul mezcla <li> de este repo (Editar recurso, Vistas) con otros añadidos
-   por ckanext-datastore (Diccionario de datos, DataStore, API de datos)
-   fuera de este repo, en orden de documento; con 600px cabían los primeros
-   4 botones en la primera fila, pero ese ancho está pensado para cuando
-   ".module-resource" ocupa casi todo el ancho del container. Desde que el
-   sidebar de formatos comparte fila con el título (ver más arriba),
-   ".module-resource" dispone de solo ~770-820px, y reservar 600px fijos
-   para botones dejaba apenas ~170px para el título (títulos largos se
-   partían en 6-7 líneas). Se reduce a 400px (~2 botones por fila; el bloque
-   pasa a 3 filas en vez de 2) para que el título recupere un ancho legible;
-   si cambian los textos (traducciones) puede que haya que reajustar este
-   valor. padding-left:0 anula el padding-left:32px heredado de <ul> (que
-   restaba espacio útil sin que se notase visualmente).
-   Además, al ser un ancho explícito (no "auto"), evita que el propio ul
-   reclame como ancho el total de los botones sin envolver —lo que ocurría
-   con flex-shrink:0 y le robaba espacio al título del recurso. */
 .module-resource .actions ul.d-flex {
 	gap: 10px;
 	padding-left: 0;
-	max-width: 400px;
 }
 
 /* "Ir al recurso" y "Vistas" llegan ya fusionados en un .btn-group de
