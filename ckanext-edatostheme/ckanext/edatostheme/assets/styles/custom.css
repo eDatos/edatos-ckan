@@ -1586,7 +1586,7 @@ h2.dataset-heading {
 	border-radius: var(--edatos-border-radius-xs);
 }
 
-.module.module-narrow .nav-simple .nav-item a {
+.module.module-narrow .nav-simple .nav-item > a {
 	margin: 0;
 	width: 95%;
 	display: flex;
@@ -1602,7 +1602,7 @@ h2.dataset-heading {
 	box-sizing: border-box;
 }
 
-.module.module-narrow .nav-simple .nav-item a .item-label {
+.module.module-narrow .nav-simple .nav-item > a .item-label {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
@@ -1618,12 +1618,12 @@ li.nav-item:hover {
 	border: none;
 }
 
-.module.module-narrow .nav-simple .nav-item a:hover .badge {
+.module.module-narrow .nav-simple .nav-item > a:hover .badge {
 	background: var(--edatos-color-white-100, #FFF);
 	color: var(--edatos-color-secondary-100, #004678);
 }
 
-.module.module-narrow .nav-simple .nav-item.active a {
+.module.module-narrow .nav-simple .nav-item.active > a {
 	background-color: var(--edatos-color-primary-50, #3a5a8c);
 	color: var(--edatos-color-white-100, #FFF);
 	font-weight: var(--edatos-font-weight-semibold);
@@ -1632,7 +1632,7 @@ li.nav-item:hover {
 	clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%);
 }
 
-.module.module-narrow .nav-simple .nav-item.active a .badge {
+.module.module-narrow .nav-simple .nav-item.active > a .badge {
 	background: var(--edatos-color-white-100, #FFF);
 	color: var(--edatos-color-secondary-100, #004678);
 }
@@ -2026,8 +2026,14 @@ h1.dataset-title {
 	padding: 1.5rem 0;
 }
 
+/* z-index: ".module-resource" ya trae "position:relative; z-index:5" (regla
+   genérica ".module" del core de CKAN); sin superar ese valor aquí, se pinta
+   por encima y tapa el dropdown-menu del wrench cuando este se despliega
+   (su position:absolute se sale de los ~289px del sidebar). */
 .row.wrapper > .module-resource ~ .secondary {
 	order: -1;
+	position: relative;
+	z-index: 6;
 }
 
 .row.wrapper > .module-resource ~ .primary {
@@ -2996,8 +3002,12 @@ div.dataTables_wrapper div.sortinfo {
 	border-radius: var(--edatos-border-radius-xs);
 }
 
-/* --- Items de recurso (no activo) --- */
-.module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item a {
+/* --- Items de recurso (no activo) ---
+   ">a" (hijo directo) en vez de "a": el <li> también contiene el dropdown
+   wrench (.dropdown > .dropdown-menu > li > a.dropdown-item); con el
+   combinador descendente estas reglas se colaban dentro del menú desplegable
+   y le pisaban el estilo (ver bloque ".dropdown-menu" en ZONA de dropdowns). */
+.module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item > a {
 	font-size: var(--edatos-font-size-sm);
 	font-weight: var(--edatos-font-weight-regular);
 	line-height: 14px;
@@ -3006,12 +3016,21 @@ div.dataTables_wrapper div.sortinfo {
 	border-top: none;
 }
 
-.module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item:first-child a {
+.module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item:first-child > a {
 	border-top: none;
 }
 
-.module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item a:hover {
+.module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item > a:hover {
 	background: var(--edatos-color-primary-5, #E5ECF1);
+}
+
+/* Cada <li> es position:relative (ancla del wrench .dropdown), sin z-index
+   propio; al desplegarse, el menú (position:absolute) sobresale hacia abajo
+   sobre los <li> siguientes, que al ser posteriores en el DOM se pintan por
+   encima y lo tapan. Elevamos solo el <li> que tiene el menú abierto. */
+.module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item:has(.dropdown-menu.show) {
+	position: relative;
+	z-index: 10;
 }
 
 /* --- Al hacer hover, ocultar la línea divisoria propia y la del item anterior
@@ -3043,8 +3062,61 @@ div.dataTables_wrapper div.sortinfo {
 	background: var(--edatos-color-white-100, #FFF);
 }
 
+/* El wrapper ".dropdown" del botón es position:absolute (queda fuera del
+   flex del <li>), por lo que sin esto se pega al borde superior del item en
+   vez de quedar centrado con el texto del formato. */
+.module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item .dropdown.position-absolute {
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+/* Menú del wrench: más ancho y más padding a la derecha que el genérico
+   ".dropdown-menu" (ver arriba), para que quede con el mismo aire que
+   "OPCIONES" en vez de quedar justo al ancho del texto más largo. Escopado a
+   este dropdown para no afectar a "OPCIONES"/"Explorar", que ya se ven bien. */
+.module-resource ~ .secondary .module.module-narrow .nav-simple .dropdown-menu {
+	min-width: 185px;
+}
+
+.module-resource ~ .secondary .module.module-narrow .nav-simple .dropdown-menu li a {
+	padding-right: 20px;
+	margin: 8px;
+}
+
+/* Bootstrap fuerza width:100% en ".dropdown-item"; combinado con el margin de
+   arriba, el resaltado de hover se desborda y se recorta por un lado en vez
+   de quedar centrado con aire simétrico (mismo problema ya documentado para
+   "Explorar" en #dataset-resources, ver ZONA 5). width:auto deja que el
+   modelo de caja de bloque normal reste los márgenes por los dos lados. */
+.module-resource ~ .secondary .module.module-narrow .nav-simple .dropdown-menu li a.dropdown-item {
+	width: auto;
+}
+
+/* Bootstrap define ".btn-default:hover"/".btn-light:hover" con !important;
+   hace falta otro !important (con más especificidad) para ganarle. */
 .secondary .resources .btn.btn-default:hover {
-	background: var(--edatos-color-primary-5, #E5ECF1);
+	background: var(--edatos-color-secondary-100, #004678);
+	border-color: var(--edatos-color-secondary-100, #004678);
+	color: var(--edatos-color-white-100, #FFF);
+}
+
+.secondary .resources .btn.btn-default:hover i {
+	color: inherit;
+}
+
+/* Estado abierto (Bootstrap añade ".show" también al botón, no solo al menú):
+   mismo patrón que el botón "Explorar" (.btn-primary.dropdown-toggle.show,
+   ver ZONA 5) y que el "OPCIONES" del navbar (.btn-navbar). */
+.secondary .resources .btn.btn-default.show {
+	background: var(--edatos-color-secondary-100, #004678);
+	border-color: var(--edatos-color-secondary-100, #004678);
+	color: var(--edatos-color-white-100, #FFF);
+	border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0;
+	box-shadow: none;
+}
+
+.secondary .resources .btn.btn-default.show i {
+	color: inherit;
 }
 
 /* --- Enlace social (COMPARTIR items) --- */
@@ -4401,7 +4473,7 @@ aside.secondary .module.resources .nav-simple .btn:hover,
 aside.secondary .module-content > a.btn.btn-sm:hover,
 .btn-remove-url:hover {
     background: var(--edatos-color-secondary-100);
-    background-color: var(--edatos-color-secondary-100);
+    background-color: var(--edatos-color-secondary-100) !important;
     color: var(--edatos-color-white-100);
     border: 1px solid var(--edatos-color-secondary-100);
 }
