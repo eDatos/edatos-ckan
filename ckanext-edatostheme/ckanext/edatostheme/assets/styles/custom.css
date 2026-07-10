@@ -2410,8 +2410,15 @@ a.metadatos-tag:hover {
 	border-radius: var(--edatos-border-radius-sm) !important;
 }
 
-.module-resource .actions li:has(> .btn-group) + li {
-	margin-inline-start: calc(var(--edatos-spacing-x-2xs) - 10px);
+/* La compensación va en el margen final del li del grupo (no en el margen
+   inicial del li siguiente): así solo estrecha el hueco cuando "API de
+   datos" cae en la misma línea que el grupo. Puesta en el li siguiente,
+   el margen negativo se aplicaba igual aunque "API de datos" hiciera wrap
+   a su propia línea (flex-wrap), desplazándolo 2px a la izquierda del
+   borde real del contenedor y rompiendo su alineación vertical con
+   "Editar recurso". */
+.module-resource .actions li:has(> .btn-group) {
+	margin-inline-end: calc(var(--edatos-spacing-x-2xs) - 10px);
 }
 
 .module-resource .actions .btn,
@@ -3005,6 +3012,17 @@ div.dataTables_wrapper div.sortinfo {
 
 .module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item a:hover {
 	background: var(--edatos-color-primary-5, #E5ECF1);
+}
+
+/* --- Al hacer hover, ocultar la línea divisoria propia y la del item anterior
+   (misma línea que separa ambos), igual que en el sidebar de filtros de
+   búsqueda (ver ZONA 8b, .filters .nav-item:not(.active):hover) --- */
+.module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item:not(.active):hover {
+	border-bottom-color: transparent;
+}
+
+.module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item:has(+ .nav-item:hover) {
+	border-bottom-color: transparent;
 }
 
 /* --- Item de recurso activo: forma de flecha --- */
@@ -3933,9 +3951,15 @@ li.nav-item.recursos-item {
 	border-radius: var(--edatos-border-radius-xs);
 }
 
+/* CKAN core deja este pseudo-elemento como caja invisible (position: absolute,
+   width: 25%, z-index: 1) aunque le quitemos el borde. Al ocupar el 25%
+   izquierdo de ".row.wrapper" con z-index por encima del contenido estático
+   del sidebar, intercepta hover/click de los enlaces de la barra de filtros
+   (p.ej. RECURSOS/COMPARTIR en la vista de recurso). Se oculta del todo,
+   igual que ya hace CKAN core con ".wrapper.no-nav::before". */
 @media (min-width: 768px) {
     .wrapper:before {
-         border-right: none;
+        display: none;
 	}
 }
 
