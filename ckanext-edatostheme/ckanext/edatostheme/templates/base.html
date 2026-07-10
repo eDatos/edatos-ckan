@@ -10,4 +10,8 @@
    {% asset 'ckanext-edatostheme/edatostheme-css' %}
    {% asset 'ckanext-edatostheme/edatostheme-fonts' %}
    {% asset 'ckanext-edatostheme/edatostheme-js' %}
+   {% set edatos_css_url = h.edatos_get_app_style_css_url() %}
+   {% if edatos_css_url %}
+     <link rel="stylesheet" href="{{ edatos_css_url }}">
+   {% endif %}
 {% endblock %}

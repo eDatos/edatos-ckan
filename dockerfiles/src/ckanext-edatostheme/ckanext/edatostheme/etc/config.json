@@ -3,6 +3,7 @@
         "endpoint": "https://estadisticas.arte-consultores.com/cmetadata/v1.0",
         "navbarPathKey": "metamac.app.style.header.url",
         "footerPathKey": "metamac.app.style.footer.url",
+        "cssPathKey": "metamac.app.style.css.url",
         "appName": "Open Data Catalog",
         "siteURL": "https://localhost:8443/catalogo/",
         "htmlCodeClass": "edatos-custom-header",

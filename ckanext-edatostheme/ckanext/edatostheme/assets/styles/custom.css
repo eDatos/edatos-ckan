@@ -3076,6 +3076,18 @@ div.dataTables_wrapper div.sortinfo {
    este dropdown para no afectar a "OPCIONES"/"Explorar", que ya se ven bien. */
 .module-resource ~ .secondary .module.module-narrow .nav-simple .dropdown-menu {
 	min-width: 185px;
+	/* El genérico ".dropdown-menu" (ver arriba) aplana la esquina superior
+	   DERECHA porque "OPCIONES"/"Explorar" despliegan "bottom-end" (alineados
+	   a la derecha del botón, expandiendo hacia la izquierda). Este wrench
+	   despliega "bottom-start" (Popper lo alinea a la IZQUIERDA del botón y
+	   expande hacia la derecha, sin espacio a la izquierda en el sidebar
+	   angosto), así que la esquina que debe quedar sin redondear es la
+	   superior IZQUIERDA, donde conecta con el botón. */
+	border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) var(--border-radius-sm);
+	/* Bootstrap/Popper añaden un offset por defecto de 2px entre el toggle y
+	   el menú, y fijan "margin: 0px" inline (Popper), que gana sobre reglas
+	   externas sin !important; hace falta !important para cancelarlo. */
+	margin-top: -2px !important;
 }
 
 .module-resource ~ .secondary .module.module-narrow .nav-simple .dropdown-menu li a {

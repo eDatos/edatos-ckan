@@ -418,6 +418,28 @@ def get_header_url(json_config):
     return url
 
 
+def get_app_style_css_url():
+    """
+    Devuelve la URL del CSS standalone de complementos-apps (estilos
+    generales y variables --edatos-*), leida de la propiedad
+    'metamac.app.style.css.url' en el servicio de metadatos comun.
+
+    Pensado para enlazarse con <link rel="stylesheet"> en paginas sin
+    cabecera (p. ej. el iframe de package/snippets/resource_view_embed.html),
+    que no reciben las variables --edatos-* porque estas se definen dentro
+    del HTML del header/footer externo y esas paginas no lo renderizan.
+    """
+    try:
+        with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
+            json_config = json.loads(config_file.read())
+            endpoint = json_config['metadata']['endpoint']
+            css_key = json_config['metadata']['cssPathKey']
+            return get_url(endpoint, css_key)
+    except Exception as e:
+        log.error("Error al obtener la URL del CSS de complementos-apps: %s", e)
+        return ""
+
+
 def get_altered_header(header, json_config):
     """
     Metodo que modifica el header para hacer que contenga los botones
@@ -650,6 +672,7 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             'package_showcase_list': package_showcase_list,
             'edatostheme_get_delink_value': get_delink_value,
             'edatos_get_header': load_header,
+            'edatos_get_app_style_css_url': get_app_style_css_url,
             'edatos_get_facet_items_dict': get_facet_items_dict,
             'edatos_schema_get_label_for_facet': schema_get_label_for_facet,
             'edatos_get_license': get_license,
