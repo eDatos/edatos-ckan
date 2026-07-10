@@ -3095,9 +3095,9 @@ div.dataTables_wrapper div.sortinfo {
 /* Bootstrap define ".btn-default:hover"/".btn-light:hover" con !important;
    hace falta otro !important (con más especificidad) para ganarle. */
 .secondary .resources .btn.btn-default:hover {
-	background: var(--edatos-color-secondary-100, #004678);
-	border-color: var(--edatos-color-secondary-100, #004678);
-	color: var(--edatos-color-white-100, #FFF);
+	background: var(--edatos-color-secondary-100, #004678) !important;
+	border-color: var(--edatos-color-secondary-100, #004678) !important;
+	color: var(--edatos-color-white-100, #FFF) !important;
 }
 
 .secondary .resources .btn.btn-default:hover i {
@@ -3108,11 +3108,11 @@ div.dataTables_wrapper div.sortinfo {
    mismo patrón que el botón "Explorar" (.btn-primary.dropdown-toggle.show,
    ver ZONA 5) y que el "OPCIONES" del navbar (.btn-navbar). */
 .secondary .resources .btn.btn-default.show {
-	background: var(--edatos-color-secondary-100, #004678);
-	border-color: var(--edatos-color-secondary-100, #004678);
-	color: var(--edatos-color-white-100, #FFF);
-	border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0;
-	box-shadow: none;
+	background: var(--edatos-color-secondary-100, #004678) !important;
+	border-color: var(--edatos-color-secondary-100, #004678) !important;
+	color: var(--edatos-color-white-100, #FFF) !important;
+	border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0 !important;
+	box-shadow: none !important;
 }
 
 .secondary .resources .btn.btn-default.show i {
