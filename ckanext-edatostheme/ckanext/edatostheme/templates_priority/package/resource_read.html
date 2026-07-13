@@ -11,6 +11,20 @@
 #}
 {% block download_resource_button %}
 {% if res.datastore_active %}
+  {#
+    "Vistas" y su menú viven en su propio ".btn-group" anidado (en vez de ser
+    hijos sueltos del ".btn-group" exterior que también contiene "Ir al
+    recurso") para que el offsetParent de ".dropdown-menu" sea exactamente la
+    caja de este botón, no la del grupo completo. Con el offsetParent
+    compartido, Popper.js posicionaba el menú con un desfase horizontal fijo
+    de ~7px respecto al borde izquierdo real del botón (medido en el
+    navegador) en vez de alinearlo con él — ver
+    docs/theming-resource-view-buttons.md, adenda del menú "Vistas". Anidando
+    el grupo, el propio botón pasa a ser (esencialmente) el offsetParent, así
+    que la alineación deja de depender del ancho de "Ir al recurso" (y por
+    tanto no se rompe con las traducciones ca/en, de longitud distinta).
+  #}
+  <div class="btn-group">
     <button class="btn btn-primary dropdown-toggle" role="button" id="dropdownDownloadFormat" data-bs-toggle="dropdown" aria-expanded="false" aria-label="{{ _('list of downloadable formats') }}">
         {{ _('Views') }}
         <span class="caret"></span>
@@ -33,5 +47,6 @@
           target="_blank" rel="noreferrer"><span>XML</span></a>
       </li>
     </ul>
+  </div>
 {% endif %}
 {% endblock download_resource_button %}

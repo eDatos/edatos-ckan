@@ -2416,6 +2416,58 @@ a.metadatos-tag:hover {
 	border-radius: var(--edatos-border-radius-sm) !important;
 }
 
+/* Botón "Vistas" abierto: mismo estado visual que "OPCIONES"/"Explorar"/el
+   wrench (fondo azul secundario, texto blanco) y esquinas inferiores
+   planas para conectar con el menú desplegado debajo. Sin esta regla,
+   ".module-resource .actions .btn" (más abajo, sin !important pero
+   posterior en la hoja) y el border-radius uniforme de la regla anterior
+   (más específica, con !important) ganaban sobre ".btn-primary.dropdown-
+   toggle.show" (ZONA 5), dejando el botón en blanco/azul con las 4
+   esquinas redondeadas en vez de aplanadas.
+   "background-color" (longhand), no "background" (shorthand): verificado en
+   el navegador que, con este mismo selector/especificidad/!important,
+   "background: ... !important" no llegaba a pintarse (seguía en blanco)
+   mientras que "background-color: ... !important" sí — incluso forzando la
+   regla directamente vía CSSOM con selector por ID. No se pudo determinar
+   la causa exacta (posible interacción con alguna extensión del Chrome de
+   pruebas que interceptase la shorthand), así que se evita el shorthand
+   aquí como medida robusta. */
+.module-resource .actions .btn-group > .btn.show {
+	background-color: var(--edatos-color-secondary-100, #004678) !important;
+	border-color: var(--edatos-color-secondary-100, #004678) !important;
+	color: var(--edatos-color-white-100, #FFF) !important;
+	border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0 !important;
+	box-shadow: none !important;
+}
+
+/* Menú "Vistas" (formatos de descarga CSV/TSV/JSON/XML): despliega
+   "bottom-start" (alineado a la izquierda del botón "Vistas", expandiendo
+   hacia la derecha), igual que el wrench del sidebar (ver ZONA de
+   dropdowns) y al contrario que "OPCIONES"/"Explorar" (bottom-end). El
+   genérico ".dropdown-menu" aplana la esquina superior DERECHA, que aquí es
+   la incorrecta: la esquina que conecta con el botón es la superior
+   IZQUIERDA. Bootstrap/Popper fijan además "margin: 0px" inline con un
+   offset de 2px entre el toggle y el menú; hace falta !important para
+   cancelarlo (mismo motivo que el wrench). */
+.module-resource .actions .btn-group .dropdown-menu {
+	border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) var(--border-radius-sm);
+	margin-top: -2px !important;
+}
+
+/* Bootstrap fuerza width:100% en ".dropdown-item"; combinado con el margin
+   lateral de ".dropdown-menu li a" (regla genérica, ver ZONA de dropdowns),
+   el 100% se mide sobre el <li> ANTES de restar ese margin, así que la caja
+   se desborda por el lado derecho en vez de quedar centrada con aire
+   simétrico — el resaltado de hover (fondo claro sobre el azul secundario
+   del menú) llegaba hasta el borde derecho real del menú sin dejar el
+   mismo margen que a la izquierda/arriba/abajo (mismo bug ya documentado
+   para "Explorar" en #dataset-resources y para el wrench del sidebar).
+   width:auto deja que el modelo de caja normal reste los márgenes por los
+   dos lados. */
+.module-resource .actions .btn-group .dropdown-menu li a.dropdown-item {
+	width: auto;
+}
+
 /* La compensación va en el margen final del li del grupo (no en el margen
    inicial del li siguiente): así solo estrecha el hueco cuando "API de
    datos" cae en la misma línea que el grupo. Puesta en el li siguiente,
