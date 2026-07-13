@@ -674,35 +674,121 @@
       return;
     }
 
-    var moved = false;
+    /* OJO: el botón "Table/List toggle" (fa-table/fa-list, generado por el
+       vendor ckanext-datatablesview -- ver "datatablesview.js", acción del
+       botón "viewToggleButton") hace "window.location.reload()" -- pero
+       "window" ahí es el del PROPIO <iframe> (esa plantilla vendored,
+       "datatables/datatables_view.html", es lo que se sirve dentro del
+       <iframe>, no la página padre), así que cada clic en ese botón (y, en
+       general, cualquier cambio de "gcurrentView"/"lastView" al cargar la
+       página ya en modo "list") recarga SOLO el <iframe> -- la página padre
+       (donde vive este script) nunca vuelve a ejecutar su
+       "DOMContentLoaded". Confirmado en el navegador: tras un clic, las
+       "resource-view-toolbar-btn" ("Pantalla completa"/"Incrustar") YA NO
+       están en ".resource-view .actions" del documento padre -- el primer
+       "moveButtonsIntoDtButtons" (más abajo) ya las había trasladado ahí con
+       "adoptNode" en la carga inicial, así que si esa carga inicial tuvo
+       éxito, una versión anterior de este fichero marcaba "moved = true"
+       PARA SIEMPRE y nunca volvía a intentarlo -- dejando el nuevo documento
+       del iframe (tras cada recarga interna) sin sus botones movidos y sin
+       "ensureFontAwesomeProInIframe": efecto visible, los iconos de la barra
+       (incluido el propio botón de alternar tabla/lista) se veían como
+       cuadros vacíos y "Buscar:"/"Mostrando X registros" quedaban sin mover,
+       solapados en su posición original -- en CUALQUIER pulsación del
+       botón, no solo al entrar en modo "list".
+       Fix: en vez de un flag booleano de un solo uso, se recuerda CUÁL fue
+       el último "iframeDoc" ya resuelto con éxito (comparado por
+       identidad de objeto, no solo "existe"), y se vuelve a intentar el
+       traslado en cada evento "load" del iframe (que sí se dispara de
+       nuevo en cada recarga interna, aunque la página padre no recargue).
+       "adoptNode" funciona igual de bien aunque el nodo origen ("buttons"/
+       "filtersContainer", capturados una única vez al arrancar) ya
+       pertenezca a un documento de iframe anterior y descartado -- solo
+       cambia su "ownerDocument" y lo desconecta de donde estuviera, sin
+       depender de que ese documento antiguo siga vivo -- así que los mismos
+       nodos (con sus listeners intactos, como ya garantizaba "adoptNode"
+       frente a "cloneNode") se pueden re-adoptar una y otra vez en cada
+       nuevo documento del iframe. */
+    var lastHandledDoc = null;
+    var domObserver = null;
 
-    function tryMove() {
-      if (moved) {
-        return;
-      }
-      var iframeDoc;
+    function getIframeDoc() {
       try {
-        iframeDoc = iframe.contentDocument;
+        return iframe.contentDocument;
       } catch (err) {
-        return;
-      }
-      if (iframeDoc && moveButtonsIntoDtButtons(iframeDoc, buttons, filtersContainer)) {
-        moved = true;
-        clearInterval(poll);
+        return null;
       }
     }
 
-    iframe.addEventListener('load', tryMove);
-
-    /* La tabla (DataTables Buttons) puede tardar en inicializar tras el
-       "load" del iframe; se reintenta durante unos segundos por si acaso. */
-    var attempts = 0;
-    var poll = setInterval(function () {
-      attempts += 1;
-      tryMove();
-      if (attempts >= 20) {
-        clearInterval(poll);
+    /* Devuelve "true" en cuanto "iframeDoc" (el documento ACTUAL del
+       iframe, que cambia en cada recarga interna) ya tiene los botones
+       movidos -- ya fuera en esta misma llamada o en una anterior para ese
+       mismo documento. */
+    function tryMove(iframeDoc) {
+      if (!iframeDoc) {
+        return false;
       }
+      if (iframeDoc === lastHandledDoc) {
+        return true;
+      }
+      if (moveButtonsIntoDtButtons(iframeDoc, buttons, filtersContainer)) {
+        lastHandledDoc = iframeDoc;
+        if (domObserver) {
+          domObserver.disconnect();
+          domObserver = null;
+        }
+        return true;
+      }
+      return false;
+    }
+
+    /* ".dt-buttons.btn-group" lo crea en tiempo de ejecución la extensión
+       vendored ckanext-datatablesview (fuera de este repo) al inicializar
+       DataTables -- y ese init puede tardar (sobre todo en modo "list"/
+       responsive, donde el vendor llega a lanzar una excepción interna sin
+       capturar durante el ajuste de columnas, "Cannot read properties of
+       undefined (reading 'style')" en su "_fnScrollDraw" -- confirmado en
+       la consola del navegador), así que no basta con comprobarlo una sola
+       vez en el "load" del iframe. Se engancha un MutationObserver sobre su
+       "<body>" que reacciona en cuanto ".dt-buttons" aparezca en ESE
+       documento concreto, sin depender de un número de reintentos fijo. */
+    function tryAttachObserver(iframeDoc) {
+      if (!iframeDoc || iframeDoc === lastHandledDoc || !iframeDoc.body) {
+        return;
+      }
+      if (domObserver) {
+        domObserver.disconnect();
+      }
+      domObserver = new MutationObserver(function () {
+        tryMove(getIframeDoc());
+      });
+      domObserver.observe(iframeDoc.body, { childList: true, subtree: true });
+    }
+
+    /* El "load" del iframe se dispara en CADA recarga (la inicial y cada
+       recarga interna disparada por el botón de alternar tabla/lista), así
+       que es el punto de entrada principal -- no solo un caso especial. */
+    iframe.addEventListener('load', function () {
+      var iframeDoc = getIframeDoc();
+      if (tryMove(iframeDoc)) {
+        return;
+      }
+      tryAttachObserver(iframeDoc);
+    });
+
+    /* Poll de respaldo (por si "load" ya disparó antes de registrar este
+       listener, o el documento tardara en tener "<body>" para el
+       observer) -- sin límite de intentos ni de tiempo: a diferencia de la
+       versión anterior, esto debe seguir funcionando durante toda la vida
+       de la página, ya que el usuario puede alternar tabla/lista tantas
+       veces como quiera y cada clic dispara una recarga interna nueva que
+       hay que volver a atender. */
+    setInterval(function () {
+      var iframeDoc = getIframeDoc();
+      if (tryMove(iframeDoc)) {
+        return;
+      }
+      tryAttachObserver(iframeDoc);
     }, 250);
   });
 })();
