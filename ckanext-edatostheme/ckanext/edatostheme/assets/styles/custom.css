@@ -2970,6 +2970,27 @@ div.dataTables_wrapper div.dt-buttons .resource-view-filters.edatos-filter-open 
 	padding: 0;
 	max-height: 220px;
 	overflow-y: auto;
+	/* Fondo de la pista del scroll transparente (deja ver el azul del panel
+	   detrás, no un blanco/gris ajeno al resto del componente) -- Firefox vía
+	   "scrollbar-color" (segundo valor = pista), Chrome/Edge/Safari vía los
+	   pseudo-elementos "::-webkit-scrollbar-track". El "thumb" (la barra que
+	   se arrastra) sí necesita algo de opacidad para poder verse/agarrarse
+	   sobre ese mismo azul. */
+	scrollbar-width: thin;
+	scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
+}
+
+.edatos-filter-panel-list::-webkit-scrollbar {
+	width: 8px;
+}
+
+.edatos-filter-panel-list::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.edatos-filter-panel-list::-webkit-scrollbar-thumb {
+	background-color: rgba(255, 255, 255, 0.5);
+	border-radius: 4px;
 }
 
 .edatos-filter-panel-back {
@@ -3001,6 +3022,20 @@ div.dataTables_wrapper div.dt-buttons .resource-view-filters.edatos-filter-open 
 	font-size: var(--edatos-font-size-sm, 14px);
 	cursor: pointer;
 	white-space: nowrap;
+}
+
+/* Figma (nodo 12941:9342, fila "Opción 5") no muestra un estado
+   "seleccionado" persistente -- es el hover de esa fila concreta, capturado
+   en la captura estática del mockup. El estilo a reutilizar para el hover
+   es el mismo que ya tiene la fila "Eliminar filtro" (fondo claro
+   "--edatos-color-primary-5" + texto/icono en azul de acento), no un gris
+   plano. El estado "--checked" (persistente, para marcar qué opción está
+   realmente activa) es una necesidad propia de este panel real -- Figma no
+   lo contempla porque su mockup es estático -- y se mantiene aparte del
+   hover con negrita + icono relleno. */
+.edatos-filter-panel-item:hover {
+	background-color: var(--edatos-color-primary-5, #e5ecf1);
+	color: var(--edatos-color-accent-100, #007fb0);
 }
 
 /* Casilla vacía (Regular/400) vs. marcada (Solid/900) -- mismo par de
@@ -3046,12 +3081,23 @@ div.dataTables_wrapper div.dt-buttons .resource-view-filters.edatos-filter-open 
 	gap: 8px;
 	padding: 3px;
 	margin-top: 5px;
-	background-color: var(--edatos-color-primary-5, #e5ecf1);
-	color: var(--edatos-color-accent-100, #007fb0);
+	background-color: var(--edatos-color-accent-100, #007fb0);
+	color: var(--edatos-color-white-100, #FFF);
 	border-radius: 3px;
 	cursor: pointer;
 	font-size: var(--edatos-font-size-sm, 14px);
 	white-space: nowrap;
+}
+
+/* En reposo, "Eliminar filtro" se confunde con el resto de filas del panel
+   (mismo azul de fondo, texto blanco); al pasar el ratón, cambia al fondo
+   claro "--edatos-color-primary-5" + texto de acento -- el mismo par que ya
+   usa el hover del resto de filas del panel (".edatos-filter-panel-item:
+   hover"), así que "Eliminar filtro" reacciona igual que cualquier otra
+   fila interactiva del componente. */
+.edatos-filter-panel-clear:hover {
+	background-color: var(--edatos-color-primary-5, #e5ecf1);
+	color: var(--edatos-color-accent-100, #007fb0);
 }
 
 .edatos-filter-panel-clear::before {

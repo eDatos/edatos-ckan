@@ -246,12 +246,15 @@
      "patchSelect2ForIframes"/"fixDropdownPositionOnOpen" más arriba) por un
      panel de checkboxes fusionado visualmente con el propio botón, fiel al
      mockup de Figma (nodo 12941:9342 "BotonDesplegableM" + panel de
-     "Opción 1..5" / "Eliminar filtro"): un único bloque azul que permite
-     marcar varios VALORES del mismo campo a la vez (en vez de elegir uno,
-     recargar, elegir otro...), en vez de replicar el checklist estático de
-     Figma tal cual (esa lista de "Opción X" es un placeholder genérico del
-     componente reutilizable "BotonDesplegableM" -- el campo a filtrar y sus
-     valores son dinámicos, vienen de la tabla real).
+     "Opción 1..5" / "Eliminar filtro"), en vez de replicar el checklist
+     estático de Figma tal cual (esa lista de "Opción X" es un placeholder
+     genérico del componente reutilizable "BotonDesplegableM" -- el campo a
+     filtrar y sus valores son dinámicos, vienen de la tabla real).
+     Marcar/desmarcar una casilla de VALOR aplica el filtro al instante
+     (recarga la página con la nueva "?filters=" en cada clic, a petición
+     expresa -- ver "toggleValue" más abajo); sigue permitiendo acabar con
+     varios valores del mismo campo activos a la vez, solo que cada uno se
+     aplica en su propio recargado en vez de acumularse sin recargar.
 
      Arquitectura: el botón real ("a.btn-primary", generado por CKAN core en
      "_buildAddFilterButton") se queda en el DOM -- solo se le intercepta el
@@ -343,7 +346,7 @@
     panel.hidden = true;
     filtersContainer.appendChild(panel);
 
-    var state = { field: null, pendingValues: [], originalValues: [], distinctValues: null };
+    var state = { field: null, distinctValues: null };
 
     function activeValues(field) {
       return (window.ckan.views.filters.get(field) || []).slice();
@@ -353,27 +356,27 @@
       return activeValues(field).length > 0;
     }
 
-    /* "ckan.views.filters.set()/.unset()" navegan de inmediato
-       ("window.location.href = ...") en cuanto detectan un cambio real --
-       el resto de esta función (y cualquier otra cosa en curso) nunca llega
-       a ejecutarse en ese caso, la página entera se recarga con la nueva
-       "?filters=". Por eso solo hace falta aplicar el pendiente UNA vez, al
-       cerrar el panel o cambiar de campo -- todos los toggles de checkbox
-       intermedios solo tocan "state.pendingValues" en memoria, sin red ni
-       recarga, permitiendo marcar varios valores antes de aplicar. */
-    function applyPendingIfChanged() {
-      if (!state.field) {
-        return;
-      }
-      var changed = state.pendingValues.length !== state.originalValues.length ||
-        state.pendingValues.some(function (v) { return state.originalValues.indexOf(v) === -1; });
-      if (!changed) {
-        return;
-      }
-      if (state.pendingValues.length > 0) {
-        window.ckan.views.filters.set(state.field, state.pendingValues);
+    /* A petición expresa: marcar/desmarcar una casilla de VALOR aplica el
+       filtro al instante, en vez de acumular varios cambios en memoria y
+       aplicarlos solo al cerrar el panel (que era el comportamiento de la
+       versión anterior de este mismo panel). "ckan.views.filters.set()/
+       .unset()" navegan de inmediato ("window.location.href = ...") en
+       cuanto detectan un cambio real -- cada clic sobre una casilla de
+       valor recarga la página entera con la nueva "?filters=". Sigue
+       permitiendo marcar varios valores del mismo campo (cada uno en su
+       propio recargado, no en una única sesión sin recargar). */
+    function toggleValue(field, value) {
+      var current = activeValues(field);
+      var idx = current.indexOf(value);
+      if (idx === -1) {
+        current.push(value);
       } else {
-        window.ckan.views.filters.unset(state.field);
+        current.splice(idx, 1);
+      }
+      if (current.length > 0) {
+        window.ckan.views.filters.set(field, current);
+      } else {
+        window.ckan.views.filters.unset(field);
       }
     }
 
@@ -428,7 +431,6 @@
     }
 
     function closePanel() {
-      applyPendingIfChanged();
       panel.hidden = true;
       filtersContainer.classList.remove('edatos-filter-open');
       state.field = null;
@@ -444,10 +446,7 @@
     }
 
     function openValueList(field) {
-      applyPendingIfChanged();
       state.field = field;
-      state.originalValues = activeValues(field);
-      state.pendingValues = state.originalValues.slice();
       state.distinctValues = null;
       renderValueList();
       fetchDistinctValues(field);
@@ -516,7 +515,7 @@
       renderValueItems(list);
 
       panel.appendChild(buildClearRow(function () {
-        state.pendingValues = [];
+        window.ckan.views.filters.unset(state.field);
       }));
     }
 
@@ -548,23 +547,22 @@
         list.appendChild(empty);
         return;
       }
+      var checkedValues = activeValues(state.field);
       state.distinctValues.forEach(function (value) {
         var li = currentDoc().createElement('li');
         li.className = 'edatos-filter-panel-item' +
-          (state.pendingValues.indexOf(value) !== -1 ? ' edatos-filter-panel-item--checked' : '');
+          (checkedValues.indexOf(value) !== -1 ? ' edatos-filter-panel-item--checked' : '');
         li.textContent = value;
         /* "stopPropagation()" necesario por el mismo motivo que en el
-           listado de campos: "renderValueItems" desconecta este "li" del
-           árbol (via "list.innerHTML = ''") de forma síncrona, antes de que
-           el clic termine de burbujear hasta el listener de "clic fuera". */
+           listado de campos: "toggleValue" dispara "ckan.views.filters.set()
+           /.unset()", que navega de inmediato -- pero antes de que el
+           navegador complete esa navegación, el script síncrono sigue
+           corriendo, así que este "li" (o el panel entero) podría acabar
+           desconectándose de un renderizado posterior antes de que el clic
+           termine de burbujear. */
         li.addEventListener('click', function (evt) {
           evt.stopPropagation();
-          var idx = state.pendingValues.indexOf(value);
-          if (idx === -1) {
-            state.pendingValues.push(value);
-          } else {
-            state.pendingValues.splice(idx, 1);
-          }
+          toggleValue(state.field, value);
           renderValueItems(list);
         });
         list.appendChild(li);
