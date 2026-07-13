@@ -56,6 +56,18 @@
        "Botonería"): [Agregar Filtro] ... resto de botones. */
     if (filtersContainer) {
       dtButtons.insertBefore(iframeDoc.adoptNode(filtersContainer), anchor);
+      /* Reengancha el clic de "Agregar Filtro" para el documento de iframe
+         ACTUAL -- ver el comentario grande de "bindFilterToggleClick" (más
+         abajo en este fichero) sobre por qué hace falta repetir esto en
+         cada recarga interna, no solo la primera vez. Sólo si el panel ya
+         se montó con éxito (comprobar "__edatosOpenPanel", colgado al
+         final de "setupCustomFilterPanel") -- en la primera llamada de
+         "moveButtonsIntoDtButtons" tras cargar la página, "setupCustomFilterPanel"
+         puede no haber tenido éxito todavía (reintenta por su cuenta, ver
+         "filterPanelPoll" en el "DOMContentLoaded" de más abajo). */
+      if (filtersContainer.__edatosOpenPanel) {
+        bindFilterToggleClick(filtersContainer);
+      }
     }
 
     buttons.forEach(function (btn) {
@@ -279,6 +291,55 @@
      ("get"/"set"/"unset"), así que la URL resultante y el recargado de la
      tabla son IDÉNTICOS a los que ya producía el flujo por defecto (mismo
      mecanismo, otra interfaz). */
+  /* Engancha (o reengancha) el clic de "Agregar Filtro" sobre el
+     "filtersContainer" ACTUAL -- se llama una vez al montar el panel
+     (dentro de "setupCustomFilterPanel") y de nuevo cada vez que
+     "moveButtonsIntoDtButtons" re-adopta "filtersContainer" en un
+     documento de iframe nuevo (cada recarga interna que dispara el botón
+     de alternar tabla/lista).
+
+     Motivo: un único listener capturado una sola vez al arrancar dejaba
+     de reaccionar a clics reales tras uno o más ciclos de "adoptNode"
+     entre documentos de iframe sucesivos -- verificado en el navegador con
+     un listener de diagnóstico ADICIONAL sobre el mismo nodo: ese listener
+     nuevo SÍ veía el clic (con el "target" correcto, el único
+     "a.btn-primary" que existe en todo el documento), pero
+     "evt.defaultPrevented" seguía en "false" después, es decir, el
+     listener original de verdad no estaba actuando -- ni siquiera
+     comparando "evt.target" contra una consulta fresca de
+     "filtersContainer.querySelector('a.btn-primary')" en el momento del
+     clic (intento previo, insuficiente). No se aisló la causa exacta de
+     por qué un listener "viejo" deja de reaccionar mientras uno "nuevo"
+     sobre el mismo nodo sí lo hace, pero desengachar y reenganchar un
+     listener fresco en cada re-adopción es la vía robusta que sí funciona
+     de forma repetible, sin depender de entender ese mecanismo interno.
+     Guardar la función en "filtersContainer.__edatosClickHandler" permite
+     desengancharla la próxima vez sin acumular listeners duplicados en
+     cada toggle (que competirían entre sí abriendo/cerrando el panel a la
+     vez en un mismo clic). */
+  function bindFilterToggleClick(filtersContainer) {
+    if (filtersContainer.__edatosClickHandler) {
+      filtersContainer.removeEventListener('click', filtersContainer.__edatosClickHandler, true);
+    }
+    var handler = function (evt) {
+      var currentToggleButton = filtersContainer.querySelector('a.btn-primary');
+      if (!currentToggleButton ||
+          (currentToggleButton !== evt.target && !currentToggleButton.contains(evt.target))) {
+        return;
+      }
+      evt.preventDefault();
+      evt.stopPropagation();
+      var panel = filtersContainer.__edatosPanelEl;
+      if (panel.hidden) {
+        filtersContainer.__edatosOpenPanel();
+      } else {
+        filtersContainer.__edatosClosePanel();
+      }
+    };
+    filtersContainer.__edatosClickHandler = handler;
+    filtersContainer.addEventListener('click', handler, true);
+  }
+
   /* Devuelve "true" si el panel quedó montado, "false" si aún no había
      nada que enganchar (el llamante reintenta -- ver más abajo por qué
      hace falta reintentar en vez de bastar con "DOMContentLoaded"). */
@@ -604,26 +665,18 @@
       });
     }
 
-    /* Ver comentario grande antes de "setupCustomFilterPanel": este
-       listener va en fase de CAPTURA sobre ".resource-view-filters" (el
-       ANCESTRO del botón), no sobre el propio botón, para garantizar que se
-       ejecuta antes que el handler de burbuja que CKAN core ya enganchó
-       directamente sobre "a.btn-primary" -- y "stopPropagation()" aquí
-       evita que ese evento llegue nunca a burbujear hasta el propio botón,
-       así que el handler de core (que crearía su select2 por defecto) no
-       llega a dispararse. */
-    filtersContainer.addEventListener('click', function (evt) {
-      if (toggleButton !== evt.target && !toggleButton.contains(evt.target)) {
-        return;
-      }
-      evt.preventDefault();
-      evt.stopPropagation();
-      if (panel.hidden) {
-        openFieldList();
-      } else {
-        closePanel();
-      }
-    }, true);
+    /* "openFieldList"/"closePanel"/"panel" se cuelgan del propio nodo
+       "filtersContainer" (no solo se cierran sobre el "click" de más abajo)
+       para que "bindFilterToggleClick" -- llamada de nuevo en cada
+       recarga interna del iframe, ver "moveButtonsIntoDtButtons" -- pueda
+       reenganchar el clic sin tener que reconstruir el panel/estado cada
+       vez. Un nodo conserva las propiedades que se le cuelguen aunque se
+       traslade de documento con "adoptNode" (a diferencia de los listeners
+       de un "removeEventListener" que sí hay que rehacer, ver más abajo). */
+    filtersContainer.__edatosOpenPanel = openFieldList;
+    filtersContainer.__edatosClosePanel = closePanel;
+    filtersContainer.__edatosPanelEl = panel;
+    bindFilterToggleClick(filtersContainer);
 
     return true;
   }
