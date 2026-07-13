@@ -2915,6 +2915,279 @@ div.dataTables_wrapper div.dt-buttons .resource-view-filters > a.btn-primary:foc
 	color: var(--edatos-color-white-100, #FFF) !important;
 }
 
+/* --- Resource view: panel personalizado de "Agregar Filtro" (checkboxes) ---
+   "setupCustomFilterPanel" (resource-view-toolbar.js) reemplaza el flujo por
+   defecto de CKAN core para este botón por un panel propio, fiel al mockup
+   de Figma (nodo 12941:9342 "BotonDesplegableM" + panel de "Opción 1..5" /
+   "Eliminar filtro"): un único bloque azul fusionado con el botón, con
+   checkboxes que permiten marcar varios valores del campo elegido a la vez.
+   Ver el bloque de comentarios en el propio JS para la arquitectura
+   (intercepción del clic en fase de captura, estado en "ckan.views.filters"). */
+div.dataTables_wrapper div.dt-buttons .resource-view-filters {
+	position: relative;
+}
+
+/* Fusiona visualmente el botón con el panel: sin esquinas redondeadas donde
+   conectan (abajo del botón), sin hueco entre ambos, mismo azul sólido que
+   el resto del panel -- igual que Figma, donde "BotonDesplegableM" (el
+   botón) solo redondea sus esquinas SUPERIORES y el panel solo las
+   INFERIORES. Sin esto, el botón se queda en su estilo "outline" de reposo
+   (fondo blanco/borde azul) mientras el panel ya está abierto debajo,
+   dando la impresión de dos controles sueltos en vez de un único
+   desplegable, que es justo lo que Figma no muestra. */
+div.dataTables_wrapper div.dt-buttons .resource-view-filters.edatos-filter-open > a.btn-primary {
+	background-color: var(--edatos-color-accent-100, #007fb0) !important;
+	border-color: var(--edatos-color-accent-100, #007fb0) !important;
+	color: var(--edatos-color-white-100, #FFF) !important;
+	border-radius: var(--edatos-border-radius-sm, 5px) var(--edatos-border-radius-sm, 5px) 0 0 !important;
+}
+
+/* El icono "angle-down" de reposo (ver "::after" más arriba) se cambia a
+   "angle-up" mientras el panel está abierto -- Figma solo documenta el
+   estado abierto (captura única del componente), pero un desplegable que
+   apunta hacia abajo cuando ya está desplegado hacia abajo no tiene
+   sentido; se infiere el estado cerrado con la flecha por defecto ya
+   existente en el sitio para el resto de dropdowns. */
+.resource-view-filters.edatos-filter-open > a.btn-primary::after {
+	content: "\f106";
+}
+
+.edatos-filter-panel {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	min-width: 171px;
+	background-color: var(--edatos-color-accent-100, #007fb0);
+	border-radius: 0 0 var(--edatos-border-radius-sm, 5px) var(--edatos-border-radius-sm, 5px);
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+	padding: 10px;
+	z-index: 1000;
+}
+
+.edatos-filter-panel-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	max-height: 220px;
+	overflow-y: auto;
+}
+
+.edatos-filter-panel-back {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 3px;
+	margin-bottom: 5px;
+	color: var(--edatos-color-white-100, #FFF);
+	font-size: var(--edatos-font-size-sm, 14px);
+	font-weight: 600;
+	cursor: pointer;
+	white-space: nowrap;
+}
+
+.edatos-filter-panel-back::before {
+	font-family: "Font Awesome 6 Free";
+	font-weight: 900;
+	content: "\f060";
+}
+
+.edatos-filter-panel-item {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 3px;
+	border-radius: 3px;
+	color: var(--edatos-color-white-100, #FFF);
+	font-size: var(--edatos-font-size-sm, 14px);
+	cursor: pointer;
+	white-space: nowrap;
+}
+
+/* Casilla vacía (Regular/400) vs. marcada (Solid/900) -- mismo par de
+   glifos que usa Figma ("square" / "square-check"), en Font Awesome FREE
+   (no PRO): a diferencia de los iconos "Light" de otros botones de esta
+   misma fila, este panel puede pintarse justo tras el clic en "Agregar
+   Filtro", posiblemente antes de que "ensureFontAwesomeProInIframe" haya
+   tenido tiempo de inyectar la hoja PRO en el <iframe> -- usar solo FREE
+   (ya cargado siempre) evita un parpadeo de icono roto. */
+.edatos-filter-panel-item::before {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 16px;
+	font-family: "Font Awesome 6 Free";
+	font-weight: 400;
+	content: "\f0c8";
+}
+
+.edatos-filter-panel-item--checked {
+	font-weight: 600;
+}
+
+.edatos-filter-panel-item--checked::before {
+	font-weight: 900;
+	content: "\f14a";
+}
+
+.edatos-filter-panel-loading,
+.edatos-filter-panel-empty {
+	padding: 3px;
+	color: var(--edatos-color-white-100, #FFF);
+	font-size: var(--edatos-font-size-sm, 14px);
+	opacity: 0.8;
+}
+
+/* Misma fila "Eliminar filtro" que Figma: fondo claro sobre el panel azul,
+   texto/icono en el azul de acento (el mismo contraste invertido que usa
+   Figma para distinguirla del resto de opciones, en blanco sobre azul). */
+.edatos-filter-panel-clear {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 3px;
+	margin-top: 5px;
+	background-color: var(--edatos-color-primary-5, #e5ecf1);
+	color: var(--edatos-color-accent-100, #007fb0);
+	border-radius: 3px;
+	cursor: pointer;
+	font-size: var(--edatos-font-size-sm, 14px);
+	white-space: nowrap;
+}
+
+.edatos-filter-panel-clear::before {
+	font-family: "Font Awesome 6 Free";
+	font-weight: 900;
+	content: "\f00d";
+}
+
+/* --- Resource view: desplegables de "Agregar Filtro" (select2), RUTA DE
+   RESPALDO ---
+   Desde que "setupCustomFilterPanel" (bloque de arriba) toma el control del
+   botón, este camino de select2 ya NO se ejecuta en el uso normal (el clic
+   se intercepta antes de que CKAN core llegue a construir su propio select2,
+   y el "filtersDiv" que renderiza filtros ya activos al cargar la página se
+   oculta explícitamente por JS). Se conserva esta hoja de estilos por si el
+   JS no llega a cargar/ejecutar por cualquier motivo: en ese caso el flujo
+   por defecto de CKAN core sigue funcionando igual que antes de este cambio,
+   con su propio theming en vez de la paleta gris/blanca por defecto del
+   navegador.
+   El módulo de CKAN core "resource-view-filters" (fuera de este repo, ver
+   bloque de comentarios sobre el fix de "Agregar Filtro" en
+   resource-view-toolbar.js) construye el selector de campo y, tras elegir
+   uno, el selector de valor con select2 3.5.x -- una librería vendored sin
+   ningún estilo propio del sitio, así que salía con la paleta gris/blanca
+   por defecto del navegador, totalmente desconectada del botón azul
+   "Agregar Filtro" que lo abre. Figma (nodo 12941:9342 "BotonDesplegableM")
+   pinta el panel desplegado en el mismo azul de acento que el botón
+   ("colors/accent", #007fb0), con texto blanco.
+   El control cerrado ("select2-choice") reutiliza el mismo lenguaje visual
+   ya establecido para el propio botón "Agregar Filtro" arriba (borde/texto
+   azul en reposo, relleno azul con texto blanco al abrirse) en vez del azul
+   sólido permanente de Figma, para quedar visualmente coherente con ese
+   botón vecino en la misma fila. */
+.resource-view-filters .select2-container .select2-choice {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 5px;
+	height: 30px;
+	padding: 0 10px;
+	background-color: var(--edatos-color-white-100, #FFF);
+	border: 1px solid var(--edatos-color-accent-100, #007fb0);
+	border-radius: var(--edatos-border-radius-sm, 5px);
+	color: var(--edatos-color-accent-100, #007fb0);
+	font-size: var(--edatos-font-size-sm, 14px);
+}
+
+/* select2 marca el estado "sin selección" (placeholder, p.ej. "Seleccione
+   un campo") con la clase modificadora ".select2-default", cuyo propio CSS
+   vendored fija "color:#999 !important" -- ninguna especificidad normal
+   puede ganarle a un "!important", así que aquí también hace falta
+   "!important" para que el placeholder se vea en el azul de acento en vez
+   de gris (verificado: sin esto, el borde/fondo sí cambiaban pero el texto
+   se quedaba en gris #999). */
+.resource-view-filters .select2-container .select2-choice.select2-default {
+	color: var(--edatos-color-accent-100, #007fb0) !important;
+}
+
+.resource-view-filters .select2-container.select2-dropdown-open .select2-choice {
+	background-color: var(--edatos-color-accent-100, #007fb0);
+	color: var(--edatos-color-white-100, #FFF);
+	border-radius: var(--edatos-border-radius-sm, 5px) var(--edatos-border-radius-sm, 5px) 0 0;
+}
+
+.resource-view-filters .select2-container.select2-dropdown-open .select2-choice.select2-default {
+	color: var(--edatos-color-white-100, #FFF) !important;
+}
+
+.resource-view-filters .select2-container .select2-choice .select2-arrow b {
+	border-color: currentColor transparent transparent transparent;
+}
+
+/* select2 3.5.x posiciona la "x" de "vaciar selección" con una imagen de
+   sprite propia (select2.png, no vendored en este bundle) -- se sustituye
+   por un glifo de Font Awesome del mismo color que el texto del control. */
+.resource-view-filters .select2-container .select2-choice abbr.select2-search-choice-close {
+	background: none;
+	font-family: "Font Awesome 6 Free";
+	font-weight: 900;
+	color: currentColor;
+}
+
+.resource-view-filters .select2-container .select2-choice abbr.select2-search-choice-close::before {
+	content: "\f00d";
+}
+
+/* El panel flotante ("#select2-drop") vive en el <body> del documento
+   PADRE, fuera de ".resource-view-filters" (select2 lo ancla siempre ahí;
+   ver "fixDropdownPositionOnOpen" en resource-view-toolbar.js). select2
+   reutiliza un único "#select2-drop" para el desplegable actualmente
+   abierto -- nunca hay dos a la vez -- así que el id es un selector seguro
+   y preciso sin necesidad de anidarlo bajo ".resource-view-filters". */
+#select2-drop {
+	background-color: var(--edatos-color-accent-100, #007fb0);
+	border: none;
+	border-radius: 0 0 var(--edatos-border-radius-sm, 5px) var(--edatos-border-radius-sm, 5px);
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+	padding: 5px;
+}
+
+#select2-drop .select2-search {
+	padding: 0 0 5px;
+}
+
+#select2-drop .select2-search input.select2-input {
+	border-radius: var(--edatos-border-radius-sm, 5px);
+	border: none;
+	padding: 4px 8px;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+#select2-drop .select2-results {
+	margin: 0;
+	padding: 0;
+	max-height: 200px;
+}
+
+#select2-drop .select2-results .select2-result-label {
+	color: var(--edatos-color-white-100, #FFF);
+	padding: 5px 8px;
+	border-radius: var(--edatos-border-radius-sm, 3px);
+}
+
+#select2-drop .select2-results .select2-highlighted > .select2-result-label {
+	background-color: var(--edatos-color-primary-5, #E5ECF1);
+	color: var(--edatos-color-accent-100, #007fb0);
+}
+
+#select2-drop .select2-no-results,
+#select2-drop .select2-searching {
+	color: var(--edatos-color-white-100, #FFF);
+	padding: 5px 8px;
+	background: transparent;
+}
+
 /* --- Resource view: "Mostrar X registros" (".dataTables_length") debajo de
    la tabla ---
    Figma (nodo 12941:9258) coloca el selector "Mostrar: [20] registros" bajo
