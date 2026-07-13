@@ -2915,6 +2915,88 @@ div.dataTables_wrapper div.sortinfo {
 	display: none;
 }
 
+/* --- Resource view: paginación de la tabla (DataTables) ---
+   Mismo lenguaje visual que ".pagination-wrapper" (paginación del listado
+   de datasets, sección 19 "PAGINACIÓN" más abajo en este fichero): botones
+   individuales con borde y sin fondo, radio uniforme en todos ellos, en
+   vez del estilo "conectado" de Bootstrap que trae el vendor de serie
+   (bordes solapados con margin-left:-1px, radio solo en el primer/último
+   botón). El DOM lo genera "ckanext-datatablesview" (fuera de este repo)
+   con las MISMAS clases Bootstrap que ya usa ".pagination-wrapper"
+   (".page-item"/".page-link"/".active"/".disabled"), así que solo hace
+   falta reescribir la apariencia, no la estructura — y solo el aspecto de
+   los botones: la posición del bloque (a la derecha, junto a "Mostrar X
+   registros") ya la fija el reordenamiento de más arriba y no se toca
+   aquí. A diferencia de ".pagination-wrapper", el "…" de elipsis NO tiene
+   aquí una clase propia ("page-ellipsis") — el vendor le pone la misma
+   clase "disabled" que a los botones "previous"/"next" deshabilitados —
+   así que se distinguen con ":not(.previous):not(.next)" en vez de por
+   clase, y no hace falta cuidar el orden de las reglas en la cascada (los
+   selectores ya son mutuamente excluyentes). */
+div.dataTables_wrapper div.dataTables_paginate .page-item {
+	margin: 0;
+}
+
+div.dataTables_wrapper div.dataTables_paginate .page-item .page-link {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 2rem;
+	padding: var(--edatos-spacing-y-xs, 5px) var(--edatos-spacing-x-sm, 10px);
+	margin: 0 var(--edatos-spacing-x-xs, 3px);
+	font-size: var(--edatos-font-size-sm, 14px);
+	font-weight: var(--edatos-font-weight-light, 300);
+	line-height: 1;
+	text-decoration: none;
+	color: var(--edatos-color-gray-40, #999999);
+	background-color: transparent;
+	border: 1px solid var(--edatos-color-gray-40, #999999);
+	border-radius: var(--border-radius-sm, 4px);
+	box-shadow: none;
+	transition: all 0.2s ease;
+}
+
+div.dataTables_wrapper div.dataTables_paginate .page-item:not(.active):not(.disabled) .page-link:hover {
+	background-color: var(--edatos-color-primary-5, #e5ecf1);
+	border-color: var(--edatos-color-primary-100, #004678);
+	color: var(--edatos-color-primary-100, #004678);
+}
+
+div.dataTables_wrapper div.dataTables_paginate .page-item.active .page-link {
+	color: var(--edatos-color-primary-100, #004678);
+	font-weight: var(--edatos-font-weight-semibold, 600);
+	background-color: transparent;
+	border-color: var(--edatos-color-primary-100, #004678);
+	box-shadow: none;
+	pointer-events: none;
+	cursor: not-allowed;
+}
+
+div.dataTables_wrapper div.dataTables_paginate .page-item.previous.disabled .page-link,
+div.dataTables_wrapper div.dataTables_paginate .page-item.next.disabled .page-link {
+	display: none;
+}
+
+div.dataTables_wrapper div.dataTables_paginate .page-item.disabled:not(.previous):not(.next) .page-link {
+	display: block;
+	color: var(--edatos-color-gray-40, #999999);
+	border-color: transparent;
+	background-color: transparent;
+	pointer-events: none;
+	cursor: default;
+	padding: 0.5rem 0.5rem;
+}
+
+div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus {
+	box-shadow: none;
+}
+
+div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visible {
+	outline: 2px solid var(--edatos-color-primary-100, #004678);
+	outline-offset: 2px;
+	box-shadow: none;
+}
+
 /* --- Resource read: URL --- */
 .module-resource .module-content p.text-muted.ellipsis,
 .module-resource .module-content p.text-muted.break-word {
@@ -4845,6 +4927,14 @@ aside.secondary .module-content > a.btn.btn-sm {
 
 .activity-type-dropdown__item--selected {
     background-color: var(--edatos-color-gray-5, #f2f2f2);
+}
+
+
+.ckanext-datapreview {
+    position: relative;
+    clear: both;
+    padding-top: 0px;
+    margin-top: 0;
 }
 
 /* ----------------------------------------------------------------
