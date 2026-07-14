@@ -2602,6 +2602,18 @@ div.dataTables_wrapper div.dt-buttons.btn-group {
 	   centrado dentro de esa caja más alta — visualmente desplazado hacia
 	   abajo respecto al resto de la fila. */
 	align-items: center;
+	/* Bootstrap fija ".btn-group{display:inline-flex !important}", que se
+	   ajusta al ancho de su contenido — como ".dataTables_wrapper" es un flex
+	   container en columna (ver más abajo), ".dt-buttons" queda como flex
+	   item cuyo ancho de contenido no llega al borde derecho de la tabla.
+	   Resultado: el buscador ("Buscar:", último elemento de la fila) se
+	   quedaba corto del borde derecho de la tabla/buscador de Figma en vez de
+	   coincidir con él. Forzar "flex" a ancho completo (100%) hace que
+	   ".dt-buttons" sí ocupe toda la fila, para que el "margin-left:auto" de
+	   abajo (primer botón tras "Agregar Filtro") pueda empujar ese segundo
+	   grupo hasta el borde derecho real. */
+	display: flex !important;
+	width: 100%;
 }
 
 div.dataTables_wrapper div.dt-buttons .btn,
@@ -3036,24 +3048,27 @@ div.dt-button-collection div.dropdown-menu a.dt-button.buttons-colvisRestore {
    Font Awesome vía ::before/::after en vez de tocar el JS de core.
 
    Figma coloca este botón como primer elemento de la MISMA fila que el
-   resto de botones de la tabla (nodo 12937:9102 "Botonería"), separado del
-   resto por un hueco mayor que el "gap" de 10px entre el resto de botones.
-   "resource-view-toolbar.js" mueve ".resource-view-filters" (documento
-   padre) al principio de ".dt-buttons" dentro del <iframe>, igual que ya
-   hace con "Pantalla completa"/"Incrustar". Se probó separarlo con
-   "margin-right:auto" (para no forzar "justify-content:space-between" en
-   ".dt-buttons", que rompería el "gap" del resto de botones), pero
-   ".dt-buttons" es "inline-flex" (se ajusta al ancho de su contenido): el
-   "auto" solo generaba hueco cuando el contenido, sin caber en una sola
-   línea, obligaba al navegador a fijar el ancho del contenedor al espacio
-   disponible en vez de a su ancho intrínseco — un hueco inconsistente según
-   el ancho de pantalla (a veces ausente). Se fija aquí un valor constante
-   en su lugar. */
+   resto de botones de la tabla (nodo 12937:9102 "Botonería"): dos grupos
+   claramente separados — "Agregar Filtro" pegado al borde izquierdo de la
+   tabla, y el resto (Pantalla completa/Incrustar + botones nativos +
+   buscador) pegado al borde derecho, con el hueco entre ambos creciendo o
+   encogiendo según el ancho disponible. "resource-view-toolbar.js" mueve
+   ".resource-view-filters" (documento padre) al principio de ".dt-buttons"
+   dentro del <iframe>, igual que ya hace con "Pantalla completa"/
+   "Incrustar".
+   Antes se separaba el segundo grupo con un "margin-right" fijo (50px) en
+   ESTE elemento, porque ".dt-buttons" era "inline-flex" (se ajusta al ancho
+   de su contenido) y un "margin-left:auto" en el primer botón del segundo
+   grupo no tenía espacio libre que repartir. Ahora que ".dt-buttons" ocupa
+   el 100% de la fila (ver regla ".dt-buttons.btn-group" más arriba), el
+   hueco lo genera un "margin-left:auto" en el primer botón tras este
+   elemento (ver más abajo, selector con "+"), que empuja todo el segundo
+   grupo hasta el borde derecho real de la tabla — un "margin-right" fijo
+   aquí ya no hace falta y solo restaría espacio disponible a ese empuje. */
 div.dataTables_wrapper div.dt-buttons .resource-view-filters {
 	display: inline-flex;
 	align-items: center;
 	flex: 0 0 auto;
-	margin-right: 50px;
 	/* El módulo JS de CKAN core "resource-view-filters" (fuera de este repo)
 	   le pone un "margin-bottom" propio (14px, convención genérica de
 	   "form-group"). Con ".dt-buttons" en "align-items:center" ese margen
@@ -3061,6 +3076,26 @@ div.dataTables_wrapper div.dt-buttons .resource-view-filters {
 	   el hueco de abajo empujaba el borde del botón hacia el límite
 	   superior de la fila en vez de centrarlo con el resto. */
 	margin-bottom: 0;
+}
+
+/* Empuja el SEGUNDO grupo (Pantalla completa/Incrustar + botones nativos +
+   buscador) hasta el borde derecho de ".dt-buttons" — que ahora coincide
+   con el borde derecho real de la tabla, ver regla ".dt-buttons.btn-group"
+   de arriba —, dejando "Agregar Filtro" pegado al borde izquierdo.
+   IMPORTANTE: "!important" es imprescindible aquí porque la regla genérica
+   "div.dataTables_wrapper div.dt-buttons .btn { margin-left: 0 !important;
+   ... }" (más arriba en este fichero, pensada para cancelar el solape de
+   ".btn-group" clásico de Bootstrap) también matchea este mismo botón
+   (".btn.resource-view-toolbar-btn" es a la vez ".btn") y sin un
+   "!important" propio aquí ese "margin-left:0" gana siempre, sin importar
+   la especificidad del selector — un "!important" sólo puede ganarle a
+   otro "!important", nunca a una regla no-"!important" por más específica
+   que sea. Confirmado en DevTools (panel Elements, el hijo inmediato de
+   ".resource-view-filters" llevaba "margin-left:0" heredado de la regla
+   genérica pese al "margin-left:auto" de aquí, mientras no tuviera su
+   propio "!important"). */
+div.dataTables_wrapper div.dt-buttons .resource-view-filters + .btn.resource-view-toolbar-btn {
+	margin-left: auto !important;
 }
 
 /* "gap"/"padding" reducidos frente a la medida original de Figma (8px/10px)
