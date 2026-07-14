@@ -1905,30 +1905,6 @@ h1.dataset-title {
 	text-transform: none;
 }
 
-/* --- ZONA 7c: Acordeón "Diccionario de datos" (dictionary_view), plegado por defecto --- */
-.dictionary-accordion-summary {
-	cursor: pointer;
-	list-style: none;
-	justify-content: space-between;
-}
-
-.dictionary-accordion-summary::-webkit-details-marker {
-	display: none;
-}
-
-summary.dictionary-accordion-summary > i.dictionary-accordion-icon {
-	display: inline-block;
-	transition: transform 0.25s;
-}
-
-.dictionary-accordion[open] > .dictionary-accordion-summary .dictionary-accordion-icon {
-	transform: rotate(180deg);
-}
-
-.dictionary-accordion table {
-	margin-top: 15px;
-}
-
 /* --- ZONA 8-9: Tabla metadatos — cabecera y columna "Campo" --- */
 .additional-info table thead tr th,
 .additional-info table th.dataset-label,

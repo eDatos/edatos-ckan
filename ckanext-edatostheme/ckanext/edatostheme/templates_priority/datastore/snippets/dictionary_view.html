@@ -10,45 +10,41 @@
   look, keeping the Label/Description extra info (when an editor has set
   it) as secondary text under the type instead of inside a per-field
   collapsible panel. The field list itself can run to dozens of rows for
-  wide statistical cubes, so the whole table sits behind a native
-  <details> disclosure (collapsed by default) rather than always pushing
-  the real "Metadatos" (Campo/Valor) table further down the page.
+  wide statistical cubes, so rows past the first 3 get the "toggle-more"
+  class and the table gets data-module="table-toggle-more" — the same
+  core CKAN mechanism already used by the "Metadatos" (Campo/Valor) table
+  below it, showing a "Mostrar más" link instead of dumping the full list.
 #}
 {% block dictionary_view %}
   <div class="module-content">
-    <details class="dictionary-accordion">
-      <summary class="module-heading dictionary-accordion-summary">
-        {{ _('Diccionario de datos') }}
-        <i class="fa fa-chevron-down dictionary-accordion-icon" aria-hidden="true"></i>
-      </summary>
-      <table class="table table-bordered table-condensed">
-        <thead>
-          <tr>
-            <th scope="col">{{ _('Field') }}</th>
-            <th scope="col">{{ _('Type') }}</th>
+    <div class="module-heading">{{ _('Diccionario de datos') }}</div>
+    <table class="table table-bordered table-condensed" data-module="table-toggle-more">
+      <thead>
+        <tr>
+          <th scope="col">{{ _('Field') }}</th>
+          <th scope="col">{{ _('Type') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for field in ddict %}
+          {% set field_type %}{% block dictionary_field_type scoped %}{{ field.type }}{% endblock %}{% endset %}
+          {% set label = h.get_translated(field.get('info', {}), 'label') %}
+          {% set notes = h.render_markdown(h.get_translated(field.get('info', {}), 'notes')) %}
+          <tr{% if loop.index > 3 %} class="toggle-more"{% endif %}>
+            <th scope="row">{{ label or field.id }}</th>
+            <td>
+              {{ field_type }}
+              {% if label and label != field.id %}
+                <div class="text-muted small">{{ _('ID') }}: {{ field.id }}</div>
+              {% endif %}
+              {% if notes %}
+                <div class="text-muted small">{{ notes }}</div>
+              {% endif %}
+              {% block dictionary_field_extras scoped %}{% endblock %}
+            </td>
           </tr>
-        </thead>
-        <tbody>
-          {% for field in ddict %}
-            {% set field_type %}{% block dictionary_field_type scoped %}{{ field.type }}{% endblock %}{% endset %}
-            {% set label = h.get_translated(field.get('info', {}), 'label') %}
-            {% set notes = h.render_markdown(h.get_translated(field.get('info', {}), 'notes')) %}
-            <tr>
-              <th scope="row">{{ label or field.id }}</th>
-              <td>
-                {{ field_type }}
-                {% if label and label != field.id %}
-                  <div class="text-muted small">{{ _('ID') }}: {{ field.id }}</div>
-                {% endif %}
-                {% if notes %}
-                  <div class="text-muted small">{{ notes }}</div>
-                {% endif %}
-                {% block dictionary_field_extras scoped %}{% endblock %}
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </details>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
 {% endblock %}
