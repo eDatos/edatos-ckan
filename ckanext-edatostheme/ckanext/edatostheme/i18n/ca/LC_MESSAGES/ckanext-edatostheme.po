@@ -3207,6 +3207,10 @@ msgstr "Informació addicional"
 msgid "Metadatos"
 msgstr "Metadades"
 
+#: ckanext/edatostheme/templates_priority/datastore/snippets/dictionary_view.html
+msgid "Diccionario de datos"
+msgstr "Diccionari de dades"
+
 #: ckan/templates/package/resource_read.html:179
 #: ckan/templates/package/snippets/additional_info.html:6
 #: ckan/templates/snippets/additional_info.html:11

@@ -3783,6 +3783,10 @@ msgstr "Metadatos"
 msgid "Metadatos"
 msgstr "Metadatos"
 
+#: ckanext/edatostheme/templates_priority/datastore/snippets/dictionary_view.html
+msgid "Diccionario de datos"
+msgstr "Diccionario de datos"
+
 #: ckan/templates/package/resource_read.html:148
 #: ckan/templates/package/snippets/additional_info.html:6
 #: ckan/templates/revision/diff.html:43
