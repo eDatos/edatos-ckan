@@ -14,4 +14,19 @@
    {% if edatos_css_url %}
      <link rel="stylesheet" href="{{ edatos_css_url }}">
    {% endif %}
+   {# Font Awesome PRO (peso "Light", usado por los iconos de la barra de
+      DataTables Buttons en la vista de recurso -- ver comentario de
+      "ensureFontAwesomeProInIframe" en resource-view-toolbar.js). Antes solo
+      se inyectaba por JS dentro del <iframe> cuando la página del recurso
+      (resource_view.html) lo orquestaba desde el documento padre; al abrir
+      la URL "/dataset/<pkg>/resource/<id>/view/<view_id>" directamente (sin
+      pasar por esa página, p.ej. tras compartir el enlace o recargar solo el
+      iframe -- ver mismo comentario), esa inyección nunca se ejecutaba y los
+      botones se quedaban como cuadros vacíos, sin icono. Puesto aquí en
+      "base.html" cubre ambos casos, igual que "edatos_css_url" arriba (razón
+      documentada en el mismo bloque). Mismo "id" que usa el "getElementById"
+      de "ensureFontAwesomeProInIframe" para que esa función detecte que ya
+      está presente y no la duplique cuando además la mueve/reintenta desde
+      el documento padre. #}
+   <link rel="stylesheet" id="edatos-fontawesome-pro" href="https://estadisticas.arte-consultores.com/apps/assets/css/fontawesome/all.min.css">
 {% endblock %}

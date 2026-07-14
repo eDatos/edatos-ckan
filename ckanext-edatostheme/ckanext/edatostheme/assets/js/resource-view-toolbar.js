@@ -716,6 +716,67 @@
       }
     }
 
+    /* Si la URL de la vista ("/dataset/<pkg>/resource/<id>/view/<view_id>")
+       se carga SOLA -- top-level, sin el <iframe> que normalmente la envuelve
+       (enlace compartido/guardado directamente, o la propia página recargándose
+       vía el botón "Table/List toggle", ver comentario grande más abajo sobre
+       "window.location.reload()") -- no hay documento padre que orqueste el
+       traslado del buscador dentro de ".dt-buttons": el resto de este listener
+       corta en seco en el "return" de abajo porque ni ".resource-view .actions"
+       ni el <iframe> existen en este documento. Sin ese traslado, el buscador
+       ("Buscar:") se queda en su fila propia (con su etiqueta e input) en vez
+       de fusionado en la fila de botones como pide Figma (nodo 12937:9102
+       "Botonería") -- confirmado por el usuario comparando contra la misma
+       vista servida dentro del <iframe> real.
+       Se reutiliza la misma "moveButtonsIntoDtButtons", pasándole el propio
+       "document" (sin "adoptNode" cross-documento -- ya es el documento
+       correcto) y sin botones "Pantalla completa"/"Incrustar" ni "Agregar
+       Filtro" (ninguno de los dos existe fuera del documento padre --
+       "Agregar Filtro" queda fuera de esta página por diseño, ver adenda
+       correspondiente en docs/theming-resource-view-buttons.md). La función
+       ya tolera "null"/array vacío para ambos (los usos existentes, más
+       arriba, ya la llaman así cuando "filtersContainer" todavía no está
+       listo).
+       "window.self === window.top" (en vez de comprobar solo "!iframe", que
+       también sería "null" DENTRO del propio <iframe> cuando SÍ hay un
+       documento padre orquestando -- ahí este mismo script se ejecuta OTRA
+       VEZ, como copia separada cargada por el <iframe> vía su propio
+       "base.html", y no queremos duplicar ahí el traslado que ya hace el
+       padre) distingue de forma fiable "soy la ventana de nivel superior" de
+       "soy un <iframe> anidado dentro de otro documento".
+       ".dt-buttons.btn-group" lo crea en tiempo de ejecución el vendor
+       (ckanext-datatablesview) al inicializar DataTables -- puede no existir
+       todavía en "DOMContentLoaded" -- así que se reintenta con un
+       "MutationObserver" sobre "<body>", mismo patrón que ya usa
+       "tryAttachObserver" más abajo para el caso con <iframe>, en vez de un
+       número fijo de reintentos. */
+    if (window.self === window.top) {
+      var handleStandaloneDtButtons = function (dtButtons) {
+        if (moveButtonsIntoDtButtons(document, [], null)) {
+          /* Marca este documento para que "custom.css" pueda dar aire entre
+             la botonera y el borde superior del navegador SOLO en esta ruta
+             (en el <iframe> real, ese margen ya lo da el layout de la página
+             del recurso que lo envuelve -- añadirlo también ahí duplicaría
+             espacio no pedido). */
+          document.documentElement.classList.add('edatos-standalone-dt-view');
+          return true;
+        }
+        return false;
+      };
+      var standaloneDtButtons = document.querySelector('.dt-buttons.btn-group');
+      if (standaloneDtButtons) {
+        handleStandaloneDtButtons(standaloneDtButtons);
+      } else if (document.body) {
+        var standaloneObserver = new MutationObserver(function () {
+          var dtButtons = document.querySelector('.dt-buttons.btn-group');
+          if (dtButtons && handleStandaloneDtButtons(dtButtons)) {
+            standaloneObserver.disconnect();
+          }
+        });
+        standaloneObserver.observe(document.body, { childList: true, subtree: true });
+      }
+    }
+
     if (!actions || !iframe) {
       return;
     }

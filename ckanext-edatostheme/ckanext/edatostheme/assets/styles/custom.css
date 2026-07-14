@@ -2810,6 +2810,47 @@ div.dataTables_wrapper div.dt-buttons #filterinfoicon {
 	display: none;
 }
 
+/* "Buscar:" (".dataTables_filter"/"#dtprv_filter") solapado con "Mostrando X
+   registros" (".dataTables_info") al abrir la URL "/view/<id>" directamente,
+   sin pasar por "resource_view.html" -- ver Adenda "iconos... invisibles" en
+   la documentación de este componente (docs/theming-resource-view-buttons.md)
+   para el diagnóstico completo del mismo problema de fondo (recursos que solo
+   se inyectan/mueven cuando el documento padre orquesta el <iframe>).
+   "resource-view-toolbar.js" corta en seco (`if (!actions || !iframe) return;`)
+   si no encuentra ".resource-view .actions"/el <iframe> -- ninguno existe en
+   la carga standalone -- así que ".dataTables_filter" nunca se mueve dentro de
+   ".dt-buttons" (la regla de arriba, con ese descendiente, no llega a
+   matchear) y se queda como hijo DIRECTO de ".dataTables_wrapper", con el
+   "float:right; margin-top:-1.4em" original del vendor
+   ("#dtprv_filter", ID -- de ahí el "!important" aquí, para no depender de
+   ganar por especificidad). Ese margen negativo asumía compartir fila con
+   ".dataTables_info" mediante flotados clásicos de Bootstrap; en nuestro
+   "display:flex;flex-direction:column" ya no comparten fila (son dos
+   elementos flex distintos, uno debajo del otro), así que el margen negativo
+   solo consigue que "Buscar:" se solape por encima de "Mostrando...". */
+div.dataTables_wrapper > div.dataTables_filter {
+	float: none !important;
+	margin-top: 0 !important;
+}
+
+/* "resource-view-toolbar.js" ahora también traslada el buscador dentro de
+   ".dt-buttons" cuando la página se carga standalone (ver bloque
+   "window.self === window.top" en ese fichero) -- la regla de arriba se
+   queda como red de seguridad (si JS no llega a ejecutarse) para cuando
+   ".dataTables_filter" sigue siendo hijo directo de ".dataTables_wrapper". */
+
+/* Aire entre la botonera y el borde superior del navegador cuando la vista
+   se carga standalone (sin el <iframe> que la envuelve, y por tanto sin el
+   padding/margen que ya aporta el layout de la página del recurso
+   -- "resource_view.html" -- alrededor de ese <iframe>). El propio JS marca
+   este caso con la clase "edatos-standalone-dt-view" en "<html>" (mismo
+   bloque que traslada el buscador, arriba) para no aplicar este margen
+   también dentro del <iframe> real, donde duplicaría el espacio que ya
+   existe. */
+html.edatos-standalone-dt-view div.dataTables_wrapper div.dt-buttons {
+	margin-top: var(--edatos-spacing-y-lg, 16px);
+}
+
 /* --- Resource view: panel "ocultar columnas"/"descargar" (dt-button-collection) ---
    Los botones ".buttons-collection" ("ocultar columnas" -- icono
    "fa-eye-slash" -- y "descargar") abren un panel flotante propio de
