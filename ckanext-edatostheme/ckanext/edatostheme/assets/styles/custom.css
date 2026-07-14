@@ -2810,6 +2810,178 @@ div.dataTables_wrapper div.dt-buttons #filterinfoicon {
 	display: none;
 }
 
+/* --- Resource view: panel "ocultar columnas"/"descargar" (dt-button-collection) ---
+   Los botones ".buttons-collection" ("ocultar columnas" -- icono
+   "fa-eye-slash" -- y "descargar") abren un panel flotante propio de
+   DataTables Buttons ("div.dt-button-collection", position:fixed calculado
+   por su propio JS, FUERA de ".dt-buttons") con la lista de columnas/
+   formatos como "<a class="dt-button dropdown-item ...">" DIRECTOS (sin
+   "<li>" envolvente, a diferencia del resto de dropdowns del sitio --
+   OPCIONES/wrench/Vistas/Agregar Filtro -- que sí usan "<li><a>"), así que
+   ninguna regla genérica ".dropdown-menu li a" les llega. Además el propio
+   vendor (ckanext-datatablesview, hoja "datatablesview.css") fija su propio
+   fondo/radio/sombra en "div.dt-button-collection" (blanco liso) y pone
+   "background-color: transparent" en "div.dt-button-collection
+   div.dropdown-menu" con la MISMA especificidad que nuestra regla genérica
+   ".dropdown-menu" (0,1,0) -- como esa hoja se carga DESPUÉS que
+   "edatostheme_css" en "base.html" (mismo problema ya documentado para
+   ".dataTables_info"/"table.dataTable"), gana el empate y el panel se queda
+   sin el lenguaje visual del resto de desplegables (fondo de color, filas
+   con padding/radio/hover). Selectores exactamente igual de específicos que
+   los del vendor (o más), para no depender del orden de carga. */
+/* "!important" en las 4 declaraciones: con especificidad empatada
+   (0,1,1) frente a la regla del vendor, gana quien cargue después --
+   "datatablesview.css" se carga DESPUÉS que "edatostheme_css" en
+   "base.html", así que sin "!important" el vendor ganaba box-shadow/
+   padding/background/border (confirmado con getComputedStyle: shadow y
+   padding caían al valor del vendor pese a que el radio, por coincidencia,
+   parecía el nuestro -- lo daba en realidad la variante MÁS específica
+   "div.dt-button-collection.fixed" del vendor, que solo fija radio y no
+   pisa box-shadow/padding). El panel de "ocultar columnas" (colvis) recibe
+   además la clase ".fixed" en tiempo de ejecución (posicionamiento
+   "position:fixed" de DataTables Buttons), lo que sube aún más la
+   especificidad del vendor (0,2,1) por encima de la nuestra si no se usa
+   "!important". Fondo azul también aquí (no solo en ".dropdown-menu" de
+   abajo) para que no asome el blanco del vendor en el padding entre el
+   borde redondeado exterior y el contenido -- ver bloque siguiente. */
+/* "width: auto !important": el vendor fija "width: 218px" fijo en este
+   mismo selector, pero las etiquetas de columna más largas (p. ej.
+   "CONFIDENCIALIDAD_OBSERVACION#es") miden ~310px de ancho con
+   "white-space: nowrap" -- más que esos 218px. El "<div class="dropdown-
+   menu">" interior (con "min-width: 100%" del vendor) termina más ancho
+   que el contenedor exterior fijo, así que el texto/fondo de las filas se
+   desborda fuera de la caja azul redondeada en vez de quedar contenido en
+   ella (visible como texto sin fondo azul debajo, "flotando" sobre la
+   tabla). Con "width: auto" el exterior pasa a "shrink-to-fit" (es
+   "position:fixed"/"absolute" sin "right" fijado) y se ajusta al ancho
+   real del contenido, igual que ya hace de forma natural el panel de
+   "descargar" (etiquetas cortas, nunca desborda). */
+div.dt-button-collection {
+	background-color: var(--edatos-color-secondary-100, #004678) !important;
+	border: none !important;
+	border-radius: var(--edatos-border-radius-sm, 5px) !important;
+	box-shadow: var(--shadow-dropdown, 0 2px 8px rgba(0, 0, 0, 0.12)) !important;
+	padding: var(--edatos-spacing-y-xs, 6px) !important;
+	width: auto !important;
+}
+
+/* "!important" en "max-height"/"overflow-y": el panel de "ocultar
+   columnas" (colvis, 15 filas) es más alto que el hueco disponible bajo el
+   botón, así que DataTables Buttons le añade la clase ".fixed" (overlay
+   centrado en el viewport en vez de ancla bajo el botón -- ver comentario
+   de la regla ".fixed" en el bloque de arriba). El vendor trae una regla
+   EXTRA solo para ese caso, más específica que la nuestra:
+   "div.dt-button-collection.fixed > :last-child { max-height: 100vh;
+   overflow: auto; }" (0,3,0 por la pseudo-clase ":last-child", frente a
+   nuestro 0,2,2) -- gana sin "!important" y anula el recorte a 260px,
+   dejando que el panel crezca a su altura completa (~491px). DataTables
+   calcula el "margin-top" de centrado (mitad de la altura medida, negativo)
+   ANTES de que exista este override, así que con el panel más alto de lo
+   previsto el resultado queda con el borde superior recortado por encima
+   del viewport del iframe (parte del panel invisible, sin aire respecto al
+   marco de la tabla). Con "!important" aquí, el recorte a 260px + scroll
+   interno se aplica siempre, DataTables mide una altura mucho menor y
+   calcula un margen de centrado que deja el panel entero dentro del
+   viewport. El panel de "descargar" (sin ".fixed", 4 filas) no se ve
+   afectado por este bug -- nunca alcanza el límite de 260px. */
+div.dt-button-collection div.dropdown-menu {
+	background-color: transparent !important;
+	border-radius: var(--edatos-border-radius-sm, 5px);
+	max-height: 260px !important;
+	overflow-y: auto !important;
+	scrollbar-width: thin;
+	scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
+}
+
+div.dt-button-collection div.dropdown-menu::-webkit-scrollbar {
+	width: 8px;
+}
+
+div.dt-button-collection div.dropdown-menu::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+div.dt-button-collection div.dropdown-menu::-webkit-scrollbar-thumb {
+	background-color: rgba(255, 255, 255, 0.5);
+	border-radius: var(--border-radius-sm, 4px);
+}
+
+/* Filas del panel: mismo patrón de "píldora redondeada con hover claro" que
+   ".dropdown-menu li a" usa en el resto del sitio, adaptado a que aquí no
+   hay "<li>" (el propio "<a class="dropdown-item">" es hijo directo). */
+div.dt-button-collection div.dropdown-menu a.dt-button.dropdown-item {
+	display: flex;
+	align-items: center;
+	gap: var(--edatos-spacing-x-sm, 8px);
+	width: auto;
+	padding: var(--spacing-xs) var(--spacing-sm);
+	margin: 3px var(--spacing-xs);
+	border-radius: var(--border-radius-sm);
+	color: var(--edatos-color-white-100, #FFF) !important;
+	background-color: transparent !important;
+	font-size: var(--edatos-font-size-sm);
+	font-weight: var(--edatos-font-weight-light);
+	white-space: nowrap;
+}
+
+div.dt-button-collection div.dropdown-menu a.dt-button.dropdown-item i {
+	width: 16px;
+	flex-shrink: 0;
+	text-align: center;
+	font-size: var(--edatos-font-size-sm);
+}
+
+/* Columnas del colvis: sin "<i>" propio -- se simula el mismo par de iconos
+   "eye"/"eye-slash" que ya usan las filas "Show all"/"Show none" de abajo,
+   para que se distinga a simple vista qué columnas están visibles ahora
+   (".active", puesto por DataTables Buttons) de las ocultas. */
+div.dt-button-collection div.dropdown-menu a.dt-button.buttons-columnVisibility::before {
+	width: 16px;
+	flex-shrink: 0;
+	text-align: center;
+	font-family: "Font Awesome 6 Free";
+	font-weight: 400;
+	content: "\f070";
+}
+
+div.dt-button-collection div.dropdown-menu a.dt-button.buttons-columnVisibility.active::before {
+	font-weight: 900;
+	content: "\f06e";
+}
+
+/* Bootstrap pinta ".dropdown-item.active" con un fondo propio (variable
+   "--bs-dropdown-link-active-bg" de este bundle, un teal ajeno al tema) --
+   se cancela para que la única marca de "columna visible" sea el icono de
+   arriba, igual que el resto de filas del panel. */
+div.dt-button-collection div.dropdown-menu a.dt-button.buttons-columnVisibility.active {
+	background-color: transparent !important;
+	font-weight: var(--edatos-font-weight-semibold);
+}
+
+/* Hover/focus, para CUALQUIER fila (incluidas las ".active" de arriba):
+   misma especificidad (5 clases, 3 tags) + "!important" que la regla
+   ".buttons-columnVisibility.active" de encima -- en un empate exacto gana
+   la que aparece DESPUÉS en la hoja, así que esta regla debe ir aquí, tras
+   el reset de "active", para que el hover siga pintándose incluso sobre una
+   columna ya visible (si fuera al revés, "active" congelaría el fondo en
+   transparente sin importar el estado de hover). */
+div.dt-button-collection div.dropdown-menu a.dt-button.dropdown-item:hover,
+div.dt-button-collection div.dropdown-menu a.dt-button.dropdown-item:focus {
+	background-color: var(--edatos-color-primary-5, #e5ecf1) !important;
+	color: var(--edatos-color-primary-100, #004678) !important;
+}
+
+/* Separador visual antes del bloque de acciones ("Restore visibility"/
+   "Show all"/"Show none"/"Filtered"), que ya vienen con su propio icono
+   Font Awesome ("fa-undo"/"fa-eye"/"fa-eye-slash"/"fa-filter") puesto por
+   el propio vendor -- solo hace falta que hereden el color/tamaño de la
+   regla ".dt-button.dropdown-item i" de arriba. */
+div.dt-button-collection div.dropdown-menu a.dt-button.buttons-colvisRestore {
+	margin-top: var(--edatos-spacing-y-xs, 6px);
+	border-top: 1px solid var(--ckan-divider-on-dark);
+	padding-top: var(--edatos-spacing-y-sm, 8px);
+}
+
 /* --- Resource view: botón "Agregar Filtro" ---
    Figma (nodos 12937:9102 / 12941:9388 "BotonDesplegableM") define este
    botón con icono "filter", texto y icono "angle-down" (chevron), con
@@ -3270,6 +3442,7 @@ div.dataTables_wrapper {
    propia del margen. */
 div.dataTables_wrapper div.dataTables_length {
 	order: 1;
+	margin-top: var(--edatos-spacing-y-xs, 6px);
 }
 
 div.dataTables_wrapper div.dataTables_paginate {
