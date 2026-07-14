@@ -2030,10 +2030,23 @@ h1.dataset-title {
    genérica ".module" del core de CKAN); sin superar ese valor aquí, se pinta
    por encima y tapa el dropdown-menu del wrench cuando este se despliega
    (su position:absolute se sale de los ~289px del sidebar). */
+/* El "margin-left:10px" genérico de ".row.wrapper > .secondary" (línea ~1995,
+   pensado para la sidebar de facetas de la búsqueda de datasets) suma un
+   hueco extra a la izquierda del sidebar aquí, por encima del padding
+   estándar de la card -- Figma (nodo 12933:7928) no lo contempla: el sidebar
+   debe arrancar en el mismo padding que el resto de la card, y el hueco de
+   20px va hacia el título/tabla (a su derecha), no a la izquierda. Se anula
+   ese margen y se añade "margin-right" (token "--edatos-spacing-x-sm" del
+   sistema de diseño, en vez del 10px suelto que ya usa el "gap" genérico de
+   ".row.wrapper" para el mismo valor) para llevar el hueco hacia el
+   título/tabla a los 20px de Figma solo en esta página. Ver
+   specs/fix-resource-view-formats-sidebar-alignment.md */
 .row.wrapper > .module-resource ~ .secondary {
 	order: -1;
 	position: relative;
 	z-index: 6;
+	margin-left: 0;
+	margin-right: var(--edatos-spacing-x-sm, 10px);
 }
 
 .row.wrapper > .module-resource ~ .primary {
