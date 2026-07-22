@@ -1805,6 +1805,8 @@ h1.dataset-title {
 	gap: 15px;
 	padding: 20px;
 	background: var(--edatos-color-gray-5, #F2F2F2);
+	border-radius: 0 0 var(--edatos-border-radius-sm, 5px) var(--edatos-border-radius-sm, 5px); /* exacto: 0.3125rem = 5px, coherente con el radio superior de section#dataset-resources > h2 */
+	overflow: hidden;
 }
 
 #dataset-resources li.resource-item {
@@ -2114,6 +2116,7 @@ section#dataset-resources > h2 {
 	flex-flow: row nowrap;
 	justify-content: space-between;
 	align-items: center;
+	gap: var(--edatos-spacing-x-lg);
 }
 
 #dataset-resources li.resource-item .btn-group {
