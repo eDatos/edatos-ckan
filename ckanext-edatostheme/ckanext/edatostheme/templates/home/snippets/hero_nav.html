@@ -14,7 +14,7 @@
             {{ _('Datasets-home') }}
           </a>
         </li>
-        <li class="{{ 'active' if '/showcase' in request.path else '' }}">
+        <li class="{{ 'active' if '/showcase' in request.path and '/dataset/' not in request.path else '' }}">
           <a class="btn-datasets" href="{{ h.url_for('/showcase') }}" title="{{ _('Showcases') }}">
             {{ _('Showcases') }}
           </a>
