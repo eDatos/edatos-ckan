@@ -2129,11 +2129,22 @@ section#dataset-resources > h2 {
 	background-color: var(--color-gray-light);
 }
 
-/* --- Metadatos table: borde exterior + estructura --- */
+/* --- Metadatos table: borde exterior + estructura ---
+   El borde vive en el mismo elemento que el border-radius (igual que
+   .dataset-edit-secondary) para que la esquina se dibuje curvada sobre el
+   propio trazo del borde. Antes solo existía el recorte (overflow:hidden)
+   sin ningún borde visible en el contenedor: el cierre dependía de los
+   bordes de las celdas de la última fila, en gray-5 (#F2F2F2), el mismo
+   color que el fondo de la página, así que era invisible y la esquina se
+   veía "abierta". Sin border-top: la cabecera azul ya cierra esa zona con
+   su propio fondo sólido. */
 section.module.additional-info {
 	border-radius: 0 0 5px 5px;
 	overflow: hidden;
 	margin-right: 0;
+	border-left: 1px solid var(--edatos-color-gray-20, #CCCCCC);
+	border-right: 1px solid var(--edatos-color-gray-20, #CCCCCC);
+	border-bottom: 1px solid var(--edatos-color-gray-20, #CCCCCC);
 }
 
 section.module.additional-info .module-content table,
