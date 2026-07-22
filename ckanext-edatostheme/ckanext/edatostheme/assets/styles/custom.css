@@ -4444,6 +4444,27 @@ li.showcase-card {
     padding: 10px;
 }
 
+/* El enlace de licencia cuelga directamente de <p class="module-content">
+   (único caso en el proyecto que hace esto), así que hereda el padding:10px
+   de la regla genérica de arriba. Eso añadía 10px extra solo a este enlace,
+   desalineando su texto respecto al resto de bloques del sidebar (Compartir),
+   que no llevan ese padding adicional. */
+.license .module-content > a,
+.license .module-content > span {
+    padding: 0;
+}
+
+/* El padding-top compartido (5px, en la regla de abajo) se queda corto
+   frente al hueco visual que tiene "Compartir" bajo su cabecera (ahí el
+   propio enlace centra su contenido en una fila de 35px vía
+   align-items:center). En vez de replicar ese mecanismo (afectaría también
+   a la otra caja module-shallow que reusa la regla de abajo, la ayuda de
+   "¿Qué son las categorías?"), se sube el padding-top solo para licencia con
+   un valor fijo. */
+.license .module-content {
+    padding-top: var(--edatos-spacing-y-sm, 8px);
+}
+
 /* Aviso legal: contenido de la sección licencia */
 .showcase-detail-sidebar .module.module-narrow.module-shallow .module-content {
 	display: flex;
