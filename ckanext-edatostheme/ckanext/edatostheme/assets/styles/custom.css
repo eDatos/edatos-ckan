@@ -995,18 +995,6 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	color: var(--edatos-color-secondary-100);
 }
 
-.counter-box {
-	padding-bottom: 80px;
-}
-
-.count-all-datasets h1 {
-	text-align: center;
-	color: var(--color-gray-dark);
-	margin: 0;
-	padding: var(--spacing-md);
-	background-color: var(--color-white);
-}
-
 
 .media-item.group-home-item {
 	position: relative;
