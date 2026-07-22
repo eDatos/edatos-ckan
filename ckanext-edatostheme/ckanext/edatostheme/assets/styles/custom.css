@@ -3761,6 +3761,17 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 	border-bottom-color: transparent;
 }
 
+/* Item activo: ocultar su propia línea inferior y la del item anterior
+   (misma línea que separa ambos), igual que en el sidebar de filtros
+   de búsqueda (ver ZONA 8b) */
+.module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item.active {
+	border-bottom-color: transparent;
+}
+
+.module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item:has(+ .nav-item.active) {
+	border-bottom-color: transparent;
+}
+
 /* --- Item de recurso activo: forma de flecha --- */
 .module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item.active a {
 	background-color: var(--edatos-color-primary-50, #4D7EA0);
