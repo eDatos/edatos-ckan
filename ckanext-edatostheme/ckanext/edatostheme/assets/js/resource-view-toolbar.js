@@ -1,6 +1,104 @@
 (function () {
   'use strict';
 
+  /* Prueba de concepto acotada a UN ÚNICO recurso -- ver
+     "specs/investigacion-scroll-lateral-resource-view-datatable.md". Este
+     mismo módulo se aplica a TODAS las vistas "datatables_view" del portal;
+     desactivar el colapso responsive (el icono "+" que oculta columnas en
+     pantallas estrechas) en recursos con muchas columnas o en móvil
+     empeoraría esas otras tablas, así que el cambio se acota a este
+     "resourceId" mientras se valida, en vez de generalizarse de entrada. */
+  var EDATOS_SCROLLX_POC_RESOURCE_ID = 'bfe4de48-d84f-4578-a991-728770bf71cb';
+
+  /* El vendor (ckanext-datatablesview, fuera de este repo) inicializa
+     DataTables con "responsive:true" y sin "scrollX" (solo "scrollY:400"
+     para el scroll vertical) -- ver la investigación referenciada arriba.
+     Con esa configuración, DataTables jamás deja que la tabla desborde el
+     ancho disponible: en vez de un scroll horizontal, la extensión
+     Responsive oculta columnas de baja prioridad tras el icono "+" de cada
+     fila, recalculando en cada resize/redraw. No hay overflow horizontal al
+     que aplicarle un estilo de scrollbar -- hay que reconfigurar la propia
+     instancia. DataTables no admite cambiar "responsive"/"scrollX" sobre una
+     tabla ya inicializada: solo destruyéndola y reconstruyéndola con otras
+     opciones ("destroy:true" + nuevo objeto de configuración), reutilizando
+     el resto de "oInit" (columnas, "ajaxurl", "scrollY", botones...) tal
+     cual lo dejó el vendor, para no perder nada de lo ya configurado. */
+  function enableRealScrollXForResource(iframeDoc, iframeWin, resourceId) {
+    if (resourceId !== EDATOS_SCROLLX_POC_RESOURCE_ID) {
+      return;
+    }
+    /* Idempotente por documento de iframe (no por "resourceId"): cada
+       recarga interna del iframe (alternar tabla/lista) crea un documento
+       nuevo, que necesita su propia reconfiguración -- igual que
+       "lastHandledDoc" más abajo en este fichero para el traslado de
+       botones. */
+    if (iframeDoc.__edatosScrollXApplied) {
+      return;
+    }
+    var jq = iframeWin.jQuery;
+    if (!jq || !jq.fn || !jq.fn.dataTable) {
+      return;
+    }
+    var table = jq('.dataTable', iframeDoc).eq(0);
+    if (!table.length || !jq.fn.dataTable.isDataTable(table[0])) {
+      /* Todavía no ha terminado de inicializarse (mismo problema de timing
+         que ".dt-buttons" más abajo) -- el llamante reintenta en el
+         siguiente "load"/tick del poll de respaldo. */
+      return;
+    }
+    /* "table.DataTable().settings()[0]" devuelve "undefined" de forma
+       intermitente en esta versión de DataTables (comprobado en consola:
+       unas veces da el objeto de ajustes real, otras no) -- en cambio
+       "$.fn.dataTable.settings" (el array plano y global de instancias
+       activas, sin pasar por el envoltorio "Api" de "settings()") funcionó
+       de forma consistente en todas las pruebas. Se busca ahí la entrada
+       cuyo "nTable" (el <table> real que gestiona, propiedad interna
+       estándar de DataTables) sea el nodo actual. */
+    var allSettings = jq.fn.dataTable.settings;
+    var settings = null;
+    for (var i = 0; i < allSettings.length; i += 1) {
+      if (allSettings[i].nTable === table[0]) {
+        settings = allSettings[i];
+        break;
+      }
+    }
+    if (!settings) {
+      return;
+    }
+    /* Marcado ANTES de destruir/reconstruir: la reconstrucción dispara
+       mutaciones en "<body>" que el "MutationObserver" de más abajo
+       (compartido con el traslado de botones) también observa -- sin este
+       guard, cada una de esas mutaciones volvería a intentar (e
+       idealmente no debería) reconfigurar la tabla otra vez. */
+    iframeDoc.__edatosScrollXApplied = true;
+    var config = jq.extend(true, {}, settings.oInit);
+    config.responsive = false;
+    config.scrollX = true;
+    config.destroy = true;
+    var newDt = table.DataTable(config);
+    /* Ninguna columna trae "visible:false" en "oInit.columns" (confirmado
+       inspeccionando la config real) -- las que aparecían ocultas antes de
+       este cambio lo estaban por el estado guardado de "stateSave" (activo
+       en el propio "oInit"), no por configuración. Se fuerzan visibles
+       aquí, ignorando ese estado guardado, para que el ancho real de la
+       tabla (y por tanto el scroll horizontal) incluya siempre todas las
+       columnas con datos -- si el usuario oculta alguna a mano después
+       (colvis), "stateSave" la recordará para esa sesión/navegador, pero
+       cada carga nueva de esta página vuelve a mostrarlas todas. Se excluye
+       la columna auxiliar sin datos que usa Responsive para la fila de
+       detalle (className "none", sin nombre) -- ya no cumple ninguna
+       función con "responsive:false", mostrarla añadiría una columna vacía
+       al final de la tabla. */
+    newDt.columns().every(function () {
+      var header = this.header();
+      if (header && header.className === 'none') {
+        return;
+      }
+      this.visible(true, false);
+    });
+    newDt.columns.adjust();
+  }
+
   /* Figma (nodos 12941:9388 / 12941:9440 "Botonería") pide los iconos de
      estos botones en peso "Light" (Font Awesome 6 PRO), pero el <iframe> de
      la vista lo genera la extensión vendored ckanext-datatablesview (fuera
@@ -696,6 +794,14 @@
     var filtersContainer = document.querySelector('.resource-view-filters');
     var iframe = document.querySelector('iframe[data-module="data-viewer"]');
 
+    /* Se lee de la URL ("/dataset/<pkg>/resource/<uuid>/...") en vez de
+       "filtersContainer.getAttribute('data-module-resource-id')" porque ese
+       atributo solo existe si ".resource-view-filters" está presente -- la
+       comprobación de "EDATOS_SCROLLX_POC_RESOURCE_ID" debe poder hacerse
+       igual aunque ese contenedor no exista en la página. */
+    var currentResourceIdMatch = window.location.pathname.match(/\/resource\/([0-9a-fA-F-]{36})/);
+    var currentResourceId = currentResourceIdMatch ? currentResourceIdMatch[1] : null;
+
     /* "setupCustomFilterPanel" necesita que CKAN core ya haya construido
        "a.btn-primary" dentro de ".resource-view-filters" (su propio
        "ckan.module" "resource-view-filters", fuera de este repo) -- eso NO
@@ -884,6 +990,9 @@
        que es el punto de entrada principal -- no solo un caso especial. */
     iframe.addEventListener('load', function () {
       var iframeDoc = getIframeDoc();
+      if (iframeDoc) {
+        enableRealScrollXForResource(iframeDoc, iframe.contentWindow, currentResourceId);
+      }
       if (tryMove(iframeDoc)) {
         return;
       }
@@ -899,6 +1008,9 @@
        hay que volver a atender. */
     setInterval(function () {
       var iframeDoc = getIframeDoc();
+      if (iframeDoc) {
+        enableRealScrollXForResource(iframeDoc, iframe.contentWindow, currentResourceId);
+      }
       if (tryMove(iframeDoc)) {
         return;
       }
