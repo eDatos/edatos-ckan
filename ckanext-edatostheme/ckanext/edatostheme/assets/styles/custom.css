@@ -3533,7 +3533,7 @@ div.dataTables_wrapper {
    propia del margen. */
 div.dataTables_wrapper div.dataTables_length {
 	order: 1;
-	margin-top: var(--edatos-spacing-y-xl, 32px);
+	margin-top: var(--edatos-spacing-y-lg, 16px);
 }
 
 div.dataTables_wrapper div.dataTables_paginate {
@@ -3548,6 +3548,107 @@ div.dataTables_wrapper div.dataTables_paginate {
 div.dataTables_wrapper div.resourceinfo,
 div.dataTables_wrapper div.sortinfo {
 	display: none;
+}
+
+/* --- Resource view: scrollbar horizontal de la tabla (".dataTables_scrollBody") ---
+   Ver "specs/investigacion-scroll-lateral-resource-view-datatable.md": tras
+   desactivar el colapso responsive para este recurso (prueba de concepto,
+   "resource-view-toolbar.js"), la tabla puede desbordar horizontalmente y
+   necesita un scrollbar visible para desplazarse. Mismo patrón ya usado en
+   este fichero para ".edatos-filter-panel-list"/"div.dt-button-collection
+   div.dropdown-menu" (pista transparente + "thumb" con color del sistema),
+   pero con un tono OSCURO en vez de blanco semitransparente: a diferencia de
+   esos dos paneles (fondo azul oscuro propio), ".dataTables_scrollBody" tiene
+   fondo blanco (el de la propia tabla), donde un "thumb" claro no tendría
+   contraste suficiente para verse. */
+div.dataTables_wrapper div.dataTables_scrollBody {
+	scrollbar-width: thin;
+	scrollbar-color: var(--edatos-color-gray-40, #999999) transparent;
+}
+
+div.dataTables_wrapper div.dataTables_scrollBody::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+div.dataTables_wrapper div.dataTables_scrollBody::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+div.dataTables_wrapper div.dataTables_scrollBody::-webkit-scrollbar-thumb {
+	background-color: var(--edatos-color-gray-40, #999999);
+	border-radius: var(--edatos-border-radius-sm, 5px);
+}
+
+/* --- Resource view: aspecto de la tabla al estilo del visualizador (".dtfc-has-left") ---
+   ".dtfc-has-left" es la clase que la extensión FixedColumns de DataTables añade a
+   "div.dataTables_scroll" en cuanto "scrollX:true" está activo -- hoy en día, solo el
+   recurso de la prueba de concepto (ver "specs/fix-resource-view-datatable-scrollx-poc.md"),
+   así que sirve de gancho ya acotado sin repetir el "resourceId" en CSS, mismo criterio ya
+   usado arriba para el scrollbar de ".dataTables_scrollBody".
+
+   El vendor trae, para esta combinación concreta, "table.dataTable.table-bordered.dtfc-has-
+   left { border-left-color: currentcolor }". Aunque el "border-left-style" de esa regla es
+   "none" (no se pinta ahí), el COLOR se sigue heredando hacia las celdas via el reset de
+   Bootstrap 5 "border-color: inherit" en th/td, y allí sí hay "border-style: solid" -- el
+   resultado es que el borde IZQUIERDO de cada celda queda en un tono ("currentcolor", texto)
+   distinto y más oscuro que el resto de bordes (gris claro de Bootstrap), lo que se percibe
+   como una línea negra/doblada en cada columna, más llamativa en el lateral izquierdo de la
+   tabla. Quitar aquí abajo los bordes verticales de las celdas no es solo estética (ver
+   siguiente bloque): también elimina ese color desalineado de raíz, al no quedar ningún
+   "border-left" que pueda heredarlo.
+
+   Referencia visual: la tabla del visualizador (metamac-portal) no es HTML -- es un
+   "<canvas>" (ver "Delegate.js"/"BodyZone.js"/"TopHeaderZone.js" en ese repo), pero define un
+   lenguaje de bordes claro que aquí se traduce a CSS real: marco exterior con borde + radio,
+   cabecera con fondo blanco (no el gris/azulado de Bootstrap) y texto en negrita, celdas de
+   cuerpo con borde solo horizontal (sin separadores verticales entre columnas) y sin franjas
+   de fila alternas. Los tokens de color (`--edatos-color-gray-60/-40/-80/-white-100`) son los
+   mismos que usa ese canvas (se leen ahí en runtime vía "getComputedStyle"), así que no son
+   una aproximación: son las mismas variables del sistema de diseño. */
+div.dataTables_wrapper div.dataTables_scroll.dtfc-has-left {
+	border: var(--edatos-border-width-xs, 1px) solid var(--edatos-color-gray-60, #666666);
+	border-radius: var(--edatos-border-radius-sm, 5px);
+	overflow: hidden;
+}
+
+div.dataTables_wrapper div.dataTables_scroll.dtfc-has-left table.dataTable {
+	font-family: var(--edatos-font-family, 'Open Sans', 'Trebuchet MS', Arial, sans-serif);
+}
+
+/* Sin bordes verticales entre columnas (el marco exterior de arriba ya cierra los lados
+   izquierdo/derecho) -- mismo criterio que ".bodyCell.border.vertical: false" en el canvas
+   de referencia. El borde horizontal de cada fila se fija por separado más abajo. */
+div.dataTables_wrapper div.dataTables_scroll.dtfc-has-left table.dataTable thead th,
+div.dataTables_wrapper div.dataTables_scroll.dtfc-has-left table.dataTable tbody td {
+	border-left: none;
+	border-right: none;
+}
+
+div.dataTables_wrapper div.dataTables_scroll.dtfc-has-left table.dataTable tbody td {
+	border-top: none;
+	border-bottom: var(--edatos-border-width-xs, 1px) solid var(--edatos-color-gray-40, #999999);
+}
+
+/* Cabecera con fondo blanco (no el gris/azulado de Bootstrap) y texto en negrita, como en el
+   canvas de referencia ("headerCell.font: 'Bold ...'", fondo blanco salvo selección). */
+div.dataTables_wrapper div.dataTables_scroll.dtfc-has-left table.dataTable thead th {
+	background-color: var(--edatos-color-white-100, #FFFFFF);
+	color: var(--edatos-color-gray-80, #333333);
+	font-weight: var(--edatos-font-weight-bold, 700);
+	border-top: none;
+	border-bottom: var(--edatos-border-width-sm, 2px) solid var(--edatos-color-gray-40, #999999);
+}
+
+/* Sin franjas de fila alternas (".table-striped" del vendor). Bootstrap 5 no las pinta con
+   "background-color" sino con "box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg)" en
+   las filas impares -- por eso hace falta anular el "box-shadow", no solo el fondo. El estado
+   de fila/columna seleccionada o el "hover" (".table-hover") siguen intactos: pintan su propio
+   "box-shadow"/fondo con más especificidad (clase de estado en vez de ":nth-of-type"), no lo
+   sustituyen. */
+div.dataTables_wrapper div.dataTables_scroll.dtfc-has-left table.dataTable.table-striped > tbody > tr:nth-of-type(odd) > * {
+	background-color: var(--edatos-color-white-100, #FFFFFF);
+	box-shadow: none;
 }
 
 /* --- Resource view: paginación de la tabla (DataTables) ---
