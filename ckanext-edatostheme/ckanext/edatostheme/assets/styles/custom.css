@@ -3533,7 +3533,7 @@ div.dataTables_wrapper {
    propia del margen. */
 div.dataTables_wrapper div.dataTables_length {
 	order: 1;
-	margin-top: var(--edatos-spacing-y-xs, 6px);
+	margin-top: var(--edatos-spacing-y-xl, 32px);
 }
 
 div.dataTables_wrapper div.dataTables_paginate {
