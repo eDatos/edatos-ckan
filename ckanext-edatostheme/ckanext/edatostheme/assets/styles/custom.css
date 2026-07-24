@@ -2597,6 +2597,17 @@ a.metadatos-tag:hover {
 	gap: 0;
 }
 
+/* --- Resource view: toolbar renderizada dentro del iframe (prototipo) ---
+   "edatos-inline-resource-toolbar" (resource-view-inline-toolbar.js) mueve
+   los hijos de este wrapper a ".dt-buttons" en cuanto existe y elimina el
+   wrapper -- hasta entonces, oculto para no mostrar "Pantalla completa"/
+   "Agregar Filtro" sueltos, encima de la tabla, durante el instante en que
+   ".dt-buttons" todavía no existe (DataTables Buttons lo crea de forma
+   asíncrona). */
+.edatos-dt-toolbar {
+	display: none;
+}
+
 /* --- Resource view: barra de botones de la vista "Tabla" (DataTables Buttons) ---
    Figma (nodos 12937:9102 / 12941:9388 "Botonería") define estos botones
    (tabla, copiar, ocultar columnas, descargar, refrescar, imprimir,

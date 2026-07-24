@@ -2,27 +2,36 @@
 
 {% block resource_view %}
   <div id="view-{{ resource_view['id'] }}" class="resource-view" data-id="{{ resource_view['id'] }}" data-title="{{ resource_view['title'] }}" data-description="{{ resource_view['descripion'] }}">
+  {#- Prototipo (ver docs/theming-resource-view-buttons.md, "Prototipo: toolbar
+      renderizada dentro del iframe"): para "datatables_view", "Pantalla
+      completa", "Incrustar" y "Agregar Filtro" ya no se renderizan aquí
+      (documento padre) para luego moverlos/compartirlos con el <iframe> --
+      se renderizan (y, para "Incrustar", se duplican por completo, modal
+      incluido) directamente dentro de él
+      (templates_priority/datatables/datatables_view.html). #}
   <div class="actions">
-    <a class="btn btn-default resource-view-toolbar-btn"
-       target="_blank"
-       rel="noreferrer"
-       title="{{ _('Fullscreen') }}"
-       href="{{ h.url_for(package['type'] ~ '_resource.view', id=package['name'], resource_id=resource['id'], view_id=resource_view['id'], qualified=True) }}">
-      <i class="fa fa-up-right-and-down-left-from-center"></i>
-      {{ _("Fullscreen") }}
-    </a>
-    <a class="btn btn-default resource-view-toolbar-btn"
-       href="#embed-{{ resource_view['id'] }}"
-       title="{{ _('Embed') }}"
-       data-module="resource-view-embed"
-       data-module-id="{{ resource_view['id'] }}"
-       data-module-url="{{ h.url_for(package['type'] ~ '_resource.view', id=package['name'], resource_id=resource['id'], view_id=resource_view['id'], qualified=True) }}">
-      <i class="fa fa-object-group"></i>
-      {{ _("Embed") }}
-    </a>
+    {% if resource_view['view_type'] != 'datatables_view' %}
+      <a class="btn btn-default resource-view-toolbar-btn"
+         target="_blank"
+         rel="noreferrer"
+         title="{{ _('Fullscreen') }}"
+         href="{{ h.url_for(package['type'] ~ '_resource.view', id=package['name'], resource_id=resource['id'], view_id=resource_view['id'], qualified=True) }}">
+        <i class="fa fa-up-right-and-down-left-from-center"></i>
+        {{ _("Fullscreen") }}
+      </a>
+      <a class="btn btn-default resource-view-toolbar-btn"
+         href="#embed-{{ resource_view['id'] }}"
+         title="{{ _('Embed') }}"
+         data-module="resource-view-embed"
+         data-module-id="{{ resource_view['id'] }}"
+         data-module-url="{{ h.url_for(package['type'] ~ '_resource.view', id=package['name'], resource_id=resource['id'], view_id=resource_view['id'], qualified=True) }}">
+        <i class="fa fa-object-group"></i>
+        {{ _("Embed") }}
+      </a>
+    {% endif %}
   </div>
     <div class="m-top ckanext-datapreview">
-      {% if not to_preview and h.resource_view_is_filterable(resource_view) %}
+      {% if not to_preview and resource_view['view_type'] != 'datatables_view' and h.resource_view_is_filterable(resource_view) %}
         {% snippet 'package/snippets/resource_view_filters.html', resource=resource %}
       {% endif %}
       {% if not h.resource_view_is_iframed(resource_view) %}
@@ -65,33 +74,35 @@
         </iframe>
       {% endif %}
     </div>
-    <div id="embed-{{ resource_view['id'] }}" class="modal fade resource-view-embed">
-      <div class="modal-dialog">
-        <div class="modal-content">
+    {% if resource_view['view_type'] != 'datatables_view' %}
+      <div id="embed-{{ resource_view['id'] }}" class="modal fade resource-view-embed">
+        <div class="modal-dialog">
+          <div class="modal-content">
 
-          <div class="modal-header">
-            <h3 class="modal-title">
-              <i class="fa fa-code"></i>
-              {{ _("Embed resource view") }}
-            </h3>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ _('Close') }}"></button>
-          </div>
-
-          <div class="modal-body">
-            <p class="embed-content">{{ _("You can copy and paste the embed code into a CMS or blog software that supports raw HTML") }}</p>
-            <div class="row">
-              <div class="col-md-6">
-                {{ form.input("width", label=_("Width"), value=700, classes=["control-full"]) }}
-              </div>
-              <div class="col-md-6">
-                {{ form.input("height", label=_("Height"), value=400, classes=["control-full"]) }}
-              </div>
+            <div class="modal-header">
+              <h3 class="modal-title">
+                <i class="fa fa-code"></i>
+                {{ _("Embed resource view") }}
+              </h3>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ _('Close') }}"></button>
             </div>
-            {{ form.textarea("code", label=_("Code"), value="", classes=["pre"], rows=3) }}
-          </div>
 
+            <div class="modal-body">
+              <p class="embed-content">{{ _("You can copy and paste the embed code into a CMS or blog software that supports raw HTML") }}</p>
+              <div class="row">
+                <div class="col-md-6">
+                  {{ form.input("width", label=_("Width"), value=700, classes=["control-full"]) }}
+                </div>
+                <div class="col-md-6">
+                  {{ form.input("height", label=_("Height"), value=400, classes=["control-full"]) }}
+                </div>
+              </div>
+              {{ form.textarea("code", label=_("Code"), value="", classes=["pre"], rows=3) }}
+            </div>
+
+          </div>
         </div>
       </div>
-    </div>
+    {% endif %}
   </div>
 {% endblock %}

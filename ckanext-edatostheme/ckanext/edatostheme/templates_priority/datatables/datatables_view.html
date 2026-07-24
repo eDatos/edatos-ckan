@@ -1,0 +1,124 @@
+{#
+  Prototipo (ver docs/theming-resource-view-buttons.md, "Prototipo: toolbar
+  renderizada dentro del iframe"): en vez de renderizar "Pantalla completa" y
+  "Agregar Filtro" en el documento PADRE y moverlos después al <iframe> con
+  adoptNode/MutationObserver/polling (resource-view-toolbar.js), se renderizan
+  aquí, directamente en el documento del iframe -- junto a ".dt-buttons", el
+  mismo documento donde vive la tabla. Elimina la frontera de documentos que
+  obligaba a "adoptNode" y al parche de select2.
+
+  "{% ckan_extends %}" (no un "{% extends %}" a otra ruta) porque esta plantilla
+  vendored (ckan/ckanext/datatablesview, empaquetada en CKAN core) es el punto
+  de entrada exacto que resuelve "view_template()" del plugin -- sin
+  "ckan_extends" este fichero sustituiría el original entero en vez de
+  encadenarse a él vía "{{ super() }}". Necesita vivir en "templates_priority/"
+  (no en "templates/" normal) porque es una colisión de ruta completa, no una
+  cadena de "ckan_extends" -- ver docs/templates-priority-mechanism.md.
+
+  "Incrustar" (botón + modal "#embed-<id>") se duplica aquí en vez de
+  compartirse con el documento padre -- mismo patrón que "metamac-portal"
+  (widget.html/widget.js): cuando hace falta un <iframe>, se le sirve la
+  aplicación completa (tabla + su propia toolbar + su propio modal), no un
+  botón suelto que dependa de markup en OTRO documento. El módulo
+  "resource-view-embed" es de CKAN core -- ya se registra solo (vía
+  "main.js", que este documento ya carga por heredar de "base.html") en
+  cuanto encuentra "data-module="resource-view-embed"" en el árbol; no hace
+  falta registrarlo a mano como los módulos propios de más abajo.
+#}
+{% import 'macros/form.html' as form %}
+{% ckan_extends %}
+
+{% block page %}
+  {#- Recalculado aquí porque las variables "{% set %}" del bloque original
+      son locales a ESE bloque -- no son visibles antes de llamar a
+      "{{ super() }}" más abajo. Mismo cálculo que el original
+      ("h.datastore_dictionary"), así que el resultado es idéntico; se acepta
+      la llamada duplicada a datastore como coste conocido de este prototipo. #}
+  {%- set datadictionary = h.datastore_dictionary(resource.id, resource_view.get('show_fields')) -%}
+
+  {% asset 'base/view-filters' %}
+  {#- "resource-view-embed" (el módulo que abre el modal de "Incrustar") NO
+      vive en "base/main" (que solo define "ckan.module"/"ckan.sandbox"/etc,
+      el propio framework) sino en el bundle "base/ckan"
+      (ckan/public/base/javascript/webassets.yml, junto a otros módulos como
+      "resource-view-filters"/"data-viewer") -- la página padre ya lo carga
+      (de ahí que "Incrustar" funcione allí sin más), pero este documento no
+      lo pedía. Sin este "asset", el click en "Incrustar" no hace nada: el
+      botón existe en el DOM pero ningún módulo con ese nombre llegó a
+      registrarse para engancharle el listener. #}
+  {% asset 'base/ckan' %}
+
+  <div class="edatos-dt-toolbar" data-module="edatos-inline-resource-toolbar">
+    {#- Orden crítico: "Agregar Filtro" primero, "Pantalla completa" después
+        -- el CSS existente (custom.css, ".resource-view-filters +
+        .btn.resource-view-toolbar-btn") empuja el SEGUNDO grupo (Pantalla
+        completa/Incrustar/botones nativos/buscador) hacia el borde derecho
+        vía "margin-left:auto" en el elemento inmediatamente posterior a
+        ".resource-view-filters"; si el orden se invirtiera, ese selector de
+        hermano adyacente dejaría de matchear y el hueco entre grupos
+        desaparecería. #}
+    {% if h.resource_view_is_filterable(resource_view) %}
+      <div class="resource-view-filters"
+           data-module="edatos-inline-filter-panel"
+           data-module-resource-id="{{ resource.id }}"
+           data-module-fields="{{ h.dump_json(datadictionary|map(attribute='id')|list) }}">
+        <a class="btn btn-primary" href="#">{{ _("Add Filter") }}</a>
+      </div>
+    {% endif %}
+    <a class="btn btn-default resource-view-toolbar-btn"
+       target="_blank"
+       rel="noreferrer"
+       title="{{ _('Fullscreen') }}"
+       href="{{ h.url_for(package.type ~ '_resource.view', id=package.name, resource_id=resource.id, view_id=resource_view.id, qualified=True) }}">
+      <i class="fa fa-up-right-and-down-left-from-center"></i>
+      {{ _("Fullscreen") }}
+    </a>
+    <a class="btn btn-default resource-view-toolbar-btn"
+       href="#embed-{{ resource_view.id }}"
+       title="{{ _('Embed') }}"
+       data-module="resource-view-embed"
+       data-module-id="{{ resource_view.id }}"
+       data-module-url="{{ h.url_for(package.type ~ '_resource.view', id=package.name, resource_id=resource.id, view_id=resource_view.id, qualified=True) }}">
+      <i class="fa fa-object-group"></i>
+      {{ _("Embed") }}
+    </a>
+  </div>
+
+  {#- Fuera del wrapper "edatos-dt-toolbar" a propósito: ese wrapper se
+      vacía y desaparece en cuanto "edatos-inline-resource-toolbar" traslada
+      sus hijos a ".dt-buttons" -- el modal no es un botón de esa fila, así
+      que no debe moverse con ellos (el propio módulo core
+      "resource-view-embed" ya lo reubica de todas formas al final de
+      "<body>" en su "initialize()", igual que hace hoy en el documento
+      padre). #}
+  <div id="embed-{{ resource_view.id }}" class="modal fade resource-view-embed">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h3 class="modal-title">
+            <i class="fa fa-code"></i>
+            {{ _("Embed resource view") }}
+          </h3>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ _('Close') }}"></button>
+        </div>
+
+        <div class="modal-body">
+          <p class="embed-content">{{ _("You can copy and paste the embed code into a CMS or blog software that supports raw HTML") }}</p>
+          <div class="row">
+            <div class="col-md-6">
+              {{ form.input("width", label=_("Width"), value=700, classes=["control-full"]) }}
+            </div>
+            <div class="col-md-6">
+              {{ form.input("height", label=_("Height"), value=400, classes=["control-full"]) }}
+            </div>
+          </div>
+          {{ form.textarea("code", label=_("Code"), value="", classes=["pre"], rows=3) }}
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  {{ super() }}
+{% endblock %}
