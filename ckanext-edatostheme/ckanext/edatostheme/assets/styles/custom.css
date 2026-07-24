@@ -4556,6 +4556,16 @@ li.showcase-card {
     text-transform: uppercase;
 }
 
+/* La caja "module-shallow" de arriba también envuelve a Licencia, y le
+   contagia su font-size de 16px. Eso desalinea su cabecera respecto a la de
+   Compartir (14px, base ".module-heading"), pese a que ambas deben verse
+   igual. Se reescribe el selector con ".license" para ganar especificidad
+   (misma cantidad de clases que la regla de arriba + una) y devolverle el
+   tamaño base. */
+.showcase-detail-sidebar .module.module-narrow.module-shallow.license .module-heading {
+    font-size: var(--edatos-font-size-sm);
+}
+
 .module:first-child .module-heading {
     border-radius: 5px 5px 0 0;
     border-top-width: 0;
@@ -4585,9 +4595,17 @@ li.showcase-card {
    de dejarlo como selector descendiente suelto) porque la regla de abajo
    (".showcase-detail-sidebar .module.module-narrow.module-shallow
    .module-content") tiene más clases y su "padding" shorthand pisaba este
-   padding-top aunque se declarara después en el archivo. */
+   padding-top aunque se declarara después en el archivo.
+
+   El line-height:14px de esa misma regla (line-height == font-size) deja las
+   dos líneas del texto de licencia pegadas entre sí; el enlace (sin p
+   anidado, ver comentario de arriba sobre ".module-content > a") lo hereda
+   directamente de aquí. Se sube a la proporción estándar del proyecto para
+   párrafos (--edatos-line-height-md, usada p.ej. en .ckanext-showcase-notes)
+   en vez de un valor fijo, para que crezca junto al font-size. */
 .showcase-detail-sidebar .module.module-narrow.module-shallow.license .module-content {
     padding-top: var(--edatos-spacing-y-sm, 8px);
+    line-height: var(--edatos-line-height-md, 1.5);
 }
 
 /* Aviso legal: contenido de la sección licencia */
