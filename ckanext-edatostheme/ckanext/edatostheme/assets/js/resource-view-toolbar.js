@@ -99,29 +99,6 @@
     newDt.columns.adjust();
   }
 
-  /* Figma (nodos 12941:9388 / 12941:9440 "Botonería") pide los iconos de
-     estos botones en peso "Light" (Font Awesome 6 PRO), pero el <iframe> de
-     la vista lo genera la extensión vendored ckanext-datatablesview (fuera
-     de este repo) como documento aparte, con su propio <head> — sólo carga
-     el CSS de Font Awesome FREE (que no incluye la cara "Light", exclusiva
-     de PRO), así que sin esto los iconos se ven en "Solid" (900), más
-     gruesos que en el diseño. La hoja de FA PRO SÍ está disponible en el
-     documento padre (inyectada por el servicio externo de metadatos, ver
-     "EdatosTheme Configuration" en CLAUDE.md); se reutiliza la misma URL
-     aquí para no duplicar/versionar una copia local. Idempotente por "id"
-     porque "tryMove" puede reintentar varias veces antes de que la tabla
-     esté lista. */
-  function ensureFontAwesomeProInIframe(iframeDoc) {
-    if (iframeDoc.getElementById('edatos-fontawesome-pro')) {
-      return;
-    }
-    var link = iframeDoc.createElement('link');
-    link.id = 'edatos-fontawesome-pro';
-    link.rel = 'stylesheet';
-    link.href = 'https://estadisticas.arte-consultores.com/apps/assets/css/fontawesome/all.min.css';
-    iframeDoc.head.appendChild(link);
-  }
-
   /* Figma (nodos 12937:9102 / 12941:9388 "Botonería") coloca los botones
      "Pantalla completa" e "Incrustar", y también el buscador ("Buscar:"),
      dentro de la MISMA fila que el resto de botones de la tabla (tabla,
@@ -142,7 +119,6 @@
     if (!dtButtons) {
       return false;
     }
-    ensureFontAwesomeProInIframe(iframeDoc);
     /* Ancla fija (el primer botón original, p.ej. "tabla") para que los
        botones insertados conserven su orden relativo en vez de invertirse
        por reinsertarse cada uno en la cabeza. */
@@ -910,12 +886,11 @@
        "adoptNode" en la carga inicial, así que si esa carga inicial tuvo
        éxito, una versión anterior de este fichero marcaba "moved = true"
        PARA SIEMPRE y nunca volvía a intentarlo -- dejando el nuevo documento
-       del iframe (tras cada recarga interna) sin sus botones movidos y sin
-       "ensureFontAwesomeProInIframe": efecto visible, los iconos de la barra
-       (incluido el propio botón de alternar tabla/lista) se veían como
-       cuadros vacíos y "Buscar:"/"Mostrando X registros" quedaban sin mover,
-       solapados en su posición original -- en CUALQUIER pulsación del
-       botón, no solo al entrar en modo "list".
+       del iframe (tras cada recarga interna) sin sus botones movidos: efecto
+       visible, los iconos de la barra (incluido el propio botón de alternar
+       tabla/lista) se veían como cuadros vacíos y "Buscar:"/"Mostrando X
+       registros" quedaban sin mover, solapados en su posición original -- en
+       CUALQUIER pulsación del botón, no solo al entrar en modo "list".
        Fix: en vez de un flag booleano de un solo uso, se recuerda CUÁL fue
        el último "iframeDoc" ya resuelto con éxito (comparado por
        identidad de objeto, no solo "existe"), y se vuelve a intentar el
