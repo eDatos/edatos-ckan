@@ -2146,9 +2146,15 @@ section#dataset-resources > h2 {
    bordes de las celdas de la última fila, en gray-5 (#F2F2F2), el mismo
    color que el fondo de la página, así que era invisible y la esquina se
    veía "abierta". Sin border-top: la cabecera azul ya cierra esa zona con
-   su propio fondo sólido. */
+   su propio fondo sólido.
+
+   Las esquinas superiores deben llevar el mismo radio que ".additional-info
+   .module-heading" (5px, ver ZONA 7b): si aquí se dejan a 0, el border-left/
+   border-right (que sí arrancan desde el borde superior) dibujan una esquina
+   cuadrada justo detrás de la curva de la cabecera, y esa línea recta se ve
+   asomando por fuera del redondeo azul. */
 section.module.additional-info {
-	border-radius: 0 0 5px 5px;
+	border-radius: var(--edatos-border-radius-sm) var(--edatos-border-radius-sm) var(--edatos-border-radius-sm) var(--edatos-border-radius-sm);
 	overflow: hidden;
 	margin-right: 0;
 	border-left: 1px solid var(--edatos-color-gray-20, #CCCCCC);
