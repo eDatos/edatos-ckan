@@ -9,6 +9,8 @@ import ckan.plugins.toolkit as toolkit
 import requests
 import ckanext.scheming.helpers as sh
 
+from urllib.parse import urlparse
+
 from bs4 import BeautifulSoup
 from ckan.common import _, request, c
 from collections import OrderedDict
@@ -446,6 +448,26 @@ def get_app_style_css_url():
         return ""
 
 
+def get_app_fontawesome_css_url():
+    """
+    Devuelve la URL del CSS de Font Awesome PRO (peso "Light", usado por los
+    iconos de la barra de DataTables Buttons en la vista de recurso), leida
+    de la propiedad 'fontawesomeCssPath' en config.json y combinada con el
+    host del 'endpoint' del servicio de metadatos comun (este ultimo ya
+    varia por cliente/entorno), para no hardcodear el dominio.
+    """
+    try:
+        with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
+            json_config = json.loads(config_file.read())
+            endpoint = json_config['metadata']['endpoint']
+            path = json_config['metadata']['fontawesomeCssPath']
+            parsed_endpoint = urlparse(endpoint)
+            return "%s://%s%s" % (parsed_endpoint.scheme, parsed_endpoint.netloc, path)
+    except Exception as e:
+        log.error("Error al obtener la URL del CSS de Font Awesome: %s", e)
+        return ""
+
+
 def get_altered_header(header, json_config):
     """
     Metodo que modifica el header para hacer que contenga los botones
@@ -679,6 +701,7 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             'edatostheme_get_delink_value': get_delink_value,
             'edatos_get_header': load_header,
             'edatos_get_app_style_css_url': get_app_style_css_url,
+            'edatos_get_app_fontawesome_css_url': get_app_fontawesome_css_url,
             'edatos_get_facet_items_dict': get_facet_items_dict,
             'edatos_schema_get_label_for_facet': schema_get_label_for_facet,
             'edatos_get_license': get_license,

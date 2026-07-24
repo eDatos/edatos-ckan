@@ -27,6 +27,11 @@
       documentada en el mismo bloque). Mismo "id" que usa el "getElementById"
       de "ensureFontAwesomeProInIframe" para que esa función detecte que ya
       está presente y no la duplique cuando además la mueve/reintenta desde
-      el documento padre. #}
-   <link rel="stylesheet" id="edatos-fontawesome-pro" href="https://estadisticas.arte-consultores.com/apps/assets/css/fontawesome/all.min.css">
+      el documento padre. La URL se resuelve por cliente/entorno (ver
+      "get_app_fontawesome_css_url" en plugin/__init__.py) en vez de
+      hardcodearse, ya que cada organización/entorno usa un host distinto. #}
+   {% set edatos_fontawesome_url = h.edatos_get_app_fontawesome_css_url() %}
+   {% if edatos_fontawesome_url %}
+     <link rel="stylesheet" id="edatos-fontawesome-pro" href="{{ edatos_fontawesome_url }}">
+   {% endif %}
 {% endblock %}

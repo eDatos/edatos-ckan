@@ -4,6 +4,7 @@
         "navbarPathKey": "metamac.app.style.header.url",
         "footerPathKey": "metamac.app.style.footer.url",
         "cssPathKey": "metamac.app.style.css.url",
+        "fontawesomeCssPath": "/apps/assets/css/fontawesome/all.min.css",
         "appName": "Open Data Catalog",
         "siteURL": "https://localhost:8443/catalogo/",
         "htmlCodeClass": "edatos-custom-header",
