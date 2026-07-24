@@ -2119,10 +2119,19 @@ section#dataset-resources > h2 {
 	gap: var(--edatos-spacing-x-lg);
 }
 
+/* El título debe absorber el ancho sobrante de la fila en vez de dejarlo
+   como hueco vacío antes del botón "Explorar" (ver
+   specs/fix-dataset-resource-list-title-truncation.md). */
+#dataset-resources li.resource-item .heading {
+	flex: 1 1 0;
+	min-width: 0;
+}
+
 #dataset-resources li.resource-item .btn-group {
 	position: relative;
 	top: 0;
 	right: 0;
+	flex-shrink: 0;
 }
 
 .resource-item:hover {
@@ -4572,8 +4581,12 @@ li.showcase-card {
    align-items:center). En vez de replicar ese mecanismo (afectaría también
    a la otra caja module-shallow que reusa la regla de abajo, la ayuda de
    "¿Qué son las categorías?"), se sube el padding-top solo para licencia con
-   un valor fijo. */
-.license .module-content {
+   un valor fijo. Se repite ".license" dentro de la cadena de clases (en vez
+   de dejarlo como selector descendiente suelto) porque la regla de abajo
+   (".showcase-detail-sidebar .module.module-narrow.module-shallow
+   .module-content") tiene más clases y su "padding" shorthand pisaba este
+   padding-top aunque se declarara después en el archivo. */
+.showcase-detail-sidebar .module.module-narrow.module-shallow.license .module-content {
     padding-top: var(--edatos-spacing-y-sm, 8px);
 }
 
