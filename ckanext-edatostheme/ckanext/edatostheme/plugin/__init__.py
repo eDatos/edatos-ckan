@@ -329,6 +329,18 @@ def get_delink_value():
     return config.get('ckanext.gobcangroups.flag.for.delink', 'load_manual')
 
 
+def get_legal_notice_url():
+    '''Returns the legal notice URL, configurable per organisation deployment
+    '''
+    return config.get('ckanext.edatostheme.legal_notice_url', 'https://www.gobiernodecanarias.org/istac/aviso_legal.html')
+
+
+def get_legal_notice_label():
+    '''Returns the legal notice link label, configurable per organisation deployment
+    '''
+    return config.get('ckanext.edatostheme.legal_notice_label', _('Legal notice'))
+
+
 def abort_redirect():
     abort(403, _(u'Not authorized to see this page'))
 
@@ -699,6 +711,8 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             'edatostheme_get_count_all_datasets': get_count_all_datasets,
             'package_showcase_list': package_showcase_list,
             'edatostheme_get_delink_value': get_delink_value,
+            'edatos_get_legal_notice_url': get_legal_notice_url,
+            'edatos_get_legal_notice_label': get_legal_notice_label,
             'edatos_get_header': load_header,
             'edatos_get_app_style_css_url': get_app_style_css_url,
             'edatos_get_app_fontawesome_css_url': get_app_fontawesome_css_url,

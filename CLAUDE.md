@@ -611,6 +611,17 @@ Configuration loaded from `ckanext/edatostheme/etc/config.json`:
 ckanext.gobcangroups.flag.for.delink = Manual  # Tag name for delinking datasets from GPE
 ```
 
+### Legal Notice Link (per-organisation deployment)
+
+The "Legal notice" link shown in the group/organization sidebar (`templates/group/snippets/helper.html`, `templates/organization/snippets/helper.html`) is configurable per deployment instead of hardcoded to ISTAC, since each organisation (ISTAC, IBESTAT, IECM, DREM, SEMASTAT...) runs its own CKAN instance with its own `ckan.ini`/`.env`:
+
+```ini
+ckanext.edatostheme.legal_notice_url = https://www.gobiernodecanarias.org/istac/aviso_legal.html
+ckanext.edatostheme.legal_notice_label = Aviso Legal del ISTAC
+```
+
+Both default to the ISTAC values if unset (`get_legal_notice_url()` / `get_legal_notice_label()` in `ckanext-edatostheme/ckanext/edatostheme/plugin/__init__.py`), so existing ISTAC deployments keep working without changes; other organisations should set both explicitly.
+
 ## Schema Management
 
 Schemas are dynamically generated on CKAN startup:
