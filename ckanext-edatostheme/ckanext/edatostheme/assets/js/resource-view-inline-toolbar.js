@@ -2,14 +2,20 @@
   'use strict';
 
   /* Prototipo -- ver docs/theming-resource-view-buttons.md, "Prototipo:
-     toolbar renderizada dentro del iframe". Sustituye, para "datatables_view",
-     a "resource-view-toolbar.js": la toolbar ya no vive en el documento padre
-     y se traslada al iframe, sino que se renderiza directamente dentro de él
-     (templates_priority/datatables/datatables_view.html), así que este
-     fichero no necesita "adoptNode", ni distinguir "documento padre" de
-     "documento del iframe", ni reintentar tras cada recarga interna del
-     iframe: cada recarga es simplemente una carga nueva de ESTA página, que
-     vuelve a ejecutar este script y sus módulos "ckan.module" desde cero. */
+     toolbar renderizada dentro del iframe". Sustituye por completo a
+     "resource-view-toolbar.js" (eliminado): la toolbar ya no vive en el
+     documento padre y se traslada al iframe, sino que se renderiza
+     directamente dentro de él (templates_priority/datatables/datatables_view.html),
+     así que este fichero no necesita "adoptNode", ni distinguir "documento
+     padre" de "documento del iframe", ni reintentar tras cada recarga
+     interna del iframe: cada recarga es simplemente una carga nueva de ESTA
+     página, que vuelve a ejecutar este script y sus módulos "ckan.module"
+     desde cero. La POC de scrollX (ver módulo "edatos-inline-scrollx-poc"
+     más abajo) también vivía antes en "resource-view-toolbar.js" orquestada
+     desde el documento padre vía "iframe.contentWindow"/"contentDocument" +
+     polling, pese a operar enteramente sobre objetos de ESTE documento
+     (jQuery, la instancia de DataTables) -- se migró aquí por el mismo
+     motivo que la toolbar. */
 
   /* "edatostheme_js" (este bundle) se carga ANTES que "jquery.js"/"main.js"
      en el documento (orden de webassets, fuera de nuestro control -- mismo
@@ -345,5 +351,107 @@
       }
     };
   });
+
+    /* POC de scroll horizontal real en la tabla, acotada a UN ÚNICO recurso
+       -- ver "specs/investigacion-scroll-lateral-resource-view-datatable.md".
+       Migrada aquí (antes en "resource-view-toolbar.js", documento padre)
+       porque opera enteramente sobre objetos que ya viven en ESTE documento
+       (jQuery, la instancia de DataTables) -- no hay ninguna razón para
+       orquestarla desde fuera del iframe con "iframe.contentWindow"/
+       "contentDocument" + polling, como hacía la versión anterior. Al vivir
+       aquí, cada recarga interna del iframe (alternar tabla/lista) es
+       simplemente una carga nueva de esta página -- a diferencia de la
+       versión anterior, no hace falta ningún flag de "ya aplicado": ese
+       flag existía solo porque un poll externo seguía llamando repetidas
+       veces sobre el MISMO documento ya reconfigurado. */
+    window.ckan.module('edatos-inline-scrollx-poc', function ($) {
+      var EDATOS_SCROLLX_POC_RESOURCE_ID = 'bfe4de48-d84f-4578-a991-728770bf71cb';
+
+      /* El vendor (ckan/ckanext/datatablesview) inicializa DataTables con
+         "responsive:true" y sin "scrollX" (solo "scrollY:400" para el scroll
+         vertical) -- ver la investigación referenciada arriba. Con esa
+         configuración, DataTables jamás deja que la tabla desborde el ancho
+         disponible: en vez de un scroll horizontal, la extensión Responsive
+         oculta columnas de baja prioridad tras el icono "+" de cada fila,
+         recalculando en cada resize/redraw. No hay overflow horizontal al que
+         aplicarle un estilo de scrollbar -- hay que reconfigurar la propia
+         instancia. DataTables no admite cambiar "responsive"/"scrollX" sobre
+         una tabla ya inicializada: solo destruyéndola y reconstruyéndola con
+         otras opciones ("destroy:true" + nuevo objeto de configuración),
+         reutilizando el resto de "oInit" (columnas, "ajaxurl", "scrollY",
+         botones...) tal cual lo dejó el vendor, para no perder nada de lo ya
+         configurado. */
+      function enableRealScrollX() {
+        var table = $('.dataTable').eq(0);
+        if (!table.length || !$.fn.dataTable.isDataTable(table[0])) {
+          /* Todavía no ha terminado de inicializarse -- el observer de más
+             abajo reintenta en la siguiente mutación relevante del DOM. */
+          return false;
+        }
+        /* "table.DataTable().settings()[0]" devuelve "undefined" de forma
+           intermitente en esta versión de DataTables (comprobado en consola:
+           unas veces da el objeto de ajustes real, otras no) -- en cambio
+           "$.fn.dataTable.settings" (el array plano y global de instancias
+           activas, sin pasar por el envoltorio "Api" de "settings()") funcionó
+           de forma consistente en todas las pruebas. Se busca ahí la entrada
+           cuyo "nTable" (el <table> real que gestiona, propiedad interna
+           estándar de DataTables) sea el nodo actual. */
+        var allSettings = $.fn.dataTable.settings;
+        var settings = null;
+        for (var i = 0; i < allSettings.length; i += 1) {
+          if (allSettings[i].nTable === table[0]) {
+            settings = allSettings[i];
+            break;
+          }
+        }
+        if (!settings) {
+          return false;
+        }
+        var config = $.extend(true, {}, settings.oInit);
+        config.responsive = false;
+        config.scrollX = true;
+        config.destroy = true;
+        var newDt = table.DataTable(config);
+        /* Ninguna columna trae "visible:false" en "oInit.columns" (confirmado
+           inspeccionando la config real) -- las que aparecían ocultas antes de
+           este cambio lo estaban por el estado guardado de "stateSave" (activo
+           en el propio "oInit"), no por configuración. Se fuerzan visibles
+           aquí, ignorando ese estado guardado, para que el ancho real de la
+           tabla (y por tanto el scroll horizontal) incluya siempre todas las
+           columnas con datos. Se excluye la columna auxiliar sin datos que usa
+           Responsive para la fila de detalle (className "none", sin nombre) --
+           ya no cumple ninguna función con "responsive:false". */
+        newDt.columns().every(function () {
+          var header = this.header();
+          if (header && header.className === 'none') {
+            return;
+          }
+          this.visible(true, false);
+        });
+        newDt.columns.adjust();
+        return true;
+      }
+
+      return {
+        options: {
+          resourceId: null
+        },
+
+        initialize: function () {
+          if (this.options.resourceId !== EDATOS_SCROLLX_POC_RESOURCE_ID) {
+            return;
+          }
+          if (enableRealScrollX()) {
+            return;
+          }
+          var observer = new MutationObserver(function () {
+            if (enableRealScrollX()) {
+              observer.disconnect();
+            }
+          });
+          observer.observe(document.body, { childList: true, subtree: true });
+        }
+      };
+    });
   });
 })();

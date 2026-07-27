@@ -3,75 +3,25 @@
    ============================================================ */
 
 :root {
+  /* Bootstrap consume esta variable internamente en su CSS compilado;
+     no se llama con var() en este fichero, pero debe seguir aquí. */
   --bs-body-font-family: var(--edatos-font-family);
-  /* Colores primarios */
-  --color-primary: #0072A2;
-  --color-primary-dark: var(--edatos-color-primary-100, #004678);
-  --color-primary-hover: var(--edatos-color-light-blue-100);
-  --color-primary-transparent: rgba(0, 114, 162, 0.80);
-  --color-accent: var(--edatos-color-accent-100, #009BD7);
-  --color-primary-10: var(--edatos-color-primary-10, #ccdae4);
 
-  /* Colores neutros */
+  /* Colores neutros — sin equivalente en Alisio (ver auditoría) */
   --color-gray-dark: #59656e;
-  --color-gray-medium: var(--edatos-color-gray-40);
-  --color-gray-light: var(--edatos-color-gray-5);
-  --color-gray-border: #dddddd;
-  --color-white: var(--edatos-color-white-100, #ffffff);
   --color-white-semi: rgba(255, 255, 255, 0.70);
-  --color-black: var(--edatos-color-black-100, #000000);
 
-  /* Colores de estado */
-  --color-success: var(--edatos-color-success-100);
-  --color-warning: var(--edatos-color-yellow-100);
-  --color-danger: var(--edatos-color-danger-100);
-  --color-info: var(--edatos-color-light-blue-50);
-
-  /* Colores semánticos UI */
-  --color-body-bg: var(--edatos-color-gray-5);
-  --color-text-base: var(--edatos-color-gray-80, #333333);
-  --color-text-muted: #59656e;
-  --color-nav-active: #8098a7;
-
-  /* Tipografía */
-  --font-size-xs: 12px;
-  --font-size-sm: 13px;
-  --font-size-md: 15px;
-  --font-size-lg: 16px;
-  --font-size-xl: 20px;
-  --font-size-xxl: 24px;
-  --font-weight-light: var(--edatos-font-weight-light, 300);
-  --font-weight-normal: var(--edatos-font-weight-regular, 400);
-  --font-weight-medium: 500;
-  --font-weight-semibold: var(--edatos-font-weight-semibold, 600);
-  --font-weight-bold: var(--edatos-font-weight-bold, 700);
-  --line-height-base: var(--edatos-line-height-md, 1.5);
-
-  /* Espaciado */
-  --spacing-xs: 4px;
-  --spacing-sm: var(--edatos-spacing-y-sm);
+  /* Espaciado — sin equivalente exacto en la escala de Alisio */
   --spacing-md: 16px;
   --spacing-lg: 24px;
-  --spacing-xl: var(--edatos-spacing-x-xl);
-  --spacing-xxl: 48px;
 
-  /* Bordes */
-  --border-radius-sm: 4px;
-  --border-radius-md: var(--edatos-border-radius-md);
-  --border-radius-lg: 12px;
-  --border-color: #dddddd;
-  --border-width: var(--edatos-border-width-xs, 1px);
-  --color-primary-5: var(--edatos-color-primary-5, #e5ecf1);
-
-  /* Sombras */
+  /* Sombras — Alisio no define tokens de shadow */
   --shadow-card: 0 2px 4px rgba(0, 0, 0, 0.10);
-  --shadow-card-hover: 0 4px 12px rgba(0, 0, 0, 0.15);
   --shadow-dropdown: 0 2px 8px rgba(0, 0, 0, 0.12);
 
   /* Layout */
   --container-max-width: 1400px;
   --sidebar-width: 289px;
-  --navbar-height: 70px;
 
   /* Transiciones */
   --transition-fast: 0.15s ease;
@@ -107,7 +57,7 @@
 }
 body {
 	background-image: none;
-	background-color: var(--color-body-bg);
+	background-color: var(--edatos-color-gray-5);
 	background-size: cover;
 	background-position: center center;
 	padding: 0;
@@ -121,7 +71,7 @@ a:focus {
 input,
 select,
 textarea {
-	color: var(--color-text-base);
+	color: var(--edatos-color-gray-80, #333333);
 }
 
 
@@ -223,21 +173,21 @@ textarea {
    ============================================================ */
 
 .istac-app-header.istac-title-bar .account ul li {
-	border-left: 1px solid var(--color-gray-border);
+	border-left: 1px solid var(--edatos-color-gray-20, #cccccc);
 }
 
 .istac-app-header.istac-title-bar .account ul li a {
 	display: block;
 	color: var(--color-gray-dark);
-	font-size: var(--font-size-lg);
+	font-size: var(--edatos-font-size-md);
 	font-weight: initial;
-	padding: 0 var(--spacing-sm);
+	padding: 0 var(--edatos-spacing-y-sm);
 	line-height: 31px;
 }
 
 .istac-app-header.istac-title-bar .account ul li a:hover {
-	color: var(--color-white);
-	background-color: var(--color-primary-hover);
+	color: var(--edatos-color-white-100, #ffffff);
+	background-color: var(--edatos-color-light-blue-100);
 	text-decoration: none;
 }
 
@@ -245,7 +195,7 @@ textarea {
 .nav-item.active > a,
 .nav-aside li.active a {
 	background-color: var(--edatos-color-white-100);
-	color: var(--color-white);
+	color: var(--edatos-color-white-100, #ffffff);
 	min-width: 90px;
 	text-align: center;
 }
@@ -256,8 +206,8 @@ textarea {
 
 .istac-app-header.istac-title-bar .account ul li a.btn-datasets:hover,
 .istac-app-header.istac-title-bar .account ul li.active a.btn-datasets {
-	background-color: var(--color-primary-hover);
-	color: var(--color-white);
+	background-color: var(--edatos-color-light-blue-100);
+	color: var(--edatos-color-white-100, #ffffff);
 }
 
 .istac-app-header.istac-title-bar .nav-collapse {
@@ -301,26 +251,26 @@ nav.navigation div ul li {
 	height: 0;
 	border-top: 17px solid transparent;
 	border-bottom: 17px solid transparent;
-	border-left: 10px solid var(--color-primary-hover);
+	border-left: 10px solid var(--edatos-color-light-blue-100);
 	background-image: none;
 }
 
 .nav-item.active > a:hover,
 .nav-aside li.active a:hover {
-	color: var(--color-white);
-	background-color: var(--color-primary-hover);
+	color: var(--edatos-color-white-100, #ffffff);
+	background-color: var(--edatos-color-light-blue-100);
 }
 
 
 
 .edatos-custom-app-header {
-	background-color: var(--color-white);
+	background-color: var(--edatos-color-white-100, #ffffff);
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	min-height: 44px;
-	padding: var(--spacing-sm) var(--spacing-md);
-	border-bottom: var(--border-width) solid var(--color-gray-border);
+	padding: var(--edatos-spacing-y-sm) var(--spacing-md);
+	border-bottom: var(--edatos-border-width-xs, 1px) solid var(--edatos-color-gray-20, #cccccc);
 }
 
 /* Navegación principal: Inicio | Datos | Colecciones
@@ -391,7 +341,7 @@ nav.section.navigation {
 	align-items: center;
 	justify-content: space-between;
 	width: 100%;
-	gap: var(--spacing-sm);
+	gap: var(--edatos-spacing-y-sm);
 }
 
 /* Contexto de posicionamiento para dropdown de cuenta */
@@ -421,12 +371,12 @@ nav.section.navigation {
 
 .collapsable-menu ul {
 	display: flex;
-	gap: var(--spacing-xs);
+	gap: var(--edatos-spacing-x-xs);
 	margin-bottom: 0;
 }
 
 #language-selector {
-	padding: var(--spacing-xs);
+	padding: var(--edatos-spacing-x-xs);
 }
 
 /* Dropdown */
@@ -447,7 +397,7 @@ nav.section.navigation {
 	box-shadow: var(--shadow-dropdown);
 	right: 0;
 	left: unset;
-	border-radius: var(--border-radius-sm) 0 var(--border-radius-sm) var(--border-radius-sm);
+	border-radius: var(--edatos-border-radius-sm, 5px) 0 var(--edatos-border-radius-sm, 5px) var(--edatos-border-radius-sm, 5px);
 	border: unset;
 	overflow: hidden;
 }
@@ -459,13 +409,13 @@ nav.section.navigation {
 }
 
 .dropdown-menu li a {
-	color: var(--color-white);
+	color: var(--edatos-color-white-100, #ffffff);
 	display: flex;
 	align-items: center;
 	gap: 12px;
-	padding: var(--spacing-xs) var(--spacing-sm);
-	margin: 6px var(--spacing-xs);
-	border-radius: var(--border-radius-sm);
+	padding: var(--edatos-spacing-y-xs) var(--edatos-spacing-y-sm);
+	margin: 6px var(--edatos-spacing-x-xs);
+	border-radius: var(--edatos-border-radius-sm, 5px);
 	text-decoration: none;
 	font-size: var(--edatos-font-size-sm);
 	font-style: normal;
@@ -531,12 +481,12 @@ nav.section.navigation {
 	background-color: var(--edatos-color-white-100, #fff);
 	background-image: none;
 	font-size: var(--edatos-font-size-sm);
-	font-weight: var(--font-weight-light);
+	font-weight: var(--edatos-font-weight-light, 300);
 	color: var(--edatos-color-primary-100, #004678);
 	border: 1px solid var(--edatos-color-primary-100, #004678);
 	box-shadow: none;
-	padding: var(--spacing-xs) var(--spacing-sm);
-	border-radius: var(--border-radius-sm);
+	padding: var(--edatos-spacing-y-xs) var(--edatos-spacing-y-sm);
+	border-radius: var(--edatos-border-radius-sm, 5px);
 	cursor: pointer;
 	margin-right: 10px;
 	transition: background-color 0.25s, color 0.25s, border-radius 0.2s;
@@ -561,7 +511,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar:hover {
 	background-color: var(--edatos-color-secondary-100, #004678);
 	color: var(--edatos-color-white-100, #fff);
 	/* Aplana la esquina inferior derecha para conectar con el menú (alineado a la derecha) */
-	border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0;
+	border-radius: var(--edatos-border-radius-sm, 5px) var(--edatos-border-radius-sm, 5px) 0 0;
 	border: 1px solid var(--edatos-color-secondary-100, #004678);
 }
 
@@ -592,7 +542,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 .dropdown-menu.show {
     display: block;
     min-width: 155px;
-	border-radius: var(--border-radius-sm) 0 var(--border-radius-sm) var(--border-radius-sm);
+	border-radius: var(--edatos-border-radius-sm, 5px) 0 var(--edatos-border-radius-sm, 5px) var(--edatos-border-radius-sm, 5px);
 }
 /* Responsive navbar */
 @media (max-width: 1199px) {
@@ -623,7 +573,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 
 @media (max-width: 767px) {
 	a.logo img.logo-corto {
-		padding: var(--spacing-sm);
+		padding: var(--edatos-spacing-y-sm);
 	}
 }
 
@@ -639,8 +589,8 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 
 #edatos-primary-nav-wrapper {
 	width: 100%;
-	background-color: var(--color-white);
-	border-bottom: var(--border-width) solid var(--color-gray-border);
+	background-color: var(--edatos-color-white-100, #ffffff);
+	border-bottom: var(--edatos-border-width-xs, 1px) solid var(--edatos-color-gray-20, #cccccc);
 	box-shadow: var(--shadow-card);
 }
 
@@ -670,10 +620,10 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	gap: var(--spacing-sm);
+	gap: var(--edatos-spacing-y-sm);
 	padding: 13px var(--spacing-md);
 	font-size: var(--edatos-font-size-sm);
-	font-weight: var(--font-weight-medium);
+	font-weight: var(--edatos-font-weight-regular, 400);
 	color: var(--color-gray-dark);
 	text-decoration: none;
 	border-bottom: 6px solid transparent;
@@ -689,8 +639,8 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 
 .primary-nav-link.active {
 	color: var(--edatos-color-secondary-100);
-	font-weight: var(--font-weight-bold);
-	border-bottom: 6px solid var(--color-accent);
+	font-weight: var(--edatos-font-weight-bold, 700);
+	border-bottom: 6px solid var(--edatos-color-accent-100, #009BD7);
 }
 
 .primary-nav-account {
@@ -701,21 +651,21 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 .btn-user-menu {
 	display: flex;
 	align-items: center;
-	gap: var(--spacing-sm);
+	gap: var(--edatos-spacing-y-sm);
 	background: none;
 	border: none;
-	padding: var(--spacing-sm) var(--spacing-md);
+	padding: var(--edatos-spacing-y-sm) var(--spacing-md);
 	color: var(--color-gray-dark);
 	font-size: var(--edatos-font-size-sm);
 	cursor: pointer;
-	border-radius: var(--border-radius-sm);
+	border-radius: var(--edatos-border-radius-sm, 5px);
 	transition: background-color var(--transition-fast);
 	line-height: 1;
 	box-shadow: none;
 }
 
 .btn-user-menu:hover {
-	background-color: var(--color-gray-light);
+	background-color: var(--edatos-color-gray-5);
 }
 
 .user-dropdown-wrapper {
@@ -729,10 +679,10 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	z-index: 2000;
 	min-width: 220px;
 	background-color: var(--edatos-color-secondary-100);
-	border-radius: var(--border-radius-sm);
+	border-radius: var(--edatos-border-radius-sm, 5px);
 	box-shadow: var(--shadow-dropdown);
 	display: none;
-	padding: var(--spacing-xs) 0;
+	padding: var(--edatos-spacing-y-xs) 0;
 	list-style: none;
 	margin: 0;
 }
@@ -744,42 +694,42 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 .user-dropdown-menu li a {
 	display: flex;
 	align-items: center;
-	gap: var(--spacing-sm);
-	padding: var(--spacing-sm) var(--spacing-md);
-	color: var(--color-white);
+	gap: var(--edatos-spacing-y-sm);
+	padding: var(--edatos-spacing-y-sm) var(--spacing-md);
+	color: var(--edatos-color-white-100, #ffffff);
 	text-decoration: none;
 	font-size: var(--edatos-font-size-sm);
 	transition: background-color var(--transition-fast);
 }
 
 .user-dropdown-menu li a:hover {
-	background-color: var(--color-primary-hover);
-	color: var(--color-white);
+	background-color: var(--edatos-color-light-blue-100);
+	color: var(--edatos-color-white-100, #ffffff);
 }
 
 .user-dropdown-menu .dropdown-divider-item {
 	border-top: 1px solid rgba(255, 255, 255, 0.15);
-	margin-top: var(--spacing-xs);
-	padding-top: var(--spacing-xs);
+	margin-top: var(--edatos-spacing-y-xs);
+	padding-top: var(--edatos-spacing-y-xs);
 }
 
 .btn-login {
 	display: flex;
 	align-items: center;
-	gap: var(--spacing-sm);
-	padding: var(--spacing-sm) var(--spacing-md);
+	gap: var(--edatos-spacing-y-sm);
+	padding: var(--edatos-spacing-y-sm) var(--spacing-md);
 	color: var(--edatos-color-secondary-100);
 	font-size: var(--edatos-font-size-sm);
-	font-weight: var(--font-weight-medium);
+	font-weight: var(--edatos-font-weight-regular, 400);
 	text-decoration: none;
-	border: var(--border-width) solid var(--edatos-color-secondary-100);
-	border-radius: var(--border-radius-sm);
+	border: var(--edatos-border-width-xs, 1px) solid var(--edatos-color-secondary-100);
+	border-radius: var(--edatos-border-radius-sm, 5px);
 	transition: background-color var(--transition-fast), color var(--transition-fast);
 }
 
 .btn-login:hover {
 	background-color: var(--edatos-color-secondary-100);
-	color: var(--color-white);
+	color: var(--edatos-color-white-100, #ffffff);
 	text-decoration: none;
 }
 
@@ -803,7 +753,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	.primary-nav-account {
 		order: 1;
 		margin-left: auto;
-		padding: var(--spacing-sm) 0;
+		padding: var(--edatos-spacing-y-sm) 0;
 	}
 
 	.user-display-name {
@@ -823,11 +773,11 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 .hero,
 .main.hero {
 	background-image: none;
-	background-color: var(--color-body-bg);
+	background-color: var(--edatos-color-gray-5);
 }
 
 .hero-nav {
-	background-color: var(--color-white);
+	background-color: var(--edatos-color-white-100, #ffffff);
 	padding: 0;
 	box-shadow: var(--shadow-card);
 	overflow: visible;
@@ -840,7 +790,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	margin: 0 12px;
 	padding: 6px 12px;
 	font-size: 0.85rem;
-	border-radius: var(--border-radius-sm, 4px);
+	border-radius: var(--edatos-border-radius-sm, 4px);
 	background-color: #f8d7da;
 	color: #842029;
 	border: 1px solid #f5c2c7;
@@ -881,9 +831,9 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 .search-filters {
 	display: flex;
 	flex-wrap: wrap;
-	gap: var(--spacing-xs);
+	gap: var(--edatos-spacing-x-xs);
 	justify-content: center;
-	padding: var(--spacing-sm) 0;
+	padding: var(--edatos-spacing-y-sm) 0;
 }
 
 .search-filters .filter-tag {
@@ -931,7 +881,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 .homepage .module-search {
 	position: relative;
 	background-color: var(--edatos-color-accent-100);
-    border-radius: var(--border-radius-md);
+    border-radius: var(--edatos-border-radius-md);
     width: 100%;
     padding: var(--edatos-spacing-x-l);
     justify-content: center;
@@ -956,7 +906,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	font-size: var(--edatos-font-size-2xl);
 	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 110%;
-	color: var(--color-white);
+	color: var(--edatos-color-white-100, #ffffff);
 }
 
 .module-search::before {
@@ -969,7 +919,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	background-repeat: no-repeat;
 	opacity: 0.2;
 	z-index: 1;
-	border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
+	border-radius: 0 0 var(--edatos-border-radius-md) var(--edatos-border-radius-md);
 }
 
 .module-search > * {
@@ -1046,7 +996,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	justify-content: flex-start;
 	align-items: center;
 	gap: 20px;
-	border-radius: var(--border-radius-sm);
+	border-radius: var(--edatos-border-radius-sm, 5px);
 	background-color: var(--edatos-color-gray-5, #f2f2f2);
 	text-decoration: none;
 	transition: background-color 0.2s ease;
@@ -1083,11 +1033,11 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 /* Group dataset count badge */
 .group-dataset-count {
 	display: inline-block;
-	background-color: var(--color-primary-10);
+	background-color: var(--edatos-color-primary-10, #ccdae4);
 	padding: 2px 6px;
-	font-size: var(--font-size-xs);
-	font-weight: var(--font-weight-normal);
-	color: var(--color-text-base);
+	font-size: var(--edatos-font-size-xs);
+	font-weight: var(--edatos-font-weight-regular, 400);
+	color: var(--edatos-color-gray-80, #333333);
 	text-transform: uppercase;
 	line-height: normal;
 }
@@ -1164,13 +1114,13 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 .sort-custom-dropdown__trigger {
 	display: inline-flex;
 	align-items: center;
-	gap: var(--spacing-xs);
+	gap: var(--edatos-spacing-x-xs);
 	color: var(--edatos-color-primary-100, #004678);
 	font-size: var(--edatos-font-size-sm);
-	font-weight: var(--font-weight-light);
-	line-height: var(--line-height-base);
-	padding: var(--spacing-xs) var(--spacing-sm);
-	border-radius: var(--border-radius-sm);
+	font-weight: var(--edatos-font-weight-light, 300);
+	line-height: var(--edatos-line-height-md, 1.5);
+	padding: var(--edatos-spacing-y-xs) var(--edatos-spacing-y-sm);
+	border-radius: var(--edatos-border-radius-sm, 5px);
 	border: 1px solid var(--edatos-color-primary-100, #004678);
 	background: var(--edatos-color-white-100);
 	cursor: pointer;
@@ -1186,7 +1136,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 }
 
 .sort-custom-dropdown.abrir .sort-custom-dropdown__trigger {
-	border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0;
+	border-radius: var(--edatos-border-radius-sm, 5px) var(--edatos-border-radius-sm, 5px) 0 0;
 }
 
 /* Chevron — rota al abrir */
@@ -1212,7 +1162,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	padding: 0;
 	background-color: var(--edatos-color-secondary-100, #004678);
 	border: 1px solid var(--edatos-color-secondary-100, #004678);
-	border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) var(--border-radius-sm);
+	border-radius: 0 var(--edatos-border-radius-sm, 5px) var(--edatos-border-radius-sm, 5px) var(--edatos-border-radius-sm, 5px);
 	box-shadow: var(--shadow-dropdown);
 	overflow: hidden;
 }
@@ -1225,12 +1175,12 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 .sort-custom-dropdown__item {
 	display: flex;
 	align-items: center;
-	padding: var(--spacing-xs) var(--spacing-sm);
-	margin: 6px var(--spacing-xs);
-	border-radius: var(--border-radius-sm);
+	padding: var(--edatos-spacing-y-xs) var(--edatos-spacing-y-sm);
+	margin: 6px var(--edatos-spacing-x-xs);
+	border-radius: var(--edatos-border-radius-sm, 5px);
 	color: var(--edatos-color-white-100, white);
 	font-size: var(--edatos-font-size-sm);
-	font-weight: var(--font-weight-light);
+	font-weight: var(--edatos-font-weight-light, 300);
 	cursor: pointer;
 	white-space: nowrap;
 	transition: background-color 0.15s ease, color 0.15s ease;
@@ -1261,15 +1211,15 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 .sort-custom-dropdown__item--selected {
 	background-color: var(--edatos-color-primary-5);
 	color: var(--edatos-color-primary-100);
-	font-weight: var(--font-weight-semibold);
+	font-weight: var(--edatos-font-weight-semibold, 600);
 }
 
 /* ZONA 3 — Barra de búsqueda */
 .search-form .input-group.search-input-group input[name="q"] {
 	height: 35px;
 	padding: 7px 20px;
-	border-radius: var(--edatos-border-radius-sm, var(--border-radius-sm)) 0 0 var(--edatos-border-radius-sm, var(--border-radius-sm));
-	border: var(--border-width) solid var(--edatos-color-secondary-100);
+	border-radius: var(--edatos-border-radius-sm) 0 0 var(--edatos-border-radius-sm);
+	border: var(--edatos-border-width-xs, 1px) solid var(--edatos-color-secondary-100);
 	background: var(--edatos-color-white-100);
 	color: var(--edatos-color-gray-80);
 	font-size: var(--edatos-font-size-sm);
@@ -1287,9 +1237,9 @@ input#field-giant-search::placeholder {
 }
 
 .search-form .input-group.search-input-group .btn[type="submit"] {
-	border: var(--border-width) solid var(--edatos-color-secondary-100);
+	border: var(--edatos-border-width-xs, 1px) solid var(--edatos-color-secondary-100);
 	border-left: none;
-	border-radius: 0 var(--edatos-border-radius-sm, var(--border-radius-sm)) var(--edatos-border-radius-sm, var(--border-radius-sm)) 0;
+	border-radius: 0 var(--edatos-border-radius-sm) var(--edatos-border-radius-sm) 0;
 	box-shadow: none;
 	background-color: var(--edatos-color-white-100);
 	background-image: none;
@@ -1451,7 +1401,7 @@ h2.dataset-heading {
 #group-info {
 	border-radius: var(--edatos-border-radius-sm);
 	overflow: hidden;
-	background: var(--color-white);
+	background: var(--edatos-color-white-100, #ffffff);
 	padding: 0px;
 }
 
@@ -1480,7 +1430,7 @@ h2.dataset-heading {
 #group-info .image .heading {
 	font-size: var(--ckan-font-size-heading);
 	font-weight: var(--edatos-font-weight-semibold);
-	color: var(--color-white);
+	color: var(--edatos-color-white-100, #ffffff);
 	margin: 0;
 	line-height: 110%;
 	align-self: stretch;
@@ -1501,7 +1451,7 @@ h2.dataset-heading {
 
 #group-info .nums-inner .nums-label {
 	font-size: var(--edatos-font-size-xs);
-	color: var(--color-white);
+	color: var(--edatos-color-white-100, #ffffff);
 	font-weight: var(--edatos-font-weight-regular);
 	line-height: 16px;
 }
@@ -1509,7 +1459,7 @@ h2.dataset-heading {
 #group-info .nums-inner .nums-count {
 	font-size: 28px;
 	font-weight: var(--edatos-font-weight-semibold);
-	color: var(--color-white);
+	color: var(--edatos-color-white-100, #ffffff);
 	line-height: 120%;
 	text-transform: uppercase;
 }
@@ -1532,7 +1482,7 @@ h2.dataset-heading {
 }
 
 .media-item h3 {
-	font-size: var(--font-size-md);
+	font-size: var(--edatos-font-size-md);
 	font-weight: normal;
 	hyphens: unset;
 }
@@ -1852,7 +1802,7 @@ h1.dataset-title {
 
 /* Botón: aplana esquina inferior-derecha al abrir y elimina focus ring de Bootstrap */
 .btn-primary.dropdown-toggle.show {
-	border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0 !important;
+	border-radius: var(--edatos-border-radius-sm, 5px) var(--edatos-border-radius-sm, 5px) 0 0 !important;
 	box-shadow: none !important;
 	background-color: var(--edatos-color-secondary-100);
     color: var(--edatos-color-white-100);
@@ -2047,15 +1997,15 @@ h1.dataset-title {
 
 /* --- Sidebar modules: con recuadro (fondo blanco + borde) --- */
 .secondary .module.module-narrow {
-	background: var(--color-white);
+	background: var(--edatos-color-white-100, #ffffff);
 	margin-bottom: 0px;
 	padding-top: 10px;
 	width: 100%;
 }
 
 .secondary .module.module-narrow:not(:has(.module-heading)) {
-	font-size: var(--font-size-xs);
-	font-weight: var(--font-weight-bold);
+	font-size: var(--edatos-font-size-xs);
+	font-weight: var(--edatos-font-weight-bold, 700);
 	color: #222;
 	line-height: 1.45;
 }
@@ -2064,13 +2014,13 @@ h1.dataset-title {
 #package-info .module-content .heading a {
 	color: var(--edatos-color-secondary-100);
 	text-decoration: none;
-	font-size: var(--font-size-xs);
-	font-weight: var(--font-weight-bold);
+	font-size: var(--edatos-font-size-xs);
+	font-weight: var(--edatos-font-weight-bold, 700);
 	line-height: 1.45;
 }
 
 #package-info .module-content .heading a:hover {
-	color: var(--color-primary-hover);
+	color: var(--edatos-color-light-blue-100);
 	text-decoration: underline;
 }
 
@@ -2135,7 +2085,7 @@ section#dataset-resources > h2 {
 }
 
 .resource-item:hover {
-	background-color: var(--color-gray-light);
+	background-color: var(--edatos-color-gray-5);
 }
 
 /* --- Metadatos table: borde exterior + estructura ---
@@ -2173,7 +2123,7 @@ section.module.additional-info table td:first-child,
 section.additional-info.module table th:first-child,
 section.additional-info.module table td:first-child {
 	width: 20%;
-	font-weight: var(--font-weight-bold);
+	font-weight: var(--edatos-font-weight-bold, 700);
 }
 
 /* Fila cabecera Campo/Valor: fondo gris */
@@ -2327,7 +2277,7 @@ a.toggle-show.toggle-show-less:hover {
 /* --- Resource read: padding after heading --- */
 .module > h2.module-heading + .module-content,
 .module > div.module-heading + .module-content {
-	padding-top: var(--spacing-sm);
+	padding-top: var(--edatos-spacing-y-sm);
 }
 
 div.ckanext-showcase-image-container {
@@ -2339,7 +2289,7 @@ div.ckanext-showcase-image-container {
 	background: var(--edatos-color-primary-5, #E5ECF1);
 	border-radius: var(--edatos-border-radius-sm);
 	padding: 20px;
-	font-size: var(--font-size-xs);
+	font-size: var(--edatos-font-size-xs);
 	color: var(--edatos-color-gray-60);
 	display: inline-block;
 }
@@ -2466,7 +2416,7 @@ a.metadatos-tag:hover {
 	background-color: var(--edatos-color-secondary-100, #004678) !important;
 	border-color: var(--edatos-color-secondary-100, #004678) !important;
 	color: var(--edatos-color-white-100, #FFF) !important;
-	border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0 !important;
+	border-radius: var(--edatos-border-radius-sm, 5px) var(--edatos-border-radius-sm, 5px) 0 0 !important;
 	box-shadow: none !important;
 }
 
@@ -2480,7 +2430,7 @@ a.metadatos-tag:hover {
    offset de 2px entre el toggle y el menú; hace falta !important para
    cancelarlo (mismo motivo que el wrench). */
 .module-resource .actions .btn-group .dropdown-menu {
-	border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) var(--border-radius-sm);
+	border-radius: 0 var(--edatos-border-radius-sm, 5px) var(--edatos-border-radius-sm, 5px) var(--edatos-border-radius-sm, 5px);
 	margin-top: -2px !important;
 }
 
@@ -2997,7 +2947,7 @@ div.dt-button-collection div.dropdown-menu::-webkit-scrollbar-track {
 
 div.dt-button-collection div.dropdown-menu::-webkit-scrollbar-thumb {
 	background-color: rgba(255, 255, 255, 0.5);
-	border-radius: var(--border-radius-sm, 4px);
+	border-radius: var(--edatos-border-radius-sm, 4px);
 }
 
 /* Filas del panel: mismo patrón de "píldora redondeada con hover claro" que
@@ -3008,9 +2958,9 @@ div.dt-button-collection div.dropdown-menu a.dt-button.dropdown-item {
 	align-items: center;
 	gap: var(--edatos-spacing-x-sm, 8px);
 	width: auto;
-	padding: var(--spacing-xs) var(--spacing-sm);
-	margin: 3px var(--spacing-xs);
-	border-radius: var(--border-radius-sm);
+	padding: var(--edatos-spacing-y-xs) var(--edatos-spacing-y-sm);
+	margin: 3px var(--edatos-spacing-x-xs);
+	border-radius: var(--edatos-border-radius-sm, 5px);
 	color: var(--edatos-color-white-100, #FFF) !important;
 	background-color: transparent !important;
 	font-size: var(--edatos-font-size-sm);
@@ -3579,7 +3529,8 @@ div.dataTables_wrapper div.sortinfo {
 /* --- Resource view: scrollbar horizontal de la tabla (".dataTables_scrollBody") ---
    Ver "specs/investigacion-scroll-lateral-resource-view-datatable.md": tras
    desactivar el colapso responsive para este recurso (prueba de concepto,
-   "resource-view-toolbar.js"), la tabla puede desbordar horizontalmente y
+   módulo "edatos-inline-scrollx-poc" en "resource-view-inline-toolbar.js"),
+   la tabla puede desbordar horizontalmente y
    necesita un scrollbar visible para desplazarse. Mismo patrón ya usado en
    este fichero para ".edatos-filter-panel-list"/"div.dt-button-collection
    div.dropdown-menu" (pista transparente + "thumb" con color del sistema),
@@ -3713,7 +3664,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link {
 	color: var(--edatos-color-gray-40, #999999);
 	background-color: transparent;
 	border: 1px solid var(--edatos-color-gray-40, #999999);
-	border-radius: var(--border-radius-sm, 4px);
+	border-radius: var(--edatos-border-radius-sm, 4px);
 	box-shadow: none;
 	transition: all 0.2s ease;
 }
@@ -3797,8 +3748,8 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 	font-style: normal;
 	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 26px;
-	margin-top: var(--spacing-sm);
-	margin-bottom: var(--spacing-xs);
+	margin-top: var(--edatos-spacing-y-sm);
+	margin-bottom: var(--edatos-spacing-y-xs);
 }
 
 
@@ -3938,7 +3889,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 	   expande hacia la derecha, sin espacio a la izquierda en el sidebar
 	   angosto), así que la esquina que debe quedar sin redondear es la
 	   superior IZQUIERDA, donde conecta con el botón. */
-	border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) var(--border-radius-sm);
+	border-radius: 0 var(--edatos-border-radius-sm, 5px) var(--edatos-border-radius-sm, 5px) var(--edatos-border-radius-sm, 5px);
 	/* Bootstrap/Popper añaden un offset por defecto de 2px entre el toggle y
 	   el menú, y fijan "margin: 0px" inline (Popper), que gana sobre reglas
 	   externas sin !important; hace falta !important para cancelarlo. */
@@ -3978,7 +3929,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 	background: var(--edatos-color-secondary-100, #004678) !important;
 	border-color: var(--edatos-color-secondary-100, #004678) !important;
 	color: var(--edatos-color-white-100, #FFF) !important;
-	border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0 !important;
+	border-radius: var(--edatos-border-radius-sm, 5px) var(--edatos-border-radius-sm, 5px) 0 0 !important;
 	box-shadow: none !important;
 }
 
@@ -4055,7 +4006,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 }
 
 .btn {
-	border-radius: var(--border-radius-sm);
+	border-radius: var(--edatos-border-radius-sm, 5px);
 	transition: background-color var(--transition-base),
 	            border-color var(--transition-base),
 	            color var(--transition-base);
@@ -4079,20 +4030,20 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 .btn-primary:hover {
 	background-color: var(--edatos-color-secondary-100);
     border-color: var(--edatos-color-secondary-100);
-	color: var(--color-white);
+	color: var(--edatos-color-white-100, #ffffff);
 }
 
 .btn-primary:focus,
 .btn-primary:active,
 .btn-primary.active {
-	color: var(--color-white);
+	color: var(--edatos-color-white-100, #ffffff);
 	background-color: var(--edatos-color-secondary-100);
 	border-color: var(--edatos-color-secondary-100);
 }
 
 .btn-primary.disabled,
 .btn-primary[disabled] {
-	color: var(--color-white);
+	color: var(--edatos-color-white-100, #ffffff);
 	background-color: var(--edatos-color-secondary-100);
 	opacity: 0.65;
 }
@@ -4100,7 +4051,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 .open > .dropdown-toggle.btn-primary,
 .open > .dropdown-toggle.btn-primary:focus,
 .open > .dropdown-toggle.btn-primary:hover {
-	color: var(--color-white);
+	color: var(--edatos-color-white-100, #ffffff);
 	background-color: var(--edatos-color-secondary-100);
 	background-image: none;
 	border-color: var(--edatos-color-secondary-100);
@@ -4109,16 +4060,16 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 /* Botón secundario */
 .btn-default {
 	background-image: none;
-	background-color: var(--color-white);
-	border-color: var(--color-gray-border);
-	color: var(--color-text-base);
+	background-color: var(--edatos-color-white-100, #ffffff);
+	border-color: var(--edatos-color-gray-20, #cccccc);
+	color: var(--edatos-color-gray-80, #333333);
 }
 
 .btn-default:hover,
 .btn-default:focus {
-	background-color: var(--color-gray-light);
-	border-color: var(--color-gray-medium);
-	color: var(--color-text-base);
+	background-color: var(--edatos-color-gray-5);
+	border-color: var(--edatos-color-gray-40);
+	color: var(--edatos-color-gray-80, #333333);
 }
 
 /* Botón de búsqueda (icono lupa en homepage) — alineado con statistical-operations-external */
@@ -4126,7 +4077,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 .search-form .search-giant .btn {
 	background-color: var(--edatos-color-white-100);
 	color: var(--edatos-color-secondary-100);
-	border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
+	border-radius: 0 var(--edatos-border-radius-sm, 5px) var(--edatos-border-radius-sm, 5px) 0;
 	border: none;
 }
 
@@ -4173,10 +4124,10 @@ input[type="password"],
 input[type="url"],
 select,
 textarea {
-	border: var(--border-width) solid var(--color-gray-border);
-	border-radius: var(--border-radius-sm);
-	color: var(--color-text-base);
-	background-color: var(--color-white);
+	border: var(--edatos-border-width-xs, 1px) solid var(--edatos-color-gray-20, #cccccc);
+	border-radius: var(--edatos-border-radius-sm, 5px);
+	color: var(--edatos-color-gray-80, #333333);
+	background-color: var(--edatos-color-white-100, #ffffff);
 	transition: border-color var(--transition-base), box-shadow var(--transition-base);
 }
 
@@ -4188,7 +4139,7 @@ input[type="password"]:focus,
 input[type="url"]:focus,
 select:focus,
 textarea:focus {
-	border-color: var(--color-accent);
+	border-color: var(--edatos-color-accent-100, #009BD7);
 	outline: none;
 	box-shadow: 0 0 0 2px rgba(0, 155, 215, 0.2);
 }
@@ -4211,7 +4162,7 @@ textarea:focus {
 
 .homepage .search-giant .form-control {
 	height: 50px;
-	font-size: var(--font-size-lg);
+	font-size: var(--edatos-font-size-md);
 	font-weight: var(--edatos-font-weight-light);
 	padding: 7px 0 7px 16px;
 	border-radius: 5px 0 0 5px;
@@ -4318,12 +4269,12 @@ body .nav-tabs .nav-link.active:focus {
 }
 
 a.tag:hover {
-	color: var(--color-white);
+	color: var(--edatos-color-white-100, #ffffff);
 	background-color: var(--edatos-color-secondary-100);
 	border: 0;
-	-webkit-box-shadow: inset 0 1px 0 var(--color-primary-hover);
-	-moz-box-shadow: inset 0 1px 0 var(--color-primary-hover);
-	box-shadow: inset 0 1px 0 var(--color-primary-hover);
+	-webkit-box-shadow: inset 0 1px 0 var(--edatos-color-light-blue-100);
+	-moz-box-shadow: inset 0 1px 0 var(--edatos-color-light-blue-100);
+	box-shadow: inset 0 1px 0 var(--edatos-color-light-blue-100);
 }
 
 .modal.fade.in {
@@ -4351,12 +4302,12 @@ i.fa.fa-search {
 .site-footer label,
 .site-footer small,
 .site-footer a {
-	color: var(--color-white);
+	color: var(--edatos-color-white-100, #ffffff);
 }
 
 .footer-title {
 	text-transform: uppercase;
-	font-weight: var(--font-weight-bold);
+	font-weight: var(--edatos-font-weight-bold, 700);
 	font-size: 1.1em;
 }
 
@@ -4412,7 +4363,7 @@ li.showcase-card {
 	flex-shrink: 0;
 	align-self: stretch;
 	border-radius: var(--edatos-border-radius-xs);
-	background-color: var(--color-primary-10);
+	background-color: var(--edatos-color-primary-10, #ccdae4);
 	background-size: cover;
 	background-position: 50% center;
 	background-repeat: no-repeat;
@@ -4439,7 +4390,7 @@ li.showcase-card {
 	text-overflow: ellipsis;
 	background-color: var(--edatos-color-primary-10);
 	padding: 2px 6px;
-	color: var(--color-text-base, #333);
+	color: var(--edatos-color-gray-80, #333);
 	font-size: var(--edatos-font-size-xs);
 	font-style: normal;
 	font-weight: var(--edatos-font-weight-regular);
@@ -4976,7 +4927,7 @@ li.nav-item.recursos-item {
 	border: 0.5px solid var(--edatos-color-dark-blue-25);
 	border-radius: var(--edatos-border-radius-sm);
 	overflow: hidden;
-	background: var(--color-white);
+	background: var(--edatos-color-white-100, #ffffff);
 	padding: 10px;
 }
 
@@ -5003,7 +4954,7 @@ li.nav-item.recursos-item {
 
 .user-profile-fa-icon {
 	font-size: 100px;
-	color: var(--color-white);
+	color: var(--edatos-color-white-100, #ffffff);
 	line-height: 1;
 	display: block;
 }
@@ -5011,7 +4962,7 @@ li.nav-item.recursos-item {
 .user-profile-card .heading {
 	font-size: var(--ckan-font-size-heading);
 	font-weight: var(--edatos-font-weight-semibold);
-	color: var(--color-white);
+	color: var(--edatos-color-white-100, #ffffff);
 	margin: 0;
 	line-height: 1.1;
 	text-align: center;
@@ -5027,7 +4978,7 @@ li.nav-item.recursos-item {
 
 .user-profile-bio {
 	font-size: var(--edatos-font-size-xs);
-	color: var(--color-white);
+	color: var(--edatos-color-white-100, #ffffff);
 	font-weight: var(--edatos-font-weight-regular);
 	line-height: 16px;
 	text-align: center;
@@ -5036,7 +4987,7 @@ li.nav-item.recursos-item {
 
 .user-profile-bio p {
 	margin: 0;
-	color: var(--color-white);
+	color: var(--edatos-color-white-100, #ffffff);
 }
 
 /* Bloque de estadísticas: header + lista de items con badge */
@@ -5055,7 +5006,7 @@ li.nav-item.recursos-item {
 	padding: 5px 10px;
 	font-size: var(--edatos-font-size-sm);
 	font-weight: var(--edatos-font-weight-bold);
-	color: var(--color-white);
+	color: var(--edatos-color-white-100, #ffffff);
 	white-space: nowrap;
 }
 
@@ -5066,8 +5017,8 @@ li.nav-item.recursos-item {
 }
 
 .user-stats-item {
-	background: var(--color-white);
-	border-bottom: 0.5px solid var(--color-primary-5);
+	background: var(--edatos-color-white-100, #ffffff);
+	border-bottom: 0.5px solid var(--edatos-color-primary-5, #e5ecf1);
 	display: flex;
 	align-items: center;
 	gap: 10px;
@@ -5120,12 +5071,12 @@ li.nav-item.recursos-item {
 	padding: 5px 10px;
 	font-size: var(--edatos-font-size-sm);
 	font-weight: var(--edatos-font-weight-bold);
-	color: var(--color-white);
+	color: var(--edatos-color-white-100, #ffffff);
 }
 
 .user-info-value {
-	background: var(--color-white);
-	border-bottom: 0.5px solid var(--color-primary-5);
+	background: var(--edatos-color-white-100, #ffffff);
+	border-bottom: 0.5px solid var(--edatos-color-primary-5, #e5ecf1);
 	height: 35px;
 	display: flex;
 	align-items: center;
@@ -5153,7 +5104,7 @@ li.nav-item.recursos-item {
 }
 
 .resource-view-embed .modal-header .modal-title {
-	color: var(--color-white);
+	color: var(--edatos-color-white-100, #ffffff);
 	font-size: var(--edatos-font-size-md);
 	font-weight: var(--edatos-font-weight-semibold);
 	text-transform: uppercase;
@@ -5173,7 +5124,7 @@ li.nav-item.recursos-item {
 	border-radius: var(--edatos-border-radius-sm);
 	height: 35px;
 	font-size: var(--edatos-font-size-sm);
-	color: var(--color-text-base);
+	color: var(--edatos-color-gray-80, #333333);
 }
 
 .resource-view-embed .modal-body textarea.form-control {
@@ -5369,7 +5320,7 @@ aside.secondary .module-content > a.btn.btn-sm,
     background-image: none;
     border: 1px solid var(--edatos-color-primary-100);
     color: var(--edatos-color-primary-100);
-    border-radius: var(--border-radius-sm);
+    border-radius: var(--edatos-border-radius-sm, 5px);
     box-shadow: none;
     text-shadow: none;
     font-size: var(--edatos-font-size-sm);
@@ -5426,7 +5377,7 @@ aside.secondary .module-content > a.btn.btn-sm {
 	padding: var(--edatos-spacing-y-l) var(--edatos-spacing-x-m);
 	color: var(--edatos-color-black-100);
 	background-color: var(--edatos-color-danger-25);
-	border-radius: var(--border-radius-sm);
+	border-radius: var(--edatos-border-radius-sm, 5px);
 	font-weight: var(--edatos-font-weight-regular);
 	border: none; /* opcional para eliminar borde Bootstrap */
 }
@@ -5509,7 +5460,7 @@ aside.secondary .module-content > a.btn.btn-sm {
     color: var(--edatos-color-gray-40);
     background-color: transparent;
     border: 1px solid var(--edatos-color-gray-40);
-    border-radius: var(--border-radius-sm, 4px);
+    border-radius: var(--edatos-border-radius-sm, 4px);
     cursor: pointer;
     box-shadow: none;
     transition: all 0.2s ease;
@@ -5640,7 +5591,7 @@ aside.secondary .module-content > a.btn.btn-sm {
     display: block;
     font-size: 14px;
     font-weight: 400;
-    color: var(--color-primary-dark, #004678);
+    color: var(--edatos-color-primary-100, #004678);
     margin-bottom: 4px;
 }
 

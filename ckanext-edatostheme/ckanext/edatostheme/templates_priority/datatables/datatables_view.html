@@ -84,6 +84,13 @@
     </a>
   </div>
 
+  {#- POC de scroll horizontal real en la tabla, acotada a UN ÚNICO recurso --
+      ver "specs/investigacion-scroll-lateral-resource-view-datatable.md".
+      Elemento propio (sin marcado visual) en vez de un segundo "data-module"
+      sobre "edatos-dt-toolbar", para no mezclar esta responsabilidad con la
+      de la toolbar. #}
+  <div data-module="edatos-inline-scrollx-poc" data-module-resource-id="{{ resource.id }}"></div>
+
   {#- Fuera del wrapper "edatos-dt-toolbar" a propósito: ese wrapper se
       vacía y desaparece en cuanto "edatos-inline-resource-toolbar" traslada
       sus hijos a ".dt-buttons" -- el modal no es un botón de esa fila, así
