@@ -723,6 +723,14 @@ Many fields support multilanguage input via the fluent extension pattern:
 - Custom form snippets in `ckanext/edatosscheming/templates/scheming/form_snippets/`
 - Primary language is determined from common-metadata service configuration
 
+## Code Language Convention
+
+New code must be written entirely in English going forward — identifiers (variables, functions, classes), comments, and code-facing strings, not just one or the other. This applies across all extensions, not only new files.
+
+Older files still contain Spanish identifiers/comments (e.g. `ckanext-edatostheme/ckanext/edatostheme/code_templates/burger_button.html`: `burgerAbierto`, `abrir_burger`, `cerrar_burger`). There is no dedicated bulk-rename effort planned — migrate opportunistically whenever such a file is touched for another reason, rather than leaving it as-is.
+
+User-facing strings shown in the UI (labels, messages, translations) are unaffected by this convention — they follow the existing multilanguage/i18n mechanisms documented elsewhere in this file.
+
 ## Git Workflow
 
 Main branch: `master`
