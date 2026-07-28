@@ -10,12 +10,7 @@
      padre" de "documento del iframe", ni reintentar tras cada recarga
      interna del iframe: cada recarga es simplemente una carga nueva de ESTA
      página, que vuelve a ejecutar este script y sus módulos "ckan.module"
-     desde cero. La POC de scrollX (ver módulo "edatos-inline-scrollx-poc"
-     más abajo) también vivía antes en "resource-view-toolbar.js" orquestada
-     desde el documento padre vía "iframe.contentWindow"/"contentDocument" +
-     polling, pese a operar enteramente sobre objetos de ESTE documento
-     (jQuery, la instancia de DataTables) -- se migró aquí por el mismo
-     motivo que la toolbar. */
+     desde cero. */
 
   /* "edatostheme_js" (este bundle) se carga ANTES que "jquery.js"/"main.js"
      en el documento (orden de webassets, fuera de nuestro control -- mismo
@@ -24,153 +19,74 @@
      define "main.js") todavía no existe cuando el intérprete llega aquí en
      el nivel superior del script, así que llamarla directamente revienta
      con un TypeError -- silenciosamente para el usuario, visible solo en la
-     consola -- y esa excepción aborta el resto de este bloque de script,
-     incluido el registro del segundo módulo ("edatos-inline-filter-panel")
-     que le sigue. Registrar ambos módulos dentro de "DOMContentLoaded" lo
-     evita: por orden de listeners sobre el mismo evento (el de registro,
-     no el de declaración en el árbol), el nuestro se ejecuta ANTES que el
-     de "main.js" que escanea el documento en busca de "data-module" y
-     arranca cada módulo ya registrado -- que es justo el que necesitamos
-     que corra primero. */
+     consola -- y esa excepción aborta el resto de este bloque de script.
+     Registrar el módulo dentro de "DOMContentLoaded" lo evita: por orden de
+     listeners sobre el mismo evento (el de registro, no el de declaración
+     en el árbol), el nuestro se ejecuta ANTES que el de "main.js" que
+     escanea el documento en busca de "data-module" y arranca cada módulo ya
+     registrado -- que es justo el que necesitamos que corra primero. */
   document.addEventListener('DOMContentLoaded', function () {
-    /* ".dt-buttons.btn-group" lo crea en tiempo de ejecución la extensión
-       vendored ckan/ckanext/datatablesview al inicializar DataTables --
-       puede no existir todavía cuando corre este módulo, así que se
-       reintenta con un MutationObserver hasta que aparezca. A diferencia de
-       la versión anterior, esto ya no cruza ningún documento:
-       "insertBefore"/"appendChild" bastan (no hace falta "adoptNode",
-       reservado para mover nodos ENTRE documentos distintos). */
-    window.ckan.module('edatos-inline-resource-toolbar', function ($) {
-      return {
-        initialize: function () {
-          var wrapper = this.el[0];
-          var children = Array.prototype.slice.call(wrapper.children);
+    /* Builds the "Add Filter" trigger + flyout panel and returns the
+       container element ready to be inserted into ".dt-buttons". Same UI
+       and behaviour as the previous "edatos-inline-filter-panel" ckan.module
+       (checkbox list per field, values fetched from datastore_search, state
+       shared with CKAN core via "ckan.views.filters") -- only the wiring
+       changed: this is no longer a separate module bound to its own
+       "data-module" element, since it is now created entirely in JS and
+       handed to ".dt-buttons" directly (see "setUpToolbar" below), instead
+       of being pre-rendered by Jinja and relocated later.
 
-          /* Esta misma plantilla se sirve tal cual cuando se visita la URL
-             de la vista directamente (enlace compartido, o el propio botón
-             "Pantalla completa", "target=_blank") -- sin distinción de
-             código entre "estoy dentro de un iframe" y "soy la página de
-             nivel superior", a diferencia de la versión anterior
-             (resource-view-toolbar.js, rama "window.self === window.top").
-             Solo se conserva esta clase para que "custom.css" pueda dar
-             aire extra entre la botonera y el borde superior del navegador
-             SOLO en ese caso (en el <iframe> real, ese margen ya lo da el
-             layout de la página que lo envuelve). */
-          if (window.self === window.top) {
-            document.documentElement.classList.add('edatos-standalone-dt-view');
-          }
+       This still needs a real DOM container inserted by hand (not the
+       DataTables Buttons API): a Buttons button is a single element, and
+       this widget is a button PLUS an anchored flyout panel with its own
+       state -- there is no native DataTables/CKAN equivalent to register it
+       through. "Fullscreen"/"Embed" below, which ARE simple one-shot
+       actions, use the real Buttons API instead. */
+    function buildFilterPanel(resourceId, fields, translate) {
+      var container = document.createElement('div');
+      container.className = 'resource-view-filters';
 
-          function tryInsert() {
-            var dtButtons = document.querySelector('.dt-buttons.btn-group');
-            if (!dtButtons) {
-              return false;
-            }
-            /* Ancla fija (el primer botón nativo, p.ej. "tabla"), capturada
-               UNA vez antes del bucle -- insertar varios nodos con
-               "insertBefore(nodo, dtButtons.firstChild)" dentro del mismo
-               bucle invertiría su orden si se releyera "firstChild" en cada
-               iteración. */
-            var anchor = dtButtons.firstChild;
-            children.forEach(function (child) {
-              dtButtons.insertBefore(child, anchor);
-            });
-            wrapper.parentNode.removeChild(wrapper);
+      var toggleButton = document.createElement('a');
+      toggleButton.className = 'btn btn-primary';
+      toggleButton.href = '#';
+      toggleButton.textContent = translate('Add Filter');
+      container.appendChild(toggleButton);
 
-            /* El buscador ("Buscar:") vive en ".dataTables_filter", hermano
-               de ".dt-buttons" dentro del MISMO documento -- ya no hace
-               falta "adoptNode" (nunca hizo falta para este elemento en
-               concreto, ver comentario histórico en la versión anterior de
-               este fichero), solo un "appendChild" al final del grupo, tal
-               como lo coloca Figma (último elemento de la fila). */
-            var filterWrap = document.querySelector('.dataTables_filter');
-            if (filterWrap) {
-              dtButtons.appendChild(filterWrap);
-            }
-            return true;
-          }
+      var panel = document.createElement('div');
+      panel.className = 'edatos-filter-panel';
+      panel.hidden = true;
+      container.appendChild(panel);
 
-          if (tryInsert()) {
-            return;
-          }
-          var observer = new MutationObserver(function () {
-            if (tryInsert()) {
-              observer.disconnect();
-            }
-          });
-          observer.observe(document.body, { childList: true, subtree: true });
-        }
-      };
-    });
+      var state = { field: null, distinctValues: null };
+      var outsideClickHandler = null;
+      var escapeHandler = null;
 
-    /* Panel de checkboxes de "Agregar Filtro" -- misma UI e interacción que
-       la versión anterior (setupCustomFilterPanel en
-       resource-view-toolbar.js), pero sin la complejidad que exigía vivir a
-       caballo entre dos documentos: nada de "ownerDocument"/"currentDoc()"
-       releído en cada operación, nada de reenganchar listeners tras un
-       "adoptNode" (aquí no hay ninguno), y el cierre "clic fuera"/Escape se
-       engancha sobre "document" sin más -- siempre es el documento
-       correcto, porque este panel nunca cambia de documento. El estado de
-       los filtros sigue viviendo en la misma API pública de CKAN core
-       ("ckan.views.filters", cargada aquí vía "{% asset 'base/view-filters'
-       %}" en la plantilla), así que la URL resultante es idéntica a la que
-       ya producía el flujo por defecto -- salvo que ahora es la URL del
-       propio iframe la que navega (mismo mecanismo que ya usa hoy el botón
-       nativo "Tabla/Lista" del vendor). */
-    window.ckan.module('edatos-inline-filter-panel', function ($) {
-    function buildClearRow(onClear) {
-      var clear = document.createElement('div');
-      clear.className = 'edatos-filter-panel-clear';
-      clear.textContent = 'Eliminar filtro';
-      clear.addEventListener('click', function (evt) {
-        evt.stopPropagation();
-        onClear();
-      });
-      return clear;
-    }
-
-    return {
-      options: {
-        resourceId: null,
-        fields: []
-      },
-
-      initialize: function () {
-        var self = this;
-        self.container = self.el[0];
-        self.toggleButton = self.container.querySelector('a.btn-primary');
-        self.state = { field: null, distinctValues: null };
-        self.panel = document.createElement('div');
-        self.panel.className = 'edatos-filter-panel';
-        self.panel.hidden = true;
-        self.container.appendChild(self.panel);
-
-        self.toggleButton.addEventListener('click', function (evt) {
-          evt.preventDefault();
+      function buildClearRow(onClear) {
+        var clear = document.createElement('div');
+        clear.className = 'edatos-filter-panel-clear';
+        clear.textContent = 'Eliminar filtro';
+        clear.addEventListener('click', function (evt) {
           evt.stopPropagation();
-          if (self.panel.hidden) {
-            self.openFieldList();
-          } else {
-            self.closePanel();
-          }
+          onClear();
         });
-      },
+        return clear;
+      }
 
-      activeValues: function (field) {
+      function activeValues(field) {
         return (window.ckan.views.filters.get(field) || []).slice();
-      },
+      }
 
-      hasActiveFilter: function (field) {
-        return this.activeValues(field).length > 0;
-      },
+      function hasActiveFilter(field) {
+        return activeValues(field).length > 0;
+      }
 
-      /* Marcar/desmarcar una casilla de VALOR aplica el filtro al instante
-         (mismo comportamiento -- y mismo motivo -- que la versión anterior):
+      /* Marcar/desmarcar una casilla de VALOR aplica el filtro al instante:
          "ckan.views.filters.set()/.unset()" navegan de inmediato en cuanto
-         detectan un cambio real. Aquí esa navegación es la del propio
-         documento del iframe (no la del padre), así que solo se recarga la
-         tabla, igual que ya hace el botón nativo de alternar vista. */
-      toggleValue: function (field, value) {
-        var current = this.activeValues(field);
+         detectan un cambio real. Esa navegación es la del propio documento
+         del iframe (no la del padre), así que solo se recarga la tabla,
+         igual que ya hace el botón nativo de alternar vista. */
+      function toggleValue(field, value) {
+        var current = activeValues(field);
         var idx = current.indexOf(value);
         if (idx === -1) {
           current.push(value);
@@ -182,39 +98,38 @@
         } else {
           window.ckan.views.filters.unset(field);
         }
-      },
+      }
 
-      openFieldList: function () {
-        this.state.field = null;
-        this.panel.hidden = false;
-        this.container.classList.add('edatos-filter-open');
-        this.renderFieldList();
-        this.bindCloseOnOutsideInteraction();
-      },
+      function openFieldList() {
+        state.field = null;
+        panel.hidden = false;
+        container.classList.add('edatos-filter-open');
+        renderFieldList();
+        bindCloseOnOutsideInteraction();
+      }
 
-      openValueList: function (field) {
-        this.state.field = field;
-        this.state.distinctValues = null;
-        this.renderValueList();
-        this.fetchDistinctValues(field);
-      },
+      function openValueList(field) {
+        state.field = field;
+        state.distinctValues = null;
+        renderValueList();
+        fetchDistinctValues(field);
+      }
 
-      closePanel: function () {
-        this.panel.hidden = true;
-        this.container.classList.remove('edatos-filter-open');
-        this.state.field = null;
-        this.unbindCloseOnOutsideInteraction();
-      },
+      function closePanel() {
+        panel.hidden = true;
+        container.classList.remove('edatos-filter-open');
+        state.field = null;
+        unbindCloseOnOutsideInteraction();
+      }
 
-      renderFieldList: function () {
-        var self = this;
-        self.panel.innerHTML = '';
+      function renderFieldList() {
+        panel.innerHTML = '';
         var list = document.createElement('ul');
         list.className = 'edatos-filter-panel-list';
-        self.options.fields.forEach(function (field) {
+        fields.forEach(function (field) {
           var li = document.createElement('li');
           li.className = 'edatos-filter-panel-item' +
-            (self.hasActiveFilter(field) ? ' edatos-filter-panel-item--checked' : '');
+            (hasActiveFilter(field) ? ' edatos-filter-panel-item--checked' : '');
           li.textContent = field;
           /* "stopPropagation()" imprescindible: "openValueList" reconstruye
              el panel de forma SÍNCRONA ("panel.innerHTML = ''") dentro de
@@ -224,232 +139,269 @@
              panel" y lo cerraría de inmediato. */
           li.addEventListener('click', function (evt) {
             evt.stopPropagation();
-            self.openValueList(field);
+            openValueList(field);
           });
           list.appendChild(li);
         });
-        self.panel.appendChild(list);
-        self.panel.appendChild(buildClearRow(function () {
+        panel.appendChild(list);
+        panel.appendChild(buildClearRow(function () {
           var current = window.ckan.views.filters.get();
           Object.keys(current).forEach(function (f) {
             window.ckan.views.filters.unset(f);
           });
         }));
-      },
+      }
 
-      renderValueList: function () {
-        var self = this;
-        self.panel.innerHTML = '';
+      function renderValueList() {
+        panel.innerHTML = '';
         var back = document.createElement('div');
         back.className = 'edatos-filter-panel-back';
-        back.textContent = self.state.field;
+        back.textContent = state.field;
         back.addEventListener('click', function (evt) {
           evt.stopPropagation();
-          self.openFieldList();
+          openFieldList();
         });
-        self.panel.appendChild(back);
+        panel.appendChild(back);
 
         var list = document.createElement('ul');
         list.className = 'edatos-filter-panel-list';
-        self.panel.appendChild(list);
-        self.renderValueItems(list);
+        panel.appendChild(list);
+        renderValueItems(list);
 
-        self.panel.appendChild(buildClearRow(function () {
-          window.ckan.views.filters.unset(self.state.field);
+        panel.appendChild(buildClearRow(function () {
+          window.ckan.views.filters.unset(state.field);
         }));
-      },
+      }
 
-      renderValueItems: function (list) {
-        var self = this;
+      function renderValueItems(list) {
         list.innerHTML = '';
-        if (self.state.distinctValues === null) {
+        if (state.distinctValues === null) {
           var loading = document.createElement('li');
           loading.className = 'edatos-filter-panel-loading';
           loading.textContent = 'Cargando...';
           list.appendChild(loading);
           return;
         }
-        if (self.state.distinctValues.length === 0) {
+        if (state.distinctValues.length === 0) {
           var empty = document.createElement('li');
           empty.className = 'edatos-filter-panel-empty';
           empty.textContent = 'Sin valores';
           list.appendChild(empty);
           return;
         }
-        var checkedValues = self.activeValues(self.state.field);
-        self.state.distinctValues.forEach(function (value) {
+        var checkedValues = activeValues(state.field);
+        state.distinctValues.forEach(function (value) {
           var li = document.createElement('li');
           li.className = 'edatos-filter-panel-item' +
             (checkedValues.indexOf(value) !== -1 ? ' edatos-filter-panel-item--checked' : '');
           li.textContent = value;
           li.addEventListener('click', function (evt) {
             evt.stopPropagation();
-            self.toggleValue(self.state.field, value);
+            toggleValue(state.field, value);
           });
           list.appendChild(li);
         });
-      },
+      }
 
-      fetchDistinctValues: function (field) {
-        var self = this;
+      function fetchDistinctValues(field) {
         var url = window.ckan.url('/api/3/action/datastore_search');
-        $.getJSON(url, {
-          resource_id: self.options.resourceId,
+        window.jQuery.getJSON(url, {
+          resource_id: resourceId,
           fields: field,
           distinct: true,
           limit: 100,
           sort: field,
           include_total: false
         }).done(function (data) {
-          if (self.state.field !== field) {
+          if (state.field !== field) {
             return;
           }
-          self.state.distinctValues = (data.result.records || []).map(function (record) {
+          state.distinctValues = (data.result.records || []).map(function (record) {
             return record[field];
           });
-          var list = self.panel.querySelector('.edatos-filter-panel-list');
+          var list = panel.querySelector('.edatos-filter-panel-list');
           if (list) {
-            self.renderValueItems(list);
+            renderValueItems(list);
           }
         }).fail(function () {
-          if (self.state.field !== field) {
+          if (state.field !== field) {
             return;
           }
-          self.state.distinctValues = [];
-          var list = self.panel.querySelector('.edatos-filter-panel-list');
+          state.distinctValues = [];
+          var list = panel.querySelector('.edatos-filter-panel-list');
           if (list) {
-            self.renderValueItems(list);
+            renderValueItems(list);
           }
         });
-      },
-
-      bindCloseOnOutsideInteraction: function () {
-        var self = this;
-        self._outsideClickHandler = function (evt) {
-          if (!self.panel.hidden && !self.container.contains(evt.target)) {
-            self.closePanel();
-          }
-        };
-        self._escapeHandler = function (evt) {
-          if (evt.key === 'Escape' && !self.panel.hidden) {
-            self.closePanel();
-          }
-        };
-        document.addEventListener('click', self._outsideClickHandler);
-        document.addEventListener('keydown', self._escapeHandler);
-      },
-
-      unbindCloseOnOutsideInteraction: function () {
-        if (this._outsideClickHandler) {
-          document.removeEventListener('click', this._outsideClickHandler);
-          this._outsideClickHandler = null;
-        }
-        if (this._escapeHandler) {
-          document.removeEventListener('keydown', this._escapeHandler);
-          this._escapeHandler = null;
-        }
-      }
-    };
-  });
-
-    /* POC de scroll horizontal real en la tabla, acotada a UN ÚNICO recurso
-       -- ver "specs/investigacion-scroll-lateral-resource-view-datatable.md".
-       Migrada aquí (antes en "resource-view-toolbar.js", documento padre)
-       porque opera enteramente sobre objetos que ya viven en ESTE documento
-       (jQuery, la instancia de DataTables) -- no hay ninguna razón para
-       orquestarla desde fuera del iframe con "iframe.contentWindow"/
-       "contentDocument" + polling, como hacía la versión anterior. Al vivir
-       aquí, cada recarga interna del iframe (alternar tabla/lista) es
-       simplemente una carga nueva de esta página -- a diferencia de la
-       versión anterior, no hace falta ningún flag de "ya aplicado": ese
-       flag existía solo porque un poll externo seguía llamando repetidas
-       veces sobre el MISMO documento ya reconfigurado. */
-    window.ckan.module('edatos-inline-scrollx-poc', function ($) {
-      var EDATOS_SCROLLX_POC_RESOURCE_ID = 'bfe4de48-d84f-4578-a991-728770bf71cb';
-
-      /* El vendor (ckan/ckanext/datatablesview) inicializa DataTables con
-         "responsive:true" y sin "scrollX" (solo "scrollY:400" para el scroll
-         vertical) -- ver la investigación referenciada arriba. Con esa
-         configuración, DataTables jamás deja que la tabla desborde el ancho
-         disponible: en vez de un scroll horizontal, la extensión Responsive
-         oculta columnas de baja prioridad tras el icono "+" de cada fila,
-         recalculando en cada resize/redraw. No hay overflow horizontal al que
-         aplicarle un estilo de scrollbar -- hay que reconfigurar la propia
-         instancia. DataTables no admite cambiar "responsive"/"scrollX" sobre
-         una tabla ya inicializada: solo destruyéndola y reconstruyéndola con
-         otras opciones ("destroy:true" + nuevo objeto de configuración),
-         reutilizando el resto de "oInit" (columnas, "ajaxurl", "scrollY",
-         botones...) tal cual lo dejó el vendor, para no perder nada de lo ya
-         configurado. */
-      function enableRealScrollX() {
-        var table = $('.dataTable').eq(0);
-        if (!table.length || !$.fn.dataTable.isDataTable(table[0])) {
-          /* Todavía no ha terminado de inicializarse -- el observer de más
-             abajo reintenta en la siguiente mutación relevante del DOM. */
-          return false;
-        }
-        /* "table.DataTable().settings()[0]" devuelve "undefined" de forma
-           intermitente en esta versión de DataTables (comprobado en consola:
-           unas veces da el objeto de ajustes real, otras no) -- en cambio
-           "$.fn.dataTable.settings" (el array plano y global de instancias
-           activas, sin pasar por el envoltorio "Api" de "settings()") funcionó
-           de forma consistente en todas las pruebas. Se busca ahí la entrada
-           cuyo "nTable" (el <table> real que gestiona, propiedad interna
-           estándar de DataTables) sea el nodo actual. */
-        var allSettings = $.fn.dataTable.settings;
-        var settings = null;
-        for (var i = 0; i < allSettings.length; i += 1) {
-          if (allSettings[i].nTable === table[0]) {
-            settings = allSettings[i];
-            break;
-          }
-        }
-        if (!settings) {
-          return false;
-        }
-        var config = $.extend(true, {}, settings.oInit);
-        config.responsive = false;
-        config.scrollX = true;
-        config.destroy = true;
-        var newDt = table.DataTable(config);
-        /* Ninguna columna trae "visible:false" en "oInit.columns" (confirmado
-           inspeccionando la config real) -- las que aparecían ocultas antes de
-           este cambio lo estaban por el estado guardado de "stateSave" (activo
-           en el propio "oInit"), no por configuración. Se fuerzan visibles
-           aquí, ignorando ese estado guardado, para que el ancho real de la
-           tabla (y por tanto el scroll horizontal) incluya siempre todas las
-           columnas con datos. Se excluye la columna auxiliar sin datos que usa
-           Responsive para la fila de detalle (className "none", sin nombre) --
-           ya no cumple ninguna función con "responsive:false". */
-        newDt.columns().every(function () {
-          var header = this.header();
-          if (header && header.className === 'none') {
-            return;
-          }
-          this.visible(true, false);
-        });
-        newDt.columns.adjust();
-        return true;
       }
 
+      function bindCloseOnOutsideInteraction() {
+        outsideClickHandler = function (evt) {
+          if (!panel.hidden && !container.contains(evt.target)) {
+            closePanel();
+          }
+        };
+        escapeHandler = function (evt) {
+          if (evt.key === 'Escape' && !panel.hidden) {
+            closePanel();
+          }
+        };
+        document.addEventListener('click', outsideClickHandler);
+        document.addEventListener('keydown', escapeHandler);
+      }
+
+      function unbindCloseOnOutsideInteraction() {
+        if (outsideClickHandler) {
+          document.removeEventListener('click', outsideClickHandler);
+          outsideClickHandler = null;
+        }
+        if (escapeHandler) {
+          document.removeEventListener('keydown', escapeHandler);
+          escapeHandler = null;
+        }
+      }
+
+      toggleButton.addEventListener('click', function (evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+        if (panel.hidden) {
+          openFieldList();
+        } else {
+          closePanel();
+        }
+      });
+
+      return container;
+    }
+
+    /* ".dt-buttons.btn-group" (extensión Buttons de DataTables, vendor
+       ckan/ckanext/datatablesview -- CKAN core) ya expone una API pública
+       para añadir botones a un grupo ya existente ("button().add()", ver
+       "assets/vendor/DataTables/datatables.js"). Usarla (en vez de mover
+       nodos ya renderizados con "insertBefore") deja que "Pantalla
+       completa"/"Incrustar" sean botones DataTables de verdad, con el mismo
+       ciclo de vida que "Copiar"/"Imprimir" -- ya no son nodos ajenos que la
+       propia librería desconoce.
+
+       El vendor también publica un evento propio de "ya terminé de
+       inicializar la tabla" ("datatablesview:init-complete", dentro de
+       "initComplete", vía "sandbox.publish", el mismo mecanismo de pub/sub
+       que ya usa "data-viewer.js" de CKAN core) -- pero ESE evento solo se
+       dispara tras el primer "draw" con datos ya resueltos. Si el "ajax" de
+       "datastore_search" falla (comprobado en el entorno real: un recurso
+       con la petición inicial fallida, "DataTables warning ... Ajax error",
+       tn/7), "initComplete" nunca llega a ejecutarse y con él tampoco
+       nuestro evento -- los botones propios no aparecerían nunca, aunque la
+       fila ".dt-buttons" (que la extensión Buttons construye de forma
+       SÍNCRONA, dentro de la misma llamada a ".DataTable()", sin depender
+       del resultado del "ajax") sí exista. Por eso se sigue observando la
+       aparición de ".dt-buttons.btn-group" en el DOM (con un
+       "MutationObserver" que se desconecta en cuanto lo encuentra, no un
+       poll indefinido) en vez de fiarse de ese evento: es la única señal
+       que no depende de que la carga de datos llegue a buen puerto. */
+    window.ckan.module('edatos-inline-resource-toolbar', function ($) {
       return {
         options: {
-          resourceId: null
+          resourceId: null,
+          fields: [],
+          filterable: false
         },
 
         initialize: function () {
-          if (this.options.resourceId !== EDATOS_SCROLLX_POC_RESOURCE_ID) {
-            return;
+          var self = this;
+
+          /* Esta misma plantilla se sirve tal cual cuando se visita la URL
+             de la vista directamente (enlace compartido, o el propio botón
+             "Pantalla completa", "target=_blank") -- sin distinción de
+             código entre "estoy dentro de un iframe" y "soy la página de
+             nivel superior". Solo se conserva esta clase para que
+             "custom.css" pueda dar aire extra entre la botonera y el borde
+             superior del navegador SOLO en ese caso (en el <iframe> real,
+             ese margen ya lo da el layout de la página que lo envuelve). */
+          if (window.self === window.top) {
+            document.documentElement.classList.add('edatos-standalone-dt-view');
           }
-          if (enableRealScrollX()) {
+
+          if (self.setUpToolbar()) {
             return;
           }
           var observer = new MutationObserver(function () {
-            if (enableRealScrollX()) {
+            if (self.setUpToolbar()) {
               observer.disconnect();
             }
           });
           observer.observe(document.body, { childList: true, subtree: true });
+        },
+
+        /* Devuelve "true" en cuanto ".dt-buttons.btn-group" existe y ya se
+           han añadido los botones propios (fin de la espera), "false" si
+           todavía no existe (el observer de "initialize" reintentará). */
+        setUpToolbar: function () {
+          var self = this;
+          var dtButtons = document.querySelector('.dt-buttons.btn-group');
+          if (!dtButtons) {
+            return false;
+          }
+          var dt = $('#dtprv').DataTable({ retrieve: true });
+
+          /* Orden crítico: "Agregar Filtro" primero, "Pantalla completa"
+             después -- el CSS existente (custom.css, ".resource-view-filters
+             + .btn.resource-view-toolbar-btn") empuja el SEGUNDO grupo
+             (Pantalla completa/Incrustar/botones nativos/buscador) hacia el
+             borde derecho vía "margin-left:auto" en el elemento
+             inmediatamente posterior a ".resource-view-filters". Por eso se
+             añaden "Pantalla completa"/"Incrustar" en las posiciones 0/1
+             (antes de los 7 botones nativos) y el contenedor de "Agregar
+             Filtro" se inserta el último, como PRIMER hijo de ".dt-buttons"
+             -- así queda inmediatamente antes de "Pantalla completa" y el
+             selector de hermano adyacente sigue matcheando. */
+          dt.button().add(0, {
+            text: '<i class="fa fa-up-right-and-down-left-from-center"></i> ' + self._('Fullscreen'),
+            className: 'btn btn-default resource-view-toolbar-btn',
+            action: function () {
+              window.open(window.location.href, '_blank', 'noopener');
+            }
+          });
+
+          dt.button().add(1, {
+            text: '<i class="fa fa-object-group"></i> ' + self._('Embed'),
+            className: 'btn btn-default resource-view-toolbar-btn',
+            action: function () {
+              /* Reutiliza el módulo "resource-view-embed" de CKAN core tal
+                 cual (ckan/public/base/javascript/modules/resource-view-embed.js):
+                 solo necesita que exista en el documento un elemento con
+                 "data-module=\"resource-view-embed\"" -- él mismo reubica su
+                 modal a <body> y gestiona el textarea de código embed. No
+                 hace falta reimplementar nada de eso, solo disparar su clic
+                 desde aquí en vez de que sea un botón visible por sí mismo. */
+              var trigger = document.querySelector('[data-module="resource-view-embed"]');
+              if (trigger) {
+                trigger.click();
+              }
+            }
+          });
+
+          dtButtons = document.querySelector('.dt-buttons.btn-group');
+          if (self.options.filterable) {
+            var filterContainer = buildFilterPanel(
+              self.options.resourceId,
+              self.options.fields,
+              function (text) { return self._(text); }
+            );
+            dtButtons.insertBefore(filterContainer, dtButtons.firstChild);
+          }
+
+          /* El buscador ("Buscar:") de DataTables (".dataTables_filter") no
+             es un botón -- es una "feature" propia del layout ("f" en el
+             "dom" string del vendor), sin API para registrarlo dentro de
+             ".dt-buttons". Se mueve a mano, como último elemento de la fila
+             (igual que en Figma), tal y como ya hacía la versión anterior de
+             este módulo. */
+          var filterWrap = document.querySelector('.dataTables_filter');
+          if (filterWrap) {
+            dtButtons.appendChild(filterWrap);
+          }
+          return true;
         }
       };
     });

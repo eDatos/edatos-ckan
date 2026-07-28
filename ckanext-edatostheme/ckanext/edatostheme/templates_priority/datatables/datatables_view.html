@@ -15,15 +15,23 @@
   (no en "templates/" normal) porque es una colisión de ruta completa, no una
   cadena de "ckan_extends" -- ver docs/templates-priority-mechanism.md.
 
-  "Incrustar" (botón + modal "#embed-<id>") se duplica aquí en vez de
-  compartirse con el documento padre -- mismo patrón que "metamac-portal"
-  (widget.html/widget.js): cuando hace falta un <iframe>, se le sirve la
-  aplicación completa (tabla + su propia toolbar + su propio modal), no un
-  botón suelto que dependa de markup en OTRO documento. El módulo
-  "resource-view-embed" es de CKAN core -- ya se registra solo (vía
-  "main.js", que este documento ya carga por heredar de "base.html") en
-  cuanto encuentra "data-module="resource-view-embed"" en el árbol; no hace
-  falta registrarlo a mano como los módulos propios de más abajo.
+  Los botones propios ("Pantalla completa"/"Incrustar"/"Agregar Filtro") ya no
+  se renderizan aquí visibles: "resource-view-inline-toolbar.js" los añade a
+  ".dt-buttons" en JS, vía la Buttons API de DataTables (los dos primeros) o
+  insertándose a mano (el tercero, ver comentario en ese fichero) en cuanto el
+  vendor publica "datatablesview:init-complete". Este bloque solo deja los
+  elementos de datos/enganche que ese módulo necesita:
+  - Un contenedor oculto con "data-module=\"edatos-inline-resource-toolbar\""
+    que pasa "resourceId"/"fields"/"filterable" como opciones del módulo.
+  - Un disparador oculto con "data-module=\"resource-view-embed\"" (módulo de
+    CKAN core, sin tocar) -- el botón "Incrustar" simplemente le simula un
+    clic; ese módulo ya reubica su propio modal a <body> y gestiona el
+    textarea de código embed.
+  - El modal "#embed-<id>" en sí, duplicado aquí en vez de compartido con el
+    documento padre -- mismo patrón que "metamac-portal" (widget.html/widget.js):
+    cuando hace falta un <iframe>, se le sirve la aplicación completa (tabla +
+    su propia toolbar + su propio modal), no un botón suelto que dependa de
+    markup en OTRO documento.
 #}
 {% import 'macros/form.html' as form %}
 {% ckan_extends %}
@@ -48,56 +56,17 @@
       registrarse para engancharle el listener. #}
   {% asset 'base/ckan' %}
 
-  <div class="edatos-dt-toolbar" data-module="edatos-inline-resource-toolbar">
-    {#- Orden crítico: "Agregar Filtro" primero, "Pantalla completa" después
-        -- el CSS existente (custom.css, ".resource-view-filters +
-        .btn.resource-view-toolbar-btn") empuja el SEGUNDO grupo (Pantalla
-        completa/Incrustar/botones nativos/buscador) hacia el borde derecho
-        vía "margin-left:auto" en el elemento inmediatamente posterior a
-        ".resource-view-filters"; si el orden se invirtiera, ese selector de
-        hermano adyacente dejaría de matchear y el hueco entre grupos
-        desaparecería. #}
-    {% if h.resource_view_is_filterable(resource_view) %}
-      <div class="resource-view-filters"
-           data-module="edatos-inline-filter-panel"
-           data-module-resource-id="{{ resource.id }}"
-           data-module-fields="{{ h.dump_json(datadictionary|map(attribute='id')|list) }}">
-        <a class="btn btn-primary" href="#">{{ _("Add Filter") }}</a>
-      </div>
-    {% endif %}
-    <a class="btn btn-default resource-view-toolbar-btn"
-       target="_blank"
-       rel="noreferrer"
-       title="{{ _('Fullscreen') }}"
-       href="{{ h.url_for(package.type ~ '_resource.view', id=package.name, resource_id=resource.id, view_id=resource_view.id, qualified=True) }}">
-      <i class="fa fa-up-right-and-down-left-from-center"></i>
-      {{ _("Fullscreen") }}
-    </a>
-    <a class="btn btn-default resource-view-toolbar-btn"
-       href="#embed-{{ resource_view.id }}"
-       title="{{ _('Embed') }}"
-       data-module="resource-view-embed"
-       data-module-id="{{ resource_view.id }}"
-       data-module-url="{{ h.url_for(package.type ~ '_resource.view', id=package.name, resource_id=resource.id, view_id=resource_view.id, qualified=True) }}">
-      <i class="fa fa-object-group"></i>
-      {{ _("Embed") }}
-    </a>
-  </div>
+  <div hidden
+       data-module="edatos-inline-resource-toolbar"
+       data-module-resource-id="{{ resource.id }}"
+       data-module-fields="{{ h.dump_json(datadictionary|map(attribute='id')|list) }}"
+       data-module-filterable="{{ 'true' if h.resource_view_is_filterable(resource_view) else 'false' }}"></div>
 
-  {#- POC de scroll horizontal real en la tabla, acotada a UN ÚNICO recurso --
-      ver "specs/investigacion-scroll-lateral-resource-view-datatable.md".
-      Elemento propio (sin marcado visual) en vez de un segundo "data-module"
-      sobre "edatos-dt-toolbar", para no mezclar esta responsabilidad con la
-      de la toolbar. #}
-  <div data-module="edatos-inline-scrollx-poc" data-module-resource-id="{{ resource.id }}"></div>
+  <a hidden
+     data-module="resource-view-embed"
+     data-module-id="{{ resource_view.id }}"
+     data-module-url="{{ h.url_for(package.type ~ '_resource.view', id=package.name, resource_id=resource.id, view_id=resource_view.id, qualified=True) }}"></a>
 
-  {#- Fuera del wrapper "edatos-dt-toolbar" a propósito: ese wrapper se
-      vacía y desaparece en cuanto "edatos-inline-resource-toolbar" traslada
-      sus hijos a ".dt-buttons" -- el modal no es un botón de esa fila, así
-      que no debe moverse con ellos (el propio módulo core
-      "resource-view-embed" ya lo reubica de todas formas al final de
-      "<body>" en su "initialize()", igual que hace hoy en el documento
-      padre). #}
   <div id="embed-{{ resource_view.id }}" class="modal fade resource-view-embed">
     <div class="modal-dialog">
       <div class="modal-content">

@@ -2547,17 +2547,6 @@ a.metadatos-tag:hover {
 	gap: 0;
 }
 
-/* --- Resource view: toolbar renderizada dentro del iframe (prototipo) ---
-   "edatos-inline-resource-toolbar" (resource-view-inline-toolbar.js) mueve
-   los hijos de este wrapper a ".dt-buttons" en cuanto existe y elimina el
-   wrapper -- hasta entonces, oculto para no mostrar "Pantalla completa"/
-   "Agregar Filtro" sueltos, encima de la tabla, durante el instante en que
-   ".dt-buttons" todavía no existe (DataTables Buttons lo crea de forma
-   asíncrona). */
-.edatos-dt-toolbar {
-	display: none;
-}
-
 /* --- Resource view: barra de botones de la vista "Tabla" (DataTables Buttons) ---
    Figma (nodos 12937:9102 / 12941:9388 "Botonería") define estos botones
    (tabla, copiar, ocultar columnas, descargar, refrescar, imprimir,
@@ -2723,14 +2712,14 @@ div.dataTables_wrapper div.dt-buttons .btn.btn-default:focus {
 	color: var(--edatos-color-white-100, #FFF) !important;
 }
 
-/* "Pantalla completa"/"Incrustar" (".resource-view-toolbar-btn") se
-   renderizan directamente dentro del <iframe> (bloque "edatos-dt-toolbar" en
-   templates_priority/datatables/datatables_view.html) y el módulo
-   "edatos-inline-resource-toolbar" (resource-view-inline-toolbar.js) los
-   traslada, dentro de ese mismo documento, a esta fila ".dt-buttons", para
-   que queden en el mismo grupo de botones que pide Figma. Reciben el mismo
-   icon-only que ya aplica ".resource-view .actions .btn" en el documento
-   padre para el resto de tipos de vista -- para "datatables_view",
+/* "Pantalla completa"/"Incrustar" (".resource-view-toolbar-btn") ya no se
+   renderizan en Jinja -- el módulo "edatos-inline-resource-toolbar"
+   (resource-view-inline-toolbar.js) los registra en esta misma fila
+   ".dt-buttons" vía la Buttons API de DataTables (`dt.button().add()`) en
+   cuanto el vendor publica "datatablesview:init-complete", para que queden
+   en el mismo grupo de botones que pide Figma. Reciben el mismo icon-only
+   que ya aplica ".resource-view .actions .btn" en el documento padre para
+   el resto de tipos de vista -- para "datatables_view",
    "package/snippets/resource_view.html" ya no renderiza esos botones ahí
    (ver comentario en ese fichero). */
 div.dataTables_wrapper div.dt-buttons .btn.resource-view-toolbar-btn {
@@ -2825,11 +2814,12 @@ div.dataTables_wrapper div.dt-buttons #filterinfoicon {
    desactivados en su configuración) -- ver Adenda "iconos... invisibles" en
    la documentación de este componente (docs/theming-resource-view-buttons.md)
    para el diagnóstico histórico del mismo síntoma bajo la arquitectura
-   anterior (documento padre + <iframe>). El "MutationObserver" de
-   "edatos-inline-resource-toolbar" (resource-view-inline-toolbar.js) solo
-   traslada ".dataTables_filter" a ".dt-buttons" cuando este último aparece
-   en el DOM; si nunca aparece, la regla de arriba (con ese descendiente) no
-   llega a matchear y ".dataTables_filter" se queda como hijo DIRECTO de
+   anterior (documento padre + <iframe>). "edatos-inline-resource-toolbar"
+   (resource-view-inline-toolbar.js) solo traslada ".dataTables_filter" a
+   ".dt-buttons" cuando este último existe (ver guarda al inicio de
+   "setUpToolbar" en ese fichero); si nunca aparece, la regla de arriba (con
+   ese descendiente) no llega a matchear y ".dataTables_filter" se queda
+   como hijo DIRECTO de
    ".dataTables_wrapper", con el "float:right; margin-top:-1.4em" original
    del vendor
    ("#dtprv_filter", ID -- de ahí el "!important" aquí, para no depender de
@@ -3057,9 +3047,10 @@ div.dt-button-collection div.dropdown-menu a.dt-button.buttons-colvisRestore {
    tabla, y el resto (Pantalla completa/Incrustar + botones nativos +
    buscador) pegado al borde derecho, con el hueco entre ambos creciendo o
    encogiendo según el ancho disponible. "edatos-inline-resource-toolbar"
-   (resource-view-inline-toolbar.js) mueve ".resource-view-filters", dentro
-   del mismo documento del <iframe>, al principio de ".dt-buttons", igual que
-   ya hace con "Pantalla completa"/"Incrustar".
+   (resource-view-inline-toolbar.js) construye ".resource-view-filters"
+   enteramente en JS (ver "buildFilterPanel" en ese fichero -- ya no hay
+   markup propio en Jinja para este botón) y lo inserta como primer hijo de
+   ".dt-buttons" en cuanto el vendor termina de inicializar la tabla.
    Antes se separaba el segundo grupo con un "margin-right" fijo (50px) en
    ESTE elemento, porque ".dt-buttons" era "inline-flex" (se ajusta al ancho
    de su contenido) y un "margin-left:auto" en el primer botón del segundo
@@ -3168,15 +3159,15 @@ div.dataTables_wrapper div.dt-buttons .resource-view-filters > a.btn-primary:foc
 }
 
 /* --- Resource view: panel personalizado de "Agregar Filtro" (checkboxes) ---
-   El módulo "edatos-inline-filter-panel" (resource-view-inline-toolbar.js)
-   sustituye por completo, solo para "datatables_view", el flujo por defecto
-   de CKAN core para este botón (select2, ver "RUTA DE RESPALDO" más abajo)
-   por un panel propio, fiel al mockup de Figma (nodo 12941:9342
-   "BotonDesplegableM" + panel de "Opción 1..5" / "Eliminar filtro"): un
-   único bloque azul fusionado con el botón, con checkboxes que permiten
-   marcar varios valores del campo elegido a la vez. Ver el bloque de
-   comentarios en el propio JS para la arquitectura (estado compartido con
-   CKAN core vía "ckan.views.filters"). */
+   "buildFilterPanel" (dentro de "edatos-inline-resource-toolbar",
+   resource-view-inline-toolbar.js) sustituye por completo, solo para
+   "datatables_view", el flujo por defecto de CKAN core para este botón
+   (select2, ver "RUTA DE RESPALDO" más abajo) por un panel propio, fiel al
+   mockup de Figma (nodo 12941:9342 "BotonDesplegableM" + panel de
+   "Opción 1..5" / "Eliminar filtro"): un único bloque azul fusionado con el
+   botón, con checkboxes que permiten marcar varios valores del campo
+   elegido a la vez. Ver el bloque de comentarios en el propio JS para la
+   arquitectura (estado compartido con CKAN core vía "ckan.views.filters"). */
 div.dataTables_wrapper div.dt-buttons .resource-view-filters {
 	position: relative;
 }
@@ -3363,10 +3354,13 @@ div.dataTables_wrapper div.dt-buttons .resource-view-filters.edatos-filter-open 
 
 /* --- Resource view: desplegables de "Agregar Filtro" (select2) ---
    Este theming ya NO aplica a "datatables_view": ahí ".resource-view-filters"
-   tiene "data-module=\"edatos-inline-filter-panel\"" (ver bloque de arriba),
-   así que el módulo de CKAN core "resource-view-filters" (más abajo) nunca
-   llega a registrarse sobre ese elemento -- no es un "por si falla el JS
-   propio", es un "data-module" distinto que directamente lo excluye.
+   lo construye "buildFilterPanel" (edatos-inline-resource-toolbar,
+   resource-view-inline-toolbar.js) enteramente en JS, sin ningún
+   "data-module" propio, así que el módulo de CKAN core
+   "resource-view-filters" (más abajo, que escanea el DOM buscando su propio
+   "data-module") nunca llega a registrarse sobre ese elemento -- no es un
+   "por si falla el JS propio", directamente no hay nada ahí que ese módulo
+   pueda encontrar.
    Sigue siendo el ÚNICO flujo para el resto de vistas de recurso filtrables
    (no "datatables_view"): esas siguen usando, sin ninguna intervención
    nuestra, el snippet vendored "package/snippets/resource_view_filters.html"
@@ -3542,12 +3536,13 @@ div.dataTables_wrapper div.sortinfo {
 }
 
 /* --- Resource view: scrollbar horizontal de la tabla (".dataTables_scrollBody") ---
-   Ver "specs/investigacion-scroll-lateral-resource-view-datatable.md": tras
-   desactivar el colapso responsive para este recurso (prueba de concepto,
-   módulo "edatos-inline-scrollx-poc" en "resource-view-inline-toolbar.js"),
-   la tabla puede desbordar horizontalmente y
-   necesita un scrollbar visible para desplazarse. Mismo patrón ya usado en
-   este fichero para ".edatos-filter-panel-list"/"div.dt-button-collection
+   Ver "specs/investigacion-scroll-lateral-resource-view-datatable.md": el
+   vendor (ckan/ckanext/datatablesview, CKAN core) ya inicializa DataTables
+   con "scrollX:true" / "responsive:false" de fábrica en modo tabla (no hace
+   falta ningún JS propio para activarlo -- ver la adenda de esa
+   investigación); cuando el contenido desborda el ancho disponible aparece
+   un scrollbar horizontal real que conviene estilizar. Mismo patrón ya usado
+   en este fichero para ".edatos-filter-panel-list"/"div.dt-button-collection
    div.dropdown-menu" (pista transparente + "thumb" con color del sistema),
    pero con un tono OSCURO en vez de blanco semitransparente: a diferencia de
    esos dos paneles (fondo azul oscuro propio), ".dataTables_scrollBody" tiene
@@ -3574,10 +3569,10 @@ div.dataTables_wrapper div.dataTables_scrollBody::-webkit-scrollbar-thumb {
 
 /* --- Resource view: aspecto de la tabla al estilo del visualizador (".dtfc-has-left") ---
    ".dtfc-has-left" es la clase que la extensión FixedColumns de DataTables añade a
-   "div.dataTables_scroll" en cuanto "scrollX:true" está activo -- hoy en día, solo el
-   recurso de la prueba de concepto (ver "specs/fix-resource-view-datatable-scrollx-poc.md"),
-   así que sirve de gancho ya acotado sin repetir el "resourceId" en CSS, mismo criterio ya
-   usado arriba para el scrollbar de ".dataTables_scrollBody".
+   "div.dataTables_scroll" en cuanto "scrollX:true" está activo -- que es el modo tabla
+   de fábrica del vendor (ver bloque de scrollbar justo arriba), así que este selector
+   aplica a cualquier vista "datatables_view" del portal en modo tabla, no a un recurso
+   concreto.
 
    El vendor trae, para esta combinación concreta, "table.dataTable.table-bordered.dtfc-has-
    left { border-left-color: currentcolor }". Aunque el "border-left-style" de esa regla es
