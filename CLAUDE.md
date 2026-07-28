@@ -613,14 +613,13 @@ ckanext.gobcangroups.flag.for.delink = Manual  # Tag name for delinking datasets
 
 ### Legal Notice Link (per-organisation deployment)
 
-The "Legal notice" link shown in the group/organization sidebar (`templates/group/snippets/helper.html`, `templates/organization/snippets/helper.html`) is configurable per deployment instead of hardcoded to ISTAC, since each organisation (ISTAC, IBESTAT, IECM, DREM, SEMASTAT...) runs its own CKAN instance with its own `ckan.ini`/`.env`:
+The "Legal notice" link shown in the group/organization sidebar (`templates/group/snippets/helper.html`, `templates/organization/snippets/helper.html`) is configurable per deployment instead of hardcoded to ISTAC, since each organisation (ISTAC, IBESTAT, IECM, DREM, SEMASTAT...) runs its own CKAN instance with its own `ckan.ini`/`.env`. Rather than duplicating the URL/label in a new config key, it reuses the license register each deployment already loads via `ckan.licenses_group_url` (see `etc/licenses/ckan-licenses.json`, which already has one `<org>-aviso-legal` entry per organisation) — the deployment only needs to say *which* license id in that register is its own legal notice:
 
 ```ini
-ckanext.edatostheme.legal_notice_url = https://www.gobiernodecanarias.org/istac/aviso_legal.html
-ckanext.edatostheme.legal_notice_label = Aviso Legal del ISTAC
+ckanext.edatostheme.legal_notice_license_id = istac-aviso-legal
 ```
 
-Both default to the ISTAC values if unset (`get_legal_notice_url()` / `get_legal_notice_label()` in `ckanext-edatostheme/ckanext/edatostheme/plugin/__init__.py`), so existing ISTAC deployments keep working without changes; other organisations should set both explicitly.
+`get_legal_notice_url()` / `get_legal_notice_label()` (`ckanext-edatostheme/ckanext/edatostheme/plugin/__init__.py`) resolve that id through the existing `get_license()` helper and read `_data['url']` / `_data['title']` off the license entry. There is **no built-in ISTAC fallback**: if the key is unset, both return an empty string and the templates hide the whole "Licencia" section. Every deployment — ISTAC included — must set this key explicitly to show its own legal notice link.
 
 ## Schema Management
 

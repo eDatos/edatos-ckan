@@ -329,16 +329,27 @@ def get_delink_value():
     return config.get('ckanext.gobcangroups.flag.for.delink', 'load_manual')
 
 
-def get_legal_notice_url():
-    '''Returns the legal notice URL, configurable per organisation deployment
+def get_legal_notice_license():
+    '''Returns the license entry (from the shared license register, see
+    etc/licenses/ckan-licenses.json) configured as this deployment's legal notice,
+    or None if not configured
     '''
-    return config.get('ckanext.edatostheme.legal_notice_url', 'https://www.gobiernodecanarias.org/istac/aviso_legal.html')
+    license_id = config.get('ckanext.edatostheme.legal_notice_license_id', '')
+    return get_license(license_id) if license_id else None
+
+
+def get_legal_notice_url():
+    '''Returns the legal notice URL for this deployment, or an empty string if not configured
+    '''
+    license = get_legal_notice_license()
+    return license._data.get('url', '') if license else ''
 
 
 def get_legal_notice_label():
-    '''Returns the legal notice link label, configurable per organisation deployment
+    '''Returns the legal notice link label for this deployment, or an empty string if not configured
     '''
-    return config.get('ckanext.edatostheme.legal_notice_label', _('Legal notice'))
+    license = get_legal_notice_license()
+    return license._data.get('title', '') if license else ''
 
 
 def abort_redirect():

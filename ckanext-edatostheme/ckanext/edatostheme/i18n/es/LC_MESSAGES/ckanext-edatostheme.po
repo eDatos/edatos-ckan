@@ -4899,6 +4899,10 @@ msgstr "Catálogo de datos abiertos"
 msgid "Aviso Legal del ISTAC"
 msgstr "Aviso Legal del ISTAC"
 
+#: ckanext/edatostheme/plugin/__init__.py:341
+msgid "Legal notice"
+msgstr "Aviso legal"
+
 #: ckanext/template/snippets/facet_list.html:74
 msgid "Aviso Legal del IBESTAT"
 msgstr "Aviso Legal del IBESTAT"

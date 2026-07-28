@@ -20,10 +20,13 @@
   </ul>
 </section>
 
+{% set legal_notice_url = h.edatos_get_legal_notice_url() %}
+{% if legal_notice_url %}
 <section class="module module-narrow license">
   <h2 class="module-heading">{{ _('Licencia') }}</h2>
   <ul class="nav nav-simple">
-    <li class="nav-item"><a href="{{ h.edatos_get_legal_notice_url() }}" target="_blank">{{ h.edatos_get_legal_notice_label() }}</a></li>
+    <li class="nav-item"><a href="{{ legal_notice_url }}" target="_blank">{{ _(h.edatos_get_legal_notice_label()) }}</a></li>
   </ul>
 </section>
+{% endif %}
 </div>
