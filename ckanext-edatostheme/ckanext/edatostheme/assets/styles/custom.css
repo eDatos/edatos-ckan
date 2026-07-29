@@ -2486,7 +2486,11 @@ a.metadatos-tag:hover {
 .module-resource .actions .btn-default:hover,
 .module-resource .actions a.btn-default:hover,
 .resource-view .actions .btn-default:hover,
-.resource-view .actions a.btn-default:hover {
+.resource-view .actions a.btn-default:hover,
+.module-resource .actions .btn-light:hover,
+.module-resource .actions a.btn-light:hover,
+.resource-view .actions .btn-light:hover,
+.resource-view .actions a.btn-light:hover {
 	background-color: var(--edatos-color-secondary-100, #004678) !important;
 	border-color: var(--edatos-color-secondary-100, #004678) !important;
 }

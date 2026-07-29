@@ -6,28 +6,32 @@
   edatostheme queda inalcanzable para esta ruta exacta: gana siempre la copia de
   datastore. Se duplica aquí su marcado (ver
   ckanext-datastore/.../package/resource_read.html) únicamente para añadir la
-  etiqueta de texto "Vistas" que pedía el diseño; ver
-  docs/templates-priority-mechanism.md para el motivo de vivir en este directorio.
+  etiqueta de texto "Descargar todo" que pedía el diseño (originalmente "Vistas",
+  ver docs/theming-resource-view-buttons.md para el histórico de ese nombre);
+  ver docs/templates-priority-mechanism.md para el motivo de vivir en este
+  directorio.
 #}
 {% block download_resource_button %}
 {% if res.datastore_active %}
   {#
-    "Vistas" y su menú viven en su propio ".btn-group" anidado (en vez de ser
-    hijos sueltos del ".btn-group" exterior que también contiene "Ir al
-    recurso") para que el offsetParent de ".dropdown-menu" sea exactamente la
-    caja de este botón, no la del grupo completo. Con el offsetParent
-    compartido, Popper.js posicionaba el menú con un desfase horizontal fijo
-    de ~7px respecto al borde izquierdo real del botón (medido en el
-    navegador) en vez de alinearlo con él — ver
-    docs/theming-resource-view-buttons.md, adenda del menú "Vistas". Anidando
-    el grupo, el propio botón pasa a ser (esencialmente) el offsetParent, así
-    que la alineación deja de depender del ancho de "Ir al recurso" (y por
-    tanto no se rompe con las traducciones ca/en, de longitud distinta).
+    Este botón ("Descargar todo", antes "Vistas") y su menú viven en su propio
+    ".btn-group" anidado (en vez de ser hijos sueltos del ".btn-group"
+    exterior que también contiene "Ir al recurso") para que el offsetParent de
+    ".dropdown-menu" sea exactamente la caja de este botón, no la del grupo
+    completo. Con el offsetParent compartido, Popper.js posicionaba el menú
+    con un desfase horizontal fijo de ~7px respecto al borde izquierdo real
+    del botón (medido en el navegador) en vez de alinearlo con él — ver
+    docs/theming-resource-view-buttons.md, adenda del menú "Vistas" (nombre
+    del botón en el momento de ese fix). Anidando el grupo, el propio botón
+    pasa a ser (esencialmente) el offsetParent, así que la alineación deja de
+    depender del ancho de "Ir al recurso" (y por tanto no se rompe con las
+    traducciones ca/en, de longitud distinta).
   #}
   <div class="btn-group">
     <button class="btn btn-primary dropdown-toggle" role="button" id="dropdownDownloadFormat" data-bs-toggle="dropdown" aria-expanded="false" aria-label="{{ _('list of downloadable formats') }}">
-        {{ _('Views') }}
-        <span class="caret"></span>
+        <i class="fa fa-download"></i>
+        {{ _('Download all') }}
+        <i class="fa-thin fa-chevron-down"></i>
       </button>
     <ul class="dropdown-menu" aria-labelledby="dropdownDownloadFormat">
       <li>

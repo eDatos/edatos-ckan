@@ -3143,6 +3143,10 @@ msgstr "Editar recurs"
 msgid "Views"
 msgstr "Vistes"
 
+#: ckanext/edatostheme/templates_priority/package/resource_read.html:33
+msgid "Download all"
+msgstr "Descarregar-ho tot"
+
 #: ckan/templates/package/resource_read.html:40
 msgid "API Endpoint"
 msgstr "Punt final de la API"

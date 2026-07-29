@@ -3712,6 +3712,10 @@ msgstr "Editar recurso"
 msgid "Views"
 msgstr "Vistas"
 
+#: ckanext/edatostheme/templates_priority/package/resource_read.html:33
+msgid "Download all"
+msgstr "Descargar todo"
+
 #: ckan/templates/package/resource_read.html:39
 msgid "API Endpoint"
 msgstr "Punto de acceso API"
