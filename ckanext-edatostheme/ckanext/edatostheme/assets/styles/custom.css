@@ -2371,24 +2371,25 @@ a.metadatos-tag:hover {
 .module-resource .actions {
 	float: none;
 	top: 0;
-	margin-top: var(--edatos-spacing-x-2xs, 8px);
+	margin-top: var(--edatos-spacing-x-xxs, 2px);
 }
 
 .module-resource .actions ul.d-flex {
-	gap: 10px;
+	gap: var(--edatos-spacing-x-sm, 8px);
 	padding-left: 0;
 }
 
 /* "Ir al recurso" y "Vistas" llegan ya fusionados en un .btn-group de
    Bootstrap (bordes compartidos, sin separación); "API de datos" lo añade
    ckanext-datastore (fuera de este repo, vía super() del bloque
-   resource_actions_inner) como <li> suelto, con el gap de 10px del ul de
-   por medio. El diseño ISTAC pide que los tres se perciban como un mismo
-   componente separado por --edatos-spacing-x-2xs, así que se desactiva la
-   fusión de Bootstrap (radio y margen negativo) y se corrige a mano el
-   hueco heredado del ul entre el grupo y "API de datos". */
+   resource_actions_inner) como <li> suelto, con el gap de --edatos-spacing-x-sm
+   del ul de por medio. Negocio pidió que "Ir al recurso"/"Vistas" tuvieran
+   el mismo hueco que el resto de botones de la fila, en vez del hueco más
+   pequeño que los hacía parecer un único componente fusionado — así que
+   aquí se desactiva la fusión de Bootstrap (radio y margen negativo) y se
+   iguala su gap interno al del ul. */
 .module-resource .actions .btn-group {
-	gap: var(--edatos-spacing-x-2xs);
+	gap: var(--edatos-spacing-x-sm, 8px);
 }
 
 .module-resource .actions .btn-group > .btn {
@@ -2448,17 +2449,6 @@ a.metadatos-tag:hover {
 	width: auto;
 }
 
-/* La compensación va en el margen final del li del grupo (no en el margen
-   inicial del li siguiente): así solo estrecha el hueco cuando "API de
-   datos" cae en la misma línea que el grupo. Puesta en el li siguiente,
-   el margen negativo se aplicaba igual aunque "API de datos" hiciera wrap
-   a su propia línea (flex-wrap), desplazándolo 2px a la izquierda del
-   borde real del contenedor y rompiendo su alineación vertical con
-   "Editar recurso". */
-.module-resource .actions li:has(> .btn-group) {
-	margin-inline-end: calc(var(--edatos-spacing-x-2xs) - 10px);
-}
-
 .module-resource .actions .btn,
 .module-resource .actions a.btn,
 .resource-view .actions .btn,
@@ -2508,6 +2498,8 @@ a.metadatos-tag:hover {
 	color: var(--edatos-color-secondary-100, #004678);
 	font-size: var(--edatos-font-size-md);
 	flex-shrink: 0;
+	font-family: "Font Awesome 6 Pro";
+	font-weight: var(--edatos-font-weight-light);
 }
 
 .module-resource .actions .btn:hover i,
