@@ -3,8 +3,9 @@
 ## Qué es esto
 
 Un contenedor **PostgreSQL 18** independiente y **persistente** que, en su primer arranque,
-restaura automáticamente el dump `Cosas/BBDD/ckan_default.dump` y queda listo para sustituir al
-servicio `db` (PostgreSQL 16) del stack CKAN dockerizado sin tocar la configuración de CKAN.
+restaura automáticamente el dump `herramientas/bbdd/ckan_default.dump` y queda listo para
+sustituir al servicio `db` (PostgreSQL 16) del stack CKAN dockerizado sin tocar la configuración
+de CKAN.
 
 Se generó a partir de un dump con estas características (comprobadas inspeccionando el propio
 fichero):
@@ -47,7 +48,9 @@ datos está vacío. A partir de ahí los datos son persistentes en el volumen no
 > `/var/lib/postgresql`.
 
 El dump (~1.8 GB) **no se copia dentro de la imagen**: se monta como bind read-only desde
-`Cosas/BBDD/ckan_default.dump` en `/dump/ckan_default.dump`.
+`herramientas/bbdd/ckan_default.dump` en `/dump/ckan_default.dump`. Ver
+[`herramientas/bbdd/README.md`](../../herramientas/bbdd/README.md) para dejar ahí el dump a
+restaurar.
 
 ## Cómo se conecta con CKAN
 

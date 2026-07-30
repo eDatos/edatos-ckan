@@ -313,27 +313,30 @@ docker compose -f dockerfiles/docker-compose.yml logs ckan -f
 docker compose -f dockerfiles/docker-compose.yml exec ckan grep "^debug" /srv/app/ckan.ini
 ```
 
-## Base de datos PostgreSQL 12 con restore de un dump (`ckan_default.dump`)
+## Base de datos PostgreSQL 18 con restore de un dump (`ckan_default.dump`)
 
 ### Descripción general
 
 Para trabajar con una copia de datos real (por ejemplo un dump `ckan_default.dump` exportado de
-otro entorno), existe un stack Docker independiente en `dockerfiles/postgresql12/` que levanta un
-**PostgreSQL 12 persistente** y restaura el dump automáticamente en su primer arranque, sustituyendo
-al servicio `db` (PostgreSQL 16) sin tocar la configuración de CKAN.
+otro entorno), existe un stack Docker independiente en `dockerfiles/postgresql18/` que levanta un
+**PostgreSQL 18 persistente** y restaura el dump automáticamente en su primer arranque, sustituyendo
+al servicio `db` (PostgreSQL 16) sin tocar la configuración de CKAN. El dump se generó originalmente
+con PostgreSQL 12; restaurarlo sobre PostgreSQL 18 es el camino de actualización estándar soportado
+por `pg_restore` (más detalle en el README del stack).
 
 El contenedor se une a la misma red externa que usa el stack principal
 (`dockerfiles_ckan-net`) con el alias `db`, así que `CKAN_SQLALCHEMY_URL` y el resto de variables de
 conexión en `.env` siguen funcionando sin cambios. Solo uno de los dos `db` (el PG16 original o
-este PG12) puede estar levantado a la vez, ya que comparten alias de red y puerto `5432`.
+este PG18) puede estar levantado a la vez, ya que comparten alias de red y puerto `5432`.
 
 Documentación completa (manual paso a paso, verificación, notas de diseño y solución de
-problemas): [`dockerfiles/postgresql12/README.md`](dockerfiles/postgresql12/README.md).
+problemas): [`dockerfiles/postgresql18/README.md`](dockerfiles/postgresql18/README.md).
 
 ### Requisito
 
-El dump a restaurar debe existir en `Cosas/BBDD/ckan_default.dump` (ruta relativa usada por
-`docker-compose.pg12.yml`). Es un dump en formato custom de `pg_dump` (`pg_restore`), no un SQL
+El dump a restaurar debe existir en `herramientas/bbdd/ckan_default.dump` (ver
+[`herramientas/bbdd/README.md`](herramientas/bbdd/README.md); ruta relativa usada por
+`docker-compose.pg18.yml`). Es un dump en formato custom de `pg_dump` (`pg_restore`), no un SQL
 plano.
 
 ### Primer arranque (con restore automático)
@@ -344,11 +347,11 @@ cd dockerfiles
 # 1. Parar el PostgreSQL 16 actual para liberar el alias 'db' y el puerto 5432
 docker compose stop db
 
-# 2. Construir y levantar el PG12 (el restore se ejecuta automáticamente, tarda varios minutos)
-docker compose -f postgresql12/docker-compose.pg12.yml up -d --build
+# 2. Construir y levantar el PG18 (el restore se ejecuta automáticamente, tarda varios minutos)
+docker compose -f postgresql18/docker-compose.pg18.yml up -d --build
 
 # 3. Seguir el progreso hasta ver "database system is ready to accept connections" y (healthy)
-docker compose -f postgresql12/docker-compose.pg12.yml logs -f db
+docker compose -f postgresql18/docker-compose.pg18.yml logs -f db
 
 # 4. Reconectar CKAN y los workers a la nueva BD
 docker compose restart ckan jobs-worker gather-consumer fetch-consumer
@@ -360,10 +363,10 @@ docker compose exec ckan ckan -c /srv/app/ckan.ini search-index rebuild -c
 ### Reindexar Solr tras el cambio de base de datos
 
 Solr mantiene su **propio índice**, separado de Postgres. Al conmutar entre el PG16 original y este
-PG12 (o tras rehacer el restore) los datasets indexados quedan desincronizados con la BD activa:
+PG18 (o tras rehacer el restore) los datasets indexados quedan desincronizados con la BD activa:
 hay que reconstruir el índice para que las búsquedas y los listados de CKAN reflejen los datos
 reales. Detalle completo en
-[`dockerfiles/postgresql12/README.md`](dockerfiles/postgresql12/README.md#reindexar-solr-tras-el-cambio-de-base-de-datos).
+[`dockerfiles/postgresql18/README.md`](dockerfiles/postgresql18/README.md#reindexar-solr-tras-el-cambio-de-base-de-datos).
 
 ```bash
 # Reindexado completo (limpia el índice y lo reconstruye con los datos de la BD activa)
@@ -402,32 +405,32 @@ docker inspect dockerfiles-ckan-1 --format 'RestartCount={{.RestartCount}} Healt
 Corrección definitiva pendiente (no aplicada, fuera del alcance de este documento): ajustar el
 permiso de `/srv/app/` en el `Dockerfile` de `ckan`, o hacer que `05_setup_dcat_endpoint.sh` escriba
 siempre vía `/tmp` en lugar de `sed -i` in situ. Detalle completo del diagnóstico en
-[`dockerfiles/postgresql12/README.md`](dockerfiles/postgresql12/README.md#solución-bucle-de-reinicios-de-ckan-sed-permission-denied).
+[`dockerfiles/postgresql18/README.md`](dockerfiles/postgresql18/README.md#solución-bucle-de-reinicios-de-ckan-sed-permission-denied).
 
 ### Referencia rápida de comandos
 
 ```bash
 # Día a día: bajar / subir sin perder datos
-docker compose -f dockerfiles/postgresql12/docker-compose.pg12.yml stop
-docker compose -f dockerfiles/postgresql12/docker-compose.pg12.yml start
+docker compose -f dockerfiles/postgresql18/docker-compose.pg18.yml stop
+docker compose -f dockerfiles/postgresql18/docker-compose.pg18.yml start
 
 # Bajar del todo manteniendo el volumen persistente
-docker compose -f dockerfiles/postgresql12/docker-compose.pg12.yml down
+docker compose -f dockerfiles/postgresql18/docker-compose.pg18.yml down
 
-# Rehacer el restore desde cero (borra los datos de este PG12)
-docker compose -f dockerfiles/postgresql12/docker-compose.pg12.yml down -v
-docker compose -f dockerfiles/postgresql12/docker-compose.pg12.yml up -d --build
+# Rehacer el restore desde cero (borra los datos de este PG18)
+docker compose -f dockerfiles/postgresql18/docker-compose.pg18.yml down -v
+docker compose -f dockerfiles/postgresql18/docker-compose.pg18.yml up -d --build
 
 # Volver al PostgreSQL 16 original
-docker compose -f dockerfiles/postgresql12/docker-compose.pg12.yml down
+docker compose -f dockerfiles/postgresql18/docker-compose.pg18.yml down
 docker compose -f dockerfiles/docker-compose.yml start db
 docker compose -f dockerfiles/docker-compose.yml restart ckan jobs-worker gather-consumer fetch-consumer
 docker compose -f dockerfiles/docker-compose.yml exec ckan ckan -c /srv/app/ckan.ini search-index rebuild -c
 
 # Verificar versión, tablas restauradas y datos
-docker compose -f dockerfiles/postgresql12/docker-compose.pg12.yml exec db psql -U postgres -c "SELECT version();"
-docker compose -f dockerfiles/postgresql12/docker-compose.pg12.yml exec db psql -U postgres -d ckandb -c "\dt"
-docker compose -f dockerfiles/postgresql12/docker-compose.pg12.yml exec db psql -U postgres -d ckandb -c "SELECT count(*) FROM package;"
+docker compose -f dockerfiles/postgresql18/docker-compose.pg18.yml exec db psql -U postgres -c "SELECT version();"
+docker compose -f dockerfiles/postgresql18/docker-compose.pg18.yml exec db psql -U postgres -d ckandb -c "\dt"
+docker compose -f dockerfiles/postgresql18/docker-compose.pg18.yml exec db psql -U postgres -d ckandb -c "SELECT count(*) FROM package;"
 
 # Reindexar Solr (obligatorio tras cualquier cambio de base de datos)
 docker compose -f dockerfiles/docker-compose.yml exec ckan ckan -c /srv/app/ckan.ini search-index rebuild -c
