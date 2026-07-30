@@ -1,7 +1,7 @@
-name: ckan-pg12
+name: ckan-pg18
 
 volumes:
-  pg12_data:
+  pg18_data:
 
 services:
   db:
@@ -11,7 +11,9 @@ services:
     env_file:
       - ../.env               # reutiliza POSTGRES_*, CKAN_DB_*, DATASTORE_* del stack CKAN
     volumes:
-      - pg12_data:/var/lib/postgresql/data
+      # postgres:18+ cambia la convención: el punto de montaje ahora es /var/lib/postgresql
+      # (PGDATA por defecto queda en una subcarpeta versionada, p.ej. /var/lib/postgresql/18/docker)
+      - pg18_data:/var/lib/postgresql
       - ../../../Cosas/BBDD/ckan_default.dump:/dump/ckan_default.dump:ro
     ports:
       - "5432:5432"
