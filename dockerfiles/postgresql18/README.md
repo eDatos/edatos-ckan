@@ -77,7 +77,7 @@ docker compose stop db
 # 2. Construir y levantar el PG18 (el restore se ejecuta automáticamente en este primer arranque)
 docker compose -f postgresql18/docker-compose.pg18.yml up -d --build
 
-# 3. Seguir el progreso del restore (varios minutos por los ~1.8 GB del dump)
+# 3. Seguir el progreso del restore (puede tardar más de una hora; ver "Tiempo estimado" abajo)
 docker compose -f postgresql18/docker-compose.pg18.yml logs -f db
 #    Esperar a "database system is ready to accept connections" y a que el estado sea (healthy)
 
@@ -92,6 +92,33 @@ docker compose exec ckan ckan -c /srv/app/ckan.ini search-index rebuild -c
 > ⚠️ Si el paso 4 provoca que `ckan` entre en bucle de reinicios (`docker compose ps ckan` no llega
 > nunca a `healthy`, o un `exec` se corta con **exit code 137**), es el problema conocido descrito en
 > [Solución: bucle de reinicios de `ckan` (`sed: Permission denied`)](#solución-bucle-de-reinicios-de-ckan-sed-permission-denied) más abajo.
+
+### Tiempo estimado del primer arranque (restore completo)
+
+Medido en este entorno con el dump real (~1.8 GB, tabla `activity` con snapshots JSON completos de
+datasets — la más pesada de restaurar):
+
+| Fase                                                    | Duración  |
+| -------------------------------------------------------- | --------- |
+| `pg_restore` del dump (`90_restore_ckandb.sh`)            | ~1h 15min |
+| Arranque final de Postgres tras el restore                | segundos  |
+| **Total hasta `(healthy)` con los datos ya disponibles** | **~1h 15min** |
+
+Con **PostgreSQL 12** el mismo dump se restauraba en **pocos minutos** (bastante más rápido). El
+salto a ~1h15min con **PostgreSQL 18** se debe sobre todo a la construcción de índices/constraints
+sobre la tabla `activity` (la más grande, con el histórico completo de actividad de datasets), no
+al tamaño del dump en sí — con `docker stats` se confirmó actividad de CPU/I/O sostenida durante
+todo el proceso (no es un bloqueo/cuelgue).
+
+**Implicaciones prácticas**:
+- No cancelar el proceso ni asumir que se ha quedado colgado solo porque el log esté "parado" en
+  líneas de `checkpoint` de Postgres durante varios minutos — es normal mientras se construyen
+  índices sobre tablas grandes.
+- Para comprobar que sigue avanzando (y no bloqueado), usar `docker stats ckan-pg18-db-1` en otra
+  terminal: CPU/IO activos = restore en curso; ver también `docker exec ckan-pg18-db-1 ps aux`
+  para confirmar que `pg_restore` sigue vivo.
+- Este tiempo **solo se paga en el primer arranque** (o tras un `down -v` que borre el volumen).
+  Arranques posteriores (`stop`/`start`) son instantáneos, sin reejecutar el restore.
 
 ### Día a día — levantar / bajar sin perder datos
 
