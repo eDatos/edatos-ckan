@@ -2512,12 +2512,13 @@ a.metadatos-tag:hover {
 	color: var(--edatos-color-white-100, #FFF);
 }
 
-/* Icono de la pestaña de vista de recurso (Tabla, Texto...) — Light en vez
-   del Solid por defecto de Font Awesome Free, igual que el resto de
-   botonería de esta vista. */
+/* Icono de la pestaña de vista de recurso (Tabla, Texto...) — Figma no
+   incluye icono en esta pestaña, solo el texto ("Tabla", "Texto"...). El
+   <i class="fa icon fa-..."> lo renderiza incondicionalmente una plantilla
+   de CKAN core (package/snippets/resource_views_list.html) sin hook para
+   quitarlo desde este repo, así que se oculta por CSS. */
 .module-resource .nav-tabs .nav-link i.fa {
-	font-family: "Font Awesome 6 Pro";
-	font-weight: var(--edatos-font-weight-light);
+	display: none;
 }
 
 /* --- Resource view: layout de botones pantalla completa e incrustar --- */
