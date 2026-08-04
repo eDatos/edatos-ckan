@@ -441,9 +441,8 @@ nav.section.navigation {
 	width: 20px;
 	text-align: center;
 	font-size: var(--edatos-font-size-sm);
-    /* Los iconos del menú OPCIONES son Font Awesome 6 "Solid" (--edatos-font-weight-bold);
-       a peso 100 no existe el glifo y el navegador muestra el cuadro de "carácter no encontrado". */
-    font-weight: var(--edatos-font-weight-bold);
+    font-family: "Font Awesome 6 Pro";
+    font-weight: var(--edatos-font-weight-light);
 }
 
 .dropdown-menu li a:hover {
@@ -2511,6 +2510,14 @@ a.metadatos-tag:hover {
 .resource-view .actions .btn:hover i,
 .resource-view .actions a.btn:hover i {
 	color: var(--edatos-color-white-100, #FFF);
+}
+
+/* Icono de la pestaña de vista de recurso (Tabla, Texto...) — Light en vez
+   del Solid por defecto de Font Awesome Free, igual que el resto de
+   botonería de esta vista. */
+.module-resource .nav-tabs .nav-link i.fa {
+	font-family: "Font Awesome 6 Pro";
+	font-weight: var(--edatos-font-weight-light);
 }
 
 /* --- Resource view: layout de botones pantalla completa e incrustar --- */
@@ -5349,6 +5356,11 @@ header.module-content.page-header .content_action .btn i,
 aside.secondary .module.resources .nav-simple .btn i,
 aside.secondary .module-content > a.btn.btn-sm i {
     color: inherit;
+}
+
+header.module-content.page-header .content_action .btn i {
+    font-family: "Font Awesome 6 Pro";
+    font-weight: var(--edatos-font-weight-light);
 }
 
 /* Botón "Administrar" — propiedades específicas */
