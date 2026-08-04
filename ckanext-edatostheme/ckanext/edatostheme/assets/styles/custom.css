@@ -4340,6 +4340,12 @@ ul.showcase-grid {
 	list-style: none;
 	padding: 12px 0;
 	height: auto !important /*se setea por medio de js position: relative;height: auto;*/;
+	/* ".control-order-by" (core CKAN) es "float:right" dentro de ".search-form"
+	   y no se limpia: al ser este grid un contenedor "display:grid" (nuevo BFC),
+	   evita solapar ese float encogiéndose ("shrink-to-fit") en vez de ocupar
+	   el ancho completo de ".module-content". "clear:both" retira el float de
+	   su rango vertical para que el grid pueda estirarse a todo el ancho. */
+	clear: both;
 }
 
 /* Tarjeta colección */
