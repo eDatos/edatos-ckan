@@ -1,0 +1,77 @@
+FROM ckan/ckan-base:2.11.4
+
+# Install any extensions needed by your CKAN instance
+# See Dockerfile.dev for more details and examples
+
+USER root
+
+RUN mkdir /srv/app/.local && chown ckan /srv/app/.local && \
+    mkdir /srv/app/.cache && chown ckan /srv/app/.cache
+
+# Install any extensions needed by your CKAN instance
+# See Dockerfile.dev for more details and examples
+
+USER ckan
+
+COPY dockerfiles/ckan/*.json .
+
+COPY --chown=ckan:ckan ckanext-edatosscheming/ src/ckanext-edatosscheming/
+
+### XLoader ###
+RUN pip3 install -e 'git+https://github.com/ckan/ckanext-xloader.git@2.2.0#egg=ckanext-xloader' && \ 
+    pip3 install -r ${APP_DIR}/src/ckanext-xloader/requirements.txt && \
+    pip3 install -U requests[security]
+
+### DCAT ###
+RUN  pip3 install -e git+https://github.com/ckan/ckanext-dcat.git@v2.4.2#egg=ckanext-dcat && \
+    pip3 install -r ${APP_DIR}/src/ckanext-dcat/requirements.txt
+
+### Harvester ###
+RUN pip3 install -e 'git+https://github.com/ckan/ckanext-harvest.git@v1.6.1#egg=ckanext-harvest' && \
+    pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt
+
+### Scheming and fluent
+RUN pip3 install -e 'git+https://github.com/ckan/ckanext-scheming.git#egg=ckanext-scheming'
+RUN pip3 install -e 'git+https://github.com/ckan/ckanext-fluent.git#egg=ckanext-fluent'
+
+### edatosscheming ###
+RUN pip3 install -r src/ckanext-edatosscheming/requirements.txt && \
+    pip3 install -e src/ckanext-edatosscheming
+
+### Generate schemas from templates (mirrors 01_fill_schemas_templates.sh).
+### Workers override the Docker ENTRYPOINT in stack.yml so entrypoint.d scripts
+### never run; schemas must be generated at build time instead.
+ARG LOCALE_DEFAULT=es
+RUN for template in src/ckanext-edatosscheming/ckanext/edatosscheming/schemas_templates/*.json; do \
+    filename=$(basename "$template"); \
+    sed "s/FILL_REQUIRED_LANGUAGE/${LOCALE_DEFAULT}/g" "$template" \
+    > "src/ckanext-edatosscheming/ckanext/edatosscheming/schemas/${filename}"; \
+    done
+
+# OpenTelemetry auto-instrumentation (debe instalarse al final para detectar todos los frameworks)
+RUN pip3 install \
+    opentelemetry-distro \
+    opentelemetry-exporter-otlp-proto-grpc \
+    opentelemetry-instrumentation-flask \
+    opentelemetry-instrumentation-sqlalchemy \
+    opentelemetry-instrumentation-requests \
+    opentelemetry-instrumentation-logging
+
+USER root
+
+# Copy custom initialization scripts
+COPY --chown=ckan-sys:ckan-sys dockerfiles/ckan/docker-entrypoint.d/* /docker-entrypoint.d/
+
+# Apply any patches needed to CKAN core or any of the built extensions (not the
+# runtime mounted ones)
+COPY --chown=ckan-sys:ckan-sys dockerfiles/ckan/patches ${APP_DIR}/patches
+
+USER ckan
+
+RUN for d in $APP_DIR/patches/*; do \
+    if [ -d $d ]; then \
+    for f in `ls $d/*.patch | sort -g`; do \
+    cd $SRC_DIR/`basename "$d"` && echo "$0: Applying patch $f to $SRC_DIR/`basename $d`"; patch -p1 < "$f" ; \
+    done ; \
+    fi ; \
+    done

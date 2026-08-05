@@ -1,11 +1,12 @@
 {% set system_lang = 'tags_' + h.lang() %}
-{% set facets = c.facet_titles %}
+{% set facets = facet_titles or c.facet_titles %}
+{% set _search_facets = search_facets or c.search_facets %}
 {% for facet, label in facets.items() %}
     {% if facet.startswith('tags_') %}
         {% if facet == system_lang %}
-            {{ h.snippet('snippets/facet_list.html', title=c.facet_titles[facet], name=facet, scheming_choices=choices, extras=extras) }}
+            {{ h.snippet('snippets/facet_list.html', title=facets[facet], name=facet, search_facets=_search_facets, scheming_choices=choices, extras=extras) }}
         {% endif %}
     {% else %}
-        {{ h.snippet('snippets/facet_list.html', title=c.facet_titles[facet], name=facet, scheming_choices=choices, extras=extras) }}
+        {% snippet 'snippets/facet_list.html', title=facets[facet], name=facet, search_facets=_search_facets, scheming_choices=choices, extras=extras %}
     {% endif %}
 {% endfor %}    

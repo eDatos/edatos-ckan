@@ -48,6 +48,13 @@ To temporary patch the CKAN configuration for the duration of a test you can use
         pass
 """
 import ckanext.edatostheme.plugin as plugin
+import ckan.plugins.toolkit as toolkit
+
 
 def test_plugin():
     pass
+
+def test_theme_is_a_plugin():
+    """Check that the extension is a valid plugin."""
+    p = plugin.EdatosthemePlugin()
+    assert isinstance(p, toolkit.SingletonPlugin)

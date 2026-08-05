@@ -51,8 +51,6 @@ body {
 	background-size: cover;
 	background-position: center center;
 	padding: 0px !important;
-	font-family: Roboto, -apple-system, system-ui, BlinkMacSystemFont, Segoe UI, Helvetica Neue, Arial, sans-serif;
-
 }
 
 .navigation .nav-pills li a,
@@ -442,7 +440,7 @@ button.btn.btn-navbar {
 	display: none;
 	float: right;
 	min-width: 160px;
-	margin-top: -3px !important;
+	margin-top: 0px !important;
 	padding-top: 10px;
 	padding-bottom: 10px;
 	font-size: 14px;
@@ -455,17 +453,26 @@ button.btn.btn-navbar {
 	left: unset;
 	border-radius: 5px 0px 5px 5px !important;
 	border: unset;
-
-	li a {
-		color: white;
-	}
 }
 
-.dropdown-menu {
-	li a:hover {
-		background-color: #008bd0;
-		color: #FFFFFF
-	}
+.dropdown-menu li {
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+.dropdown-menu li a {
+	color: white;
+	display: block;
+	padding: 10px 15px;
+	text-decoration: none;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.dropdown-menu li a:hover {
+	background-color: #008bd0;
+	color: #FFFFFF
 }
 
 .dropdown-menu.abrir {
@@ -474,11 +481,13 @@ button.btn.btn-navbar {
 	-ms-transition: 0.1s;
 	-o-transition: 0.1s;
 	transition: 0.1s;
-	transition-property: height;
+	transition-property: opacity, visibility;
 	visibility: visible;
 	opacity: 1;
 	display: flex;
 	flex-flow: column;
+	flex-wrap: nowrap;
+	justify-content: flex-start;
 	-webkit-transform: translateY(0px);
 	-ms-transform: translateY(0px);
 	transform: translateY(0px);
@@ -549,4 +558,19 @@ selector#language-selector {
 .fa {
 	font-family: "Font Awesome 6 Pro" !important;
 	font-weight: 100 !important;
+}
+
+.format-label {
+	background: url("../../sprite-resource-icons.png") no-repeat 0 0;
+}
+
+.format-label[data-format=tsv],
+.format-label[data-format*=tsv],
+.format-label[data-format=pcaxis],
+.format-label[data-format*=pcaxis] {
+	width: 60px;
+	height: 65px;
+	background-position: -1720px -220px;
+	transform: scale(0.53);
+	margin: -14px 0 0 -14px;
 }

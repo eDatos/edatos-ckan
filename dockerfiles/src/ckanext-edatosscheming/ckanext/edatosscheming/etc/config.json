@@ -1,0 +1,6 @@
+{    
+    "metadata": {
+        "endpoint": "https://estadisticas.arte-consultores.com/cmetadata/v1.0",
+        "availablesLanguages": "metamac.internationalization.languages"
+    }
+}

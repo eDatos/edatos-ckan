@@ -214,7 +214,7 @@ msgstr "Organitzacions"
 #: ckan/tests/config/test_middleware.py:120 ckan/views/dataset.py:286
 #: ckan/views/group.py:305 ckan/views/home.py:50
 msgid "Groups"
-msgstr "Grups"
+msgstr "Categories"
 
 #: ckan/controllers/group.py:319 ckan/controllers/home.py:63
 #: ckan/controllers/package.py:258 ckan/lib/helpers.py:1268
@@ -1304,7 +1304,7 @@ msgstr "L'usuari %s no està autoritzat a crear conjunts de dades"
 #: ckan/logic/auth/create.py:31 ckan/logic/auth/update.py:56
 #, python-format
 msgid "User %s not authorized to edit these groups"
-msgstr "L'usuari %s no està autoritzat a editar aquests grups"
+msgstr "L'usuari %s no està autoritzat a editar aquests categories"
 
 #: ckan/logic/auth/create.py:38
 #, python-format
@@ -1339,7 +1339,7 @@ msgstr "L'usuari %s no està autoritzat a editar aquests conjunts de dades"
 #: ckan/logic/auth/create.py:119
 #, python-format
 msgid "User %s not authorized to create groups"
-msgstr "L'usuari %s no està autoritzat a crear grups"
+msgstr "L'usuari %s no està autoritzat a crear categories"
 
 #: ckan/logic/auth/create.py:129
 #, python-format
@@ -1392,7 +1392,7 @@ msgstr "L'usuari %s no està autoritzat a esborrar la relació %s"
 #: ckan/logic/auth/delete.py:82
 #, python-format
 msgid "User %s not authorized to delete groups"
-msgstr "L'usuari %s no té autorització per a eliminar grups"
+msgstr "L'usuari %s no té autorització per a eliminar categories"
 
 #: ckan/logic/auth/delete.py:86
 #, python-format
@@ -2120,7 +2120,7 @@ msgstr "Purgar tot"
 msgid ""
 "Purge deleted datasets, organizations or groups forever and irreversibly."
 msgstr ""
-"Purgar conjunts de dades, organitzacions i grups esborrats per sempre i "
+"Purgar conjunts de dades, organitzacions i categories esborrats per sempre i "
 "irreversiblement."
 
 #: ckan/templates/admin/snippets/confirm_delete.html:3
@@ -2150,7 +2150,7 @@ msgstr "Organitzacions esborrades"
 
 #: ckan/templates/admin/snippets/data_type.html:11
 msgid "Deleted groups"
-msgstr "Grups esborrats"
+msgstr "Categories esborrats"
 
 #: ckan/templates/admin/snippets/data_type.html:41
 msgid "Purge"
@@ -2371,7 +2371,7 @@ msgstr "Afegeix grup"
 
 #: ckan/templates/group/index.html:20
 msgid "Search groups..."
-msgstr "Cercar grups..."
+msgstr "Cercar categories..."
 
 #: ckan/templates/group/index.html:20 ckan/templates/group/read.html:14
 #: ckan/templates/organization/bulk_process.html:27
@@ -2399,7 +2399,7 @@ msgstr "Nom Descendent"
 
 #: ckan/templates/group/index.html:29
 msgid "There are currently no groups for this site"
-msgstr "Ara mateix no hi ha grups en aquest lloc"
+msgstr "Ara mateix no hi ha categories en aquest lloc"
 
 #: ckan/templates/group/index.html:31
 #: ckan/templates/organization/index.html:31
@@ -2617,7 +2617,7 @@ msgstr "Esborrar conjunt de dades del grup"
 
 #: ckan/templates/group/snippets/helper.html:4
 msgid "What are Groups?"
-msgstr "Què són els grups?"
+msgstr "Què són els categories?"
 
 #: ckan/templates/group/snippets/helper.html:8
 msgid ""
@@ -2626,7 +2626,7 @@ msgid ""
 "particular theme, or as a very simple way to help people find and search "
 "your own published datasets."
 msgstr ""
-"Podeu usar els grups de CKAN per crear i gestinar col·leccions de conjunts "
+"Podeu usar els categories de CKAN per crear i gestinar col·leccions de conjunts "
 "de dades. Per exemple per agrupar conjunts de dades per a un projecte o "
 "equip en particular, per a un temàtica en particular, o per ajudar a la gent"
 " a cercar i trobar els vostres propis conjunts de dades."
@@ -2677,7 +2677,7 @@ msgstr ""
 "l'emmagatzematge de dades i la provisió de robustes APIs de dades). CKAN es dirigeix "
 "als publicadors de dades (governs regionals i nacionals, companyies i "
 "organitzacions) que volen fer que les seves dades estiguin obertes i "
-"disponibles.</p> <p>CKAN l'usen governs i grups d'usuaris arreu del món i "
+"disponibles.</p> <p>CKAN l'usen governs i categories d'usuaris arreu del món i "
 "potencia una varietat de portals de dades oficials i comunitaris, incloent "
 "portals per a governs locals, nacionals i internacionals, tals com el "
 "d'Anglaterra <a href=\"http://data.gov.uk\">data.gov.uk</a> i el de la "
@@ -2736,7 +2736,7 @@ msgstr "organitzacions"
 
 #: ckan/templates/home/snippets/stats.html:23
 msgid "groups"
-msgstr "grups"
+msgstr "categories"
 
 #: ckan/templates/macros/form.html:54 ckan/templates/macros/form.html:287
 msgid "This field is required"
@@ -3050,7 +3050,7 @@ msgstr "Afegeix al grup"
 
 #: ckan/templates/package/group_list.html:23
 msgid "There are no groups associated with this dataset"
-msgstr "No hi ha grups associats amb aquest dataset"
+msgstr "No hi ha categories associats amb aquest dataset"
 
 #: ckan/templates/package/new_package_form.html:13
 msgid "Update Dataset"
@@ -3597,7 +3597,7 @@ msgstr ""
 
 #: ckan/templates/package/snippets/resource_item.html:37
 msgid "Explore"
-msgstr "Explora"
+msgstr "Explorar"
 
 #: ckan/templates/package/snippets/resource_item.html:49
 msgid "More information"
@@ -3789,7 +3789,7 @@ msgstr "No s'ha trobat cap conjunt de dades"
 msgid "{number} group found for \"{query}\""
 msgid_plural "{number} groups found for \"{query}\""
 msgstr[0] "{number} grup trobat per \"{query}\""
-msgstr[1] "{number} grups trobats per \"{query}\""
+msgstr[1] "{number} categories trobats per \"{query}\""
 
 #: ckan/templates/snippets/search_result_text.html:22
 msgid "No groups found for \"{query}\""
@@ -3799,7 +3799,7 @@ msgstr "No s'ha trobat cap grup per \"{query}\""
 msgid "{number} group found"
 msgid_plural "{number} groups found"
 msgstr[0] "S'ha trobat {number} grup"
-msgstr[1] "S'ha trobat {number} grups"
+msgstr[1] "S'ha trobat {number} categories"
 
 #: ckan/templates/snippets/search_result_text.html:24
 msgid "No groups found"
@@ -4296,7 +4296,7 @@ msgstr "Les meves organitzacions"
 #: ckan/templates/user/dashboard.html:23
 #: ckan/templates/user/dashboard_groups.html:12
 msgid "My Groups"
-msgstr "El meus grups"
+msgstr "El meus categories"
 
 #: ckan/templates/user/dashboard.html:41
 msgid "Activity from items that I'm following"
@@ -4494,7 +4494,7 @@ msgstr "Per què registrar-me?"
 
 #: ckan/templates/user/new.html:28
 msgid "Create datasets, groups and other exciting things"
-msgstr "Crea conjunts de dades, grups i altres coses excitants"
+msgstr "Crea conjunts de dades, categories i altres coses excitants"
 
 #: ckan/templates/user/new_user_form.html:5
 msgid "username"
@@ -4636,7 +4636,7 @@ msgstr "Esteu segur que voleu purgar organitzacions?"
 
 #: ckan/views/admin.py:162
 msgid "Are you sure you want to purge groups?"
-msgstr "Esteu segur que voleu purgar grups"
+msgstr "Esteu segur que voleu purgar categories"
 
 #: ckan/views/admin.py:165
 msgid "{number} datasets have been purged"
@@ -4648,7 +4648,7 @@ msgstr "S'han purgat {number} organitzacions"
 
 #: ckan/views/admin.py:167
 msgid "{number} groups have been purged"
-msgstr "S'han purgat {number} grups"
+msgstr "S'han purgat {number} categories"
 
 #: ckan/views/admin.py:170
 msgid "There are no datasets to purge"
@@ -4660,7 +4660,7 @@ msgstr "No hi ha organitzacions per purgar"
 
 #: ckan/views/admin.py:172
 msgid "There are no groups to purge"
-msgstr "No hi ha grups per purgar"
+msgstr "No hi ha categories per purgar"
 
 #: ckan/views/admin.py:215
 msgid "Massive purge complete"
@@ -5217,7 +5217,7 @@ msgstr "Sense valoracions"
 #: ckanext/stats/templates/ckanext/stats/index.html:37
 #: ckanext/stats/templates/ckanext/stats/index.html:108
 msgid "Largest Groups"
-msgstr "Grups més grans"
+msgstr "Categories més grans"
 
 #: ckanext/stats/templates/ckanext/stats/index.html:43
 msgid "Number of datasets"
@@ -5225,7 +5225,7 @@ msgstr "Nombre de conjunts de dades"
 
 #: ckanext/stats/templates/ckanext/stats/index.html:56
 msgid "No groups"
-msgstr "No hi ha grups"
+msgstr "No hi ha categories"
 
 #: ckanext/stats/templates/ckanext/stats/index.html:61
 #: ckanext/stats/templates/ckanext/stats/index.html:109

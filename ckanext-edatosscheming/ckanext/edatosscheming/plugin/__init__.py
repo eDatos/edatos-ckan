@@ -32,8 +32,6 @@ def get_cmetadata_languages(endpoint, key):
     }
     header_request = requests.get(url=url, headers=headers).content
     json_header_request = json.loads(header_request)
-    print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
-    print(json_header_request)
 
     return json_header_request['value']
 
@@ -57,60 +55,10 @@ class EdatosschemingPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.ITemplateHelpers)
 
 
-    def __save_schema(self, schema_content, schema):
-        """
-        Metodo para guardar el schema 
-
-        :param schema: schema
-        """
-        path = os.path.join(SChEMAS_FOLDER_PATH, schema)
-        with codecs.open(path, 'w', encoding='utf8') as schema_file:
-            schema_file.write(self.__language_properties_filler(
-                schema_content=schema_content
-            ))
-
-    def __language_properties_filler(self, schema_content):
-        """
-        Metodo que rellena los lenguajes de las propiedades del cmetadata
-        :return: None
-        """
-        languages = get_languages().split(',') # ['es', 'en', 'ca', 'gl', 'eu']
-        primary_language = languages[0] if languages else 'es'
-        
-        schema_updated = schema_content.replace(
-            'FILL_REQUIRED_LANGUAGE', primary_language)
-        
-        return schema_updated
-        
-
-    def __languages_schemas_filler(self):
-        """
-        Metodo para rellenar los lenguajes de los schemas segun la configuracion
-        en el commun-metadata
-        """
-        SCHEMAS = ['datasets.json', 
-                   'showcase.json', 
-                   'organization.json',
-                   'group.json']
-        for schema in SCHEMAS: 
-            path = os.path.join(SCHEMAS_TEMPLATES_FOLDER_PATH, schema) 
-            with codecs.open(path, 'r', encoding='utf8') as schema_file:
-                schema_content = schema_file.read()
-                self.__save_schema(schema_content, schema)
-                
-
-
     # IConfigurer
 
     def update_config(self, config_):
-        # Generar schemas con los lenguajes disponibles
-        # self._languages_dataset_schemas()
-        # self._languages_dataset_schemas()
-        self.__languages_schemas_filler()
         toolkit.add_template_directory(config_, '../templates')
-        toolkit.add_public_directory(config_, '../public')
-        toolkit.add_resource('../fanstatic',
-                             '../ckanext-edatosscheming')
 
     # IValidatos
 

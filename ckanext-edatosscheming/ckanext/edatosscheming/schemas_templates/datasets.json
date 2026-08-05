@@ -17,6 +17,7 @@
       "display_snippet": "multilanguage_text.html",
       "form_snippet": "multiple_required_language_text.html",
       "validators": "tags_html_detected multiple_one_value multiple_required_language fluent_text",
+      "output_validators": "fluent_text_output",
       "required_language": "FILL_REQUIRED_LANGUAGE",
       "fluent_form_placeholder": {
         "en": {
@@ -98,7 +99,7 @@
       "label": "URL",
       "required": true,
       "preset": "dataset_slug",
-      "validators": "multilanguage_url unicode name_validator package_name_validator",
+      "validators": "multilanguage_url name_validator package_name_validator",
       "autogeneration_field": "title_translated",
       "organization_field": "publisher",
       "organization_prefix": "C_ID_UD_ORGANICA",
@@ -131,6 +132,7 @@
       "display_snippet": "multilanguage_markdown.html",
       "form_snippet": "multiple_required_language_markdown.html",
       "validators": "tags_html_detected multiple_one_value multiple_required_language fluent_text",
+      "output_validators": "fluent_text_output",
       "required_language": "FILL_REQUIRED_LANGUAGE",
       "fluent_form_placeholder": {
         "en": {
@@ -1010,7 +1012,7 @@
       "field_name": "name_translated",
       "preset": "fluent_core_translated",
       "display_snippet": "multilanguage_text.html",
-      "form_snippet": "multilanguage_text.html",
+      "form_snippet": "multiple_required_language_text.html",
       "label": {
         "en": "Name",
         "es": "Nombre",
@@ -1020,6 +1022,7 @@
       },
       "validators": "tags_html_detected multiple_required_language fluent_text",
       "required_language": "FILL_REQUIRED_LANGUAGE",
+      "output_validators": "fluent_text_output",
       "fluent_form_placeholder": {
         "en": {
           "en": "Brief title or name given to the distribution in English.",
@@ -1105,6 +1108,8 @@
         "eu": "Deskribapena"
       },
       "preset": "fluent_core_translated",
+      "validators": "fluent_text",
+      "output_validators": "fluent_text_output",
       "display_snippet": "multilanguage_markdown.html",
       "form_snippet": "multiple_required_language_markdown.html",
       "fluent_form_placeholder": {
@@ -1199,47 +1204,6 @@
         "eu": "Formatua, non datu multzoa banaketa honetan agertzen den."
       },
       "required": true
-    },
-    {
-      "field_name": "mimetype",
-      "label": {
-        "en": "Mimetype",
-        "es": "Mimetype",
-        "ca": "Mimetype",
-        "gl": "Mimetype",
-        "eu": "Mimetype"
-      },
-      "help_text": {
-        "en": "Mimetype in which the dataset is represented in this distribution.",
-        "es": "Mimetype en el que se encuentra representado el conjunto de datos en esta distribuci\u00F3n.",
-        "ca": "Mimetype en qu\u00e8 es troba representat el conjunt de dades en aquesta distribuci\u00F3.",
-        "gl": "Mimetype no que se atopa representado o conxunto de datos nesta distribuci\u00F3n.",
-        "eu": "Mimetype, non datu multzoa banaketa honetan agertzen den."
-      }
-    },
-    {
-      "field_name": "byte_size",
-      "label": {
-        "en": "Size",
-        "es": "Tama\u00F1o",
-        "ca": "Mida",
-        "gl": "Tama\u00F1o",
-        "eu": "Tamaina"
-      },
-      "form_placeholder": {
-        "en": "eg. 2048",
-        "es": "Ej: 2048",
-        "ca": "Ej: 2048",
-        "gl": "Ej: 2048",
-        "eu": "Ej: 2048"
-      },
-      "help_text": {
-        "en": "Indicate the file size in bytes.",
-        "es": "Indicar tama\u00F1o del archivo en Bytes.",
-        "ca": "Indicar la mida del fitxer en Bytes.",
-        "gl": "Indicar o tama\u00f1o do arquivo en Bytes.",
-        "eu": "Adierazi fitxategiaren tamaina Byteetan."
-      }
     }
   ]
 }

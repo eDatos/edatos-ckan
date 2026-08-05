@@ -2,6 +2,7 @@
 # -*- coding: UTF-8 -*-
 import codecs
 import json
+import logging
 import os
 import time
 import threading
@@ -18,8 +19,8 @@ from ckan.common import _, request, c
 from collections import OrderedDict
 from ckan.model import Package
 from ckan.lib.plugins import DefaultTranslation
-from ckantoolkit import config
-from flask import Blueprint
+from ckantoolkit import config, h, _, request, abort
+from flask import Blueprint, current_app
 from flask import render_template_string
 
 import logging
@@ -42,6 +43,7 @@ SCRIPT_TEMPLATE = os.path.join(dirname, '../code_templates/i18n.js')
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 I18N_DIR = os.path.join(HERE, "../i18n")
+APP_ID_FOR_ANALYTICS = 'ckan-catalog'
 
 # ---------------------------------------------------------------------------
 # Caché en memoria para helpers costosos (group, freq_tags).
@@ -82,9 +84,12 @@ def get_freq_tags(lang='tags_es'):
 
 
 def get_tag(tag_id):
-    tag_dict = toolkit.get_action('tag_show')(
-        data_dict={'id': tag_id})
-    return tag_dict
+    try:
+        tag_dict = toolkit.get_action('tag_show')(
+            {}, {'id': tag_id})
+        return tag_dict
+    except toolkit.ObjectNotFound:
+        return None
 
 
 def get_group(group_id):
@@ -257,31 +262,53 @@ def get_url(endpoint, key):
     return json_header_request['value']
 
 
-def get_request_lang(cookie_value):
-    return request.cookies.get(cookie_value)
+def get_request_lang(cookie_name):
+    """
+    Devuelve el idioma de la cookie si existe, o el idioma resuelto por CKAN, o el locale por defecto.
+    
+    :param cookie_name: Nombre de la cookie que contiene el idioma preferido del usuario
+    Fallback: idioma resuelto por CKAN en la URL o el locale por defecto configurado.
+    """
+    lang = request.cookies.get(cookie_name) if cookie_name else None
+    if not lang:
+        try:
+            lang = toolkit.h.lang()
+        except Exception:
+            lang = None
+    if not lang:
+        lang = config.get('ckan.locale_default', 'es')
+    return lang
 
 
 def get_header_url(json_config):
     """
-    Metodo que devuelve la URL del header
-    :param json_config: Fichero de configuracion cargado como un diccionario JSON
+    Devuelve la URL del header con el idioma del usuario.
+    
+    :param json_config: Configuracion cargada como diccionario JSON
     """
-    header_key = json_config['metadata']['navbarPathKey']
     endpoint = json_config['metadata']['endpoint']
-    cookie_key = json_config['metadata']['cookieKey']
-    title_translated = _(json_config['metadata']['appName'])
+    header_key = json_config['metadata']['navbarPathKey']
+    cookie_key = json_config['metadata'].get('cookieKey')
+    title = json_config['metadata']['appName']
 
-    #cookieId, se debe usar para rescatar el label de la cookie la respuesta se debe
-    # de poner como parametro de llamada a la cabecera y el idioma que venga de la cookie
-    request_lang = get_request_lang(get_url(endpoint, cookie_key))
+    header_url = get_url(endpoint, header_key)
 
-    # Enviar al mismo nivel del appName el chosenLocale
-    return "%s?appName=%s&appUrl=%s&%s=%s" % (get_url(endpoint, header_key),
-                                        title_translated,
-                                        json_config['metadata']['siteURL'],
-                                        get_url(endpoint, cookie_key),
-                                        request_lang
-                                        )
+    # Obtener el nombre real de la cookie una sola vez
+    cookie_name = get_url(endpoint, cookie_key) if cookie_key else None
+    # Idioma del request: cookie > idioma CKAN > locale por defecto
+    request_lang = get_request_lang(cookie_name)
+
+    url = "%s?appName=%s&appUrl=%s&appId=%s" % (
+        header_url,
+        title,
+        json_config['metadata']['siteURL'],
+        APP_ID_FOR_ANALYTICS,
+    )
+
+    if cookie_name:
+        url = "%s&%s=%s" % (url, cookie_name, request_lang)
+
+    return url
 
 
 def get_altered_header(header, json_config):
@@ -314,10 +341,23 @@ def get_altered_header(header, json_config):
             code = burger_button_file.read()
             container.append(BeautifulSoup(code, 'html.parser'))
             alteredHeader = soup.prettify('utf-8')
+            
+            
+    # Reemplazar titulo por el titulo con funcion de traduccion
+    title = json_config['metadata']['appName']
+    
+    div = soup.find('div', id='title-bar')
+    
+    if div:
+        span = div.find('span')
+        if span and title.lower() in span.text.strip().lower():
+            span.string = f"{{{{ _('{title}') }}}}"
+            
+    alteredHeader = soup.prettify('utf-8')
 
     alteredHeader = alteredHeader.replace(b'&gt;', b'>').decode('utf8')
 
-    return "{% block header_wrapper %}" + alteredHeader + "{% endblock %}"
+    return alteredHeader
 
 
 def get_html_header():
@@ -338,7 +378,7 @@ def get_html_header():
 
 # Map de vistas que se quieren restringir acceso
 REDIRECT_VIEWS = (
-    # route, view, function
+    # route, view, function    
     ('/user/register', 'abort_redirect', abort_redirect),
 
 )
@@ -419,8 +459,11 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
                 raise RuntimeError(
                     '"ckan.locales_offered" is required for plugin: {0}'
                     .format(self.name))
+                
             site_languages = config.get('ckan.locales_offered')
-
+            if isinstance(site_languages, list):
+                site_languages = ' '.join(site_languages)
+                
             updated_script = script_content.replace(
                 'FILL_SITE_URL', site_url).replace(
                 'FILL_REGEXP_SITE_URL', regexp_site_url).replace(
@@ -499,7 +542,8 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             'edatos_get_group': get_group,
             'edatos_get_groups_dict': get_groups_dict,
             'edatos_get_tag': get_tag,
-            'edatos_get_freq_tags': get_freq_tags
+            'edatos_get_freq_tags': get_freq_tags,
+            'new_activities': new_activities_dummy,
         }
 
     # ITranslation
@@ -508,7 +552,7 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         return I18N_DIR
 
     # IPackageController
-    def before_index(self, data_dict):
+    def before_dataset_index(self, data_dict):
         """Metodo para realizar el indexado de las etiquetas i18n 
         en el index de solr correspondiente
         """
@@ -545,4 +589,3 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         '''Modify and return the ``facets_dict`` for an organization's page.
         '''
         return self.dataset_facets(facets_dict, package_type)
-

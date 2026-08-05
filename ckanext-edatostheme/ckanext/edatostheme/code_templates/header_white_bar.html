@@ -1,30 +1,44 @@
 <script>
     let abierto = false;
-    const menus = document.getElementsByClassName("dropdown-menu");
+    let currentButton = null;
 
-    function abrir_menu() {
-        for (let menu of menus) {
+    function abrir_menu(button) {
+        const menu = button.nextElementSibling;
+        if (menu && menu.classList.contains("dropdown-menu")) {
             menu.classList.add("abrir");
+            currentButton = button;
         }
         abierto = true;
     }
 
-    function cerrar_menu() {
-        for (let menu of menus) {
+    function cerrar_menu(button) {
+        const menu = button.nextElementSibling;
+        if (menu && menu.classList.contains("dropdown-menu")) {
             menu.classList.remove("abrir");
         }
         abierto = false;
+        currentButton = null;
     }
 
-    function toggle_collapsable_menu() {
-        if (abierto) {
-            cerrar_menu();
-            return;
+    function toggle_collapsable_menu(button) {
+        if (abierto && currentButton === button) {
+            cerrar_menu(button);
         } else {
-            abrir_menu();
-            return;
+            // Cerrar el anterior si existe
+            if (currentButton && currentButton !== button) {
+                cerrar_menu(currentButton);
+            }
+            abrir_menu(button);
         }
     }
+
+    // Cerrar menú cuando hace click fuera
+    document.addEventListener('click', function(event) {
+        if (currentButton && !currentButton.contains(event.target) && 
+            !currentButton.nextElementSibling.contains(event.target)) {
+            cerrar_menu(currentButton);
+        }
+    });
 </script>
 
 {% block header_account_container_content %}
@@ -34,9 +48,9 @@
             <nav class="section navigation">
                 <div class="account avatar authed" data-module="me" data-me="{{ c.userobj.id }}">
                     <ul class="nav nav-pills">
-                        <ul class="nav navbar-nav">
+                        <ul class="dropdown btn-group">
                             <li class="nav">
-                                <button onclick="toggle_collapsable_menu()" class="btn btn-navbar" type="button"
+                                <button onclick="toggle_collapsable_menu(this)" class="btn btn-navbar" type="button"
                                     title="{{ _('Options') }}">
                                     {{ _('Options') }}
                                     <span class="fa fa-chevron-down"></span>
@@ -64,7 +78,7 @@
                                         (%(num)d
                                         new items)',
                                         new_activities) %}
-                                        <a href="{{ h.url_for('dashboard.index') }}" title="{{ notifications_tooltip }}">
+                                        <a href="{{ h.url_for('dashboard.groups') }}" title="{{ notifications_tooltip }}">
                                             <i class="fa fa-tachometer" aria-hidden="true"></i>
                                             <span class="text">{{ _('Dashboard') }}</span>
                                             <span class="badge">{{ new_activities }}</span>
@@ -120,9 +134,9 @@
             {% block header_site_navigation_no_log2 %}
             <nav class="section navigation">
                 <ul class="nav nav-pills">
-                    <ul class="nav navbar-nav">
+                    <ul class="dropdown btn-group">
                         <li class="nav">
-                            <button onclick="toggle_collapsable_menu()" class="btn btn-navbar" type="button"
+                            <button onclick="toggle_collapsable_menu(this)" class="btn btn-navbar" type="button"
                                 title="{{ _('Options') }}">
                                 {{ _('Options') }}
                                 <span class="fa fa-chevron-down"></span>
@@ -162,6 +176,3 @@
     {% endblock %}
 {% endif %}
 {% endblock %}
-
-
-

@@ -1,7 +1,7 @@
 import json
 import logging
 import re
-import urllib.request, urllib.parse, urllib.error
+import urllib.parse
 import urllib.parse
 
 import ckan.lib.helpers as h
@@ -16,6 +16,7 @@ from ckan.plugins.toolkit import missing, _
 from ckantoolkit import get_validator
 from ckantoolkit import config
 from ckantoolkit import Invalid
+from bs4 import BeautifulSoup
 
 log = logging.getLogger(__name__)
 
@@ -342,7 +343,7 @@ def multilanguage_url(field, schema):
             if value:
                 return
             else:
-                prefix = field['autogeneration_field']
+                prefix = field.get('autogeneration_field')
                 if not prefix:
                     prefix = DEFAULT_TITLE_FIELD
 
@@ -590,83 +591,79 @@ def date_period_output(value):
 VALIDATOR FOR FLUENT TEXT
 """
 
-
-def multiple_one_value(key, data, errors, context):
-    header = '[multiple_one_value_VALIDATOR]'
-    log.debug('{} validating. Key: {}'.format(header, key))
-    if errors[key]:
-        return
-
-    values = []
-    languages = []
-
-    # Get value from dict or JSON encoded string
-    value = data[key]
-    if value is not missing:
-        if isinstance(value, str):
-            try:
-                value = json.loads(value)
-            except ValueError:
-                errors[key].append(_('Failed to decode JSON string'))
-                return
-            except UnicodeDecodeError:
-                errors[key].append(_('Invalid encoding for JSON string'))
-                return
-        if not isinstance(value, dict):
-            errors[key].append(_('Expecting JSON object'))
+@scheming_validator
+def multiple_one_value(field, schema):
+    def validator(key, data, errors, context):
+        header = '[multiple_one_value_VALIDATOR]'
+        log.debug('{} validating. Key: {}'.format(header, key))
+        
+        if errors[key]:
             return
-
-        for lang, text in value.items():
-            try:
-                m = re.match(ISO_639_LANGUAGE, lang)
-            except TypeError:
-                errors[key].append(_('Invalid type for language code: %r')
-                                   % lang)
-                continue
-
-            # Register the language
-            languages += [lang]
-            if not isinstance(text, str):
-                errors[key].append(_('Invalid type for "%s" value') % lang)
-                continue
-            if isinstance(text, str) or isinstance(text, str):
+        
+        values = []
+        languages = []
+        
+        # Get value from dict or JSON encoded string
+        value = data[key]
+        if value is not missing:
+            if isinstance(value, str):
                 try:
-                    # Si el valor no es vacio lo registro
+                    value = json.loads(value)
+                except ValueError:
+                    errors[key].append(_('Failed to decode JSON string'))
+                    return
+                except UnicodeDecodeError:
+                    errors[key].append(_('Invalid encoding for JSON string'))
+                    return
+            
+            if not isinstance(value, dict):
+                errors[key].append(_('Expecting JSON object'))
+                return
+            
+            for lang, text in value.items():
+                try:
+                    m = re.match(ISO_639_LANGUAGE, lang)
+                except TypeError:
+                    errors[key].append(_('Invalid type for language code: %r') % lang)
+                    continue
+                
+                languages += [lang]
+                if not isinstance(text, str):
+                    errors[key].append(_('Invalid type for "%s" value') % lang)
+                    continue
+                
+                try:
                     if text.strip():
                         values += [lang]
                 except UnicodeDecodeError:
-                    errors[key].append(_('Invalid encoding for "%s" value')
-                                       % lang)
-
+                    errors[key].append(_('Invalid encoding for "%s" value') % lang)
+        
         if not values:
             for lang in languages:
-                errors[key[:-1] + (key[-1] + '-' + lang,)
-                       ] = [_('Missing value')]
-
-        return
-
-    # Get values from formulary
-    prefix = key[-1] + '-'
-    extras = data.get(key[:-1] + ('__extras',), {})
-
-    for name, text in extras.items():
-        if not isinstance(name, str) or not name.startswith(prefix):
-            continue
-
-        lang = name.split('-', 1)[1]
-        m = re.match(ISO_639_LANGUAGE, lang)
-        if not m:
-            errors[name] = [_('Invalid language code: "%s"') % lang]
-            values = None
-            continue
-
-        languages += [lang]
-        if text:
-            values += [lang]
-
-    if not values:
-        for lang in languages:
-            errors[key[:-1] + (key[-1] + '-' + lang,)] = [_('Missing value')]
+                errors[key[:-1] + (key[-1] + '-' + lang,)] = [_('Missing value')]
+            return
+        
+        # Get values from formulary
+        prefix = key[-1] + '-'
+        extras = data.get(key[:-1] + ('__extras',), {})
+        for name, text in extras.items():
+            if not isinstance(name, str) or not name.startswith(prefix):
+                continue
+            lang = name.split('-', 1)[1]
+            m = re.match(ISO_639_LANGUAGE, lang)
+            if not m:
+                errors[name] = [_('Invalid language code: "%s"') % lang]
+                values = None
+                continue
+            languages += [lang]
+            if text:
+                values += [lang]
+        
+        if not values:
+            for lang in languages:
+                errors[key[:-1] + (key[-1] + '-' + lang,)] = [_('Missing value')]
+    
+    return validator
 
 
 """
@@ -899,8 +896,6 @@ PACKAGE VALIDATOR TO AVOID SPECIAL CHARS SCRIPTING
 
 @scheming_validator
 def tags_html_detected(field, schema):
-    from bs4 import BeautifulSoup
-
     def validator(key, data, errors, context):
         if errors[key] or 'resources' in str(data):
             return
