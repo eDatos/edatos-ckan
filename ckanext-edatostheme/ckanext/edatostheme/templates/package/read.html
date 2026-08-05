@@ -22,10 +22,15 @@
         {% endif %}
       {% endblock %}
     </h1>
-    {% block package_notes_edatos %}
-      {% if h.scheming_field_by_name(schema.dataset_fields, 'description_translated') %}
+    {% block package_notess %}
+      {% set translated_notes = h.get_translated(pkg, 'description') if h.scheming_field_by_name(schema.dataset_fields, 'description_translated') else none %}
+      {% if translated_notes %}
         <div class="notes embedded-content">
-          {{ h.render_markdown(h.get_translated(pkg, 'description')) }}
+          {{ h.render_markdown(translated_notes) }}
+        </div>
+      {% elif pkg.notes %}
+        <div class="notes embedded-content">
+          {{ h.render_markdown(pkg.notes) }}
         </div>
       {% endif %}
     {% endblock %}
