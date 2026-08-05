@@ -7,9 +7,11 @@
   <h2 class="hide-heading">{{ h.humanize_entity_type('group', default_group_type, 'page title') or _('Groups') }}</h2>
 
   {% if group_dropdown %}
+    {# Todos los grupos en una sola llamada batch para evitar el N+1 de edatos_get_group por opción #}
+    {% set all_groups = h.edatos_get_groups_dict() %}
     {% set translated_group_options = [] %}
     {% for option in group_dropdown %}
-      {% set group_dict = h.edatos_get_group(option[0]) %}
+      {% set group_dict = all_groups.get(option[0]) or h.edatos_get_group(option[0]) %}
       {% do translated_group_options.append((option[0], h.get_translated(group_dict, "title"))) %}
     {% endfor %}
 
