@@ -14,7 +14,9 @@ DCAT_ENDPOINT="ckanext.dcat.catalog_endpoint = ${DCAT_ENDPOINT_VALUE}"
 log_info "[05_setup_dcat_endpoint] Verificando configuración del endpoint DCAT..."
 
 if grep -qF "ckanext.dcat.catalog_endpoint" "${CKAN_INI}"; then
-    sed -i "s|^ckanext.dcat.catalog_endpoint =.*|${DCAT_ENDPOINT}|" "${CKAN_INI}"
+    sed "s|^ckanext.dcat.catalog_endpoint =.*|${DCAT_ENDPOINT}|" "${CKAN_INI}" > /tmp/ckan_ini_tmp \
+        && cat /tmp/ckan_ini_tmp > "${CKAN_INI}" \
+        && rm -f /tmp/ckan_ini_tmp
     log_success "[05_setup_dcat_endpoint] Endpoint DCAT actualizado en ${CKAN_INI}"
 else
     sed "/^\[app:main\]/a\\${DCAT_ENDPOINT}" "${CKAN_INI}" > /tmp/ckan_ini_tmp \

@@ -1,4 +1,15 @@
 {% block header_meta_menu %}
     {{ h.edatos_get_header() | safe }}
+    {% set edatos_css_url = h.edatos_get_app_style_css_url() %}
+    {% if edatos_css_url %}
+      {#
+        Repetido aqui (ya se enlaza en base.html/styles, para paginas sin
+        cabecera como el iframe de vista de recurso): el header externo trae
+        su propio <link> a theme.css sin '?organisation=', y al insertarse
+        despues del <head> gana la cascada sobre el de base.html. Repetirlo
+        aqui, despues del header, asegura que la version con organisation
+        gane.
+      #}
+      <link rel="stylesheet" href="{{ edatos_css_url }}">
+    {% endif %}
 {% endblock header_meta_menu %}
-

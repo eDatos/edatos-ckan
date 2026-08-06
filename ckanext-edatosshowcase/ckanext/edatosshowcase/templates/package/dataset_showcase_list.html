@@ -1,0 +1,150 @@
+{% extends "package/read_base.html" %}
+
+{% block subtitle %}{{ _('Showcases') }} - {{ super() }}{% endblock %}
+
+{% block primary_content_inner %}
+    {% if h.check_access('ckanext_showcase_update') and showcase_dropdown %}
+        <form method="post" class="form-horizontal" id="showcase-add">
+            {{ h.csrf_input() if 'csrf_input' in h }}
+
+            {# Select nativo oculto — conservado para el envío del formulario POST #}
+            <select id="field-add_showcase"
+                    name="showcase_added"
+                    class="showcase-add-native-select">
+                <option value="">{{ _('None') }}</option>
+                {% for option in showcase_dropdown %}
+                    <option value="{{ option[0] }}">{{ option[1] }}</option>
+                {% endfor %}
+            </select>
+
+            {# Dropdown visual personalizado — diseño ISTAC (mismo patrón que activity_type_selector) #}
+            <div class="showcase-add-dropdown activity-type-dropdown"
+                 role="combobox"
+                 aria-haspopup="listbox"
+                 aria-expanded="false">
+
+                <button type="button"
+                        class="activity-type-dropdown__trigger"
+                        aria-expanded="false"
+                        aria-controls="showcase-add-dropdown-menu">
+                    <span class="activity-type-dropdown__current-label showcase-add-dropdown__current-label">{{ _('None') }}</span>
+                    <i class="fa fa-chevron-down activity-type-dropdown__chevron" aria-hidden="true"></i>
+                </button>
+
+                <div id="showcase-add-dropdown-menu"
+                     class="activity-type-dropdown__menu"
+                     role="listbox"
+                     aria-label="{{ _('Select showcase') }}">
+
+                    <div class="activity-type-dropdown__item activity-type-dropdown__item--selected"
+                         role="option"
+                         data-value=""
+                         aria-selected="true">
+                        {{ _('None') }}
+                    </div>
+
+                    {% for option in showcase_dropdown %}
+                        <div class="activity-type-dropdown__item"
+                             role="option"
+                             data-value="{{ option[0] }}"
+                             aria-selected="false">
+                            {{ option[1] }}
+                        </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" title="{{ _('Associate this showcase with this dataset') }}">{{ _('Add to showcase') }}</button>
+        </form>
+
+        <script>
+        (function () {
+          'use strict';
+
+          function initShowcaseDropdown() {
+            var dropdown = document.querySelector('.showcase-add-dropdown');
+            if (!dropdown || dropdown.dataset.sdInit) return;
+            dropdown.dataset.sdInit = '1';
+
+            var trigger      = dropdown.querySelector('.activity-type-dropdown__trigger');
+            var menu         = dropdown.querySelector('.activity-type-dropdown__menu');
+            var currentLabel = dropdown.querySelector('.showcase-add-dropdown__current-label');
+            var nativeSelect = document.getElementById('field-add_showcase');
+
+            if (!trigger || !menu || !currentLabel || !nativeSelect) return;
+
+            /* Abrir / cerrar */
+            trigger.addEventListener('click', function (e) {
+              e.stopPropagation();
+              var isOpen = dropdown.classList.contains('abrir');
+              closeDropdown();
+              if (!isOpen) {
+                dropdown.classList.add('abrir');
+                trigger.setAttribute('aria-expanded', 'true');
+                dropdown.setAttribute('aria-expanded', 'true');
+              }
+            });
+
+            /* Seleccionar ítem */
+            menu.querySelectorAll('.activity-type-dropdown__item').forEach(function (item) {
+              item.addEventListener('click', function () {
+                var value = item.getAttribute('data-value');
+                var label = item.textContent.trim();
+
+                /* Actualizar select nativo */
+                nativeSelect.value = value;
+
+                /* Actualizar etiqueta visible */
+                currentLabel.textContent = label;
+
+                /* Marcar ítem seleccionado */
+                menu.querySelectorAll('.activity-type-dropdown__item').forEach(function (i) {
+                  i.classList.remove('activity-type-dropdown__item--selected');
+                  i.setAttribute('aria-selected', 'false');
+                });
+                item.classList.add('activity-type-dropdown__item--selected');
+                item.setAttribute('aria-selected', 'true');
+
+                closeDropdown();
+              });
+            });
+
+            /* Escape cierra */
+            dropdown.addEventListener('keydown', function (e) {
+              if (e.key === 'Escape') {
+                closeDropdown();
+                trigger.focus();
+              }
+            });
+
+            function closeDropdown() {
+              dropdown.classList.remove('abrir');
+              trigger.setAttribute('aria-expanded', 'false');
+              dropdown.setAttribute('aria-expanded', 'false');
+            }
+
+            /* Cerrar al hacer clic fuera */
+            document.addEventListener('click', function () {
+              closeDropdown();
+            });
+          }
+
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initShowcaseDropdown);
+          } else {
+            initShowcaseDropdown();
+          }
+        })();
+        </script>
+    {% endif %}
+
+    <h2>{% block page_heading %}{{ _('Showcases featuring {dataset_name}').format(dataset_name=h.dataset_display_name(pkg_dict)) }}{% endblock %}</h2>
+    {% block showcase_list %}
+        {% if showcase_list %}
+            {% snippet "edatosshowcase/snippets/showcase_list.html", packages=showcase_list, pkg_id=pkg_dict.name, show_remove=h.check_access('ckanext_showcase_update') %}
+        {% else %}
+            <p class="empty">{{ _('There are no showcases that feature this dataset') }}</p>
+        {% endif %}
+    {% endblock %}
+{% endblock %}

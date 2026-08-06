@@ -2,3 +2,9 @@
 *.tar.gz
 /tmp
 /graphify*
+
+# Dumps de PostgreSQL (herramientas/bbdd/README.md explica su uso); no versionar los dumps
+/herramientas/bbdd/*
+!/herramientas/bbdd/README.md
+/imagenes_alisios
+/promts

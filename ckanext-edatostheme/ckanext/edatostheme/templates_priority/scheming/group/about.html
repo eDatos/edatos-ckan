@@ -1,0 +1,30 @@
+{% extends "group/about.html" %}
+
+{% block primary_content_inner %}
+  <h1>{{ h.get_translated(group_dict, 'title') or group_dict.display_name }}</h1>
+
+  {% if h.get_translated(group_dict, 'description') %}
+    {{ h.render_markdown(h.get_translated(group_dict, 'description')) }}
+  {% endif %}
+
+  {% set skos_extra = group_dict.extras | selectattr('key', 'equalto', 'skos_nti') | list | first %}
+  {% if skos_extra %}
+  <section class="additional-info module">
+    <div class="module-heading metadata-heading">{{ _('Metadatos') }}</div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">{{ _('Campo') }}</th>
+          <th scope="col">{{ _('Valor') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row" class="dataset-label">skos_nti</th>
+          <td class="dataset-details">{{ skos_extra.value }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  {% endif %}
+{% endblock %}

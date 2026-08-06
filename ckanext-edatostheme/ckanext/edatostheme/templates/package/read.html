@@ -11,7 +11,7 @@
         {{ _('Private') }}
       </span>
     {% endif %}
-    <h1>
+    <h1 class="dataset-title">
       {% block page_heading %}
         {{ h.dataset_display_name(pkg) }}
         {% if pkg.state.startswith('draft') %}
@@ -22,10 +22,15 @@
         {% endif %}
       {% endblock %}
     </h1>
-    {% block package_notes_edatos %}
-      {% if h.scheming_field_by_name(schema.dataset_fields, 'description_translated') %}
+    {% block package_notess %}
+      {% set translated_notes = h.get_translated(pkg, 'description') if h.scheming_field_by_name(schema.dataset_fields, 'description_translated') else none %}
+      {% if translated_notes %}
         <div class="notes embedded-content">
-          {{ h.render_markdown(h.get_translated(pkg, 'description')) }}
+          {{ h.render_markdown(translated_notes) }}
+        </div>
+      {% elif pkg.notes %}
+        <div class="notes embedded-content">
+          {{ h.render_markdown(pkg.notes) }}
         </div>
       {% endif %}
     {% endblock %}
@@ -36,9 +41,7 @@
       can_edit=h.check_access('package_update', {'id':pkg.id }) %}
   {% endblock %}
 
-  {% block package_tags %}
-    {% snippet "package/snippets/tags.html", tags=pkg.multilingual_tags %}
-  {% endblock %}
+  {% block package_tags %}{% endblock %}
 
   {% block package_additional_info %}
     {% snippet "package/snippets/additional_info.html", pkg_dict=pkg %}
@@ -47,8 +50,10 @@
   {% block showcase_list %}
     {% set showcases = h.package_showcase_list(c) %}
     {% if showcases %}
-      <h3>{{ _("Showcases-dataset")  }}</h3>
-      {% snippet "edatosshowcase/snippets/showcase_list.html", packages=showcases, pkg_id=c.pkg_dict.name %}
+      <section class="recursos-relacionados-section">
+        <h2 class="recursos-relacionados-heading">{{ _("Showcases-dataset") }}</h2>
+        {% snippet "edatosshowcase/snippets/showcase_list.html", packages=showcases, pkg_id=c.pkg_dict.name %}
+      </section>
     {% endif %}
   {% endblock %}
 {% endblock %}

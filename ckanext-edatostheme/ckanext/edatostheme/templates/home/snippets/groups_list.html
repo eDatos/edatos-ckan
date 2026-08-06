@@ -9,8 +9,8 @@ Example:
 
 #}
 {% block group_list %}
-<div class="box" >
-<ul class="media-grid">
+<div class="categories-section">
+<ul class="categories-grid">
   {% block group_list_inner %}
     {% for group in groups %}
       {% snippet "home/snippets/group_home_item.html", group=group, position=loop.index %}

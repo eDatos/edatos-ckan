@@ -39,6 +39,7 @@ services:
     volumes:
       - ./src/ckanext-edatostheme/ckanext/edatostheme/etc/config.json:/srv/app/src/ckanext-edatostheme/ckanext/edatostheme/etc/config.json
       - ./src/ckanext-edatosscheming/ckanext/edatosscheming/etc/config.json:/srv/app/src/ckanext-edatosscheming/ckanext/edatosscheming/etc/config.json
+      - ../ckanext-edatostheme/ckanext/edatostheme/assets/styles/custom.css:/srv/app/src/ckanext-edatostheme/ckanext/edatostheme/assets/styles/custom.css
       - ckan_storage:/var/lib/ckan
       - pip_cache:/root/.cache/pip
       - site_packages:/usr/lib/python3.10/site-packages

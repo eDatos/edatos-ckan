@@ -6,7 +6,11 @@
 
 <div class="module-search card box">
   <form class="module-content search-form" method="get" action="{% url_for dataset_type ~ '.search' %}">
-    <h3 class="heading">{{ _("Search data") }}</h3>
+    <h3 class="heading">{{ _("What data do you need?") }}</h3>
+    {% set count = h.edatostheme_get_count_all_datasets() %}
+    {% if count %}
+      <p class="hero-subtitle">{{ _('Quick access to') }} <strong>{{ h.localised_number(count) }}</strong> {{ _('open datasets') }}</p>
+    {% endif %}
     <div class="search-input form-group search-giant">
       <input aria-label="{% block header_site_search_label %}{{ h.humanize_entity_type('package', dataset_type, 'search placeholder') or _('Search datasets') }}{% endblock %}" id="field-main-search" type="text" class="form-control" name="q" value="" autocomplete="off" placeholder="{% block search_placeholder %}{{ placeholder }}{% endblock %}" />
       <button class="btn" type="submit" aria-labelledby="search-label">
@@ -15,16 +19,15 @@
       </button>
     </div>
   </form>
-  <div class="tags">
-    <h3>{{ _('Popular tags') }}</h3>
+  <div class="search-filters">
+    {% set active_tag = request.args.get(lang, '') %}
+    {# Botón "Todos" — activo cuando no hay filtro de etiqueta #}
+    <a class="filter-tag {{ 'active' if not active_tag else '' }}" href="{{ h.url_for(dataset_type ~ '.search') }}">{{ _('All') }}</a>
+    {# Etiquetas dinámicas cargadas desde h.edatos_get_freq_tags #}
     {% for tag in tags %}
       {% if tag != delink %}
-        {% if tag.active %}
-          {% set href = h.remove_url_param('dataset', tag, controller='dataset', action='search', extras=extras, alternative_url=alternative_url) %}
-        {% else %}
-          {% set href = h.add_url_param(controller='dataset', action='search', new_params={lang: tag}, extras=extras, alternative_url=alternative_url) %}
-        {% endif %}
-        <a class="tag" href="{{ href }}">{{ tag }}</a>
+        {% set href = h.url_for(dataset_type ~ '.search', **{lang: tag}) %}
+        <a class="filter-tag {{ 'active' if active_tag == tag else '' }}" href="{{ href }}">{{ tag }}</a>
       {% endif %}
     {% endfor %}
   </div>

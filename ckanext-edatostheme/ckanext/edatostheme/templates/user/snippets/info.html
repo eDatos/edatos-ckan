@@ -1,0 +1,124 @@
+{% set user = user_dict if not user else user %}
+{% set orgs_available = h.organizations_available(permission='manage_group',
+  include_dataset_count=True,
+  include_member_count=True,
+  user=user['id'])
+%}
+{% set groups_available = h.groups_available(am_member=True,
+  include_dataset_count=True,
+  include_member_count=True,
+  user=user['id'])
+%}
+
+<div id="user-info" class="module context-info">
+  <section class="module-content">
+    {% block secondary_content_inner %}
+
+      {# --- Card azul: icono + nombre + divisor + biografía --- #}
+      {% block user_image %}
+      <div class="user-profile-card">
+        <i class="fa-thin fa-circle-user user-profile-fa-icon"></i>
+        <h1 class="heading">{{ user.display_name }}</h1>
+        <hr class="user-profile-divider">
+        <div class="user-profile-bio">
+          {% if about_formatted %}
+            {{ about_formatted }}
+          {% else %}
+            <p>
+              {% if is_myself %}
+                {% trans %}You have not provided a biography.{% endtrans %}
+              {% else %}
+                {% trans %}This user has no biography.{% endtrans %}
+              {% endif %}
+            </p>
+          {% endif %}
+        </div>
+      </div>
+      {% endblock %}
+
+      {# --- Estadísticas: header + lista con badges --- #}
+      {% block user_nums %}
+      {% set num_followers = h.follow_count('user', user.id) %}
+      <div class="user-stats-section">
+        <div class="user-stats-header">{{ _('Activity') }}</div>
+        <div class="user-stats-list">
+          <div class="user-stats-item">
+            <span class="user-stats-label">{{ _('Followers') }}</span>
+            <span class="user-stats-badge">{{ num_followers }}</span>
+          </div>
+          <div class="user-stats-item">
+            <span class="user-stats-label">{{ h.humanize_entity_type('package', dataset_type, 'facet label') or _('Datasets') }}</span>
+            <span class="user-stats-badge">{{ user.number_created_packages }}</span>
+          </div>
+          <div class="user-stats-item">
+            <span class="user-stats-label">{{ h.humanize_entity_type('organization', org_type, 'facet label') or _('Organizations') }}</span>
+            <span class="user-stats-badge">{{ orgs_available | count }}</span>
+          </div>
+          <div class="user-stats-item">
+            <span class="user-stats-label">{{ h.humanize_entity_type('group', group_type, 'facet label') or _('Groups') }}</span>
+            <span class="user-stats-badge">{{ groups_available | count }}</span>
+          </div>
+        </div>
+      </div>
+      {% endblock %}
+
+      {# --- Botón de seguir (si no es el propio usuario) --- #}
+      {% if is_myself == false %}
+        {% block user_follow %}
+        {% if current_user.is_authenticated %}
+          {% if error_message %}
+            <div class="alert alert-danger">{{ error_message }}</div>
+          {% endif %}
+          {% snippet 'snippets/follow_button.html', am_following=am_following, obj_type='user', obj_id=user.id %}
+        {% endif %}
+        {% endblock %}
+      {% endif %}
+
+      {# --- Secciones de info: Nombre, Email, Miembro desde, Estado --- #}
+      {% block user_info %}
+      <div class="user-info-sections">
+        <div class="user-info-group">
+          <div class="user-info-header">
+            {% if user.name.startswith('http://') or user.name.startswith('https://') %}
+              {{ _('Open ID') }}
+            {% else %}
+              {{ _('Username') }}
+            {% endif %}
+          </div>
+          <div class="user-info-value">
+            {% if user.name.startswith('http://') or user.name.startswith('https://') %}
+              {{ user.name|urlize(25) }}
+            {% else %}
+              {{ user.name }}
+            {% endif %}
+          </div>
+        </div>
+        {% if is_myself %}
+        <div class="user-info-group">
+          <div class="user-info-header">
+            {{ _('Email') }}
+            <span class="label label-default" title="{{ _('This means only you can see this') }}" style="margin-left:6px;">{{ _('Private') }}</span>
+          </div>
+          <div class="user-info-value">{{ user.email }}</div>
+        </div>
+        {% endif %}
+        <div class="user-info-group">
+          <div class="user-info-header">{{ _('Member Since') }}</div>
+          <div class="user-info-value">{{ h.render_datetime(user.created) }}</div>
+        </div>
+        {% if is_sysadmin %}
+        <div class="user-info-group">
+          <div class="user-info-header">{{ _('Last Active') }}</div>
+          <div class="user-info-value">{{ h.time_ago_from_timestamp(user.last_active) }}</div>
+        </div>
+        {% endif %}
+        <div class="user-info-group">
+          <div class="user-info-header">{{ _('State') }}</div>
+          <div class="user-info-value">{{ _(user.state) }}</div>
+        </div>
+      </div>
+      {% endblock %}
+
+    {% endblock %}
+  </section>
+</div>
