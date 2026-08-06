@@ -5483,6 +5483,6 @@ msgstr "Compartir"
 msgid "Licencia"
 msgstr "Llicència"
 
-#: ckanext/edatostheme/templates/error_document_template_admin.html
-msgid "Acceso exclusivo para personas administradoras"
+#: ckanext-cas/ckanext/cas/blueprints.py
+msgid "Exclusive access for administrators"
 msgstr "Accés exclusiu per a persones administradores"

@@ -4915,6 +4915,6 @@ msgstr "Aviso Legal del IBESTAT"
 msgid "Compartir"
 msgstr "Compartir"
 
-#: ckanext/edatostheme/templates/error_document_template_admin.html
-msgid "Acceso exclusivo para personas administradoras"
+#: ckanext-cas/ckanext/cas/blueprints.py
+msgid "Exclusive access for administrators"
 msgstr "Acceso exclusivo para personas administradoras"
