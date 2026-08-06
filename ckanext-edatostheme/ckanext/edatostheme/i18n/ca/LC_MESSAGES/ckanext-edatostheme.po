@@ -5441,3 +5441,7 @@ msgstr "Avís legal de l'ISTAC"
 #: ckanext/template/snippets/facet_list.html:74
 msgid "Aviso Legal del IBESTAT"
 msgstr "Avís legal de l'IBESTAT"
+
+#: ckanext-cas/ckanext/cas/blueprints.py
+msgid "Exclusive access for administrators"
+msgstr "Accés exclusiu per a persones administradores"

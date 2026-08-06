@@ -574,3 +574,49 @@ selector#language-selector {
 	transform: scale(0.53);
 	margin: -14px 0 0 -14px;
 }
+
+.edatos-alert {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: var(--edatos-spacing-y-l) var(--edatos-spacing-x-m);
+	color: var(--edatos-color-black-100);
+	background-color: var(--edatos-color-danger-25);
+	border-radius: var(--border-radius-sm);
+	font-weight: var(--edatos-font-weight-regular);
+	border: none; /* opcional para eliminar borde Bootstrap */
+}
+
+.alert.alert-danger.edatos-alert {
+	background-color: var(--edatos-color-danger-25);
+	color: var(--edatos-color-black-100) !important;
+	border: none;
+}
+
+.edatos-alert .btn-close {
+	margin-left: auto;
+}
+
+.alert-danger {
+    color: var(--edatos-color-black-100) !important;
+    background-color: var(--edatos-color-danger-25);
+    border-color: #f2c5c4;
+}
+
+.alert.alert-dismissible.fade.show.alert-danger {
+    display: flex;
+    padding: var(--edatos-spacing-y-l) var(--edatos-spacing-x-m);
+    color: var(--edatos-color-black-100);
+    background-color: var(--edatos-color-danger-25);
+    border-radius: var(--border-radius-sm);
+    font-weight: var(--edatos-font-weight-regular);
+}
+
+.login-error-logout-btn {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: var(--edatos-font-size-md);
+    line-height: var(--edatos-line-height-xs);
+}

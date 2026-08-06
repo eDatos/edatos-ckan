@@ -1,0 +1,14 @@
+{% ckan_extends %}
+
+{% block flash %}
+  {# Consume flash messages to prevent them from leaking to the next page #}
+  {% set flash_messages = h.get_flashed_messages() %}
+
+  {% if code == 403 and content %}
+    <div class="flash-messages">
+      <div class="alert alert-dismissible fade show alert-danger">
+        {{ content }}
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}

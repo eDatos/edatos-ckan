@@ -36,6 +36,7 @@ abort = base.abort
 CAS_NAMESPACE = 'urn:oasis:names:tc:SAML:2.0:protocol'
 XML_NAMESPACES = {'samlp': CAS_NAMESPACE}
 DATETIME_FORMAT = '%Y-%m-%dT%H:%M:%S.%fZ'
+MSG_NO_ACCESS = 'Exclusive access for administrators'
 
 
 def cas_logout():
@@ -157,8 +158,7 @@ def _authenticate_user(username, email, fullname, is_superuser=False):
     elif is_superuser and is_superuser == cas_plugin.CAS_MEMBER_PROPERTY:
         is_superuser = False
     else:
-        abort(
-            403, 'Solo se pueden autenticar los usuarios pertenecientes al equipo EDATOS')
+        abort(403, t._(MSG_NO_ACCESS))
 
     if user is None:
         data_dict = {'name': str(username),
@@ -208,6 +208,20 @@ def _authenticate_user(username, email, fullname, is_superuser=False):
         return session.get('user')
 
 
+def _home_url_with_locale(cas_plugin):
+    """Construye la URL de inicio usando el idioma elegido por el usuario
+    (cookie chosenLocale) para evitar que i18n.js redirija y consuma el flash."""
+    default_locale = config.get('ckan.locale_default', 'es')
+    locale = t.request.cookies.get('chosenLocale', default_locale)
+    offered = config.get('ckan.locales_offered', ['es'])
+    if isinstance(offered, str):
+        offered = offered.split()
+    if locale not in offered:
+        locale = default_locale
+    base = cas_plugin.CAS_APP_URL.rstrip('/')
+    return '{}/{}/'.format(base, locale)
+
+
 def cas_callback(**kwargs):
     log.debug('Invoked "cas_callback" method.')
     cas_plugin = p.get_plugin('cas')
@@ -228,7 +242,7 @@ def cas_callback(**kwargs):
         log.debug(b'' + q.content)
         root = objectify.fromstring(b'' + q.content)
         acl = None
-        if hasattr(root.authenticationSuccess.attributes, 'acl'):
+        if hasattr(root, 'authenticationSuccess') and hasattr(root.authenticationSuccess, 'attributes') and hasattr(root.authenticationSuccess.attributes, 'acl'):
             log.debug('Cantidad de acl :')
             log.debug(
                 len(list(root.authenticationSuccess.attributes.acl)))
@@ -299,13 +313,20 @@ def cas_callback(**kwargs):
                 posicion_rol = 1
                 sysadmin_check = sysadmin_check.strip(separador)
                 sysadmin_check = sysadmin_check.split(separador)
-                rol = sysadmin_check[posicion_rol]
-                sysadmin = rol
+                if len(sysadmin_check) > posicion_rol:
+                    rol = sysadmin_check[posicion_rol]
+                    sysadmin = rol
                 log.debug('Rol filtrado :')
                 log.debug(sysadmin)
         else:
-            abort(
-                403, 'Solo se pueden autenticar los usuarios pertenecientes al equipo de EDATOS')
+            session['login_error_msg'] = MSG_NO_ACCESS
+            session.modified = True
+            return redirect(_home_url_with_locale(cas_plugin))
+
+        if sysadmin not in [cas_plugin.CAS_ADMIN_PROPERTY, cas_plugin.CAS_MEMBER_PROPERTY]:
+            session['login_error_msg'] = MSG_NO_ACCESS
+            session.modified = True
+            return redirect(_home_url_with_locale(cas_plugin))
 
         username = _authenticate_user(
             username, email, fullname, sysadmin)
