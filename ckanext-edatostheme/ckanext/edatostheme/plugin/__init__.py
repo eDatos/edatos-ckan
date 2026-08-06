@@ -4,6 +4,11 @@ import codecs
 import json
 import logging
 import os
+import time
+import threading
+
+import ckan.lib.base as base
+import ckan.lib.helpers as h
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 import requests
@@ -13,19 +18,21 @@ from bs4 import BeautifulSoup
 from ckan.common import _, request, c
 from collections import OrderedDict
 from ckan.model import Package
-from ckan.model.tag import Tag
 from ckan.lib.plugins import DefaultTranslation
 from ckantoolkit import config, h, _, request, abort
 from flask import Blueprint, current_app
-from flask import request as fr
+from flask import render_template_string
 
+import logging
 log = logging.getLogger(__name__)
 
+_REQUESTS_TIMEOUT = 10      # segundos — timeout para todas las llamadas requests.get
 
+
+abort = base.abort
 dirname = os.path.dirname(__file__)
 CONFIG_FILE_PATH = os.path.join(dirname, '../etc/config.json')
 FOOTER_PATH = os.path.join(dirname, '../templates/footer.html')
-HEADER_PATH = os.path.join(dirname, '../templates/header_meta.html')
 FAVICON_PATH = os.path.join(dirname, '../public/favicon.ico')
 SCRIPT_PATH = os.path.join(dirname, '../assets/js/i18n.js')
 HEADER_WHITE_BAR_PATH = os.path.join(
@@ -38,12 +45,44 @@ HERE = os.path.abspath(os.path.dirname(__file__))
 I18N_DIR = os.path.join(HERE, "../i18n")
 APP_ID_FOR_ANALYTICS = 'ckan-catalog'
 
+# ---------------------------------------------------------------------------
+# Caché en memoria para helpers costosos (group, freq_tags).
+# TTL por defecto: 60s para grupos, 120s para tags frecuentes.
+# ---------------------------------------------------------------------------
+_GROUP_CACHE = {}           # {group_id: (timestamp, dict)}
+_GROUP_CACHE_LOCK = threading.Lock()
+_FREQ_TAGS_CACHE = {}       # {lang: (timestamp, list)}
+_FREQ_TAGS_CACHE_LOCK = threading.Lock()
+def get_login_error_msg():
+    """Lee y borra el mensaje de error de login almacenado en sesión.
+    Se muestra una única vez en la página destino del redirect de CAS."""
+    from ckan.common import session
+    import ckan.plugins.toolkit as t
+    msg = session.pop('login_error_msg', None)
+    if msg:
+        session.modified = True
+        msg = t._(msg)
+    return msg
+
+
+def clear_login_error():
+    """Endpoint GET que borra el mensaje de error de login de la sesión."""
+    from ckan.common import session
+    from flask import jsonify
+    session.pop('login_error_msg', None)
+    session.modified = True
+    return jsonify({'ok': True}), 200
+
+
 def new_activities_dummy():
     """
     Dummy helper to prevent crashes in CKAN 2.9+ where the
     h.new_activities() helper from ckanext-dashboard was removed.
     """
     return 0
+
+_GROUP_CACHE_TTL = 60
+_FREQ_TAGS_CACHE_TTL = 120
 
 
 # (ruta relativa al paquete `ckanext.tracking`, línea sin proteger, línea con guarda)
@@ -123,21 +162,28 @@ def patch_tracking_templates_guard():
 
 def get_freq_tags(lang='tags_es'):
     """
-    Obtiene los facets de los datasets (package) usando package_search.
-    Devuelve los 5 tags mas frecuentes en el idioma indicado
-    :param lang: Idioma de los tags a recuperar
+    Obtiene los 5 tags más frecuentes en el idioma indicado.
+    Resultado cacheado en memoria con TTL para evitar un package_search
+    por cada render de la página de inicio.
     """
-    package = toolkit.get_action('package_search')(data_dict = {
+    now = time.time()
+    with _FREQ_TAGS_CACHE_LOCK:
+        cached = _FREQ_TAGS_CACHE.get(lang)
+        if cached and (now - cached[0]) < _FREQ_TAGS_CACHE_TTL:
+            return cached[1]
+
+    package = toolkit.get_action('package_search')(data_dict={
         'rows': 0,
         'facet.field': ['tags_en', 'tags_ca', 'tags_es']
     })
-    
-    items = package["search_facets"][lang]["items"]
+    items = package["search_facets"].get(lang, {}).get("items", [])
     items_ordenados = sorted(items, key=lambda item: item['count'], reverse=True)
-
     tags_limit_5 = [item['display_name'] for item in items_ordenados[:5]]
+
+    with _FREQ_TAGS_CACHE_LOCK:
+        _FREQ_TAGS_CACHE[lang] = (now, tags_limit_5)
     return tags_limit_5
-    
+
 
 def get_tag(tag_id):
     try:
@@ -147,13 +193,36 @@ def get_tag(tag_id):
     except toolkit.ObjectNotFound:
         return None
 
+
 def get_group(group_id):
-    try:
-        group_dict = toolkit.get_action('group_show')(
-            {}, {'id': group_id})
-        return group_dict
-    except toolkit.ObjectNotFound:
-        return None
+    """
+    Devuelve el dict de un grupo. Resultado cacheado por ID con TTL para
+    evitar una acción group_show por cada ítem de faceta o dropdown.
+    """
+    now = time.time()
+    with _GROUP_CACHE_LOCK:
+        cached = _GROUP_CACHE.get(group_id)
+        if cached and (now - cached[0]) < _GROUP_CACHE_TTL:
+            return cached[1]
+
+    group_dict = toolkit.get_action('group_show')(data_dict={'id': group_id})
+
+    with _GROUP_CACHE_LOCK:
+        _GROUP_CACHE[group_id] = (now, group_dict)
+    return group_dict
+
+
+def get_groups_dict():
+    """
+    Devuelve un dict {name: group_dict} con todos los grupos activos,
+    cargados en una sola acción group_list. Úsese en plantillas para
+    evitar el patrón N+1 de get_group por ítem.
+    """
+    groups = toolkit.get_action('group_list')(data_dict={
+        'all_fields': True,
+        'include_extras': True,
+    })
+    return {g['name']: g for g in groups}
 
 def get_license(license_id):
     return Package.get_license_register().get(license_id)
@@ -186,6 +255,11 @@ def get_facet_items_dict(facet, limit=None, exclude_active=False, default_sort=T
             not c.search_facets.get(facet).get('items'):
         return []
 
+    # Calcular el idioma una sola vez fuera del bucle (P2)
+    language = sh.lang()
+    # Convertir params a frozenset una sola vez para evitar reconstructing el iterador por ítem
+    active_params = set(request.params.items())
+
     facets = []
 
     for facet_item in c.search_facets.get(facet)['items']:
@@ -195,12 +269,11 @@ def get_facet_items_dict(facet, limit=None, exclude_active=False, default_sort=T
         display_name = h.get_translated(facet_item, 'name') or facet_item.get('display_name')
         title_translated = facet_item.get('title_translated', {})
 
-        language = sh.lang()
         if language in title_translated:
             display_name = title_translated[language]
 
         facets.append({
-            'active': (facet, facet_item['name']) in request.params.items(),
+            'active': (facet, facet_item['name']) in active_params,
             'name': facet_item['name'],
             'count': facet_item['count'],
             'display_name': display_name
@@ -285,7 +358,7 @@ def get_url(endpoint, key):
     headers = {
         'Content-Type': 'application/json'
     }
-    header_request = requests.get(url=url, headers=headers).content
+    header_request = requests.get(url=url, headers=headers, timeout=_REQUESTS_TIMEOUT).content
     json_header_request = json.loads(header_request)
 
     return json_header_request['value']
@@ -307,21 +380,6 @@ def get_request_lang(cookie_name):
     if not lang:
         lang = config.get('ckan.locale_default', 'es')
     return lang
-
-
-def save_header(header):
-    """
-    Metodo que guarda el header como template
-
-    :param header: Codigo del header en formato string que se va a guardar
-    """
-
-    #header = header.replace(b'&gt;', b'>').decode('utf8')
-    #header = "{% block header_wrapper %}" + header + "{% endblock %}"
-    with codecs.open(HEADER_PATH, 'w', encoding='utf8') as header_file:
-        header_file.truncate(0)
-        header_file.seek(0)
-        header_file.write(header)
 
 
 def get_header_url(json_config):
@@ -404,31 +462,21 @@ def get_altered_header(header, json_config):
     return alteredHeader
 
 
-def load_header():
+def get_html_header():
     """
-    Carga el header el externo y lo devuelve como HTML listo
-    para inyectar al template. No escribe a disco: cada request obtiene
-    el header en el idioma de la cookie del usuario actual.
-    
-        1. Carga la configuración desde el archivo JSON
-        2. Obtiene la URL del header usando la configuración y el idioma del usuario
-        3. Descarga el header desde la URL obtenida
-        4. Modifica el header para incluir los botones dinámicos
-        5. Renderiza el header con Jinja2 para procesar las expresiones embebidas
-        6. Devuelve el header listo para inyectar en el template
-        
+    Descarga, modifica y devuelve el HTML del header en cada petición,
+    sin caché. No lee ni escribe ficheros en disco.
     """
     try:
         with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
             json_config = json.loads(config_file.read())
-            header = requests.get(url=get_header_url(json_config)).content
-            html = get_altered_header(header=header, json_config=json_config)
-            # Renderizar expresiones Jinja2 embebidas ({{ _('...') }}, etc.)
-            rendered = current_app.jinja_env.from_string(html).render()
-            return rendered
-    except Exception as e:
-        log.error("Error al cargar el header: %s", e)
-        return ""
+        html = requests.get(
+            url=get_header_url(json_config), timeout=_REQUESTS_TIMEOUT).content
+        altered = get_altered_header(header=html, json_config=json_config)
+        return render_template_string(altered)
+    except Exception as exc:
+        log.warning('edatostheme: error al obtener header: %s', exc)
+        return ''
 
 # Map de vistas que se quieren restringir acceso
 REDIRECT_VIEWS = (
@@ -469,7 +517,7 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         return "%s?appName=%s&appUrl=%s" % (get_url(endpoint, favicon_key),
                                             json_config['metadata']['appName'],
                                             json_config['metadata']['siteURL'])
-        pass
+
 
     def __save_footer(self, footer):
         """
@@ -532,7 +580,8 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
             json_config = json.loads(config_file.read())
             footer = requests.get(
-                url=self.__get_footer_ulr(json_config)).content
+                url=self.__get_footer_ulr(json_config),
+                timeout=_REQUESTS_TIMEOUT).content
 
             footer = footer.decode('utf-8')
 
@@ -545,7 +594,8 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
             json_config = json.loads(config_file.read())
             favicon = requests.get(
-                url=self.__get_favicon_url(json_config)).content
+                url=self.__get_favicon_url(json_config),
+                timeout=_REQUESTS_TIMEOUT).content
             self.__save_favicon(favicon=favicon)
 
     def _i18n_script_filler(self):
@@ -560,7 +610,6 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
     # IConfigurer
 
     def update_config(self, config_):
-        # self._load_header_footer()
         self._load_footer()
         self._load_favicon()
         self._i18n_script_filler()
@@ -577,6 +626,13 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             for route_, view_, function_ in REDIRECT_VIEWS:
                 edatos.add_url_rule(route_, view_, function_)
 
+        edatos.add_url_rule(
+            '/user/clear_login_error',
+            'clear_login_error',
+            clear_login_error,
+            methods=['GET'],
+        )
+
         return [edatos]
 
     # ITemplateHelpers
@@ -589,14 +645,16 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             'edatostheme_get_count_all_datasets': get_count_all_datasets,
             'package_showcase_list': package_showcase_list,
             'edatostheme_get_delink_value': get_delink_value,
-            'edatos_get_header': load_header,
+            'edatos_get_header': get_html_header,
             'edatos_get_facet_items_dict': get_facet_items_dict,
             'edatos_schema_get_label_for_facet': schema_get_label_for_facet,
             'edatos_get_license': get_license,
             'edatos_get_group': get_group,
+            'edatos_get_groups_dict': get_groups_dict,
             'edatos_get_tag': get_tag,
             'edatos_get_freq_tags': get_freq_tags,
             'new_activities': new_activities_dummy,
+            'edatos_get_login_error_msg': get_login_error_msg,
         }
 
     # ITranslation
