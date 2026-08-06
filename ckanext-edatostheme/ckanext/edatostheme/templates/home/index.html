@@ -11,12 +11,20 @@
       {{ self.flash() }}
       {% set login_error = h.edatos_get_login_error_msg() %}
       {% if login_error %}
-        <div class="flash-messages">
-          <div class="alert alert-dismissible fade show alert-danger" role="alert">
+        <div class="login-error-wrapper">
+          <div class="alert alert-dismissible fade show alert-danger" role="alert" id="login-error-alert">
             {{ login_error }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <a href="{{ h.url_for('/user/_logout') }}" class="login-error-logout-btn" title="{{ _('Log out') }}">
+              <i class="fa fa-sign-out" aria-hidden="true"></i>
+            </a>
           </div>
         </div>
+        <script>
+          document.addEventListener('click', function () {
+            var el = document.getElementById('login-error-alert');
+            if (el) { el.remove(); }
+          }, { once: true });
+        </script>
       {% endif %}
     </div>
     {% block primary_content %}

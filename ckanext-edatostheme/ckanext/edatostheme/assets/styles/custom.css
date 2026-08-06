@@ -611,3 +611,12 @@ selector#language-selector {
     border-radius: var(--border-radius-sm);
     font-weight: var(--edatos-font-weight-regular);
 }
+
+.login-error-logout-btn {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: var(--edatos-font-size-md);
+    line-height: var(--edatos-line-height-xs);
+}
