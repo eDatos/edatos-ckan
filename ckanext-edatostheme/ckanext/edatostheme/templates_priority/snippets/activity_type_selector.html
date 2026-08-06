@@ -1,0 +1,153 @@
+{#
+  Selector personalizado de tipo de actividad para el historial de dataset.
+  Sobreescribe ckanext/activity/templates/snippets/activity_type_selector.html
+  con el sistema de diseño ISTAC.
+
+  Parámetros:
+    id             - identificador del objeto (nombre del dataset, etc.)
+    activity_type  - tipo de actividad seleccionado actualmente (o vacío)
+    activity_types - lista de tipos de actividad disponibles
+    blueprint      - nombre del blueprint para construir las URLs de filtro
+#}
+
+{% set ns = namespace(current_label='') %}
+{% if activity_type %}
+  {% for type_ in activity_types %}
+    {% if activity_type == type_ %}
+      {% set ns.current_label = type_ | title %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+{% if not ns.current_label %}
+  {% set ns.current_label = _('All activity types') %}
+{% endif %}
+
+<div class="activity-type-filter">
+
+  <label class="activity-type-filter__label">{{ _('Activity type') }}</label>
+
+  {# Select nativo oculto — conservado para compatibilidad con el módulo CKAN activity-stream.js #}
+  <select id="activity_types_filter_select"
+          class="activity-type-filter__native"
+          data-module="activity-stream"
+          aria-hidden="true"
+          tabindex="-1">
+    <option {% if not activity_type %}selected{% endif %}
+            data-url="{{ h.url_for(blueprint, id=id) }}">
+      {{ _('All activity types') }}
+    </option>
+    {% for type_ in activity_types %}
+      <option {% if activity_type == type_ %}selected{% endif %}
+              data-url="{{ h.url_for(blueprint, id=id, activity_type=type_) }}">
+        {{ type_ | title }}
+      </option>
+    {% endfor %}
+  </select>
+
+  {# Dropdown visual personalizado — diseño ISTAC (Figma node 12460:12921) #}
+  <div class="activity-type-dropdown"
+       role="combobox"
+       aria-haspopup="listbox"
+       aria-expanded="false">
+
+    <button type="button"
+            class="activity-type-dropdown__trigger"
+            aria-expanded="false"
+            aria-controls="activity-type-dropdown-menu">
+      <span class="activity-type-dropdown__current-label">{{ ns.current_label }}</span>
+      <i class="fa fa-chevron-down activity-type-dropdown__chevron" aria-hidden="true"></i>
+    </button>
+
+    <div id="activity-type-dropdown-menu"
+         class="activity-type-dropdown__menu"
+         role="listbox"
+         aria-label="{{ _('Activity type') }}">
+
+      <div class="activity-type-dropdown__item"
+           role="option"
+           data-url="{{ h.url_for(blueprint, id=id) }}"
+           aria-selected="{{ 'true' if not activity_type else 'false' }}">
+        {{ _('All activity types') }}
+      </div>
+
+      {% for type_ in activity_types %}
+        <div class="activity-type-dropdown__item"
+             role="option"
+             data-url="{{ h.url_for(blueprint, id=id, activity_type=type_) }}"
+             aria-selected="{{ 'true' if activity_type == type_ else 'false' }}">
+          {{ type_ | title }}
+        </div>
+      {% endfor %}
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  function initActivityTypeDropdown(dropdown) {
+    if (dropdown.dataset.atInit) return;
+    dropdown.dataset.atInit = '1';
+
+    var trigger  = dropdown.querySelector('.activity-type-dropdown__trigger');
+    var menu     = dropdown.querySelector('.activity-type-dropdown__menu');
+
+    if (!trigger || !menu) return;
+
+    /* Abrir / cerrar al pulsar el trigger */
+    trigger.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var isOpen = dropdown.classList.contains('abrir');
+      closeAllActivityDropdowns();
+      if (!isOpen) {
+        dropdown.classList.add('abrir');
+        trigger.setAttribute('aria-expanded', 'true');
+        dropdown.setAttribute('aria-expanded', 'true');
+      }
+    });
+
+    /* Navegar a la URL del ítem seleccionado */
+    menu.querySelectorAll('.activity-type-dropdown__item').forEach(function (item) {
+      item.addEventListener('click', function () {
+        var url = item.getAttribute('data-url');
+        if (url) {
+          window.location.href = url;
+        }
+      });
+    });
+
+    /* Teclado: Escape cierra, Enter/Espacio activa ítem */
+    dropdown.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        closeAllActivityDropdowns();
+        trigger.focus();
+      }
+    });
+  }
+
+  function closeAllActivityDropdowns() {
+    document.querySelectorAll('.activity-type-dropdown.abrir').forEach(function (d) {
+      d.classList.remove('abrir');
+      var t = d.querySelector('.activity-type-dropdown__trigger');
+      if (t) t.setAttribute('aria-expanded', 'false');
+      d.setAttribute('aria-expanded', 'false');
+    });
+  }
+
+  /* Cerrar al hacer clic fuera */
+  document.addEventListener('click', closeAllActivityDropdowns);
+
+  function initAll() {
+    document.querySelectorAll('.activity-type-dropdown').forEach(initActivityTypeDropdown);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAll);
+  } else {
+    initAll();
+  }
+})();
+</script>

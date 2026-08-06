@@ -10,4 +10,26 @@
    {% asset 'ckanext-edatostheme/edatostheme-css' %}
    {% asset 'ckanext-edatostheme/edatostheme-fonts' %}
    {% asset 'ckanext-edatostheme/edatostheme-js' %}
+   {% set edatos_css_url = h.edatos_get_app_style_css_url() %}
+   {% if edatos_css_url %}
+     <link rel="stylesheet" href="{{ edatos_css_url }}">
+   {% endif %}
+   {# Font Awesome PRO (peso "Light", usado por los iconos de la barra de
+      DataTables Buttons en la vista de recurso -- ver
+      "div.dataTables_wrapper div.dt-buttons .btn i" en custom.css). La
+      cabecera remota de complementos-apps ya carga FA PRO, pero esta vista
+      se renderiza dentro del <iframe> de "/dataset/<pkg>/resource/<id>/
+      view/<view_id>", que no recibe esa cabecera -- mismo problema de fondo
+      que "edatos_css_url" arriba (razón documentada en el mismo bloque), y
+      misma solución: puesto aquí en "base.html" para cubrir el iframe sin
+      depender de que la página del recurso lo orqueste desde el documento
+      padre. Se acepta que también cargue (de forma redundante) en páginas
+      con cabecera, donde FA PRO ya llega por esa vía. La URL se resuelve por
+      cliente/entorno (ver "get_app_fontawesome_css_url" en plugin/__init__.py)
+      en vez de hardcodearse, ya que cada organización/entorno usa un host
+      distinto. #}
+   {% set edatos_fontawesome_url = h.edatos_get_app_fontawesome_css_url() %}
+   {% if edatos_fontawesome_url %}
+     <link rel="stylesheet" id="edatos-fontawesome-pro" href="{{ edatos_fontawesome_url }}">
+   {% endif %}
 {% endblock %}

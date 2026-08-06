@@ -11,7 +11,7 @@
         {{ _('Private') }}
       </span>
     {% endif %}
-    <h1>
+    <h1 class="dataset-title">
       {% block page_heading %}
         {{ h.dataset_display_name(pkg) }}
         {% if pkg.state.startswith('draft') %}
@@ -41,9 +41,7 @@
       can_edit=h.check_access('package_update', {'id':pkg.id }) %}
   {% endblock %}
 
-  {% block package_tags %}
-    {% snippet "package/snippets/tags.html", tags=pkg.multilingual_tags %}
-  {% endblock %}
+  {% block package_tags %}{% endblock %}
 
   {% block package_additional_info %}
     {% snippet "package/snippets/additional_info.html", pkg_dict=pkg %}
@@ -52,8 +50,10 @@
   {% block showcase_list %}
     {% set showcases = h.package_showcase_list(c) %}
     {% if showcases %}
-      <h3>{{ _("Showcases-dataset")  }}</h3>
-      {% snippet "edatosshowcase/snippets/showcase_list.html", packages=showcases, pkg_id=c.pkg_dict.name %}
+      <section class="recursos-relacionados-section">
+        <h2 class="recursos-relacionados-heading">{{ _("Showcases-dataset") }}</h2>
+        {% snippet "edatosshowcase/snippets/showcase_list.html", packages=showcases, pkg_id=c.pkg_dict.name %}
+      </section>
     {% endif %}
   {% endblock %}
 {% endblock %}

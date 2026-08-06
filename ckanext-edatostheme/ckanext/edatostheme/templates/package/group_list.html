@@ -1,34 +1,150 @@
-{% extends "package/read_base.html" %} {% import 'macros/form.html' as form %}
+{% extends "package/read_base.html" %}
+{% import 'macros/form.html' as form %}
+
 {% set default_group_type = h.default_group_type('group') %}
 
 {% block primary_content_inner %}
-<h2 class="hide-heading">{{ _('Groups') }}</h2>
+  <h2 class="hide-heading">{{ h.humanize_entity_type('group', default_group_type, 'page title') or _('Groups') }}</h2>
 
-{# Cargamos todos los grupos en una sola llamada batch para evitar N+1 #} {% set
-all_groups = h.edatos_get_groups_dict() %} {% if group_dropdown %}
-<form class="add-to-group" method="post">
-  <select id="field-add_group" name="group_added" data-module="autocomplete">
-    {% for option in group_dropdown %} {% set group_dict =
-    all_groups.get(option[0]) or h.edatos_get_group(option[0]) %}
-    <option value="{{ option[0] }}">
-      {{ h.get_translated(group_dict, "title") }}
-    </option>
+  {% if group_dropdown %}
+    {# Todos los grupos en una sola llamada batch para evitar el N+1 de edatos_get_group por opción #}
+    {% set all_groups = h.edatos_get_groups_dict() %}
+    {% set translated_group_options = [] %}
+    {% for option in group_dropdown %}
+      {% set group_dict = all_groups.get(option[0]) or h.edatos_get_group(option[0]) %}
+      {% do translated_group_options.append((option[0], h.get_translated(group_dict, "title"))) %}
     {% endfor %}
-  </select>
-  <button
-    type="submit"
-    class="btn btn-primary"
-    title="{{ _('Associate this group with this dataset') }}"
-  >
-    {{ _('Add to group') }}
-  </button>
-</form>
-{% endif %} {% if pkg_dict.groups %} {% set group_dicts = [] %} {% for group in
-pkg_dict.groups %} {% do group_dicts.append(all_groups.get(group['name']) or
-h.edatos_get_group(group['name'])) %} {% endfor %}
-<form method="post">
-  {% snippet 'group/snippets/group_list.html', groups=group_dicts %}
-</form>
-{% else %}
-<p class="empty">{{ _('There are no groups associated with this dataset') }}</p>
-{% endif %} {% endblock %}
+
+    <form class="add-to-group" method="post">
+      {{ h.csrf_input() }}
+
+      {# Select nativo oculto — conservado para el envío del formulario POST #}
+      <select id="field-add_group" name="group_added" class="add-to-group-native-select">
+        {% for value, label in translated_group_options %}
+          <option value="{{ value }}">{{ label }}</option>
+        {% endfor %}
+      </select>
+
+      {# Dropdown visual personalizado — diseño ISTAC (mismo patrón que activity_type_selector / showcase) #}
+      <div class="add-to-group-dropdown activity-type-dropdown"
+           role="combobox"
+           aria-haspopup="listbox"
+           aria-expanded="false">
+
+        <button type="button"
+                class="activity-type-dropdown__trigger"
+                aria-expanded="false"
+                aria-controls="add-to-group-dropdown-menu">
+          <span class="activity-type-dropdown__current-label add-to-group-dropdown__current-label">{{ translated_group_options[0][1] }}</span>
+          <i class="fa fa-chevron-down activity-type-dropdown__chevron" aria-hidden="true"></i>
+        </button>
+
+        <div id="add-to-group-dropdown-menu"
+             class="activity-type-dropdown__menu"
+             role="listbox"
+             aria-label="{{ _('Select group') }}">
+          {% for value, label in translated_group_options %}
+            <div class="activity-type-dropdown__item{{ ' activity-type-dropdown__item--selected' if loop.first }}"
+                 role="option"
+                 data-value="{{ value }}"
+                 aria-selected="{{ 'true' if loop.first else 'false' }}">
+              {{ label }}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary" aria-label="{{ _('Associate this group with this dataset') }}">{{ h.humanize_entity_type('group', default_group_type, 'add association link') or _('Add to group') }}</button>
+    </form>
+
+    <script>
+    (function () {
+      'use strict';
+
+      function initAddToGroupDropdown() {
+        var dropdown = document.querySelector('.add-to-group-dropdown');
+        if (!dropdown || dropdown.dataset.agInit) return;
+        dropdown.dataset.agInit = '1';
+
+        var trigger      = dropdown.querySelector('.activity-type-dropdown__trigger');
+        var menu         = dropdown.querySelector('.activity-type-dropdown__menu');
+        var currentLabel = dropdown.querySelector('.add-to-group-dropdown__current-label');
+        var nativeSelect = document.getElementById('field-add_group');
+
+        if (!trigger || !menu || !currentLabel || !nativeSelect) return;
+
+        /* Abrir / cerrar */
+        trigger.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var isOpen = dropdown.classList.contains('abrir');
+          closeDropdown();
+          if (!isOpen) {
+            dropdown.classList.add('abrir');
+            trigger.setAttribute('aria-expanded', 'true');
+            dropdown.setAttribute('aria-expanded', 'true');
+          }
+        });
+
+        /* Seleccionar ítem */
+        menu.querySelectorAll('.activity-type-dropdown__item').forEach(function (item) {
+          item.addEventListener('click', function () {
+            var value = item.getAttribute('data-value');
+            var label = item.textContent.trim();
+
+            /* Actualizar select nativo */
+            nativeSelect.value = value;
+
+            /* Actualizar etiqueta visible */
+            currentLabel.textContent = label;
+
+            /* Marcar ítem seleccionado */
+            menu.querySelectorAll('.activity-type-dropdown__item').forEach(function (i) {
+              i.classList.remove('activity-type-dropdown__item--selected');
+              i.setAttribute('aria-selected', 'false');
+            });
+            item.classList.add('activity-type-dropdown__item--selected');
+            item.setAttribute('aria-selected', 'true');
+
+            closeDropdown();
+          });
+        });
+
+        /* Escape cierra */
+        dropdown.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape') {
+            closeDropdown();
+            trigger.focus();
+          }
+        });
+
+        function closeDropdown() {
+          dropdown.classList.remove('abrir');
+          trigger.setAttribute('aria-expanded', 'false');
+          dropdown.setAttribute('aria-expanded', 'false');
+        }
+
+        /* Cerrar al hacer clic fuera */
+        document.addEventListener('click', function () {
+          closeDropdown();
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initAddToGroupDropdown);
+      } else {
+        initAddToGroupDropdown();
+      }
+    })();
+    </script>
+  {% endif %}
+
+  {% if pkg_dict.groups %}
+    <form method="post">
+      {{ h.csrf_input() }}
+      {% snippet 'group/snippets/group_list.html', groups=pkg_dict.groups %}
+    </form>
+  {% else %}
+    <p class="empty">{{ h.humanize_entity_type('group', default_group_type, 'no associated label') or _('There are no groups associated with this dataset') }}</p>
+  {% endif %}
+
+{% endblock %}

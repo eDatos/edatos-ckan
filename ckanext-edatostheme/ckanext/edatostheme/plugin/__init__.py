@@ -14,6 +14,8 @@ import ckan.plugins.toolkit as toolkit
 import requests
 import ckanext.scheming.helpers as sh
 
+from urllib.parse import urlparse
+
 from bs4 import BeautifulSoup
 from ckan.common import _, request, c
 from collections import OrderedDict
@@ -35,8 +37,6 @@ CONFIG_FILE_PATH = os.path.join(dirname, '../etc/config.json')
 FOOTER_PATH = os.path.join(dirname, '../templates/footer.html')
 FAVICON_PATH = os.path.join(dirname, '../public/favicon.ico')
 SCRIPT_PATH = os.path.join(dirname, '../assets/js/i18n.js')
-HEADER_WHITE_BAR_PATH = os.path.join(
-    dirname, '../code_templates/header_white_bar.html')
 BURGER_BUTTON_PATH = os.path.join(
     dirname, '../code_templates/burger_button.html')
 SCRIPT_TEMPLATE = os.path.join(dirname, '../code_templates/i18n.js')
@@ -53,6 +53,7 @@ _GROUP_CACHE = {}           # {group_id: (timestamp, dict)}
 _GROUP_CACHE_LOCK = threading.Lock()
 _FREQ_TAGS_CACHE = {}       # {lang: (timestamp, list)}
 _FREQ_TAGS_CACHE_LOCK = threading.Lock()
+
 def get_login_error_msg():
     """Lee y borra el mensaje de error de login almacenado en sesión.
     Se muestra una única vez en la página destino del redirect de CAS."""
@@ -80,6 +81,120 @@ def new_activities_dummy():
     h.new_activities() helper from ckanext-dashboard was removed.
     """
     return 0
+def edatos_pager(page, **kwargs):
+    """Paginación con ventana deslizante de 5 páginas y ellipsis.
+
+    Comportamiento (ejemplo con 117 páginas):
+      pág   1 →       [1*][2][3][4][5] … [117] [»]   (sin «)
+      pág   4 → [«] [1][2][3][4*][5][6] … [117] [»]
+      pág   5 → [«] [1]…[3][4][5*][6][7] … [117] [»]
+      pág   7 → [«] [1]…[5][6][7*][8][9] … [117] [»]
+      pág 114 → [«] [1]…[112][113][114*][115][116][117] [»]
+      pág 116 → [«] [1]…[113][114][115][116*][117] [»]
+      pág 117 → [«] [1]…[113][114][115][116][117*]      (sin »)
+    """
+    from markupsafe import Markup
+    from ckan.lib.helpers import pager_url
+
+    if not page.last_page or page.last_page <= 1:
+        return Markup('')
+
+    first   = page.first_page   # siempre 1
+    last    = page.last_page
+    current = page.page
+
+    WINDOW = 5       # tamaño del bloque deslizante
+    HALF   = WINDOW // 2  # páginas a cada lado (= 2)
+
+    # Generador de URLs: usa el propio de la instancia o el helper de CKAN
+    url_gen = getattr(page, '_url_generator', None) or pager_url
+
+    def make_url(p):
+        params = dict(getattr(page, 'kwargs', {}))
+        params.update(kwargs)
+        params['page'] = p
+        return url_gen(**params)
+
+    # Ventana deslizante centrada en current
+    win_start = max(first, current - HALF)
+    win_end   = min(last,  current + HALF)
+
+    # Si la ventana quedó reducida por un extremo, compensar por el otro
+    if win_end - win_start < WINDOW - 1:
+        if win_start == first:
+            win_end = min(last, win_start + WINDOW - 1)
+        else:
+            win_start = max(first, win_end - WINDOW + 1)
+
+    window_pages = set(range(win_start, win_end + 1))
+    visible = sorted({first, last} | window_pages)
+
+    li_items = []
+
+    # Botón anterior (chevron izquierdo)
+    if page.previous_page:
+        li_items.append(
+            '<li class="page-item">'
+            '<a class="page-link" href="{url}">'
+            '<i class="fa-thin fa-chevrons-left"></i>'
+            '</a></li>'.format(url=make_url(page.previous_page))
+        )
+    else:
+        li_items.append(
+            '<li class="page-item disabled">'
+            '<a class="page-link">'
+            '<i class="fa-thin fa-chevrons-left"></i>'
+            '</a></li>'
+        )
+
+    # Páginas con ellipsis entre huecos
+    prev_num = None
+    for p in visible:
+        if prev_num is not None and p - prev_num > 1:
+            li_items.append(
+                '<li class="page-item page-ellipsis">'
+                '<span class="page-link">&hellip;</span>'
+                '</li>'
+            )
+        if p == current:
+            li_items.append(
+                '<li class="page-item active">'
+                '<a class="page-link">{p}</a>'
+                '</li>'.format(p=p)
+            )
+        else:
+            li_items.append(
+                '<li class="page-item">'
+                '<a class="page-link" href="{url}">{p}</a>'
+                '</li>'.format(url=make_url(p), p=p)
+            )
+        prev_num = p
+
+    # Botón siguiente (chevron derecho)
+    if page.next_page:
+        li_items.append(
+            '<li class="page-item">'
+            '<a class="page-link" href="{url}">'
+            '<i class="fa-thin fa-chevrons-right"></i>'
+            '</a></li>'.format(url=make_url(page.next_page))
+        )
+    else:
+        li_items.append(
+            '<li class="page-item disabled">'
+            '<a class="page-link">'
+            '<i class="fa-thin fa-chevrons-right"></i>'
+            '</a></li>'
+        )
+
+    html = (
+        '<div class="pagination-wrapper">'
+        '<ul class="pagination justify-content-center">'
+        + ''.join(li_items) +
+        '</ul>'
+        '</div>'
+    )
+    return Markup(html)
+
 
 _GROUP_CACHE_TTL = 60
 _FREQ_TAGS_CACHE_TTL = 120
@@ -344,6 +459,29 @@ def get_delink_value():
     return config.get('ckanext.gobcangroups.flag.for.delink', 'load_manual')
 
 
+def get_legal_notice_license():
+    '''Returns the license entry (from the shared license register, see
+    etc/licenses/ckan-licenses.json) configured as this deployment's legal notice,
+    or None if not configured
+    '''
+    license_id = config.get('ckanext.edatostheme.legal_notice_license_id', '')
+    return get_license(license_id) if license_id else None
+
+
+def get_legal_notice_url():
+    '''Returns the legal notice URL for this deployment, or an empty string if not configured
+    '''
+    license = get_legal_notice_license()
+    return license._data.get('url', '') if license else ''
+
+
+def get_legal_notice_label():
+    '''Returns the legal notice link label for this deployment, or an empty string if not configured
+    '''
+    license = get_legal_notice_license()
+    return license._data.get('title', '') if license else ''
+
+
 def abort_redirect():
     abort(403, _(u'Not authorized to see this page'))
 
@@ -382,6 +520,30 @@ def get_request_lang(cookie_name):
     return lang
 
 
+def get_theme():
+    """
+    Lee el theme del query param '?theme=' y si no existe, de la cookie 'theme'.
+    Solo devuelve el valor si es uno de los temas aceptados.
+    """
+    theme = request.args.get('theme') or request.cookies.get('theme')
+    return theme
+
+
+def save_header(header):
+    """
+    Metodo que guarda el header como template
+
+    :param header: Codigo del header en formato string que se va a guardar
+    """
+
+    #header = header.replace(b'&gt;', b'>').decode('utf8')
+    #header = "{% block header_wrapper %}" + header + "{% endblock %}"
+    with codecs.open(HEADER_PATH, 'w', encoding='utf8') as header_file:
+        header_file.truncate(0)
+        header_file.seek(0)
+        header_file.write(header)
+
+
 def get_header_url(json_config):
     """
     Devuelve la URL del header con el idioma del usuario.
@@ -391,26 +553,72 @@ def get_header_url(json_config):
     endpoint = json_config['metadata']['endpoint']
     header_key = json_config['metadata']['navbarPathKey']
     cookie_key = json_config['metadata'].get('cookieKey')
+    endpoint = json_config['metadata']['endpoint']
     title = json_config['metadata']['appName']
+    navbar_url = get_url(endpoint, header_key)
+    url = "%s?appName=%s&appId=%s&appUrl=%s" % (navbar_url, title, APP_ID_FOR_ANALYTICS, json_config['metadata']['siteURL'])
 
-    header_url = get_url(endpoint, header_key)
+    theme = get_theme()
+    if theme:
+        url = "%s&organisation=%s" % (url, theme)
 
     # Obtener el nombre real de la cookie una sola vez
     cookie_name = get_url(endpoint, cookie_key) if cookie_key else None
     # Idioma del request: cookie > idioma CKAN > locale por defecto
     request_lang = get_request_lang(cookie_name)
 
-    url = "%s?appName=%s&appUrl=%s&appId=%s" % (
-        header_url,
-        title,
-        json_config['metadata']['siteURL'],
-        APP_ID_FOR_ANALYTICS,
-    )
-
     if cookie_name:
         url = "%s&%s=%s" % (url, cookie_name, request_lang)
 
     return url
+
+
+def get_app_style_css_url():
+    """
+    Devuelve la URL del CSS standalone de complementos-apps (estilos
+    generales y variables --edatos-*), leida de la propiedad
+    'metamac.app.style.css.url' en el servicio de metadatos comun.
+
+    Pensado para enlazarse con <link rel="stylesheet"> en paginas sin
+    cabecera (p. ej. el iframe de package/snippets/resource_view_embed.html),
+    que no reciben las variables --edatos-* porque estas se definen dentro
+    del HTML del header/footer externo y esas paginas no lo renderizan.
+    """
+    try:
+        with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
+            json_config = json.loads(config_file.read())
+            endpoint = json_config['metadata']['endpoint']
+            css_key = json_config['metadata']['cssPathKey']
+            url = get_url(endpoint, css_key)
+
+            theme = get_theme()
+            if theme:
+                url = "%s?organisation=%s" % (url, theme)
+
+            return url
+    except Exception as e:
+        log.error("Error al obtener la URL del CSS de complementos-apps: %s", e)
+        return ""
+
+
+def get_app_fontawesome_css_url():
+    """
+    Devuelve la URL del CSS de Font Awesome PRO (peso "Light", usado por los
+    iconos de la barra de DataTables Buttons en la vista de recurso), leida
+    de la propiedad 'fontawesomeCssPath' en config.json y combinada con el
+    host del 'endpoint' del servicio de metadatos comun (este ultimo ya
+    varia por cliente/entorno), para no hardcodear el dominio.
+    """
+    try:
+        with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
+            json_config = json.loads(config_file.read())
+            endpoint = json_config['metadata']['endpoint']
+            path = json_config['metadata']['fontawesomeCssPath']
+            parsed_endpoint = urlparse(endpoint)
+            return "%s://%s%s" % (parsed_endpoint.scheme, parsed_endpoint.netloc, path)
+    except Exception as e:
+        log.error("Error al obtener la URL del CSS de Font Awesome: %s", e)
+        return ""
 
 
 def get_altered_header(header, json_config):
@@ -422,21 +630,12 @@ def get_altered_header(header, json_config):
     :param json_config: Fichero de configuracion cargado como
                         un diccionario JSON
     """
-    container_class = json_config['metadata']['htmlCodeClass']
     alteredHeader = header
 
-    with codecs.open(HEADER_WHITE_BAR_PATH, 'r', encoding='utf8') as white_bar_file:
-        code = white_bar_file.read()
-        # Annadimos los botones en la barra blanca
-        soup = BeautifulSoup(alteredHeader, 'html.parser')
-        container = soup.find(id=container_class)
-        container.append(BeautifulSoup(code, 'html.parser'))
-        alteredHeader = soup.prettify('utf-8')
-
-        # Annadimos el boton hamburguesa
-        soup = BeautifulSoup(alteredHeader, 'html.parser')
-        container = soup.find(
-            class_='d-flex justify-content-end align-items-center')
+    # Annadimos el boton hamburguesa
+    soup = BeautifulSoup(alteredHeader, 'html.parser')
+    container = soup.find(
+        class_='d-flex justify-content-end align-items-center')
 
     if container is not None:
         with codecs.open(BURGER_BUTTON_PATH, 'r', encoding='utf8') as burger_button_file:
@@ -453,8 +652,8 @@ def get_altered_header(header, json_config):
     if div:
         span = div.find('span')
         if span and title.lower() in span.text.strip().lower():
-            span.string = f"{{{{ _('{title}') }}}}"
-            
+            span.string = _(title)
+
     alteredHeader = soup.prettify('utf-8')
 
     alteredHeader = alteredHeader.replace(b'&gt;', b'>').decode('utf8')
@@ -645,7 +844,11 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             'edatostheme_get_count_all_datasets': get_count_all_datasets,
             'package_showcase_list': package_showcase_list,
             'edatostheme_get_delink_value': get_delink_value,
+            'edatos_get_legal_notice_url': get_legal_notice_url,
+            'edatos_get_legal_notice_label': get_legal_notice_label,
             'edatos_get_header': get_html_header,
+            'edatos_get_app_style_css_url': get_app_style_css_url,
+            'edatos_get_app_fontawesome_css_url': get_app_fontawesome_css_url,
             'edatos_get_facet_items_dict': get_facet_items_dict,
             'edatos_schema_get_label_for_facet': schema_get_label_for_facet,
             'edatos_get_license': get_license,
@@ -655,6 +858,7 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             'edatos_get_freq_tags': get_freq_tags,
             'new_activities': new_activities_dummy,
             'edatos_get_login_error_msg': get_login_error_msg,
+            'edatos_pager': edatos_pager,
         }
 
     # ITranslation

@@ -1,0 +1,29 @@
+{% ckan_extends %}
+
+{#
+  Remove the additional_info_heading block from ckanext-scheming because
+  the base template (package/resource_read.html) already renders the
+  "Metadatos" heading — keeping both causes duplication.
+#}
+{% block additional_info_heading %}{% endblock %}
+
+{#
+  ckanext-scheming's own resource_additional_information_inner (this same
+  path, scheming/package/resource_read.html) hardcodes the whole "Metadatos"
+  (Campo/Valor) table itself rather than delegating to package/resource_read.html
+  via {{ super() }} — it only calls super() for the nested resource_data_dictionary
+  block, at the very top of that table, before "Mostrar más". We want the data
+  dictionary accordion to come after the Metadatos table (and its "Mostrar
+  más" toggle) instead, so we empty out resource_data_dictionary here (its
+  only reachable definition, since it sits closer to the entry-point template
+  than ckanext-datastore's own copy) and re-render the same snippet call
+  ourselves after {{ super() }}, which still gives us the untouched table.
+#}
+{% block resource_data_dictionary %}{% endblock %}
+
+{% block resource_additional_information_inner %}
+  {{ super() }}
+  {% if res.datastore_active %}
+    {% snippet 'datastore/snippets/dictionary_view.html', ddict=h.datastore_dictionary(res.id), res=res %}
+  {% endif %}
+{% endblock %}

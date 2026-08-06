@@ -209,6 +209,7 @@ docker compose -f dockerfiles/docker-compose.yml exec ckan python3 -c "import fl
 **Causa 1: El modo debug no está realmente habilitado**
 
 ```bash
+docker compose -f dockerfiles/docker-compose.yml exec ckan pip install flask-debugtoolbar
 # Comprobar el valor real de debug (no comentado)
 docker compose -f dockerfiles/docker-compose.yml exec ckan grep "^debug" /srv/app/ckan.ini
 

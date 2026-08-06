@@ -1,3 +1,15 @@
+function toggle_collapsable_menu(btn) {
+    var menu = btn.parentElement.querySelector('.dropdown-menu');
+    if (!menu) return;
+    menu.classList.toggle('abrir');
+    document.addEventListener('click', function closeMenu(e) {
+        if (!btn.parentElement.contains(e.target)) {
+            menu.classList.remove('abrir');
+            document.removeEventListener('click', closeMenu);
+        }
+    });
+}
+
 window.onload = function () {
 
     const SITE_URL = "FILL_SITE_URL";

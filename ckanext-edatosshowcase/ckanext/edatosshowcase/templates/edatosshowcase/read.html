@@ -1,5 +1,9 @@
 {% extends "page.html" %}
 
+{% block toolbar %}
+  {% snippet 'home/snippets/hero_nav.html' %}
+{% endblock %}
+
 {% set pkg = pkg_dict %}
 {% set name = h.get_translated(pkg, 'title') %}
 {% set editor = h.showcase_get_wysiwyg_editor() %}
@@ -76,14 +80,13 @@
         </div>
     {% endblock %}
 
-        {% if pkg.url %}
-            <p><a class="btn btn-primary ckanext-showcase-launch" href="{{ pkg.url }}" target="_blank"><i class="fa fa-external-link"></i> {{ _('Launch website') }}</a></p>
-        {% endif %}
 
     {% endblock %}
 
     {% block package_tags %}
-        {% snippet "edatosshowcase/snippets/tags.html", tags=pkg.multilingual_tags %}
+        <div class="showcase-tags-section">
+            {% snippet "edatosshowcase/snippets/tags.html", tags=pkg.multilingual_tags %}
+        </div>
     {% endblock %}
 
     {% block package_info %}
@@ -97,11 +100,20 @@
 
 {% block secondary_content %}
     {% block secondary_help_content %}{% endblock %}
-    {% block package_additional_info %}
-        {% snippet 'edatosshowcase/snippets/showcase_additional_info.html', pkg=pkg, showcase_pkgs=showcase_pkgs, show_nums=true %}
-    {% endblock %}
-
-    {% block package_social %}
-        {% snippet "snippets/social.html" %}
-    {% endblock %}
+    <div class="showcase-detail-sidebar">
+        <div class="showcase-detail-title">{{ name }}</div>
+        {% if pkg.image_display_url %}
+        <div class="showcase-sidebar-image-wrapper">
+            <img src="{{ pkg.image_display_url }}" alt="{{ name }}" class="showcase-sidebar-image">
+            <div class="showcase-sidebar-count-block">
+                <span class="showcase-sidebar-count-label">{{ _('Conjuntos de datos') }}</span>
+                <span class="showcase-sidebar-count-number">{{ pkg.num_datasets }}</span>
+            </div>
+        </div>
+        {% endif %}
+        {% block package_social %}
+            {% snippet "snippets/social.html" %}
+        {% endblock %}
+    </div>
+    {% block package_additional_info %}{% endblock %}
 {% endblock %}

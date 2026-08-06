@@ -14,12 +14,12 @@ Example:
         <section class="module module-narrow">
             <h3 class="module-heading"><i class="fa fa-sitemap"></i> {{ _('Datasets in Showcase') }}</h2>
                 {% if showcase_pkgs %}
-                    <ul class="nav nav-simple">
+                    <ul class="nav nav-simple recursos-list">
                         {% for package in showcase_pkgs %}
                             {% set truncate_title = truncate_title or 80 %}
                 {% set counter= loop.index0 + 1  %}
                 {% set title = counter ~ ". " ~ h.get_translated(package, 'title') %}
-                            <li class="nav-item">{{ h.link_to(title|truncate(truncate_title), h.url_for('dataset.read', id=package.name)) }}</li>
+                            <li class="nav-item recursos-item">{{ h.link_to(title|truncate(truncate_title), h.url_for('dataset.read', id=package.name)) }}</li>
                         {% endfor %}
                     </ul>
                 {% else %}
