@@ -1,21 +1,21 @@
 /* ============================================================
-   0. DESIGN TOKENS ‚Äî Variables CSS
+   0. DESIGN TOKENS ó Variables CSS
    ============================================================ */
 
 :root {
   /* Bootstrap consume esta variable internamente en su CSS compilado;
-     no se llama con var() en este fichero, pero debe seguir aqu√≠. */
+     no se llama con var() en este fichero, pero debe seguir aquÌ. */
   --bs-body-font-family: var(--edatos-font-family);
 
-  /* Colores neutros ‚Äî sin equivalente en Alisio (ver auditor√≠a) */
+  /* Colores neutros ó sin equivalente en Alisio (ver auditorÌa) */
   --color-gray-dark: #59656e;
   --color-white-semi: rgba(255, 255, 255, 0.70);
 
-  /* Espaciado ‚Äî sin equivalente exacto en la escala de Alisio */
+  /* Espaciado ó sin equivalente exacto en la escala de Alisio */
   --spacing-md: 16px;
   --spacing-lg: 24px;
 
-  /* Sombras ‚Äî Alisio no define tokens de shadow */
+  /* Sombras ó Alisio no define tokens de shadow */
   --shadow-card: 0 2px 4px rgba(0, 0, 0, 0.10);
   --shadow-dropdown: 0 2px 8px rgba(0, 0, 0, 0.12);
 
@@ -36,7 +36,7 @@
 
 /* ============================================================
    1. RESET / BASE
-   Tipograf√≠a base, body background, reset m√≠nimo
+   TipografÌa base, body background, reset mÌnimo
    ============================================================ */
 .main {
     padding-top: 0px;
@@ -76,7 +76,7 @@ textarea {
 
 
 /* ============================================================
-   2. LAYOUT ‚Äî Container, Grid, Main
+   2. LAYOUT ó Container, Grid, Main
    ============================================================ */
 
 [role=main],
@@ -169,7 +169,7 @@ textarea {
 
 
 /* ============================================================
-   3. NAVEGACI√ìN ‚Äî Navbar, Header white bar, Dropdown
+   3. NAVEGACI”N ó Navbar, Header white bar, Dropdown
    ============================================================ */
 
 .istac-app-header.istac-title-bar .account ul li {
@@ -215,7 +215,7 @@ textarea {
 }
 
 /* El header remoto (componentes-apps) usa iconos Font Awesome PRO (fa-thin/fa-grid).
-   El bundle local de CKAN carga Font Awesome FREE despu√©s en el DOM, y al tener
+   El bundle local de CKAN carga Font Awesome FREE despuÈs en el DOM, y al tener
    igual especificidad que la regla ".fa" de PRO, gana la cascada y sobrescribe
    font-family/font-weight, dejando esos iconos sin glifo (se ven como "X" rota). */
 .edatos-dropdown .fa-thin,
@@ -273,8 +273,8 @@ nav.navigation div ul li {
 	border-bottom: var(--edatos-border-width-xs, 1px) solid var(--edatos-color-gray-20, #cccccc);
 }
 
-/* Navegaci√≥n principal: Inicio | Datos | Colecciones
-   Basado en .section-tab .nav.nav-pills del sistema de dise√±o EDATOS */
+/* NavegaciÛn principal: Inicio | Datos | Colecciones
+   Basado en .section-tab .nav.nav-pills del sistema de diseÒo EDATOS */
 .navigation .nav-main-links {
 	display: flex;
 	flex-direction: row;
@@ -295,12 +295,12 @@ nav.navigation div ul li {
 	align-items: center;
 }
 
-/* Sin separador "|" entre √≠tems */
+/* Sin separador "|" entre Ìtems */
 .navigation .nav-main-links li + li::before {
 	content: none;
 }
 
-/* Enlace base: tipograf√≠a light, color azul oscuro, sin borde */
+/* Enlace base: tipografÌa light, color azul oscuro, sin borde */
 .navigation .nav-main-links li a.btn-datasets {
 	display: block;
 	padding: 8px 16px;
@@ -326,7 +326,7 @@ nav.navigation div ul li {
 	border-bottom: 6px solid var(--edatos-color-primary-50, #009BD7);
 }
 
-/* √çtem activo: texto secondary + semibold + subrayado accent */
+/* Õtem activo: texto secondary + semibold + subrayado accent */
 .navigation .nav-main-links li.active a.btn-datasets {
 	background: none;
 	color: var(--edatos-color-secondary-100, #004678);
@@ -424,7 +424,7 @@ nav.section.navigation {
 	white-space: nowrap;
 }
 
-/* Sentence case en √≠tems de dropdown con icono.
+/* Sentence case en Ìtems de dropdown con icono.
    El hero nav usa <span class="text">, resource_item usa texto directo.
    ::first-letter solo funciona en display:block/inline-block, no en flex. */
 .dropdown-menu li a span.text {
@@ -471,7 +471,7 @@ nav.section.navigation {
 	margin-right: 10px;
 }
 
-/* Bot√≥n hamburguesa / Opciones navbar */
+/* BotÛn hamburguesa / Opciones navbar */
 .btn.btn-navbar {
 	display: inline-flex;
 	align-items: center;
@@ -492,7 +492,7 @@ nav.section.navigation {
 	text-transform: uppercase;
 }
 
-/* Icono chevron: transici√≥n de rotaci√≥n */
+/* Icono chevron: transiciÛn de rotaciÛn */
 .btn.btn-navbar i {
 	transition: transform 0.25s, color 0.25s;
 }
@@ -509,7 +509,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar,
 li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar:hover {
 	background-color: var(--edatos-color-secondary-100, #004678);
 	color: var(--edatos-color-white-100, #fff);
-	/* Aplana la esquina inferior derecha para conectar con el men√∫ (alineado a la derecha) */
+	/* Aplana la esquina inferior derecha para conectar con el men˙ (alineado a la derecha) */
 	border-radius: var(--edatos-border-radius-sm, 5px) var(--edatos-border-radius-sm, 5px) 0 0;
 	border: 1px solid var(--edatos-color-secondary-100, #004678);
 }
@@ -525,7 +525,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 }
 
 
-/* Bot√≥n de acci√≥n inline (ej: A√±adir grupo) con visual de btn-navbar */
+/* BotÛn de acciÛn inline (ej: AÒadir grupo) con visual de btn-navbar */
 .btn.btn-navbar.btn-add-group {
 	display: inline-flex;
 	align-items: center;
@@ -762,7 +762,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 
 
 /* ============================================================
-   4. HOME ‚Äî Hero, Search module, Categories
+   4. HOME ó Hero, Search module, Categories
    ============================================================ */
 .homepage .hero {
 	background: none;
@@ -1041,7 +1041,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	line-height: normal;
 }
 
-/* Bot√≥n "Quitar" pegado a la esquina inferior derecha de la card de grupo */
+/* BotÛn "Quitar" pegado a la esquina inferior derecha de la card de grupo */
 .categories-grid .media-item.group-home-item .media-edit {
 	right: var(--edatos-spacing-x-xs, 8px);
 	bottom: var(--edatos-spacing-y-xs, 8px);
@@ -1072,13 +1072,13 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 
 
 /* ============================================================
-   5. DATASET LIST ‚Äî Listado de conjuntos de datos
+   5. DATASET LIST ó Listado de conjuntos de datos
    ============================================================ */
 
-/* ZONA 12 ‚Äî Ocultar separador " - " en sidebar (clase .hidden sin regla en CKAN 2.11) */
+/* ZONA 12 ó Ocultar separador " - " en sidebar (clase .hidden sin regla en CKAN 2.11) */
 .hidden { display: none; }
 
-/* ZONA 1 ‚Äî Contador de resultados (h1) */
+/* ZONA 1 ó Contador de resultados (h1) */
 .search-form h1 {
 	color: var(--edatos-color-black-100);
 	font-size: var(--ckan-font-size-heading);
@@ -1087,7 +1087,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	text-align: left;
 }
 
-/* ZONA 2 ‚Äî Control de ordenaci√≥n: ocultar label, dropdown personalizado */
+/* ZONA 2 ó Control de ordenaciÛn: ocultar label, dropdown personalizado */
 .search-form .control-order-by label {
 	display: none;
 }
@@ -1109,7 +1109,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	display: inline-block;
 }
 
-/* Bot√≥n disparador */
+/* BotÛn disparador */
 .sort-custom-dropdown__trigger {
 	display: inline-flex;
 	align-items: center;
@@ -1138,7 +1138,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	border-radius: var(--edatos-border-radius-sm, 5px) var(--edatos-border-radius-sm, 5px) 0 0;
 }
 
-/* Chevron ‚Äî rota al abrir */
+/* Chevron ó rota al abrir */
 .sort-custom-dropdown__chevron {
 	font-size: var(--edatos-font-size-sm);
 	transition: transform 0.2s ease;
@@ -1148,7 +1148,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	transform: rotate(180deg);
 }
 
-/* Men√∫ desplegable */
+/* Men˙ desplegable */
 .sort-custom-dropdown__menu {
 	display: none;
 	position: absolute;
@@ -1170,7 +1170,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	display: block;
 }
 
-/* √çtems del men√∫ */
+/* Õtems del men˙ */
 .sort-custom-dropdown__item {
 	display: flex;
 	align-items: center;
@@ -1185,13 +1185,13 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-/* Etiqueta del bot√≥n disparador ‚Äî todo en may√∫sculas */
+/* Etiqueta del botÛn disparador ó todo en may˙sculas */
 .sort-custom-dropdown__current-label {
 	text-transform: uppercase;
 	display: inline-block;
 }
 
-/* Sentence case en √≠tems del desplegable: ::first-letter no funciona en display:flex,
+/* Sentence case en Ìtems del desplegable: ::first-letter no funciona en display:flex,
    por eso se usa un <span> interno con display:inline-block */
 .sort-custom-dropdown__item-text {
 	text-transform: lowercase;
@@ -1213,7 +1213,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	font-weight: var(--edatos-font-weight-semibold, 600);
 }
 
-/* ZONA 3 ‚Äî Barra de b√∫squeda */
+/* ZONA 3 ó Barra de b˙squeda */
 .search-form .input-group.search-input-group input[name="q"] {
 	height: 35px;
 	padding: 7px 20px;
@@ -1253,7 +1253,7 @@ input#field-giant-search::placeholder {
 	color: var(--edatos-color-secondary-100);
 }
 
-/* ZONA 4 ‚Äî Item de dataset */
+/* ZONA 4 ó Item de dataset */
 .dataset-item {
 	display: flex;
 	flex-direction: column;
@@ -1265,7 +1265,7 @@ input#field-giant-search::placeholder {
 	border-bottom: none;
 }
 
-/* ZONA 5 ‚Äî T√≠tulo del dataset */
+/* ZONA 5 ó TÌtulo del dataset */
 h2.dataset-heading {
 	font-size: 20px;
 	font-weight: var(--edatos-font-weight-semibold);
@@ -1285,7 +1285,7 @@ h2.dataset-heading {
 	text-decoration: none;
 }
 
-/* ZONA 6 ‚Äî Descripci√≥n del dataset (.notes) */
+/* ZONA 6 ó DescripciÛn del dataset (.notes) */
 .dataset-item .notes {
 	color: var(--edatos-color-black-100);
 	font-size: var(--edatos-font-size-sm);
@@ -1299,7 +1299,7 @@ h2.dataset-heading {
 	align-self: stretch;
 }
 
-/* ZONA 7 ‚Äî Etiquetas de formato (.dataset-resources a.badge) */
+/* ZONA 7 ó Etiquetas de formato (.dataset-resources a.badge) */
 .dataset-resources {
 	display: flex;
 	flex-wrap: wrap;
@@ -1326,7 +1326,7 @@ h2.dataset-heading {
 	text-decoration: none;
 }
 
-/* ZONA 8 ‚Äî Pills de filtro activos (.filtered.pill) */
+/* ZONA 8 ó Pills de filtro activos (.filtered.pill) */
 .search-form .filtered.pill {
 	background-color: var(--edatos-color-primary-100, #004678);
 	color: var(--edatos-color-white-100);
@@ -1347,7 +1347,7 @@ h2.dataset-heading {
 	opacity: 0.8;
 }
 
-/* ZONA 9 ‚Äî Label "Categor√≠as:" en la filter-list */
+/* ZONA 9 ó Label "CategorÌas:" en la filter-list */
 .search-form .filter-list .facet {
 	color: var(--edatos-color-primary-100, #004678);
 	font-size: var(--edatos-font-size-sm);
@@ -1355,7 +1355,7 @@ h2.dataset-heading {
 	line-height: 24px;
 }
 
-/* ZONA 10 ‚Äî Layout: form como flex container para reordenar hijos */
+/* ZONA 10 ó Layout: form como flex container para reordenar hijos */
 #dataset-search-form {
 	display: flex;
 	flex-wrap: wrap;
@@ -1394,9 +1394,9 @@ h2.dataset-heading {
 	order: 6;
 }
 
-/* #4 ‚Äî Icono + nombre + contador de grupo: card azul ancho completo (boceto) */
+/* #4 ó Icono + nombre + contador de grupo: card azul ancho completo (boceto) */
 
-/* Panel Filtros: contenedor exterior con borde y radio seg√∫n Figma */
+/* Panel Filtros: contenedor exterior con borde y radio seg˙n Figma */
 #group-info {
 	border-radius: var(--edatos-border-radius-sm);
 	overflow: hidden;
@@ -1469,7 +1469,7 @@ h2.dataset-heading {
 }
 
 /* ============================================================
-   5b. CARDS ‚Äî Dataset cards, Group cards, Organization cards
+   5b. CARDS ó Dataset cards, Group cards, Organization cards
    ============================================================ */
 
 .media-heading {
@@ -1504,15 +1504,15 @@ h2.dataset-heading {
 }
 
 /* ============================================================
-   6. SIDEBAR / FILTROS ‚Äî Facets, Filter panels
+   6. SIDEBAR / FILTROS ó Facets, Filter panels
    ============================================================ */
 
-/* ZONA 10 ‚Äî Encabezado de secci√≥n del sidebar (.module-heading) */
-/* (regla tambi√©n presente en Secci√≥n 7; esta tiene precedencia para sidebar de facets) */
+/* ZONA 10 ó Encabezado de secciÛn del sidebar (.module-heading) */
+/* (regla tambiÈn presente en SecciÛn 7; esta tiene precedencia para sidebar de facets) */
 
-/* ZONA 8 ‚Äî Items de faceta: nav-item
+/* ZONA 8 ó Items de faceta: nav-item
    Quitamos el padding del li y anulamos el margen negativo de CKAN para que el anchor
-   rellene exactamente el 100% del ancho de la secci√≥n (igual que el heading). */
+   rellene exactamente el 100% del ancho de la secciÛn (igual que el heading). */
 .module.module-narrow .nav-simple .nav-item:not(.recursos-item) {
 	padding: 0;
 }
@@ -1574,7 +1574,7 @@ li.nav-item:hover {
 	color: var(--edatos-color-secondary-100, #004678);
 }
 
-/* Bot√≥n de cierre de faceta activa */
+/* BotÛn de cierre de faceta activa */
 .module.module-narrow .nav-item.active a .facet-close {
 	flex-shrink: 0;
 	display: flex;
@@ -1601,34 +1601,34 @@ li.nav-item:hover {
     display: none;
 }
 
-/* ZONA 8b ‚Äî Separadores entre items de faceta en la barra de filtros
-   - T√≠tulo (.module-heading): sin l√≠nea (border-top/bottom-color: transparent ya aplicado en .secondary .module-heading)
-   - Item activo: sin l√≠nea encima ni debajo; espacio en blanco mediante margin
-   - Item en hover: sin l√≠nea encima ni debajo; espacio en blanco impl√≠cito (border transparente)
+/* ZONA 8b ó Separadores entre items de faceta en la barra de filtros
+   - TÌtulo (.module-heading): sin lÌnea (border-top/bottom-color: transparent ya aplicado en .secondary .module-heading)
+   - Item activo: sin lÌnea encima ni debajo; espacio en blanco mediante margin
+   - Item en hover: sin lÌnea encima ni debajo; espacio en blanco implÌcito (border transparente)
 */
 
-/* Item activo: ocultar su propia l√≠nea inferior + espacio en blanco */
+/* Item activo: ocultar su propia lÌnea inferior + espacio en blanco */
 .filters .module.module-narrow .nav-simple .nav-item.active {
     border-bottom-color: transparent;
     margin: 0.12rem 0;
 }
 
-/* Item inmediatamente anterior al activo: ocultar su l√≠nea inferior (= l√≠nea encima del activo) */
+/* Item inmediatamente anterior al activo: ocultar su lÌnea inferior (= lÌnea encima del activo) */
 .filters .module.module-narrow .nav-simple .nav-item:has(+ .nav-item.active) {
     border-bottom-color: transparent;
 }
 
-/* Item en hover: ocultar l√≠nea inferior */
+/* Item en hover: ocultar lÌnea inferior */
 .filters .module.module-narrow .nav-simple .nav-item:not(.active):hover {
     border-bottom-color: transparent;
 }
 
-/* Item inmediatamente anterior al hovered: ocultar su l√≠nea inferior */
+/* Item inmediatamente anterior al hovered: ocultar su lÌnea inferior */
 .filters .module.module-narrow .nav-simple .nav-item:has(+ .nav-item:hover) {
     border-bottom-color: transparent;
 }
 
-/* ZONA 9 ‚Äî Badge num√©rico en sidebar */
+/* ZONA 9 ó Badge numÈrico en sidebar */
 .module-narrow .nav-item > a .badge,
 .nav-facet .item-count.badge {
 	display: inline-flex;
@@ -1651,7 +1651,7 @@ li.nav-item:hover {
     color: var(--edatos-color-secondary-100);
 }
 
-/* ZONA 11 ‚Äî Enlace "Mostrar m√°s" */
+/* ZONA 11 ó Enlace "Mostrar m·s" */
 .module-footer .read-more {
 	display: block;
 	background: var(--edatos-color-gray-5);
@@ -1692,10 +1692,10 @@ li.nav-item:hover {
 }
 
 /* ============================================================
-   7. DATASET DETAIL ‚Äî Metadata, Tabs, Resources, Format badges
+   7. DATASET DETAIL ó Metadata, Tabs, Resources, Format badges
    ============================================================ */
 
-/* --- ZONA 1: T√≠tulo del dataset (h1) --- */
+/* --- ZONA 1: TÌtulo del dataset (h1) --- */
 h1.dataset-title {
 	color: var(--edatos-color-black-100);
 	font-size: var(--ckan-font-size-heading);
@@ -1705,7 +1705,7 @@ h1.dataset-title {
 	align-self: stretch;
 }
 
-/* --- ZONA 2: Descripci√≥n del dataset (.notes) --- */
+/* --- ZONA 2: DescripciÛn del dataset (.notes) --- */
 .notes {
 	color: var(--edatos-color-black-100);
 	font-size: var(--edatos-font-size-md);
@@ -1714,7 +1714,7 @@ h1.dataset-title {
 	line-height: 26px;
 }
 
-/* --- ZONA 3: Encabezado secci√≥n recursos (.module-heading en main content) --- */
+/* --- ZONA 3: Encabezado secciÛn recursos (.module-heading en main content) --- */
 .module-heading {
 	display: flex;
 	height: 35px;
@@ -1747,7 +1747,7 @@ h1.dataset-title {
     width: 100%;
 }
 
-/* C1 ‚Äî Contenedor de recursos: padding+gap en el wrapper, no en cada item */
+/* C1 ó Contenedor de recursos: padding+gap en el wrapper, no en cada item */
 #dataset-resources .resource-list {
 	display: flex;
 	flex-direction: column;
@@ -1781,9 +1781,9 @@ h1.dataset-title {
 	color: var(--edatos-color-secondary-100, #004678);
 }
 
-/* --- ZONA 5: Bot√≥n EXPLORAR/DESCARGAR (.btn-primary en recursos) --- */
+/* --- ZONA 5: BotÛn EXPLORAR/DESCARGAR (.btn-primary en recursos) --- */
 
-/* Alineaci√≥n derecha: sobreescribe el posicionamiento de Popper.js */
+/* AlineaciÛn derecha: sobreescribe el posicionamiento de Popper.js */
 #dataset-resources .dropdown-menu.show {
 	left: auto !important;
 	right: 0 !important;
@@ -1791,15 +1791,15 @@ h1.dataset-title {
 	transform: none !important;
 }
 
-/* Hover centrado en √≠tems EXPLORAR: Bootstrap fuerza width:100% en .dropdown-item;
+/* Hover centrado en Ìtems EXPLORAR: Bootstrap fuerza width:100% en .dropdown-item;
    combinado con el margin lateral de .dropdown-menu li a, el fondo se desplaza
-   asim√©tricamente. width:auto produce el mismo comportamiento que el bot√≥n OPCIONES
-   (m√°rgenes laterales sim√©tricos de --edatos-spacing-x-xs a cada lado). */
+   asimÈtricamente. width:auto produce el mismo comportamiento que el botÛn OPCIONES
+   (m·rgenes laterales simÈtricos de --edatos-spacing-x-xs a cada lado). */
 #dataset-resources .dropdown-menu li a.dropdown-item {
 	width: auto;
 }
 
-/* Bot√≥n: aplana esquina inferior-derecha al abrir y elimina focus ring de Bootstrap */
+/* BotÛn: aplana esquina inferior-derecha al abrir y elimina focus ring de Bootstrap */
 .btn-primary.dropdown-toggle.show {
 	border-radius: var(--edatos-border-radius-sm, 5px) var(--edatos-border-radius-sm, 5px) 0 0 !important;
 	box-shadow: none !important;
@@ -1807,12 +1807,12 @@ h1.dataset-title {
     color: var(--edatos-color-white-100);
 }
 
-/* Oculta el caret autom√°tico de Bootstrap (el icono fa-chevron-down del HTML ya cumple esa funci√≥n) */
+/* Oculta el caret autom·tico de Bootstrap (el icono fa-chevron-down del HTML ya cumple esa funciÛn) */
 .btn-primary.dropdown-toggle::after {
 	display: none;
 }
 
-/* Chevron: rota 180¬∞ al abrir (consistencia con btn-navbar/Opciones) */
+/* Chevron: rota 180∞ al abrir (consistencia con btn-navbar/Opciones) */
 .btn-primary.dropdown-toggle i.fa-chevron-down {
 	transition: transform 0.25s;
 }
@@ -1821,7 +1821,7 @@ h1.dataset-title {
 }
 
 
-/* --- ZONA 7: Encabezado sidebar (.secondary) ‚Äî solo diferencias vs base --- */
+/* --- ZONA 7: Encabezado sidebar (.secondary) ó solo diferencias vs base --- */
 .secondary .module-heading {
 	flex: 1 0 0;
 	justify-content: flex-start;
@@ -1844,7 +1844,7 @@ h1.dataset-title {
 	text-transform: none;
 }
 
-/* --- ZONA 8-9: Tabla metadatos ‚Äî cabecera y columna "Campo" --- */
+/* --- ZONA 8-9: Tabla metadatos ó cabecera y columna "Campo" --- */
 .additional-info table thead tr th,
 .additional-info table th.dataset-label,
 .additional-info table th:first-child {
@@ -1878,7 +1878,7 @@ h1.dataset-title {
 	padding-top: 0px;
 }
 
-/* --- ZONA 10b: Descripci√≥n en m√≥dulos info del sidebar (helper, ¬øQu√© son las colecciones?) --- */
+/* --- ZONA 10b: DescripciÛn en mÛdulos info del sidebar (helper, øQuÈ son las colecciones?) --- */
 .module.module-narrow.module-shallow .module-content {
 	display: flex;
 	flex-direction: column;
@@ -1905,7 +1905,7 @@ h1.dataset-title {
 	margin: 0;
 }
 
-/* --- ZONA 11: Secci√≥n COMPARTIR / navegaci√≥n lateral --- */
+/* --- ZONA 11: SecciÛn COMPARTIR / navegaciÛn lateral --- */
 .social .nav-item a,
 .social .nav a {
 	color: var(--edatos-color-secondary-100, #004678);
@@ -1944,10 +1944,10 @@ h1.dataset-title {
 }
 
 /* --- Resource read: el sidebar Formatos/Compartir debe quedar junto al
-   t√≠tulo+tabla (pre_primary, .module-resource), no junto a Metadatos
-   (.primary). ".module-resource" solo existe en resource_read.html, as√≠ que
+   tÌtulo+tabla (pre_primary, .module-resource), no junto a Metadatos
+   (.primary). ".module-resource" solo existe en resource_read.html, asÌ que
    sirve como ancla para no afectar a ninguna otra vista con sidebar (la
-   clase "no-nav" del core no se aplica aqu√≠ en esta versi√≥n de CKAN).
+   clase "no-nav" del core no se aplica aquÌ en esta versiÛn de CKAN).
    Ver specs/fix-resource-view-formats-sidebar-alignment.md */
 .row.wrapper > .module-resource {
 	order: 0;
@@ -1959,26 +1959,26 @@ h1.dataset-title {
 /* --- Resource read: quitar el padding vertical de ".module-content" (CKAN
    core lo fija en 1.5rem en las 4 direcciones) para ganar espacio en la fila
    de botones y que "Agregar Filtro" y el buscador de DataTables entren en la
-   misma l√≠nea. Alcance limitado a ".module-resource" (ver comentario arriba)
+   misma lÌnea. Alcance limitado a ".module-resource" (ver comentario arriba)
    para no afectar al resto de vistas que usan ".module-content". */
 .module-resource .module-content {
 	padding: 1.5rem 0;
 }
 
 /* z-index: ".module-resource" ya trae "position:relative; z-index:5" (regla
-   gen√©rica ".module" del core de CKAN); sin superar ese valor aqu√≠, se pinta
+   genÈrica ".module" del core de CKAN); sin superar ese valor aquÌ, se pinta
    por encima y tapa el dropdown-menu del wrench cuando este se despliega
    (su position:absolute se sale de los ~289px del sidebar). */
-/* El "margin-left:10px" gen√©rico de ".row.wrapper > .secondary" (l√≠nea ~1995,
-   pensado para la sidebar de facetas de la b√∫squeda de datasets) suma un
-   hueco extra a la izquierda del sidebar aqu√≠, por encima del padding
-   est√°ndar de la card -- Figma (nodo 12933:7928) no lo contempla: el sidebar
+/* El "margin-left:10px" genÈrico de ".row.wrapper > .secondary" (lÌnea ~1995,
+   pensado para la sidebar de facetas de la b˙squeda de datasets) suma un
+   hueco extra a la izquierda del sidebar aquÌ, por encima del padding
+   est·ndar de la card -- Figma (nodo 12933:7928) no lo contempla: el sidebar
    debe arrancar en el mismo padding que el resto de la card, y el hueco de
-   20px va hacia el t√≠tulo/tabla (a su derecha), no a la izquierda. Se anula
-   ese margen y se a√±ade "margin-right" (token "--edatos-spacing-x-sm" del
-   sistema de dise√±o, en vez del 10px suelto que ya usa el "gap" gen√©rico de
+   20px va hacia el tÌtulo/tabla (a su derecha), no a la izquierda. Se anula
+   ese margen y se aÒade "margin-right" (token "--edatos-spacing-x-sm" del
+   sistema de diseÒo, en vez del 10px suelto que ya usa el "gap" genÈrico de
    ".row.wrapper" para el mismo valor) para llevar el hueco hacia el
-   t√≠tulo/tabla a los 20px de Figma solo en esta p√°gina. Ver
+   tÌtulo/tabla a los 20px de Figma solo en esta p·gina. Ver
    specs/fix-resource-view-formats-sidebar-alignment.md */
 .row.wrapper > .module-resource ~ .secondary {
 	order: -1;
@@ -2009,7 +2009,7 @@ h1.dataset-title {
 	line-height: 1.45;
 }
 
-/* --- Sidebar t√≠tulo del dataset --- */
+/* --- Sidebar tÌtulo del dataset --- */
 #package-info .module-content .heading a {
 	color: var(--edatos-color-secondary-100);
 	text-decoration: none;
@@ -2023,7 +2023,7 @@ h1.dataset-title {
 	text-decoration: underline;
 }
 
-/* --- Dataset detail: secci√≥n "Datos" (resources) --- */
+/* --- Dataset detail: secciÛn "Datos" (resources) --- */
 section#dataset-resources {
 	margin-bottom: 20px;
 	display: flex;
@@ -2050,7 +2050,7 @@ section#dataset-resources > h2 {
 	text-transform: none;
 }
 
-/* --- Cuerpo secci√≥n datos (body bajo el t√≠tulo) --- */
+/* --- Cuerpo secciÛn datos (body bajo el tÌtulo) --- */
 .dataset-resources-body {
 	display: flex;
 	flex-direction: column;
@@ -2068,8 +2068,8 @@ section#dataset-resources > h2 {
 	gap: var(--edatos-spacing-x-lg);
 }
 
-/* El t√≠tulo debe absorber el ancho sobrante de la fila en vez de dejarlo
-   como hueco vac√≠o antes del bot√≥n "Explorar" (ver
+/* El tÌtulo debe absorber el ancho sobrante de la fila en vez de dejarlo
+   como hueco vacÌo antes del botÛn "Explorar" (ver
    specs/fix-dataset-resource-list-title-truncation.md). */
 #dataset-resources li.resource-item .heading {
 	flex: 1 1 0;
@@ -2090,17 +2090,17 @@ section#dataset-resources > h2 {
 /* --- Metadatos table: borde exterior + estructura ---
    El borde vive en el mismo elemento que el border-radius (igual que
    .dataset-edit-secondary) para que la esquina se dibuje curvada sobre el
-   propio trazo del borde. Antes solo exist√≠a el recorte (overflow:hidden)
-   sin ning√∫n borde visible en el contenedor: el cierre depend√≠a de los
-   bordes de las celdas de la √∫ltima fila, en gray-5 (#F2F2F2), el mismo
-   color que el fondo de la p√°gina, as√≠ que era invisible y la esquina se
-   ve√≠a "abierta". Sin border-top: la cabecera azul ya cierra esa zona con
-   su propio fondo s√≥lido.
+   propio trazo del borde. Antes solo existÌa el recorte (overflow:hidden)
+   sin ning˙n borde visible en el contenedor: el cierre dependÌa de los
+   bordes de las celdas de la ˙ltima fila, en gray-5 (#F2F2F2), el mismo
+   color que el fondo de la p·gina, asÌ que era invisible y la esquina se
+   veÌa "abierta". Sin border-top: la cabecera azul ya cierra esa zona con
+   su propio fondo sÛlido.
 
    Las esquinas superiores deben llevar el mismo radio que ".additional-info
-   .module-heading" (5px, ver ZONA 7b): si aqu√≠ se dejan a 0, el border-left/
-   border-right (que s√≠ arrancan desde el borde superior) dibujan una esquina
-   cuadrada justo detr√°s de la curva de la cabecera, y esa l√≠nea recta se ve
+   .module-heading" (5px, ver ZONA 7b): si aquÌ se dejan a 0, el border-left/
+   border-right (que sÌ arrancan desde el borde superior) dibujan una esquina
+   cuadrada justo detr·s de la curva de la cabecera, y esa lÌnea recta se ve
    asomando por fuera del redondeo azul. */
 section.module.additional-info {
 	border-radius: var(--edatos-border-radius-sm) var(--edatos-border-radius-sm) var(--edatos-border-radius-sm) var(--edatos-border-radius-sm);
@@ -2193,7 +2193,7 @@ section.additional-info.module > table {
 	margin: 0;
 }
 
-/* --- "Mostrar m√°s / Hide" link (table-toggle-more module) --- */
+/* --- "Mostrar m·s / Hide" link (table-toggle-more module) --- */
 .additional-info .toggle-more-controls td {
 	padding: 5px;
 	text-align: center;
@@ -2226,7 +2226,7 @@ a.toggle-show.toggle-show-less:hover {
 	padding-bottom: 20px;
 }
 
-/* --- Cuando hay page-header (pesta√±as) antes del contenido, a√±adir padding-top --- */
+/* --- Cuando hay page-header (pestaÒas) antes del contenido, aÒadir padding-top --- */
 .primary .module > .module-content.page-header + .module-content {
 	padding-top: 20px;
 }
@@ -2244,7 +2244,7 @@ a.toggle-show.toggle-show-less:hover {
 	position: relative;
 }
 
-/* --- Bot√≥n Administrar alineado con los tabs --- */
+/* --- BotÛn Administrar alineado con los tabs --- */
 .module-content.page-header .content_action {
 	position: absolute;
 	right: 10px;
@@ -2259,7 +2259,7 @@ a.toggle-show.toggle-show-less:hover {
 	margin-right: 150px;
 }
 
-/* --- Resource page: h1 (t√≠tulo dataset) --- */
+/* --- Resource page: h1 (tÌtulo dataset) --- */
 .module-resource .module-content h1.page-heading {
 	color: var(--edatos-color-black-100);
 	font-size: var(--ckan-font-size-heading);
@@ -2331,7 +2331,7 @@ a.metadatos-tag:hover {
 	text-decoration: none;
 }
 
-/* Celda "Valor" de la fila Palabras clave: padding extra + alineaci√≥n vertical */
+/* Celda "Valor" de la fila Palabras clave: padding extra + alineaciÛn vertical */
 .additional-info table tbody tr td:has(.metadatos-tag) {
 	padding: 0px 20px;
 	vertical-align: middle;
@@ -2342,30 +2342,30 @@ a.metadatos-tag:hover {
 	vertical-align: middle;
 }
 
-/* --- Resource read: fila del t√≠tulo ---
-   El borde superior de esta fila (solo t√≠tulo) debe coincidir con el borde
+/* --- Resource read: fila del tÌtulo ---
+   El borde superior de esta fila (solo tÌtulo) debe coincidir con el borde
    superior del panel .showcase-detail-sidebar: ambos son hijos directos de
    ".row.wrapper" con el mismo top, pero ".module-content" (CKAN core) le
-   a√±ade 24px de padding-top a esta fila que el sidebar no tiene, as√≠ que se
+   aÒade 24px de padding-top a esta fila que el sidebar no tiene, asÌ que se
    cancela con un margin-top negativo del mismo valor.
-   Los botones de acci√≥n ya no viven aqu√≠ (se movieron debajo de la
-   descripci√≥n, ver m√°s abajo) ‚Äî a petici√≥n de negocio se reposicionaron
-   fuera de la fila del t√≠tulo, revirtiendo el layout de "dos columnas en la
+   Los botones de acciÛn ya no viven aquÌ (se movieron debajo de la
+   descripciÛn, ver m·s abajo) ó a peticiÛn de negocio se reposicionaron
+   fuera de la fila del tÌtulo, revirtiendo el layout de "dos columnas en la
    misma fila" documentado en las Adendas de
    specs/fix-resource-view-formats-sidebar-alignment.md. */
 .module-resource .resource-heading-row {
 	margin-top: -24px;
 }
 
-/* --- Resource read: botones de acci√≥n (Editar recurso, Vistas, Ir al recurso,
+/* --- Resource read: botones de acciÛn (Editar recurso, Vistas, Ir al recurso,
    API de datos, Pantalla completa, Incrustar) ---
-   Ahora se renderizan debajo de la URL y la descripci√≥n del recurso (no
-   junto al t√≠tulo), alineados a la izquierda, seg√∫n lo indicado por negocio
-   tras revisar la implementaci√≥n previa contra Figma. */
+   Ahora se renderizan debajo de la URL y la descripciÛn del recurso (no
+   junto al tÌtulo), alineados a la izquierda, seg˙n lo indicado por negocio
+   tras revisar la implementaciÛn previa contra Figma. */
 
 /* CKAN core flota ".actions" a la derecha y le aplica "position: relative;
-   top: -10px;" (main.css) pensado para su layout original junto al t√≠tulo;
-   en la nueva posici√≥n (bloque propio debajo de la descripci√≥n) tampoco
+   top: -10px;" (main.css) pensado para su layout original junto al tÌtulo;
+   en la nueva posiciÛn (bloque propio debajo de la descripciÛn) tampoco
    aplica ese offset ni el flotado. */
 .module-resource .actions {
 	float: none;
@@ -2379,13 +2379,13 @@ a.metadatos-tag:hover {
 }
 
 /* "Ir al recurso" y "Vistas" llegan ya fusionados en un .btn-group de
-   Bootstrap (bordes compartidos, sin separaci√≥n); "API de datos" lo a√±ade
-   ckanext-datastore (fuera de este repo, v√≠a super() del bloque
+   Bootstrap (bordes compartidos, sin separaciÛn); "API de datos" lo aÒade
+   ckanext-datastore (fuera de este repo, vÌa super() del bloque
    resource_actions_inner) como <li> suelto, con el gap de --edatos-spacing-x-sm
-   del ul de por medio. Negocio pidi√≥ que "Ir al recurso"/"Vistas" tuvieran
-   el mismo hueco que el resto de botones de la fila, en vez del hueco m√°s
-   peque√±o que los hac√≠a parecer un √∫nico componente fusionado ‚Äî as√≠ que
-   aqu√≠ se desactiva la fusi√≥n de Bootstrap (radio y margen negativo) y se
+   del ul de por medio. Negocio pidiÛ que "Ir al recurso"/"Vistas" tuvieran
+   el mismo hueco que el resto de botones de la fila, en vez del hueco m·s
+   pequeÒo que los hacÌa parecer un ˙nico componente fusionado ó asÌ que
+   aquÌ se desactiva la fusiÛn de Bootstrap (radio y margen negativo) y se
    iguala su gap interno al del ul. */
 .module-resource .actions .btn-group {
 	gap: var(--edatos-spacing-x-sm, 8px);
@@ -2396,22 +2396,22 @@ a.metadatos-tag:hover {
 	border-radius: var(--edatos-border-radius-sm) !important;
 }
 
-/* Bot√≥n "Vistas" abierto: mismo estado visual que "OPCIONES"/"Explorar"/el
+/* BotÛn "Vistas" abierto: mismo estado visual que "OPCIONES"/"Explorar"/el
    wrench (fondo azul secundario, texto blanco) y esquinas inferiores
-   planas para conectar con el men√∫ desplegado debajo. Sin esta regla,
-   ".module-resource .actions .btn" (m√°s abajo, sin !important pero
+   planas para conectar con el men˙ desplegado debajo. Sin esta regla,
+   ".module-resource .actions .btn" (m·s abajo, sin !important pero
    posterior en la hoja) y el border-radius uniforme de la regla anterior
-   (m√°s espec√≠fica, con !important) ganaban sobre ".btn-primary.dropdown-
-   toggle.show" (ZONA 5), dejando el bot√≥n en blanco/azul con las 4
+   (m·s especÌfica, con !important) ganaban sobre ".btn-primary.dropdown-
+   toggle.show" (ZONA 5), dejando el botÛn en blanco/azul con las 4
    esquinas redondeadas en vez de aplanadas.
    "background-color" (longhand), no "background" (shorthand): verificado en
    el navegador que, con este mismo selector/especificidad/!important,
-   "background: ... !important" no llegaba a pintarse (segu√≠a en blanco)
-   mientras que "background-color: ... !important" s√≠ ‚Äî incluso forzando la
-   regla directamente v√≠a CSSOM con selector por ID. No se pudo determinar
-   la causa exacta (posible interacci√≥n con alguna extensi√≥n del Chrome de
-   pruebas que interceptase la shorthand), as√≠ que se evita el shorthand
-   aqu√≠ como medida robusta. */
+   "background: ... !important" no llegaba a pintarse (seguÌa en blanco)
+   mientras que "background-color: ... !important" sÌ ó incluso forzando la
+   regla directamente vÌa CSSOM con selector por ID. No se pudo determinar
+   la causa exacta (posible interacciÛn con alguna extensiÛn del Chrome de
+   pruebas que interceptase la shorthand), asÌ que se evita el shorthand
+   aquÌ como medida robusta. */
 .module-resource .actions .btn-group > .btn.show {
 	background-color: var(--edatos-color-secondary-100, #004678) !important;
 	border-color: var(--edatos-color-secondary-100, #004678) !important;
@@ -2420,14 +2420,14 @@ a.metadatos-tag:hover {
 	box-shadow: none !important;
 }
 
-/* Men√∫ "Vistas" (formatos de descarga CSV/TSV/JSON/XML): despliega
-   "bottom-start" (alineado a la izquierda del bot√≥n "Vistas", expandiendo
+/* Men˙ "Vistas" (formatos de descarga CSV/TSV/JSON/XML): despliega
+   "bottom-start" (alineado a la izquierda del botÛn "Vistas", expandiendo
    hacia la derecha), igual que el wrench del sidebar (ver ZONA de
    dropdowns) y al contrario que "OPCIONES"/"Explorar" (bottom-end). El
-   gen√©rico ".dropdown-menu" aplana la esquina superior DERECHA, que aqu√≠ es
-   la incorrecta: la esquina que conecta con el bot√≥n es la superior
-   IZQUIERDA. Bootstrap/Popper fijan adem√°s "margin: 0px" inline con un
-   offset de 2px entre el toggle y el men√∫; hace falta !important para
+   genÈrico ".dropdown-menu" aplana la esquina superior DERECHA, que aquÌ es
+   la incorrecta: la esquina que conecta con el botÛn es la superior
+   IZQUIERDA. Bootstrap/Popper fijan adem·s "margin: 0px" inline con un
+   offset de 2px entre el toggle y el men˙; hace falta !important para
    cancelarlo (mismo motivo que el wrench). */
 .module-resource .actions .btn-group .dropdown-menu {
 	border-radius: 0 var(--edatos-border-radius-sm, 5px) var(--edatos-border-radius-sm, 5px) var(--edatos-border-radius-sm, 5px);
@@ -2435,14 +2435,14 @@ a.metadatos-tag:hover {
 }
 
 /* Bootstrap fuerza width:100% en ".dropdown-item"; combinado con el margin
-   lateral de ".dropdown-menu li a" (regla gen√©rica, ver ZONA de dropdowns),
-   el 100% se mide sobre el <li> ANTES de restar ese margin, as√≠ que la caja
+   lateral de ".dropdown-menu li a" (regla genÈrica, ver ZONA de dropdowns),
+   el 100% se mide sobre el <li> ANTES de restar ese margin, asÌ que la caja
    se desborda por el lado derecho en vez de quedar centrada con aire
-   sim√©trico ‚Äî el resaltado de hover (fondo claro sobre el azul secundario
-   del men√∫) llegaba hasta el borde derecho real del men√∫ sin dejar el
+   simÈtrico ó el resaltado de hover (fondo claro sobre el azul secundario
+   del men˙) llegaba hasta el borde derecho real del men˙ sin dejar el
    mismo margen que a la izquierda/arriba/abajo (mismo bug ya documentado
    para "Explorar" en #dataset-resources y para el wrench del sidebar).
-   width:auto deja que el modelo de caja normal reste los m√°rgenes por los
+   width:auto deja que el modelo de caja normal reste los m·rgenes por los
    dos lados. */
 .module-resource .actions .btn-group .dropdown-menu li a.dropdown-item {
 	width: auto;
@@ -2481,7 +2481,7 @@ a.metadatos-tag:hover {
 /* CKAN core define ".btn-default:hover"/".btn-light:hover" con background-color
    e important (main.css), lo que gana por encima de nuestra regla anterior pese
    a tener menos especificidad. Los botones "Pantalla completa" e "Incrustar"
-   usan btn-default, as√≠ que necesitan el mismo peso para no quedarse sin hover. */
+   usan btn-default, asÌ que necesitan el mismo peso para no quedarse sin hover. */
 .module-resource .actions .btn-default:hover,
 .module-resource .actions a.btn-default:hover,
 .resource-view .actions .btn-default:hover,
@@ -2512,11 +2512,11 @@ a.metadatos-tag:hover {
 	color: var(--edatos-color-white-100, #FFF);
 }
 
-/* Icono de la pesta√±a de vista de recurso (Tabla, Texto...) ‚Äî Figma no
-   incluye icono en esta pesta√±a, solo el texto ("Tabla", "Texto"...). El
+/* Icono de la pestaÒa de vista de recurso (Tabla, Texto...) ó Figma no
+   incluye icono en esta pestaÒa, solo el texto ("Tabla", "Texto"...). El
    <i class="fa icon fa-..."> lo renderiza incondicionalmente una plantilla
    de CKAN core (package/snippets/resource_views_list.html) sin hook para
-   quitarlo desde este repo, as√≠ que se oculta por CSS. */
+   quitarlo desde este repo, asÌ que se oculta por CSS. */
 .module-resource .nav-tabs .nav-link i.fa {
 	display: none;
 }
@@ -2541,9 +2541,9 @@ a.metadatos-tag:hover {
    estos dos botones como cuadrados solo-icono, sin texto visible. El texto
    ("Fullscreen"/"Embed") se mantiene en la plantilla (el <a> lo necesita como
    nombre accesible para lectores de pantalla, ya que el icono es puramente
-   decorativo) pero se colapsa visualmente a tama√±o 0 en vez de con
-   display:none, que s√≠ lo ocultar√≠a tambi√©n del √°rbol de accesibilidad. El
-   icono recupera su tama√±o expl√≠cito en la regla de arriba, as√≠ que no le
+   decorativo) pero se colapsa visualmente a tamaÒo 0 en vez de con
+   display:none, que sÌ lo ocultarÌa tambiÈn del ·rbol de accesibilidad. El
+   icono recupera su tamaÒo explÌcito en la regla de arriba, asÌ que no le
    afecta heredar font-size:0 del padre. */
 .resource-view .actions .btn,
 .resource-view .actions a.btn {
@@ -2552,49 +2552,49 @@ a.metadatos-tag:hover {
 }
 
 /* --- Resource view: barra de botones de la vista "Tabla" (DataTables Buttons) ---
-   Figma (nodos 12937:9102 / 12941:9388 "Botoner√≠a") define estos botones
+   Figma (nodos 12937:9102 / 12941:9388 "BotonerÌa") define estos botones
    (tabla, copiar, ocultar columnas, descargar, refrescar, imprimir,
-   compartir) como BotonAccion cuadrados solo-icono ‚Äî mismo patr√≥n que
-   "Pantalla completa"/"Incrustar" de arriba. La librer√≠a DataTables
-   Buttons (extensi√≥n vendored ckanext-datatablesview, fuera de este repo,
+   compartir) como BotonAccion cuadrados solo-icono ó mismo patrÛn que
+   "Pantalla completa"/"Incrustar" de arriba. La librerÌa DataTables
+   Buttons (extensiÛn vendored ckanext-datatablesview, fuera de este repo,
    cargada dentro del <iframe> de la vista) los renderiza como Bootstrap
    ".btn.btn-secondary.btn-default" dentro de un ".dt-buttons.btn-group",
    que por defecto de Bootstrap fusiona bordes/radios entre botones
-   contiguos (grupo "pill" cl√°sico, con solape de -1px) y adem√°s la propia
-   extensi√≥n fuerza esa fusi√≥n con !important en el radio de los
-   ".btn-group" anidados (colvis/descarga). Se cancela esa fusi√≥n (gap de
-   10px en vez de solape, radio completo por bot√≥n) y se iguala al patr√≥n
+   contiguos (grupo "pill" cl·sico, con solape de -1px) y adem·s la propia
+   extensiÛn fuerza esa fusiÛn con !important en el radio de los
+   ".btn-group" anidados (colvis/descarga). Se cancela esa fusiÛn (gap de
+   10px en vez de solape, radio completo por botÛn) y se iguala al patrÛn
    ya usado en ".resource-view .actions .btn". El caret de los desplegables
-   ("ocultar columnas"/"descargar") es el tri√°ngulo nativo de Bootstrap
-   (".dropdown-toggle::after", con "border-top-color" impl√≠cito en
-   "currentColor"), as√≠ que hereda el mismo color que el icono sin reglas
+   ("ocultar columnas"/"descargar") es el tri·ngulo nativo de Bootstrap
+   (".dropdown-toggle::after", con "border-top-color" implÌcito en
+   "currentColor"), asÌ que hereda el mismo color que el icono sin reglas
    adicionales. */
 div.dataTables_wrapper div.dt-buttons.btn-group {
 	gap: 10px;
-	/* La extensi√≥n vendor pone "float:right" en ".dt-buttons" (pensado para
+	/* La extensiÛn vendor pone "float:right" en ".dt-buttons" (pensado para
 	   convivir con un selector de longitud "Mostrar X registros" a su
-	   izquierda en la misma fila). Aqu√≠ ".dt-buttons" ocupa toda la fila √©l
-	   solo, as√≠ que ese "float:right" lo despega del borde izquierdo de la
+	   izquierda en la misma fila). AquÌ ".dt-buttons" ocupa toda la fila Èl
+	   solo, asÌ que ese "float:right" lo despega del borde izquierdo de la
 	   tabla (hueco de ~60px) en vez de arrancar en "Agregar Filtro" pegado
 	   a la izquierda, como pide Figma. */
 	float: none;
 	/* Sin esto, "align-items" del flex container queda en su valor inicial
 	   "normal" (equivale a "stretch"): los botones no lo notan porque tienen
-	   "height:30px" expl√≠cito, pero ".dataTables_filter" no tiene altura
-	   propia y se estira a la altura de la l√≠nea (la m√°s alta del grupo),
-	   quedando m√°s alto que los botones (44px vs 30px) y su contenido
-	   centrado dentro de esa caja m√°s alta ‚Äî visualmente desplazado hacia
+	   "height:30px" explÌcito, pero ".dataTables_filter" no tiene altura
+	   propia y se estira a la altura de la lÌnea (la m·s alta del grupo),
+	   quedando m·s alto que los botones (44px vs 30px) y su contenido
+	   centrado dentro de esa caja m·s alta ó visualmente desplazado hacia
 	   abajo respecto al resto de la fila. */
 	align-items: center;
 	/* Bootstrap fija ".btn-group{display:inline-flex !important}", que se
-	   ajusta al ancho de su contenido ‚Äî como ".dataTables_wrapper" es un flex
-	   container en columna (ver m√°s abajo), ".dt-buttons" queda como flex
+	   ajusta al ancho de su contenido ó como ".dataTables_wrapper" es un flex
+	   container en columna (ver m·s abajo), ".dt-buttons" queda como flex
 	   item cuyo ancho de contenido no llega al borde derecho de la tabla.
-	   Resultado: el buscador ("Buscar:", √∫ltimo elemento de la fila) se
+	   Resultado: el buscador ("Buscar:", ˙ltimo elemento de la fila) se
 	   quedaba corto del borde derecho de la tabla/buscador de Figma en vez de
-	   coincidir con √©l. Forzar "flex" a ancho completo (100%) hace que
-	   ".dt-buttons" s√≠ ocupe toda la fila, para que el "margin-left:auto" de
-	   abajo (primer bot√≥n tras "Agregar Filtro") pueda empujar ese segundo
+	   coincidir con Èl. Forzar "flex" a ancho completo (100%) hace que
+	   ".dt-buttons" sÌ ocupe toda la fila, para que el "margin-left:auto" de
+	   abajo (primer botÛn tras "Agregar Filtro") pueda empujar ese segundo
 	   grupo hasta el borde derecho real. */
 	display: flex !important;
 	width: 100%;
@@ -2610,11 +2610,11 @@ div.dataTables_wrapper div.dt-buttons .btn-group > .btn {
 }
 
 /* Bootstrap define ".btn-group > .btn { flex: 1 1 auto }" para que los
-   botones de un grupo se repartan el ancho disponible ‚Äî pensado para grupos
-   que ocupan el 100% del contenedor. Aqu√≠ ".dt-buttons" es m√°s ancho que la
-   suma de sus botones, as√≠ que ese "flex-grow:1" los estira de forma
-   desigual (cada uno seg√∫n su contenido) en vez de dejarlos al tama√±o fijo
-   de Figma (40√ó30, o 61√ó30 los que llevan icono+chevron: "ocultar
+   botones de un grupo se repartan el ancho disponible ó pensado para grupos
+   que ocupan el 100% del contenedor. AquÌ ".dt-buttons" es m·s ancho que la
+   suma de sus botones, asÌ que ese "flex-grow:1" los estira de forma
+   desigual (cada uno seg˙n su contenido) en vez de dejarlos al tamaÒo fijo
+   de Figma (40◊30, o 61◊30 los que llevan icono+chevron: "ocultar
    columnas"/"descargar", identificados por ".buttons-collection"). */
 div.dataTables_wrapper div.dt-buttons .btn,
 div.dataTables_wrapper div.dt-buttons .btn-group {
@@ -2631,33 +2631,33 @@ div.dataTables_wrapper div.dt-buttons .btn {
 }
 
 /* DataTables Buttons no fija "align-items"/"justify-content" en el propio
-   <button> (solo en el icono, ver regla ".btn i" de abajo), as√≠ que sin la
+   <button> (solo en el icono, ver regla ".btn i" de abajo), asÌ que sin la
    regla de arriba el caret nativo de Bootstrap (".dropdown-toggle::after",
    segundo hijo de "ocultar columnas"/"descargar") queda desalineado
    verticalmente en vez de centrado junto al icono. Necesario pero no
    suficiente: ver la nota siguiente sobre el desbordamiento horizontal. */
 /* Reducido de 61px/10px (medida original de Figma) a 40px/4px: a resoluciones
-   de port√°til habituales (~1366px, por debajo del breakpoint de 1399px que
+   de port·til habituales (~1366px, por debajo del breakpoint de 1399px que
    fija ".container" a 1400px) la fila ".dt-buttons" no tiene sitio para las
-   9 acciones + buscador y el buscador salta a una segunda l√≠nea. El icono
+   9 acciones + buscador y el buscador salta a una segunda lÌnea. El icono
    (20px) + la flecha nativa de Bootstrap (~8px) siguen entrando de sobra en
-   40px; el hueco de 61px era m√°s ancho de lo que su contenido necesitaba. */
+   40px; el hueco de 61px era m·s ancho de lo que su contenido necesitaba. */
 div.dataTables_wrapper div.dt-buttons .btn.buttons-collection {
 	width: 40px;
 	gap: 4px;
 }
 
-/* ".dt-down-arrow" (segundo hijo del bot√≥n, entre el icono y el caret) lo
-   a√±ade la extensi√≥n vendor vac√≠o ‚Äî sin contenido ni "background-image" en
-   este tema, ancho 0 ‚Äî pero al ser un hijo flex m√°s cuenta para el "gap" de
-   la regla de arriba (uno ANTES y otro DESPU√âS de √©l) y para el reparto de
-   "justify-content:center", sin aportar nada visual. Bootstrap a√±ade adem√°s
-   su propio "margin-left" al "::after" (el tri√°ngulo) por encima de ese
-   "gap". Con el bot√≥n ya reducido a 40px, esos huecos de m√°s (un "gap"
+/* ".dt-down-arrow" (segundo hijo del botÛn, entre el icono y el caret) lo
+   aÒade la extensiÛn vendor vacÌo ó sin contenido ni "background-image" en
+   este tema, ancho 0 ó pero al ser un hijo flex m·s cuenta para el "gap" de
+   la regla de arriba (uno ANTES y otro DESPU…S de Èl) y para el reparto de
+   "justify-content:center", sin aportar nada visual. Bootstrap aÒade adem·s
+   su propio "margin-left" al "::after" (el tri·ngulo) por encima de ese
+   "gap". Con el botÛn ya reducido a 40px, esos huecos de m·s (un "gap"
    redundante + el margin de Bootstrap) eran justo el desbordamiento que
    sacaba el icono por la izquierda y el caret por la derecha, fuera del
-   borde del bot√≥n. Se retira el span vac√≠o del flujo y se anula el margin
-   del caret para que el √∫nico espaciado entre icono y caret sea el "gap"
+   borde del botÛn. Se retira el span vacÌo del flujo y se anula el margin
+   del caret para que el ˙nico espaciado entre icono y caret sea el "gap"
    ya fijado arriba. */
 div.dataTables_wrapper div.dt-buttons .btn.buttons-collection .dt-down-arrow {
 	display: none;
@@ -2667,33 +2667,33 @@ div.dataTables_wrapper div.dt-buttons .btn.buttons-collection::after {
 	margin-left: 0;
 }
 
-/* La regla ".btn i" de abajo a√±ade padding horizontal de 10px a cada lado
+/* La regla ".btn i" de abajo aÒade padding horizontal de 10px a cada lado
    del icono, pensado para los botones de un solo icono (40px de ancho: 10px
-   padding + 20px icono + 10px padding = 40, sin nada m√°s dentro). En estos
-   dos botones de "icono + caret" el icono es un hijo m√°s del flex del
-   propio <button> (junto al ".dt-down-arrow" y al "::after" del caret), as√≠
-   que ese mismo padding se suma tambi√©n aqu√≠: 2√ó10px padding + ~20px icono
-   + 10px gap + ~11px caret ‚âà 71px de contenido dentro de una caja de solo
+   padding + 20px icono + 10px padding = 40, sin nada m·s dentro). En estos
+   dos botones de "icono + caret" el icono es un hijo m·s del flex del
+   propio <button> (junto al ".dt-down-arrow" y al "::after" del caret), asÌ
+   que ese mismo padding se suma tambiÈn aquÌ: 2◊10px padding + ~20px icono
+   + 10px gap + ~11px caret ò 71px de contenido dentro de una caja de solo
    61px. Al desbordar, y con "justify-content:center" repartiendo el
-   desbordamiento a ambos lados, el icono se sal√≠a por la izquierda del
-   borde del bot√≥n y el caret por la derecha ‚Äî pareciendo un elemento suelto
-   fuera de la caja. Se quita el padding del icono aqu√≠ porque el espaciado
-   ya lo da el "gap"/"width" del bot√≥n, no el icono. */
+   desbordamiento a ambos lados, el icono se salÌa por la izquierda del
+   borde del botÛn y el caret por la derecha ó pareciendo un elemento suelto
+   fuera de la caja. Se quita el padding del icono aquÌ porque el espaciado
+   ya lo da el "gap"/"width" del botÛn, no el icono. */
 div.dataTables_wrapper div.dt-buttons .btn.buttons-collection i {
 	padding: 0;
 }
 
 /* Sin display:flex + padding, el icono queda alineado a la caja de texto
-   por defecto (izquierda/baseline) en vez de centrado en el bot√≥n de 40√ó30
-   (o 61√ó30). El padding 5px/10px reproduce el hueco que deja el frame
-   "v6-icon" (20√ó20) dentro de "BotonAccion" en Figma: 40-2*10=20 de ancho,
+   por defecto (izquierda/baseline) en vez de centrado en el botÛn de 40◊30
+   (o 61◊30). El padding 5px/10px reproduce el hueco que deja el frame
+   "v6-icon" (20◊20) dentro de "BotonAccion" en Figma: 40-2*10=20 de ancho,
    30-2*5=20 de alto. */
 /* Figma (nodo 12941:9440 "BotonAccion") pide estos iconos en peso "Light"
    (Font Awesome 6 PRO); sin esto heredan el "font-family"/"font-weight" que
-   la propia hoja FA FREE del vendor pone en ".fa" (Solid, 900), m√°s grueso
-   que el dise√±o. S√≥lo entra en juego una vez el <link> de FA PRO que
-   "base.html" a√±ade para el <iframe> de la vista de recurso (ver
-   "edatos_fontawesome_url" ah√≠, bloque "styles") ha cargado; hasta entonces
+   la propia hoja FA FREE del vendor pone en ".fa" (Solid, 900), m·s grueso
+   que el diseÒo. SÛlo entra en juego una vez el <link> de FA PRO que
+   "base.html" aÒade para el <iframe> de la vista de recurso (ver
+   "edatos_fontawesome_url" ahÌ, bloque "styles") ha cargado; hasta entonces
    el navegador no tiene esa cara y cae al Solid ya cargado. */
 div.dataTables_wrapper div.dt-buttons .btn i {
 	display: flex;
@@ -2717,14 +2717,14 @@ div.dataTables_wrapper div.dt-buttons .btn.btn-default:focus {
 }
 
 /* "Pantalla completa"/"Incrustar" (".resource-view-toolbar-btn") ya no se
-   renderizan en Jinja -- el m√≥dulo "edatos-inline-resource-toolbar"
+   renderizan en Jinja -- el mÛdulo "edatos-inline-resource-toolbar"
    (resource-view-inline-toolbar.js) los registra en esta misma fila
-   ".dt-buttons" v√≠a la Buttons API de DataTables (`dt.button().add()`) en
+   ".dt-buttons" vÌa la Buttons API de DataTables (`dt.button().add()`) en
    cuanto el vendor publica "datatablesview:init-complete", para que queden
    en el mismo grupo de botones que pide Figma. Reciben el mismo icon-only
    que ya aplica ".resource-view .actions .btn" en el documento padre para
    el resto de tipos de vista -- para "datatables_view",
-   "package/snippets/resource_view.html" ya no renderiza esos botones ah√≠
+   "package/snippets/resource_view.html" ya no renderiza esos botones ahÌ
    (ver comentario en ese fichero). */
 div.dataTables_wrapper div.dt-buttons .btn.resource-view-toolbar-btn {
 	display: flex;
@@ -2736,17 +2736,17 @@ div.dataTables_wrapper div.dt-buttons .btn.resource-view-toolbar-btn {
 }
 
 /* El buscador ("Buscar:") de DataTables (".dataTables_filter"/"#dtprv_filter")
-   lo mueve el m√≥dulo "edatos-inline-resource-toolbar"
-   (resource-view-inline-toolbar.js) al final de ".dt-buttons", como √∫ltimo
+   lo mueve el mÛdulo "edatos-inline-resource-toolbar"
+   (resource-view-inline-toolbar.js) al final de ".dt-buttons", como ˙ltimo
    elemento de la fila (igual que en Figma). Al ser ahora hijo flex de
    ".dt-buttons" (gap:10px ya definido arriba) hace falta anular el
    float/margen negativo con el que el vendor lo posicionaba como hermano
    flotado de ".dataTables_length" en el layout original.
-   OJO: no usar "margin-left:auto" aqu√≠ ‚Äî en un flex-container empuja el
-   elemento hasta el borde derecho de la fila (separ√°ndolo ~40px del bot√≥n
+   OJO: no usar "margin-left:auto" aquÌ ó en un flex-container empuja el
+   elemento hasta el borde derecho de la fila (separ·ndolo ~40px del botÛn
    "Compartir" en vez de los 10px de gap de Figma). Basta "margin:0" para
    que el buscador quede pegado al hueco del "gap" del contenedor, como
-   cualquier otro bot√≥n de la fila. */
+   cualquier otro botÛn de la fila. */
 div.dataTables_wrapper div.dt-buttons .dataTables_filter,
 div.dataTables_wrapper div.dt-buttons #dtprv_filter {
 	float: none !important;
@@ -2757,12 +2757,12 @@ div.dataTables_wrapper div.dt-buttons #dtprv_filter {
 }
 
 /* Figma (nodo 12937:9200 "BotonAccion") no muestra la etiqueta "Buscar:"
-   que a√±ade DataTables por defecto ‚Äî s√≥lo el icono de lupa dentro del propio
+   que aÒade DataTables por defecto ó sÛlo el icono de lupa dentro del propio
    cuadro. El texto ("Buscar:") es un nodo de texto suelto dentro de
-   "<label>", sin ning√∫n elemento propio que se pueda ocultar por separado,
-   as√≠ que se colapsa a "font-size:0" en el <label> (mismo truco que ya usa
-   ".resource-view .actions .btn"): el input conserva su tama√±o porque
-   Bootstrap le da su propio "font-size" expl√≠cito (no heredado). El icono de
+   "<label>", sin ning˙n elemento propio que se pueda ocultar por separado,
+   asÌ que se colapsa a "font-size:0" en el <label> (mismo truco que ya usa
+   ".resource-view .actions .btn"): el input conserva su tamaÒo porque
+   Bootstrap le da su propio "font-size" explÌcito (no heredado). El icono de
    lupa se simula con ::before sobre el <label> (los <input> no admiten
    pseudo-elementos) posicionado encima del propio campo, con padding-left
    en el input para dejarle sitio. */
@@ -2789,9 +2789,9 @@ div.dataTables_wrapper div.dt-buttons .dataTables_filter label::before {
 }
 
 /* ".form-control-sm" (Bootstrap, hoja base del sitio) fija "min-height:
-   calc(1.5em + 0.5rem + 2px)" (~28px) en este input ‚Äî un "min-height" puesto
-   por encima del "height" de abajo, gane quien gane en especificidad, as√≠
-   que sin anularlo aqu√≠ el campo sal√≠a m√°s bajo (~28px) que los botones de
+   calc(1.5em + 0.5rem + 2px)" (~28px) en este input ó un "min-height" puesto
+   por encima del "height" de abajo, gane quien gane en especificidad, asÌ
+   que sin anularlo aquÌ el campo salÌa m·s bajo (~28px) que los botones de
    30px de la fila y quedaba desalineado verticalmente. */
 div.dataTables_wrapper div.dt-buttons .dataTables_filter input {
 	margin-left: 0;
@@ -2803,34 +2803,34 @@ div.dataTables_wrapper div.dt-buttons .dataTables_filter input {
 	padding: 5px 10px 5px 30px;
 }
 
-/* Figma (nodo 12937:9200 "BotonAccion" del buscador) no muestra ning√∫n
-   icono de informaci√≥n junto al campo de b√∫squeda ‚Äî s√≥lo la lupa ya
-   simulada arriba con "::before". "#filterinfoicon" lo a√±ade la propia
-   extensi√≥n vendor (ckanext-datatablesview, fuera de este repo) sin ning√∫n
-   hook de plantilla para quitarlo, as√≠ que se oculta por CSS. */
+/* Figma (nodo 12937:9200 "BotonAccion" del buscador) no muestra ning˙n
+   icono de informaciÛn junto al campo de b˙squeda ó sÛlo la lupa ya
+   simulada arriba con "::before". "#filterinfoicon" lo aÒade la propia
+   extensiÛn vendor (ckanext-datatablesview, fuera de este repo) sin ning˙n
+   hook de plantilla para quitarlo, asÌ que se oculta por CSS. */
 div.dataTables_wrapper div.dt-buttons #filterinfoicon {
 	display: none;
 }
 
 /* "Buscar:" (".dataTables_filter"/"#dtprv_filter") solapado con "Mostrando X
    registros" (".dataTables_info") si ".dt-buttons.btn-group" nunca llega a
-   aparecer (p.ej. una vista "datatables_view" con los botones de exportaci√≥n
-   desactivados en su configuraci√≥n) -- ver Adenda "iconos... invisibles" en
-   la documentaci√≥n de este componente (docs/theming-resource-view-buttons.md)
-   para el diagn√≥stico hist√≥rico del mismo s√≠ntoma bajo la arquitectura
+   aparecer (p.ej. una vista "datatables_view" con los botones de exportaciÛn
+   desactivados en su configuraciÛn) -- ver Adenda "iconos... invisibles" en
+   la documentaciÛn de este componente (docs/theming-resource-view-buttons.md)
+   para el diagnÛstico histÛrico del mismo sÌntoma bajo la arquitectura
    anterior (documento padre + <iframe>). "edatos-inline-resource-toolbar"
    (resource-view-inline-toolbar.js) solo traslada ".dataTables_filter" a
-   ".dt-buttons" cuando este √∫ltimo existe (ver guarda al inicio de
+   ".dt-buttons" cuando este ˙ltimo existe (ver guarda al inicio de
    "setUpToolbar" en ese fichero); si nunca aparece, la regla de arriba (con
    ese descendiente) no llega a matchear y ".dataTables_filter" se queda
    como hijo DIRECTO de
    ".dataTables_wrapper", con el "float:right; margin-top:-1.4em" original
    del vendor
-   ("#dtprv_filter", ID -- de ah√≠ el "!important" aqu√≠, para no depender de
-   ganar por especificidad). Ese margen negativo asum√≠a compartir fila con
-   ".dataTables_info" mediante flotados cl√°sicos de Bootstrap; en nuestro
+   ("#dtprv_filter", ID -- de ahÌ el "!important" aquÌ, para no depender de
+   ganar por especificidad). Ese margen negativo asumÌa compartir fila con
+   ".dataTables_info" mediante flotados cl·sicos de Bootstrap; en nuestro
    "display:flex;flex-direction:column" ya no comparten fila (son dos
-   elementos flex distintos, uno debajo del otro), as√≠ que el margen negativo
+   elementos flex distintos, uno debajo del otro), asÌ que el margen negativo
    solo consigue que "Buscar:" se solape por encima de "Mostrando...". */
 div.dataTables_wrapper > div.dataTables_filter {
 	float: none !important;
@@ -2841,17 +2841,17 @@ div.dataTables_wrapper > div.dataTables_filter {
    el buscador dentro de ".dt-buttons" tanto en carga standalone como dentro
    del <iframe> -- ya no distingue entre ambos casos (ver comentario de
    "window.self === window.top" en ese fichero, usado solo para el margen
-   superior de m√°s abajo). La regla de arriba se queda como red de seguridad
+   superior de m·s abajo). La regla de arriba se queda como red de seguridad
    para cuando ".dt-buttons.btn-group" nunca aparece (ver comentario anterior)
    y ".dataTables_filter" sigue siendo hijo directo de ".dataTables_wrapper". */
 
 /* Aire entre la botonera y el borde superior del navegador cuando la vista
    se carga standalone (sin el <iframe> que la envuelve, y por tanto sin el
-   padding/margen que ya aporta el layout de la p√°gina del recurso
+   padding/margen que ya aporta el layout de la p·gina del recurso
    -- "resource_view.html" -- alrededor de ese <iframe>). El propio JS marca
    este caso con la clase "edatos-standalone-dt-view" en "<html>" (mismo
    bloque que traslada el buscador, arriba) para no aplicar este margen
-   tambi√©n dentro del <iframe> real, donde duplicar√≠a el espacio que ya
+   tambiÈn dentro del <iframe> real, donde duplicarÌa el espacio que ya
    existe. */
 html.edatos-standalone-dt-view div.dataTables_wrapper div.dt-buttons {
 	margin-top: var(--edatos-spacing-y-lg, 16px);
@@ -2864,39 +2864,39 @@ html.edatos-standalone-dt-view div.dataTables_wrapper div.dt-buttons {
    por su propio JS, FUERA de ".dt-buttons") con la lista de columnas/
    formatos como "<a class="dt-button dropdown-item ...">" DIRECTOS (sin
    "<li>" envolvente, a diferencia del resto de dropdowns del sitio --
-   OPCIONES/wrench/Vistas/Agregar Filtro -- que s√≠ usan "<li><a>"), as√≠ que
-   ninguna regla gen√©rica ".dropdown-menu li a" les llega. Adem√°s el propio
+   OPCIONES/wrench/Vistas/Agregar Filtro -- que sÌ usan "<li><a>"), asÌ que
+   ninguna regla genÈrica ".dropdown-menu li a" les llega. Adem·s el propio
    vendor (ckanext-datatablesview, hoja "datatablesview.css") fija su propio
    fondo/radio/sombra en "div.dt-button-collection" (blanco liso) y pone
    "background-color: transparent" en "div.dt-button-collection
-   div.dropdown-menu" con la MISMA especificidad que nuestra regla gen√©rica
-   ".dropdown-menu" (0,1,0) -- como esa hoja se carga DESPU√âS que
+   div.dropdown-menu" con la MISMA especificidad que nuestra regla genÈrica
+   ".dropdown-menu" (0,1,0) -- como esa hoja se carga DESPU…S que
    "edatostheme_css" en "base.html" (mismo problema ya documentado para
    ".dataTables_info"/"table.dataTable"), gana el empate y el panel se queda
    sin el lenguaje visual del resto de desplegables (fondo de color, filas
-   con padding/radio/hover). Selectores exactamente igual de espec√≠ficos que
-   los del vendor (o m√°s), para no depender del orden de carga. */
+   con padding/radio/hover). Selectores exactamente igual de especÌficos que
+   los del vendor (o m·s), para no depender del orden de carga. */
 /* "!important" en las 4 declaraciones: con especificidad empatada
-   (0,1,1) frente a la regla del vendor, gana quien cargue despu√©s --
-   "datatablesview.css" se carga DESPU√âS que "edatostheme_css" en
-   "base.html", as√≠ que sin "!important" el vendor ganaba box-shadow/
+   (0,1,1) frente a la regla del vendor, gana quien cargue despuÈs --
+   "datatablesview.css" se carga DESPU…S que "edatostheme_css" en
+   "base.html", asÌ que sin "!important" el vendor ganaba box-shadow/
    padding/background/border (confirmado con getComputedStyle: shadow y
-   padding ca√≠an al valor del vendor pese a que el radio, por coincidencia,
-   parec√≠a el nuestro -- lo daba en realidad la variante M√ÅS espec√≠fica
+   padding caÌan al valor del vendor pese a que el radio, por coincidencia,
+   parecÌa el nuestro -- lo daba en realidad la variante M¡S especÌfica
    "div.dt-button-collection.fixed" del vendor, que solo fija radio y no
    pisa box-shadow/padding). El panel de "ocultar columnas" (colvis) recibe
-   adem√°s la clase ".fixed" en tiempo de ejecuci√≥n (posicionamiento
-   "position:fixed" de DataTables Buttons), lo que sube a√∫n m√°s la
+   adem·s la clase ".fixed" en tiempo de ejecuciÛn (posicionamiento
+   "position:fixed" de DataTables Buttons), lo que sube a˙n m·s la
    especificidad del vendor (0,2,1) por encima de la nuestra si no se usa
-   "!important". Fondo azul tambi√©n aqu√≠ (no solo en ".dropdown-menu" de
+   "!important". Fondo azul tambiÈn aquÌ (no solo en ".dropdown-menu" de
    abajo) para que no asome el blanco del vendor en el padding entre el
    borde redondeado exterior y el contenido -- ver bloque siguiente. */
 /* "width: auto !important": el vendor fija "width: 218px" fijo en este
-   mismo selector, pero las etiquetas de columna m√°s largas (p. ej.
+   mismo selector, pero las etiquetas de columna m·s largas (p. ej.
    "CONFIDENCIALIDAD_OBSERVACION#es") miden ~310px de ancho con
-   "white-space: nowrap" -- m√°s que esos 218px. El "<div class="dropdown-
-   menu">" interior (con "min-width: 100%" del vendor) termina m√°s ancho
-   que el contenedor exterior fijo, as√≠ que el texto/fondo de las filas se
+   "white-space: nowrap" -- m·s que esos 218px. El "<div class="dropdown-
+   menu">" interior (con "min-width: 100%" del vendor) termina m·s ancho
+   que el contenedor exterior fijo, asÌ que el texto/fondo de las filas se
    desborda fuera de la caja azul redondeada en vez de quedar contenido en
    ella (visible como texto sin fondo azul debajo, "flotando" sobre la
    tabla). Con "width: auto" el exterior pasa a "shrink-to-fit" (es
@@ -2913,24 +2913,24 @@ div.dt-button-collection {
 }
 
 /* "!important" en "max-height"/"overflow-y": el panel de "ocultar
-   columnas" (colvis, 15 filas) es m√°s alto que el hueco disponible bajo el
-   bot√≥n, as√≠ que DataTables Buttons le a√±ade la clase ".fixed" (overlay
-   centrado en el viewport en vez de ancla bajo el bot√≥n -- ver comentario
+   columnas" (colvis, 15 filas) es m·s alto que el hueco disponible bajo el
+   botÛn, asÌ que DataTables Buttons le aÒade la clase ".fixed" (overlay
+   centrado en el viewport en vez de ancla bajo el botÛn -- ver comentario
    de la regla ".fixed" en el bloque de arriba). El vendor trae una regla
-   EXTRA solo para ese caso, m√°s espec√≠fica que la nuestra:
+   EXTRA solo para ese caso, m·s especÌfica que la nuestra:
    "div.dt-button-collection.fixed > :last-child { max-height: 100vh;
    overflow: auto; }" (0,3,0 por la pseudo-clase ":last-child", frente a
    nuestro 0,2,2) -- gana sin "!important" y anula el recorte a 260px,
    dejando que el panel crezca a su altura completa (~491px). DataTables
    calcula el "margin-top" de centrado (mitad de la altura medida, negativo)
-   ANTES de que exista este override, as√≠ que con el panel m√°s alto de lo
+   ANTES de que exista este override, asÌ que con el panel m·s alto de lo
    previsto el resultado queda con el borde superior recortado por encima
    del viewport del iframe (parte del panel invisible, sin aire respecto al
-   marco de la tabla). Con "!important" aqu√≠, el recorte a 260px + scroll
+   marco de la tabla). Con "!important" aquÌ, el recorte a 260px + scroll
    interno se aplica siempre, DataTables mide una altura mucho menor y
    calcula un margen de centrado que deja el panel entero dentro del
    viewport. El panel de "descargar" (sin ".fixed", 4 filas) no se ve
-   afectado por este bug -- nunca alcanza el l√≠mite de 260px. */
+   afectado por este bug -- nunca alcanza el lÌmite de 260px. */
 div.dt-button-collection div.dropdown-menu {
 	background-color: transparent !important;
 	border-radius: var(--edatos-border-radius-sm, 5px);
@@ -2953,8 +2953,8 @@ div.dt-button-collection div.dropdown-menu::-webkit-scrollbar-thumb {
 	border-radius: var(--edatos-border-radius-sm, 4px);
 }
 
-/* Filas del panel: mismo patr√≥n de "p√≠ldora redondeada con hover claro" que
-   ".dropdown-menu li a" usa en el resto del sitio, adaptado a que aqu√≠ no
+/* Filas del panel: mismo patrÛn de "pÌldora redondeada con hover claro" que
+   ".dropdown-menu li a" usa en el resto del sitio, adaptado a que aquÌ no
    hay "<li>" (el propio "<a class="dropdown-item">" es hijo directo). */
 div.dt-button-collection div.dropdown-menu a.dt-button.dropdown-item {
 	display: flex;
@@ -2980,7 +2980,7 @@ div.dt-button-collection div.dropdown-menu a.dt-button.dropdown-item i {
 
 /* Columnas del colvis: sin "<i>" propio -- se simula el mismo par de iconos
    "eye"/"eye-slash" que ya usan las filas "Show all"/"Show none" de abajo,
-   para que se distinga a simple vista qu√© columnas est√°n visibles ahora
+   para que se distinga a simple vista quÈ columnas est·n visibles ahora
    (".active", puesto por DataTables Buttons) de las ocultas. */
 div.dt-button-collection div.dropdown-menu a.dt-button.buttons-columnVisibility::before {
 	width: 16px;
@@ -2998,7 +2998,7 @@ div.dt-button-collection div.dropdown-menu a.dt-button.buttons-columnVisibility.
 
 /* Bootstrap pinta ".dropdown-item.active" con un fondo propio (variable
    "--bs-dropdown-link-active-bg" de este bundle, un teal ajeno al tema) --
-   se cancela para que la √∫nica marca de "columna visible" sea el icono de
+   se cancela para que la ˙nica marca de "columna visible" sea el icono de
    arriba, igual que el resto de filas del panel. */
 div.dt-button-collection div.dropdown-menu a.dt-button.buttons-columnVisibility.active {
 	background-color: transparent !important;
@@ -3008,9 +3008,9 @@ div.dt-button-collection div.dropdown-menu a.dt-button.buttons-columnVisibility.
 /* Hover/focus, para CUALQUIER fila (incluidas las ".active" de arriba):
    misma especificidad (5 clases, 3 tags) + "!important" que la regla
    ".buttons-columnVisibility.active" de encima -- en un empate exacto gana
-   la que aparece DESPU√âS en la hoja, as√≠ que esta regla debe ir aqu√≠, tras
-   el reset de "active", para que el hover siga pint√°ndose incluso sobre una
-   columna ya visible (si fuera al rev√©s, "active" congelar√≠a el fondo en
+   la que aparece DESPU…S en la hoja, asÌ que esta regla debe ir aquÌ, tras
+   el reset de "active", para que el hover siga pint·ndose incluso sobre una
+   columna ya visible (si fuera al revÈs, "active" congelarÌa el fondo en
    transparente sin importar el estado de hover). */
 div.dt-button-collection div.dropdown-menu a.dt-button.dropdown-item:hover,
 div.dt-button-collection div.dropdown-menu a.dt-button.dropdown-item:focus {
@@ -3021,7 +3021,7 @@ div.dt-button-collection div.dropdown-menu a.dt-button.dropdown-item:focus {
 /* Separador visual antes del bloque de acciones ("Restore visibility"/
    "Show all"/"Show none"/"Filtered"), que ya vienen con su propio icono
    Font Awesome ("fa-undo"/"fa-eye"/"fa-eye-slash"/"fa-filter") puesto por
-   el propio vendor -- solo hace falta que hereden el color/tama√±o de la
+   el propio vendor -- solo hace falta que hereden el color/tamaÒo de la
    regla ".dt-button.dropdown-item i" de arriba. */
 div.dt-button-collection div.dropdown-menu a.dt-button.buttons-colvisRestore {
 	margin-top: var(--edatos-spacing-y-xs, 6px);
@@ -3029,77 +3029,77 @@ div.dt-button-collection div.dropdown-menu a.dt-button.buttons-colvisRestore {
 	padding-top: var(--edatos-spacing-y-sm, 8px);
 }
 
-/* --- Resource view: bot√≥n "Agregar Filtro" ---
+/* --- Resource view: botÛn "Agregar Filtro" ---
    Figma (nodos 12937:9102 / 12941:9388 "BotonDesplegableM") define este
-   bot√≥n con icono "filter", texto y icono "angle-down" (chevron), con
+   botÛn con icono "filter", texto y icono "angle-down" (chevron), con
    borde/texto en color accent (#007fb0) en vez del azul primario que usa
-   ".btn-primary" en el resto del sitio. El bot√≥n se renderiza directamente
+   ".btn-primary" en el resto del sitio. El botÛn se renderiza directamente
    en Jinja como <a class="btn btn-primary"> plano
    (templates_priority/datatables/datatables_view.html, dentro de
-   ".resource-view-filters"), igual que el generado en tiempo de ejecuci√≥n
-   por el m√≥dulo JS de CKAN core "resource-view-filters"
+   ".resource-view-filters"), igual que el generado en tiempo de ejecuciÛn
+   por el mÛdulo JS de CKAN core "resource-view-filters"
    (ckan/public/base/javascript/modules/resource-view-filters.js, fuera de
-   este repo, a√∫n usado tal cual para las vistas filtrables que no son
+   este repo, a˙n usado tal cual para las vistas filtrables que no son
    "datatables_view" -- ver "package/snippets/resource_view_filters.html"):
-   sin iconos y sin ning√∫n hook propio para a√±adirlos. Los iconos se simulan
-   con contenido generado Font Awesome v√≠a ::before/::after en vez de tocar
+   sin iconos y sin ning˙n hook propio para aÒadirlos. Los iconos se simulan
+   con contenido generado Font Awesome vÌa ::before/::after en vez de tocar
    ninguno de los dos.
 
-   Figma coloca este bot√≥n como primer elemento de la MISMA fila que el
-   resto de botones de la tabla (nodo 12937:9102 "Botoner√≠a"): dos grupos
-   claramente separados ‚Äî "Agregar Filtro" pegado al borde izquierdo de la
+   Figma coloca este botÛn como primer elemento de la MISMA fila que el
+   resto de botones de la tabla (nodo 12937:9102 "BotonerÌa"): dos grupos
+   claramente separados ó "Agregar Filtro" pegado al borde izquierdo de la
    tabla, y el resto (Pantalla completa/Incrustar + botones nativos +
    buscador) pegado al borde derecho, con el hueco entre ambos creciendo o
-   encogiendo seg√∫n el ancho disponible. "edatos-inline-resource-toolbar"
+   encogiendo seg˙n el ancho disponible. "edatos-inline-resource-toolbar"
    (resource-view-inline-toolbar.js) construye ".resource-view-filters"
    enteramente en JS (ver "buildFilterPanel" en ese fichero -- ya no hay
-   markup propio en Jinja para este bot√≥n) y lo inserta como primer hijo de
+   markup propio en Jinja para este botÛn) y lo inserta como primer hijo de
    ".dt-buttons" en cuanto el vendor termina de inicializar la tabla.
    Antes se separaba el segundo grupo con un "margin-right" fijo (50px) en
    ESTE elemento, porque ".dt-buttons" era "inline-flex" (se ajusta al ancho
-   de su contenido) y un "margin-left:auto" en el primer bot√≥n del segundo
-   grupo no ten√≠a espacio libre que repartir. Ahora que ".dt-buttons" ocupa
-   el 100% de la fila (ver regla ".dt-buttons.btn-group" m√°s arriba), el
-   hueco lo genera un "margin-left:auto" en el primer bot√≥n tras este
-   elemento (ver m√°s abajo, selector con "+"), que empuja todo el segundo
-   grupo hasta el borde derecho real de la tabla ‚Äî un "margin-right" fijo
-   aqu√≠ ya no hace falta y solo restar√≠a espacio disponible a ese empuje. */
+   de su contenido) y un "margin-left:auto" en el primer botÛn del segundo
+   grupo no tenÌa espacio libre que repartir. Ahora que ".dt-buttons" ocupa
+   el 100% de la fila (ver regla ".dt-buttons.btn-group" m·s arriba), el
+   hueco lo genera un "margin-left:auto" en el primer botÛn tras este
+   elemento (ver m·s abajo, selector con "+"), que empuja todo el segundo
+   grupo hasta el borde derecho real de la tabla ó un "margin-right" fijo
+   aquÌ ya no hace falta y solo restarÌa espacio disponible a ese empuje. */
 div.dataTables_wrapper div.dt-buttons .resource-view-filters {
 	display: inline-flex;
 	align-items: center;
 	flex: 0 0 auto;
-	/* El m√≥dulo JS de CKAN core "resource-view-filters" (fuera de este repo)
-	   le pone un "margin-bottom" propio (14px, convenci√≥n gen√©rica de
+	/* El mÛdulo JS de CKAN core "resource-view-filters" (fuera de este repo)
+	   le pone un "margin-bottom" propio (14px, convenciÛn genÈrica de
 	   "form-group"). Con ".dt-buttons" en "align-items:center" ese margen
 	   se cuenta como parte de la caja a centrar: al no tener margen arriba,
-	   el hueco de abajo empujaba el borde del bot√≥n hacia el l√≠mite
+	   el hueco de abajo empujaba el borde del botÛn hacia el lÌmite
 	   superior de la fila en vez de centrarlo con el resto. */
 	margin-bottom: 0;
 }
 
 /* Empuja el SEGUNDO grupo (Pantalla completa/Incrustar + botones nativos +
-   buscador) hasta el borde derecho de ".dt-buttons" ‚Äî que ahora coincide
+   buscador) hasta el borde derecho de ".dt-buttons" ó que ahora coincide
    con el borde derecho real de la tabla, ver regla ".dt-buttons.btn-group"
-   de arriba ‚Äî, dejando "Agregar Filtro" pegado al borde izquierdo.
-   IMPORTANTE: "!important" es imprescindible aqu√≠ porque la regla gen√©rica
+   de arriba ó, dejando "Agregar Filtro" pegado al borde izquierdo.
+   IMPORTANTE: "!important" es imprescindible aquÌ porque la regla genÈrica
    "div.dataTables_wrapper div.dt-buttons .btn { margin-left: 0 !important;
-   ... }" (m√°s arriba en este fichero, pensada para cancelar el solape de
-   ".btn-group" cl√°sico de Bootstrap) tambi√©n matchea este mismo bot√≥n
+   ... }" (m·s arriba en este fichero, pensada para cancelar el solape de
+   ".btn-group" cl·sico de Bootstrap) tambiÈn matchea este mismo botÛn
    (".btn.resource-view-toolbar-btn" es a la vez ".btn") y sin un
-   "!important" propio aqu√≠ ese "margin-left:0" gana siempre, sin importar
-   la especificidad del selector ‚Äî un "!important" s√≥lo puede ganarle a
-   otro "!important", nunca a una regla no-"!important" por m√°s espec√≠fica
+   "!important" propio aquÌ ese "margin-left:0" gana siempre, sin importar
+   la especificidad del selector ó un "!important" sÛlo puede ganarle a
+   otro "!important", nunca a una regla no-"!important" por m·s especÌfica
    que sea. Confirmado en DevTools (panel Elements, el hijo inmediato de
    ".resource-view-filters" llevaba "margin-left:0" heredado de la regla
-   gen√©rica pese al "margin-left:auto" de aqu√≠, mientras no tuviera su
+   genÈrica pese al "margin-left:auto" de aquÌ, mientras no tuviera su
    propio "!important"). */
 div.dataTables_wrapper div.dt-buttons .resource-view-filters + .btn.resource-view-toolbar-btn {
 	margin-left: auto !important;
 }
 
 /* "gap"/"padding" reducidos frente a la medida original de Figma (8px/10px)
-   por el mismo motivo que ".buttons-collection" m√°s abajo: a resoluciones de
-   port√°til habituales el buscador no cab√≠a en la fila y saltaba de l√≠nea. */
+   por el mismo motivo que ".buttons-collection" m·s abajo: a resoluciones de
+   port·til habituales el buscador no cabÌa en la fila y saltaba de lÌnea. */
 .resource-view-filters > a.btn-primary {
 	display: inline-flex;
 	align-items: center;
@@ -3132,14 +3132,14 @@ div.dataTables_wrapper div.dt-buttons .resource-view-filters + .btn.resource-vie
 }
 
 /* Una vez ".resource-view-filters" vive dentro de ".dt-buttons" (ver bloque
-   de arriba), las reglas gen√©ricas "div.dataTables_wrapper div.dt-buttons
-   .btn" (icono cuadrado 40√ó30, padding:0, color/border-radius con
-   "!important") tienen m√°s especificidad que ".resource-view-filters >
+   de arriba), las reglas genÈricas "div.dataTables_wrapper div.dt-buttons
+   .btn" (icono cuadrado 40◊30, padding:0, color/border-radius con
+   "!important") tienen m·s especificidad que ".resource-view-filters >
    a.btn-primary" de arriba y lo aplastan a un cuadrado sin texto visible.
-   Se repite aqu√≠ el mismo estilo con un selector igual o m√°s espec√≠fico
-   (mismo patr√≥n ya usado para "resource-view-toolbar-btn") para que
-   "Agregar Filtro" conserve su forma de p√≠ldora con texto, en vez de
-   quedar recortado al tama√±o de icono-only del resto de botones. */
+   Se repite aquÌ el mismo estilo con un selector igual o m·s especÌfico
+   (mismo patrÛn ya usado para "resource-view-toolbar-btn") para que
+   "Agregar Filtro" conserve su forma de pÌldora con texto, en vez de
+   quedar recortado al tamaÒo de icono-only del resto de botones. */
 div.dataTables_wrapper div.dt-buttons .resource-view-filters > a.btn-primary {
 	display: inline-flex;
 	align-items: center;
@@ -3165,24 +3165,24 @@ div.dataTables_wrapper div.dt-buttons .resource-view-filters > a.btn-primary:foc
 /* --- Resource view: panel personalizado de "Agregar Filtro" (checkboxes) ---
    "buildFilterPanel" (dentro de "edatos-inline-resource-toolbar",
    resource-view-inline-toolbar.js) sustituye por completo, solo para
-   "datatables_view", el flujo por defecto de CKAN core para este bot√≥n
-   (select2, ver "RUTA DE RESPALDO" m√°s abajo) por un panel propio, fiel al
+   "datatables_view", el flujo por defecto de CKAN core para este botÛn
+   (select2, ver "RUTA DE RESPALDO" m·s abajo) por un panel propio, fiel al
    mockup de Figma (nodo 12941:9342 "BotonDesplegableM" + panel de
-   "Opci√≥n 1..5" / "Eliminar filtro"): un √∫nico bloque azul fusionado con el
-   bot√≥n, con checkboxes que permiten marcar varios valores del campo
+   "OpciÛn 1..5" / "Eliminar filtro"): un ˙nico bloque azul fusionado con el
+   botÛn, con checkboxes que permiten marcar varios valores del campo
    elegido a la vez. Ver el bloque de comentarios en el propio JS para la
-   arquitectura (estado compartido con CKAN core v√≠a "ckan.views.filters"). */
+   arquitectura (estado compartido con CKAN core vÌa "ckan.views.filters"). */
 div.dataTables_wrapper div.dt-buttons .resource-view-filters {
 	position: relative;
 }
 
-/* Fusiona visualmente el bot√≥n con el panel: sin esquinas redondeadas donde
-   conectan (abajo del bot√≥n), sin hueco entre ambos, mismo azul s√≥lido que
+/* Fusiona visualmente el botÛn con el panel: sin esquinas redondeadas donde
+   conectan (abajo del botÛn), sin hueco entre ambos, mismo azul sÛlido que
    el resto del panel -- igual que Figma, donde "BotonDesplegableM" (el
-   bot√≥n) solo redondea sus esquinas SUPERIORES y el panel solo las
-   INFERIORES. Sin esto, el bot√≥n se queda en su estilo "outline" de reposo
-   (fondo blanco/borde azul) mientras el panel ya est√° abierto debajo,
-   dando la impresi√≥n de dos controles sueltos en vez de un √∫nico
+   botÛn) solo redondea sus esquinas SUPERIORES y el panel solo las
+   INFERIORES. Sin esto, el botÛn se queda en su estilo "outline" de reposo
+   (fondo blanco/borde azul) mientras el panel ya est· abierto debajo,
+   dando la impresiÛn de dos controles sueltos en vez de un ˙nico
    desplegable, que es justo lo que Figma no muestra. */
 div.dataTables_wrapper div.dt-buttons .resource-view-filters.edatos-filter-open > a.btn-primary {
 	background-color: var(--edatos-color-accent-100, #007fb0) !important;
@@ -3191,10 +3191,10 @@ div.dataTables_wrapper div.dt-buttons .resource-view-filters.edatos-filter-open 
 	border-radius: var(--edatos-border-radius-sm, 5px) var(--edatos-border-radius-sm, 5px) 0 0 !important;
 }
 
-/* El icono "angle-down" de reposo (ver "::after" m√°s arriba) se cambia a
-   "angle-up" mientras el panel est√° abierto -- Figma solo documenta el
-   estado abierto (captura √∫nica del componente), pero un desplegable que
-   apunta hacia abajo cuando ya est√° desplegado hacia abajo no tiene
+/* El icono "angle-down" de reposo (ver "::after" m·s arriba) se cambia a
+   "angle-up" mientras el panel est· abierto -- Figma solo documenta el
+   estado abierto (captura ˙nica del componente), pero un desplegable que
+   apunta hacia abajo cuando ya est· desplegado hacia abajo no tiene
    sentido; se infiere el estado cerrado con la flecha por defecto ya
    existente en el sitio para el resto de dropdowns. */
 .resource-view-filters.edatos-filter-open > a.btn-primary::after {
@@ -3220,10 +3220,10 @@ div.dataTables_wrapper div.dt-buttons .resource-view-filters.edatos-filter-open 
 	max-height: 220px;
 	overflow-y: auto;
 	/* Fondo de la pista del scroll transparente (deja ver el azul del panel
-	   detr√°s, no un blanco/gris ajeno al resto del componente) -- Firefox v√≠a
-	   "scrollbar-color" (segundo valor = pista), Chrome/Edge/Safari v√≠a los
+	   detr·s, no un blanco/gris ajeno al resto del componente) -- Firefox vÌa
+	   "scrollbar-color" (segundo valor = pista), Chrome/Edge/Safari vÌa los
 	   pseudo-elementos "::-webkit-scrollbar-track". El "thumb" (la barra que
-	   se arrastra) s√≠ necesita algo de opacidad para poder verse/agarrarse
+	   se arrastra) sÌ necesita algo de opacidad para poder verse/agarrarse
 	   sobre ese mismo azul. */
 	scrollbar-width: thin;
 	scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
@@ -3273,26 +3273,26 @@ div.dataTables_wrapper div.dt-buttons .resource-view-filters.edatos-filter-open 
 	white-space: nowrap;
 }
 
-/* Figma (nodo 12941:9342, fila "Opci√≥n 5") no muestra un estado
+/* Figma (nodo 12941:9342, fila "OpciÛn 5") no muestra un estado
    "seleccionado" persistente -- es el hover de esa fila concreta, capturado
-   en la captura est√°tica del mockup. El estilo a reutilizar para el hover
+   en la captura est·tica del mockup. El estilo a reutilizar para el hover
    es el mismo que ya tiene la fila "Eliminar filtro" (fondo claro
    "--edatos-color-primary-5" + texto/icono en azul de acento), no un gris
-   plano. El estado "--checked" (persistente, para marcar qu√© opci√≥n est√°
+   plano. El estado "--checked" (persistente, para marcar quÈ opciÛn est·
    realmente activa) es una necesidad propia de este panel real -- Figma no
-   lo contempla porque su mockup es est√°tico -- y se mantiene aparte del
+   lo contempla porque su mockup es est·tico -- y se mantiene aparte del
    hover con negrita + icono relleno. */
 .edatos-filter-panel-item:hover {
 	background-color: var(--edatos-color-primary-5, #e5ecf1);
 	color: var(--edatos-color-accent-100, #007fb0);
 }
 
-/* Casilla vac√≠a (Regular/400) vs. marcada (Solid/900) -- mismo par de
+/* Casilla vacÌa (Regular/400) vs. marcada (Solid/900) -- mismo par de
    glifos que usa Figma ("square" / "square-check"), en Font Awesome FREE
    (no PRO): a diferencia de los iconos "Light" de otros botones de esta
    misma fila, este panel puede pintarse justo tras el clic en "Agregar
    Filtro", posiblemente antes de que el <link> de FA PRO que "base.html"
-   a√±ade para el <iframe> (ver "edatos_fontawesome_url" ah√≠) haya terminado
+   aÒade para el <iframe> (ver "edatos_fontawesome_url" ahÌ) haya terminado
    de cargar -- usar solo FREE (ya cargado siempre) evita un parpadeo de
    icono roto. */
 .edatos-filter-panel-item::before {
@@ -3340,10 +3340,10 @@ div.dataTables_wrapper div.dt-buttons .resource-view-filters.edatos-filter-open 
 }
 
 /* En reposo, "Eliminar filtro" se confunde con el resto de filas del panel
-   (mismo azul de fondo, texto blanco); al pasar el rat√≥n, cambia al fondo
+   (mismo azul de fondo, texto blanco); al pasar el ratÛn, cambia al fondo
    claro "--edatos-color-primary-5" + texto de acento -- el mismo par que ya
    usa el hover del resto de filas del panel (".edatos-filter-panel-item:
-   hover"), as√≠ que "Eliminar filtro" reacciona igual que cualquier otra
+   hover"), asÌ que "Eliminar filtro" reacciona igual que cualquier otra
    fila interactiva del componente. */
 .edatos-filter-panel-clear:hover {
 	background-color: var(--edatos-color-primary-5, #e5ecf1);
@@ -3357,31 +3357,31 @@ div.dataTables_wrapper div.dt-buttons .resource-view-filters.edatos-filter-open 
 }
 
 /* --- Resource view: desplegables de "Agregar Filtro" (select2) ---
-   Este theming ya NO aplica a "datatables_view": ah√≠ ".resource-view-filters"
+   Este theming ya NO aplica a "datatables_view": ahÌ ".resource-view-filters"
    lo construye "buildFilterPanel" (edatos-inline-resource-toolbar,
-   resource-view-inline-toolbar.js) enteramente en JS, sin ning√∫n
-   "data-module" propio, as√≠ que el m√≥dulo de CKAN core
-   "resource-view-filters" (m√°s abajo, que escanea el DOM buscando su propio
+   resource-view-inline-toolbar.js) enteramente en JS, sin ning˙n
+   "data-module" propio, asÌ que el mÛdulo de CKAN core
+   "resource-view-filters" (m·s abajo, que escanea el DOM buscando su propio
    "data-module") nunca llega a registrarse sobre ese elemento -- no es un
-   "por si falla el JS propio", directamente no hay nada ah√≠ que ese m√≥dulo
+   "por si falla el JS propio", directamente no hay nada ahÌ que ese mÛdulo
    pueda encontrar.
-   Sigue siendo el √öNICO flujo para el resto de vistas de recurso filtrables
-   (no "datatables_view"): esas siguen usando, sin ninguna intervenci√≥n
+   Sigue siendo el ⁄NICO flujo para el resto de vistas de recurso filtrables
+   (no "datatables_view"): esas siguen usando, sin ninguna intervenciÛn
    nuestra, el snippet vendored "package/snippets/resource_view_filters.html"
    (fuera de este repo) con "data-module=\"resource-view-filters\"".
-   El m√≥dulo de CKAN core "resource-view-filters" (fuera de este repo)
+   El mÛdulo de CKAN core "resource-view-filters" (fuera de este repo)
    construye el selector de campo y, tras elegir uno, el selector de valor
-   con select2 3.5.x -- una librer√≠a vendored sin ning√∫n estilo propio del
-   sitio, as√≠ que sale con la paleta gris/blanca por defecto del navegador,
-   totalmente desconectada del bot√≥n azul "Agregar Filtro" que lo abre.
+   con select2 3.5.x -- una librerÌa vendored sin ning˙n estilo propio del
+   sitio, asÌ que sale con la paleta gris/blanca por defecto del navegador,
+   totalmente desconectada del botÛn azul "Agregar Filtro" que lo abre.
    Figma (nodo 12941:9342 "BotonDesplegableM") pinta el panel desplegado en
-   el mismo azul de acento que el bot√≥n ("colors/accent", #007fb0), con
+   el mismo azul de acento que el botÛn ("colors/accent", #007fb0), con
    texto blanco.
    El control cerrado ("select2-choice") reutiliza el mismo lenguaje visual
-   ya establecido para el propio bot√≥n "Agregar Filtro" arriba (borde/texto
+   ya establecido para el propio botÛn "Agregar Filtro" arriba (borde/texto
    azul en reposo, relleno azul con texto blanco al abrirse) en vez del azul
-   s√≥lido permanente de Figma, para quedar visualmente coherente con ese
-   bot√≥n vecino en la misma fila. */
+   sÛlido permanente de Figma, para quedar visualmente coherente con ese
+   botÛn vecino en la misma fila. */
 .resource-view-filters .select2-container .select2-choice {
 	display: flex;
 	align-items: center;
@@ -3396,12 +3396,12 @@ div.dataTables_wrapper div.dt-buttons .resource-view-filters.edatos-filter-open 
 	font-size: var(--edatos-font-size-sm, 14px);
 }
 
-/* select2 marca el estado "sin selecci√≥n" (placeholder, p.ej. "Seleccione
+/* select2 marca el estado "sin selecciÛn" (placeholder, p.ej. "Seleccione
    un campo") con la clase modificadora ".select2-default", cuyo propio CSS
    vendored fija "color:#999 !important" -- ninguna especificidad normal
-   puede ganarle a un "!important", as√≠ que aqu√≠ tambi√©n hace falta
+   puede ganarle a un "!important", asÌ que aquÌ tambiÈn hace falta
    "!important" para que el placeholder se vea en el azul de acento en vez
-   de gris (verificado: sin esto, el borde/fondo s√≠ cambiaban pero el texto
+   de gris (verificado: sin esto, el borde/fondo sÌ cambiaban pero el texto
    se quedaba en gris #999). */
 .resource-view-filters .select2-container .select2-choice.select2-default {
 	color: var(--edatos-color-accent-100, #007fb0) !important;
@@ -3421,7 +3421,7 @@ div.dataTables_wrapper div.dt-buttons .resource-view-filters.edatos-filter-open 
 	border-color: currentColor transparent transparent transparent;
 }
 
-/* select2 3.5.x posiciona la "x" de "vaciar selecci√≥n" con una imagen de
+/* select2 3.5.x posiciona la "x" de "vaciar selecciÛn" con una imagen de
    sprite propia (select2.png, no vendored en este bundle) -- se sustituye
    por un glifo de Font Awesome del mismo color que el texto del control. */
 .resource-view-filters .select2-container .select2-choice abbr.select2-search-choice-close {
@@ -3435,12 +3435,12 @@ div.dataTables_wrapper div.dt-buttons .resource-view-filters.edatos-filter-open 
 	content: "\f00d";
 }
 
-/* El panel flotante ("#select2-drop") vive en el <body> de la p√°gina,
-   fuera de ".resource-view-filters" (select2 lo ancla siempre ah√≠ -- estas
+/* El panel flotante ("#select2-drop") vive en el <body> de la p·gina,
+   fuera de ".resource-view-filters" (select2 lo ancla siempre ahÌ -- estas
    vistas de recurso filtrables no-"datatables_view" se renderizan en la
-   p√°gina normal del recurso, sin ning√∫n <iframe> de por medio). select2
-   reutiliza un √∫nico "#select2-drop" para el desplegable actualmente
-   abierto -- nunca hay dos a la vez -- as√≠ que el id es un selector seguro
+   p·gina normal del recurso, sin ning˙n <iframe> de por medio). select2
+   reutiliza un ˙nico "#select2-drop" para el desplegable actualmente
+   abierto -- nunca hay dos a la vez -- asÌ que el id es un selector seguro
    y preciso sin necesidad de anidarlo bajo ".resource-view-filters". */
 #select2-drop {
 	background-color: var(--edatos-color-accent-100, #007fb0);
@@ -3489,20 +3489,20 @@ div.dataTables_wrapper div.dt-buttons .resource-view-filters.edatos-filter-open 
 /* --- Resource view: "Mostrar X registros" (".dataTables_length") debajo de
    la tabla ---
    Figma (nodo 12941:9258) coloca el selector "Mostrar: [20] registros" bajo
-   la tabla, junto a la paginaci√≥n, en vez de sobre ella. El vendor
+   la tabla, junto a la paginaciÛn, en vez de sobre ella. El vendor
    (ckanext-datatablesview) lo renderiza como primer hijo de
    ".dataTables_wrapper", antes de ".dt-buttons"/".dataTables_scroll" (la
-   tabla) ‚Äî todos los hijos de ".dataTables_wrapper" son bloques en flujo
-   normal (display:block, sin flex/grid propio), as√≠ que su orden visual es
+   tabla) ó todos los hijos de ".dataTables_wrapper" son bloques en flujo
+   normal (display:block, sin flex/grid propio), asÌ que su orden visual es
    literalmente el orden del DOM y no se puede alterar sin, o bien mover el
-   nodo real (innecesario aqu√≠: length y tabla viven en el MISMO documento
+   nodo real (innecesario aquÌ: length y tabla viven en el MISMO documento
    del iframe, a diferencia de los botones "Pantalla completa"/"Incrustar"
    del bloque de arriba), o bien convertir el propio ".dataTables_wrapper" en
-   contenedor flex para poder usar "order". Se opta por la segunda v√≠a por
+   contenedor flex para poder usar "order". Se opta por la segunda vÌa por
    ser CSS puro. "flex-direction:column" reproduce el mismo apilado vertical
-   a ancho completo que ya ten√≠a en flujo normal (cada hijo sigue siendo
-   bloque, "align-items" por defecto "stretch" iguala su comportamiento), as√≠
-   que no cambia el resto de hijos no reordenados aqu√≠ abajo. */
+   a ancho completo que ya tenÌa en flujo normal (cada hijo sigue siendo
+   bloque, "align-items" por defecto "stretch" iguala su comportamiento), asÌ
+   que no cambia el resto de hijos no reordenados aquÌ abajo. */
 div.dataTables_wrapper {
 	display: flex;
 	flex-direction: column;
@@ -3510,15 +3510,15 @@ div.dataTables_wrapper {
 
 /* Solo se reordena el hijo afectado por el movimiento; el resto
    (".dt-buttons", ".dataTables_info", ".dataTables_processing",
-   ".dataTables_scroll" ‚Äî la tabla) conserva su "order" inicial (0, el valor
-   por defecto de flex) y por tanto su posici√≥n actual, ya correcta, sobre la
-   tabla. ".dataTables_paginate" (paginaci√≥n) ya vive en el vendor con
+   ".dataTables_scroll" ó la tabla) conserva su "order" inicial (0, el valor
+   por defecto de flex) y por tanto su posiciÛn actual, ya correcta, sobre la
+   tabla. ".dataTables_paginate" (paginaciÛn) ya vive en el vendor con
    "margin-top:-35px", pensado para pegarse a su hermano inmediatamente
    anterior en el orden visual (originalmente ".dataTables_info", cuando
-   ambos formaban la fila inferior cl√°sica de DataTables). Al insertar
+   ambos formaban la fila inferior cl·sica de DataTables). Al insertar
    ".dataTables_length" justo antes en el nuevo orden, ese mismo margen
-   negativo lo pega a la fila de "Mostrar X registros" en su lugar ‚Äî mismo
-   mecanismo del vendor, nuevo hermano anterior ‚Äî sin necesidad de version
+   negativo lo pega a la fila de "Mostrar X registros" en su lugar ó mismo
+   mecanismo del vendor, nuevo hermano anterior ó sin necesidad de version
    propia del margen. */
 div.dataTables_wrapper div.dataTables_length {
 	order: 1;
@@ -3530,10 +3530,10 @@ div.dataTables_wrapper div.dataTables_paginate {
 }
 
 /* ".resourceinfo" (enlace al recurso origen) y ".sortinfo" ("Sort: _id") no
-   est√°n en el dise√±o de Figma bajo la tabla ‚Äî se ocultan en vez de
+   est·n en el diseÒo de Figma bajo la tabla ó se ocultan en vez de
    reordenarse. No hay plantilla propia que los genere (los renderiza el
-   vendor dentro del iframe), as√≠ que "display:none" es la √∫nica forma de
-   quitarlos sin tocar c√≥digo fuera de este repo. */
+   vendor dentro del iframe), asÌ que "display:none" es la ˙nica forma de
+   quitarlos sin tocar cÛdigo fuera de este repo. */
 div.dataTables_wrapper div.resourceinfo,
 div.dataTables_wrapper div.sortinfo {
 	display: none;
@@ -3542,15 +3542,15 @@ div.dataTables_wrapper div.sortinfo {
 /* --- Resource view: scrollbar horizontal de la tabla (".dataTables_scrollBody") ---
    Ver "specs/investigacion-scroll-lateral-resource-view-datatable.md": el
    vendor (ckan/ckanext/datatablesview, CKAN core) ya inicializa DataTables
-   con "scrollX:true" / "responsive:false" de f√°brica en modo tabla (no hace
-   falta ning√∫n JS propio para activarlo -- ver la adenda de esa
-   investigaci√≥n); cuando el contenido desborda el ancho disponible aparece
-   un scrollbar horizontal real que conviene estilizar. Mismo patr√≥n ya usado
+   con "scrollX:true" / "responsive:false" de f·brica en modo tabla (no hace
+   falta ning˙n JS propio para activarlo -- ver la adenda de esa
+   investigaciÛn); cuando el contenido desborda el ancho disponible aparece
+   un scrollbar horizontal real que conviene estilizar. Mismo patrÛn ya usado
    en este fichero para ".edatos-filter-panel-list"/"div.dt-button-collection
    div.dropdown-menu" (pista transparente + "thumb" con color del sistema),
    pero con un tono OSCURO en vez de blanco semitransparente: a diferencia de
    esos dos paneles (fondo azul oscuro propio), ".dataTables_scrollBody" tiene
-   fondo blanco (el de la propia tabla), donde un "thumb" claro no tendr√≠a
+   fondo blanco (el de la propia tabla), donde un "thumb" claro no tendrÌa
    contraste suficiente para verse. */
 div.dataTables_wrapper div.dataTables_scrollBody {
 	scrollbar-width: thin;
@@ -3572,31 +3572,31 @@ div.dataTables_wrapper div.dataTables_scrollBody::-webkit-scrollbar-thumb {
 }
 
 /* --- Resource view: aspecto de la tabla al estilo del visualizador (".dtfc-has-left") ---
-   ".dtfc-has-left" es la clase que la extensi√≥n FixedColumns de DataTables a√±ade a
-   "div.dataTables_scroll" en cuanto "scrollX:true" est√° activo -- que es el modo tabla
-   de f√°brica del vendor (ver bloque de scrollbar justo arriba), as√≠ que este selector
+   ".dtfc-has-left" es la clase que la extensiÛn FixedColumns de DataTables aÒade a
+   "div.dataTables_scroll" en cuanto "scrollX:true" est· activo -- que es el modo tabla
+   de f·brica del vendor (ver bloque de scrollbar justo arriba), asÌ que este selector
    aplica a cualquier vista "datatables_view" del portal en modo tabla, no a un recurso
    concreto.
 
-   El vendor trae, para esta combinaci√≥n concreta, "table.dataTable.table-bordered.dtfc-has-
+   El vendor trae, para esta combinaciÛn concreta, "table.dataTable.table-bordered.dtfc-has-
    left { border-left-color: currentcolor }". Aunque el "border-left-style" de esa regla es
-   "none" (no se pinta ah√≠), el COLOR se sigue heredando hacia las celdas via el reset de
-   Bootstrap 5 "border-color: inherit" en th/td, y all√≠ s√≠ hay "border-style: solid" -- el
+   "none" (no se pinta ahÌ), el COLOR se sigue heredando hacia las celdas via el reset de
+   Bootstrap 5 "border-color: inherit" en th/td, y allÌ sÌ hay "border-style: solid" -- el
    resultado es que el borde IZQUIERDO de cada celda queda en un tono ("currentcolor", texto)
-   distinto y m√°s oscuro que el resto de bordes (gris claro de Bootstrap), lo que se percibe
-   como una l√≠nea negra/doblada en cada columna, m√°s llamativa en el lateral izquierdo de la
-   tabla. Quitar aqu√≠ abajo los bordes verticales de las celdas no es solo est√©tica (ver
-   siguiente bloque): tambi√©n elimina ese color desalineado de ra√≠z, al no quedar ning√∫n
+   distinto y m·s oscuro que el resto de bordes (gris claro de Bootstrap), lo que se percibe
+   como una lÌnea negra/doblada en cada columna, m·s llamativa en el lateral izquierdo de la
+   tabla. Quitar aquÌ abajo los bordes verticales de las celdas no es solo estÈtica (ver
+   siguiente bloque): tambiÈn elimina ese color desalineado de raÌz, al no quedar ning˙n
    "border-left" que pueda heredarlo.
 
    Referencia visual: la tabla del visualizador (metamac-portal) no es HTML -- es un
    "<canvas>" (ver "Delegate.js"/"BodyZone.js"/"TopHeaderZone.js" en ese repo), pero define un
-   lenguaje de bordes claro que aqu√≠ se traduce a CSS real: marco exterior con borde + radio,
+   lenguaje de bordes claro que aquÌ se traduce a CSS real: marco exterior con borde + radio,
    cabecera con fondo blanco (no el gris/azulado de Bootstrap) y texto en negrita, celdas de
    cuerpo con borde solo horizontal (sin separadores verticales entre columnas) y sin franjas
    de fila alternas. Los tokens de color (`--edatos-color-gray-60/-40/-80/-white-100`) son los
-   mismos que usa ese canvas (se leen ah√≠ en runtime v√≠a "getComputedStyle"), as√≠ que no son
-   una aproximaci√≥n: son las mismas variables del sistema de dise√±o. */
+   mismos que usa ese canvas (se leen ahÌ en runtime vÌa "getComputedStyle"), asÌ que no son
+   una aproximaciÛn: son las mismas variables del sistema de diseÒo. */
 div.dataTables_wrapper div.dataTables_scroll.dtfc-has-left {
 	border: var(--edatos-border-width-xs, 1px) solid var(--edatos-color-gray-60, #666666);
 	border-radius: var(--edatos-border-radius-sm, 5px);
@@ -3609,7 +3609,7 @@ div.dataTables_wrapper div.dataTables_scroll.dtfc-has-left table.dataTable {
 
 /* Sin bordes verticales entre columnas (el marco exterior de arriba ya cierra los lados
    izquierdo/derecho) -- mismo criterio que ".bodyCell.border.vertical: false" en el canvas
-   de referencia. El borde horizontal de cada fila se fija por separado m√°s abajo. */
+   de referencia. El borde horizontal de cada fila se fija por separado m·s abajo. */
 div.dataTables_wrapper div.dataTables_scroll.dtfc-has-left table.dataTable thead th,
 div.dataTables_wrapper div.dataTables_scroll.dtfc-has-left table.dataTable tbody td {
 	border-left: none;
@@ -3622,7 +3622,7 @@ div.dataTables_wrapper div.dataTables_scroll.dtfc-has-left table.dataTable tbody
 }
 
 /* Cabecera con fondo blanco (no el gris/azulado de Bootstrap) y texto en negrita, como en el
-   canvas de referencia ("headerCell.font: 'Bold ...'", fondo blanco salvo selecci√≥n). */
+   canvas de referencia ("headerCell.font: 'Bold ...'", fondo blanco salvo selecciÛn). */
 div.dataTables_wrapper div.dataTables_scroll.dtfc-has-left table.dataTable thead th {
 	background-color: var(--edatos-color-white-100, #FFFFFF);
 	color: var(--edatos-color-gray-80, #333333);
@@ -3635,29 +3635,29 @@ div.dataTables_wrapper div.dataTables_scroll.dtfc-has-left table.dataTable thead
    "background-color" sino con "box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg)" en
    las filas impares -- por eso hace falta anular el "box-shadow", no solo el fondo. El estado
    de fila/columna seleccionada o el "hover" (".table-hover") siguen intactos: pintan su propio
-   "box-shadow"/fondo con m√°s especificidad (clase de estado en vez de ":nth-of-type"), no lo
+   "box-shadow"/fondo con m·s especificidad (clase de estado en vez de ":nth-of-type"), no lo
    sustituyen. */
 div.dataTables_wrapper div.dataTables_scroll.dtfc-has-left table.dataTable.table-striped > tbody > tr:nth-of-type(odd) > * {
 	background-color: var(--edatos-color-white-100, #FFFFFF);
 	box-shadow: none;
 }
 
-/* --- Resource view: paginaci√≥n de la tabla (DataTables) ---
-   Mismo lenguaje visual que ".pagination-wrapper" (paginaci√≥n del listado
-   de datasets, secci√≥n 19 "PAGINACI√ìN" m√°s abajo en este fichero): botones
+/* --- Resource view: paginaciÛn de la tabla (DataTables) ---
+   Mismo lenguaje visual que ".pagination-wrapper" (paginaciÛn del listado
+   de datasets, secciÛn 19 "PAGINACI”N" m·s abajo en este fichero): botones
    individuales con borde y sin fondo, radio uniforme en todos ellos, en
    vez del estilo "conectado" de Bootstrap que trae el vendor de serie
-   (bordes solapados con margin-left:-1px, radio solo en el primer/√∫ltimo
-   bot√≥n). El DOM lo genera "ckanext-datatablesview" (fuera de este repo)
+   (bordes solapados con margin-left:-1px, radio solo en el primer/˙ltimo
+   botÛn). El DOM lo genera "ckanext-datatablesview" (fuera de este repo)
    con las MISMAS clases Bootstrap que ya usa ".pagination-wrapper"
-   (".page-item"/".page-link"/".active"/".disabled"), as√≠ que solo hace
-   falta reescribir la apariencia, no la estructura ‚Äî y solo el aspecto de
-   los botones: la posici√≥n del bloque (a la derecha, junto a "Mostrar X
-   registros") ya la fija el reordenamiento de m√°s arriba y no se toca
-   aqu√≠. A diferencia de ".pagination-wrapper", el "‚Ä¶" de elipsis NO tiene
-   aqu√≠ una clase propia ("page-ellipsis") ‚Äî el vendor le pone la misma
-   clase "disabled" que a los botones "previous"/"next" deshabilitados ‚Äî
-   as√≠ que se distinguen con ":not(.previous):not(.next)" en vez de por
+   (".page-item"/".page-link"/".active"/".disabled"), asÌ que solo hace
+   falta reescribir la apariencia, no la estructura ó y solo el aspecto de
+   los botones: la posiciÛn del bloque (a la derecha, junto a "Mostrar X
+   registros") ya la fija el reordenamiento de m·s arriba y no se toca
+   aquÌ. A diferencia de ".pagination-wrapper", el "Ö" de elipsis NO tiene
+   aquÌ una clase propia ("page-ellipsis") ó el vendor le pone la misma
+   clase "disabled" que a los botones "previous"/"next" deshabilitados ó
+   asÌ que se distinguen con ":not(.previous):not(.next)" en vez de por
    clase, y no hace falta cuidar el orden de las reglas en la cascada (los
    selectores ya son mutuamente excluyentes). */
 div.dataTables_wrapper div.dataTables_paginate .page-item {
@@ -3746,7 +3746,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 	text-decoration: underline;
 }
 
-/* --- Resource read: descripci√≥n --- */
+/* --- Resource read: descripciÛn --- */
 .module-resource .module-content .prose.notes {
 	color: var(--edatos-color-black-100);
 	font-size: var(--edatos-font-size-md);
@@ -3768,7 +3768,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 
 
 /* ============================================================
-   8. RESOURCE READ ‚Äî Sidebar (filtro_recursos) + Metadata
+   8. RESOURCE READ ó Sidebar (filtro_recursos) + Metadata
    ============================================================ */
 
 /* --- Gap entre sidebar y contenido principal --- */
@@ -3784,7 +3784,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 	background: transparent;
 }
 
-/* --- Sidebar: contenedor con borde (filtro_recursos) ‚Äî read y edit --- */
+/* --- Sidebar: contenedor con borde (filtro_recursos) ó read y edit --- */
 .secondary:has(.module.context-info),
 .module-resource ~ .secondary {
 	display: flex;
@@ -3797,7 +3797,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 	align-self: flex-start;
 }
 
-/* --- M√≥dulos dentro del sidebar: sin estilo propio --- */
+/* --- MÛdulos dentro del sidebar: sin estilo propio --- */
 .module-resource ~ .secondary .module.module-narrow {
 	background: transparent;
 	border: none;
@@ -3805,16 +3805,16 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 	width: 100%;
 }
 
-/* --- Cabeceras de secci√≥n (RECURSOS, COMPARTIR): sin borde inferior --- */
+/* --- Cabeceras de secciÛn (RECURSOS, COMPARTIR): sin borde inferior --- */
 .module-resource ~ .secondary .module-heading {
 	border-bottom: none;
 	border-radius: var(--edatos-border-radius-xs);
 }
 
 /* --- Items de recurso (no activo) ---
-   ">a" (hijo directo) en vez de "a": el <li> tambi√©n contiene el dropdown
+   ">a" (hijo directo) en vez de "a": el <li> tambiÈn contiene el dropdown
    wrench (.dropdown > .dropdown-menu > li > a.dropdown-item); con el
-   combinador descendente estas reglas se colaban dentro del men√∫ desplegable
+   combinador descendente estas reglas se colaban dentro del men˙ desplegable
    y le pisaban el estilo (ver bloque ".dropdown-menu" en ZONA de dropdowns). */
 .module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item > a {
 	font-size: var(--edatos-font-size-sm);
@@ -3834,17 +3834,17 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 }
 
 /* Cada <li> es position:relative (ancla del wrench .dropdown), sin z-index
-   propio; al desplegarse, el men√∫ (position:absolute) sobresale hacia abajo
+   propio; al desplegarse, el men˙ (position:absolute) sobresale hacia abajo
    sobre los <li> siguientes, que al ser posteriores en el DOM se pintan por
-   encima y lo tapan. Elevamos solo el <li> que tiene el men√∫ abierto. */
+   encima y lo tapan. Elevamos solo el <li> que tiene el men˙ abierto. */
 .module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item:has(.dropdown-menu.show) {
 	position: relative;
 	z-index: 10;
 }
 
-/* --- Al hacer hover, ocultar la l√≠nea divisoria propia y la del item anterior
-   (misma l√≠nea que separa ambos), igual que en el sidebar de filtros de
-   b√∫squeda (ver ZONA 8b, .filters .nav-item:not(.active):hover) --- */
+/* --- Al hacer hover, ocultar la lÌnea divisoria propia y la del item anterior
+   (misma lÌnea que separa ambos), igual que en el sidebar de filtros de
+   b˙squeda (ver ZONA 8b, .filters .nav-item:not(.active):hover) --- */
 .module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item:not(.active):hover {
 	border-bottom-color: transparent;
 }
@@ -3853,9 +3853,9 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 	border-bottom-color: transparent;
 }
 
-/* Item activo: ocultar su propia l√≠nea inferior y la del item anterior
-   (misma l√≠nea que separa ambos), igual que en el sidebar de filtros
-   de b√∫squeda (ver ZONA 8b) */
+/* Item activo: ocultar su propia lÌnea inferior y la del item anterior
+   (misma lÌnea que separa ambos), igual que en el sidebar de filtros
+   de b˙squeda (ver ZONA 8b) */
 .module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item.active {
 	border-bottom-color: transparent;
 }
@@ -3875,14 +3875,14 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 	clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%);
 }
 
-/* --- Botones acci√≥n recurso (wrench + dropdown): azul en lugar de rojo heredado --- */
+/* --- Botones acciÛn recurso (wrench + dropdown): azul en lugar de rojo heredado --- */
 .secondary .resources .btn.btn-default {
 	color: var(--edatos-color-secondary-100, #004678);
 	border-color: var(--edatos-color-secondary-100, #004678);
 	background: var(--edatos-color-white-100, #FFF);
 }
 
-/* El wrapper ".dropdown" del bot√≥n es position:absolute (queda fuera del
+/* El wrapper ".dropdown" del botÛn es position:absolute (queda fuera del
    flex del <li>), por lo que sin esto se pega al borde superior del item en
    vez de quedar centrado con el texto del formato. */
 .module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item .dropdown.position-absolute {
@@ -3890,22 +3890,22 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 	transform: translateY(-50%);
 }
 
-/* Men√∫ del wrench: m√°s ancho y m√°s padding a la derecha que el gen√©rico
+/* Men˙ del wrench: m·s ancho y m·s padding a la derecha que el genÈrico
    ".dropdown-menu" (ver arriba), para que quede con el mismo aire que
-   "OPCIONES" en vez de quedar justo al ancho del texto m√°s largo. Escopado a
+   "OPCIONES" en vez de quedar justo al ancho del texto m·s largo. Escopado a
    este dropdown para no afectar a "OPCIONES"/"Explorar", que ya se ven bien. */
 .module-resource ~ .secondary .module.module-narrow .nav-simple .dropdown-menu {
 	min-width: 185px;
-	/* El gen√©rico ".dropdown-menu" (ver arriba) aplana la esquina superior
+	/* El genÈrico ".dropdown-menu" (ver arriba) aplana la esquina superior
 	   DERECHA porque "OPCIONES"/"Explorar" despliegan "bottom-end" (alineados
-	   a la derecha del bot√≥n, expandiendo hacia la izquierda). Este wrench
-	   despliega "bottom-start" (Popper lo alinea a la IZQUIERDA del bot√≥n y
+	   a la derecha del botÛn, expandiendo hacia la izquierda). Este wrench
+	   despliega "bottom-start" (Popper lo alinea a la IZQUIERDA del botÛn y
 	   expande hacia la derecha, sin espacio a la izquierda en el sidebar
-	   angosto), as√≠ que la esquina que debe quedar sin redondear es la
-	   superior IZQUIERDA, donde conecta con el bot√≥n. */
+	   angosto), asÌ que la esquina que debe quedar sin redondear es la
+	   superior IZQUIERDA, donde conecta con el botÛn. */
 	border-radius: 0 var(--edatos-border-radius-sm, 5px) var(--edatos-border-radius-sm, 5px) var(--edatos-border-radius-sm, 5px);
-	/* Bootstrap/Popper a√±aden un offset por defecto de 2px entre el toggle y
-	   el men√∫, y fijan "margin: 0px" inline (Popper), que gana sobre reglas
+	/* Bootstrap/Popper aÒaden un offset por defecto de 2px entre el toggle y
+	   el men˙, y fijan "margin: 0px" inline (Popper), que gana sobre reglas
 	   externas sin !important; hace falta !important para cancelarlo. */
 	margin-top: -2px !important;
 }
@@ -3917,15 +3917,15 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 
 /* Bootstrap fuerza width:100% en ".dropdown-item"; combinado con el margin de
    arriba, el resaltado de hover se desborda y se recorta por un lado en vez
-   de quedar centrado con aire sim√©trico (mismo problema ya documentado para
+   de quedar centrado con aire simÈtrico (mismo problema ya documentado para
    "Explorar" en #dataset-resources, ver ZONA 5). width:auto deja que el
-   modelo de caja de bloque normal reste los m√°rgenes por los dos lados. */
+   modelo de caja de bloque normal reste los m·rgenes por los dos lados. */
 .module-resource ~ .secondary .module.module-narrow .nav-simple .dropdown-menu li a.dropdown-item {
 	width: auto;
 }
 
 /* Bootstrap define ".btn-default:hover"/".btn-light:hover" con !important;
-   hace falta otro !important (con m√°s especificidad) para ganarle. */
+   hace falta otro !important (con m·s especificidad) para ganarle. */
 .secondary .resources .btn.btn-default:hover {
 	background: var(--edatos-color-secondary-100, #004678) !important;
 	border-color: var(--edatos-color-secondary-100, #004678) !important;
@@ -3936,8 +3936,8 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 	color: inherit;
 }
 
-/* Estado abierto (Bootstrap a√±ade ".show" tambi√©n al bot√≥n, no solo al men√∫):
-   mismo patr√≥n que el bot√≥n "Explorar" (.btn-primary.dropdown-toggle.show,
+/* Estado abierto (Bootstrap aÒade ".show" tambiÈn al botÛn, no solo al men˙):
+   mismo patrÛn que el botÛn "Explorar" (.btn-primary.dropdown-toggle.show,
    ver ZONA 5) y que el "OPCIONES" del navbar (.btn-navbar). */
 .secondary .resources .btn.btn-default.show {
 	background: var(--edatos-color-secondary-100, #004678) !important;
@@ -4002,7 +4002,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 }
 
 /* ============================================================
-   9. FORMULARIOS ‚Äî Inputs, Buttons, Select, Textarea
+   9. FORMULARIOS ó Inputs, Buttons, Select, Textarea
    ============================================================ */
 
 /* ---- Botones base ---- */
@@ -4026,7 +4026,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 	            color var(--transition-base);
 }
 
-/* Bot√≥n primario */
+/* BotÛn primario */
 .btn-primary {
 	background-image: none;
 	background-color: var(--edatos-color-white-100);
@@ -4071,7 +4071,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 	border-color: var(--edatos-color-secondary-100);
 }
 
-/* Bot√≥n secundario */
+/* BotÛn secundario */
 .btn-default {
 	background-image: none;
 	background-color: var(--edatos-color-white-100, #ffffff);
@@ -4086,7 +4086,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 	color: var(--edatos-color-gray-80, #333333);
 }
 
-/* Bot√≥n de b√∫squeda (icono lupa en homepage) ‚Äî alineado con statistical-operations-external */
+/* BotÛn de b˙squeda (icono lupa en homepage) ó alineado con statistical-operations-external */
 .search-form .search-input .btn,
 .search-form .search-giant .btn {
 	background-color: var(--edatos-color-white-100);
@@ -4120,7 +4120,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
     height: 16px;
 	color: var(--edatos-color-gray-60);
 }
-/* ---- Selector de orden (Relevancia) ‚Äî hover ---- */
+/* ---- Selector de orden (Relevancia) ó hover ---- */
 #field-order-by:hover {
 	background-color: var(--edatos-color-secondary-100, #004678);
 	color: var(--edatos-color-white-100, #FFF);
@@ -4196,7 +4196,7 @@ textarea:focus {
 	outline: none;
 }
 
-/* Inputs espec√≠ficos de formularios scheming */
+/* Inputs especÌficos de formularios scheming */
 div.input-prepend input:nth-child(4) {
 	width: 100%;
 }
@@ -4212,7 +4212,7 @@ div.input-prepend input:nth-child(2) {
 
 
 /* ============================================================
-   10. TABS ‚Äî Conjuntos de datos / Acerca de (Figma Listado_conjunto_datos)
+   10. TABS ó Conjuntos de datos / Acerca de (Figma Listado_conjunto_datos)
    ============================================================ */
 
 /* Contenedor de tabs */
@@ -4273,7 +4273,7 @@ body .nav-tabs .nav-link.active:focus {
 }
 
 /* ============================================================
-   11. COMPONENTES GLOBALES ‚Äî Badges, Tags, Alerts, Modals
+   11. COMPONENTES GLOBALES ó Badges, Tags, Alerts, Modals
    ============================================================ */
 
 .badge {
@@ -4328,10 +4328,10 @@ i.fa.fa-search {
 
 
 /* ============================================================
-   13. SHOWCASE ‚Äî Listado de colecciones (/es/showcase)
+   13. SHOWCASE ó Listado de colecciones (/es/showcase)
    ============================================================ */
 
-/* Grid responsive con CSS grid (sin afectar otras p√°ginas) */
+/* Grid responsive con CSS grid (sin afectar otras p·ginas) */
 ul.showcase-grid {
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
@@ -4342,13 +4342,13 @@ ul.showcase-grid {
 	height: auto !important /*se setea por medio de js position: relative;height: auto;*/;
 	/* ".control-order-by" (core CKAN) es "float:right" dentro de ".search-form"
 	   y no se limpia: al ser este grid un contenedor "display:grid" (nuevo BFC),
-	   evita solapar ese float encogi√©ndose ("shrink-to-fit") en vez de ocupar
+	   evita solapar ese float encogiÈndose ("shrink-to-fit") en vez de ocupar
 	   el ancho completo de ".module-content". "clear:both" retira el float de
 	   su rango vertical para que el grid pueda estirarse a todo el ancho. */
 	clear: both;
 }
 
-/* Tarjeta colecci√≥n */
+/* Tarjeta colecciÛn */
 li.showcase-card {
 	display: flex;
 	flex-direction: column;
@@ -4361,7 +4361,7 @@ li.showcase-card {
 	border-radius: 0;
 	background-color: transparent;
 	height: auto !important; /* Masonry inyecta height inline; CSS Grid controla la altura */
-	position: static !important; /*se queda porque Masonry reposiciona cada tarjeta para el layout en cuadr√≠cula*/
+	position: static !important; /*se queda porque Masonry reposiciona cada tarjeta para el layout en cuadrÌcula*/
 }
 
 /* Enlace que envuelve imagen + cuerpo */
@@ -4400,7 +4400,7 @@ li.showcase-card {
 	width: 154.953px;
 }
 
-/* Contador de conjuntos de datos ‚Äî encima del t√≠tulo, uppercase */
+/* Contador de conjuntos de datos ó encima del tÌtulo, uppercase */
 .showcase-card-count {
 	display: inline-block;
 	align-self: flex-start;
@@ -4419,7 +4419,7 @@ li.showcase-card {
 	width: 154.953px;
 }
 
-/* T√≠tulo de la colecci√≥n */
+/* TÌtulo de la colecciÛn */
 .showcase-card-title {
 	align-self: stretch;
 	color: var(--edatos-color-primary-100, #004678);
@@ -4435,7 +4435,7 @@ li.showcase-card {
 	text-decoration: underline;
 }
 
-/* Descripci√≥n */
+/* DescripciÛn */
 .showcase-card-notes {
 	flex: 1;
 	color: var(--edatos-color-black-100, #000);
@@ -4463,9 +4463,9 @@ li.showcase-card {
 	}
 }
 
-/* ---- SHOWCASE DETAIL ‚Äî Sidebar panel (t√≠tulo, compartir, licencia) ---- */
+/* ---- SHOWCASE DETAIL ó Sidebar panel (tÌtulo, compartir, licencia) ---- */
 
-/* Fix: evitar que la regla .secondary .module.context-info aplique fondo azul al t√≠tulo */
+/* Fix: evitar que la regla .secondary .module.context-info aplique fondo azul al tÌtulo */
 .showcase-detail-sidebar .module.context-info {
 	width: auto;
 	background: transparent;
@@ -4494,7 +4494,7 @@ li.showcase-card {
 	line-height: 26px;
 }
 
-/* M√≥dulos dentro del sidebar: sin fondo/borde propios, ocupan todo el ancho */
+/* MÛdulos dentro del sidebar: sin fondo/borde propios, ocupan todo el ancho */
 .showcase-detail-sidebar .module.module-narrow {
 	background: transparent;
 	border: none;
@@ -4538,18 +4538,18 @@ li.showcase-card {
 	border-bottom: none;
 }
 
-/* Heading del m√≥dulo info (¬øQu√© son las categor√≠as?) ‚Äî 16px, sin uppercase */
+/* Heading del mÛdulo info (øQuÈ son las categorÌas?) ó 16px, sin uppercase */
 .showcase-detail-sidebar .module.module-narrow.module-shallow .module-heading {
     font-size: var(--edatos-font-size-md);
     text-transform: uppercase;
 }
 
-/* La caja "module-shallow" de arriba tambi√©n envuelve a Licencia, y le
+/* La caja "module-shallow" de arriba tambiÈn envuelve a Licencia, y le
    contagia su font-size de 16px. Eso desalinea su cabecera respecto a la de
    Compartir (14px, base ".module-heading"), pese a que ambas deben verse
    igual. Se reescribe el selector con ".license" para ganar especificidad
    (misma cantidad de clases que la regla de arriba + una) y devolverle el
-   tama√±o base. */
+   tamaÒo base. */
 .showcase-detail-sidebar .module.module-narrow.module-shallow.license .module-heading {
     font-size: var(--edatos-font-size-sm);
 }
@@ -4564,8 +4564,8 @@ li.showcase-card {
 }
 
 /* El enlace de licencia cuelga directamente de <p class="module-content">
-   (√∫nico caso en el proyecto que hace esto), as√≠ que hereda el padding:10px
-   de la regla gen√©rica de arriba. Eso a√±ad√≠a 10px extra solo a este enlace,
+   (˙nico caso en el proyecto que hace esto), asÌ que hereda el padding:10px
+   de la regla genÈrica de arriba. Eso aÒadÌa 10px extra solo a este enlace,
    desalineando su texto respecto al resto de bloques del sidebar (Compartir),
    que no llevan ese padding adicional. */
 .license .module-content > a,
@@ -4574,29 +4574,29 @@ li.showcase-card {
 }
 
 /* El padding-top compartido (5px, en la regla de abajo) se queda corto
-   frente al hueco visual que tiene "Compartir" bajo su cabecera (ah√≠ el
-   propio enlace centra su contenido en una fila de 35px v√≠a
-   align-items:center). En vez de replicar ese mecanismo (afectar√≠a tambi√©n
+   frente al hueco visual que tiene "Compartir" bajo su cabecera (ahÌ el
+   propio enlace centra su contenido en una fila de 35px vÌa
+   align-items:center). En vez de replicar ese mecanismo (afectarÌa tambiÈn
    a la otra caja module-shallow que reusa la regla de abajo, la ayuda de
-   "¬øQu√© son las categor√≠as?"), se sube el padding-top solo para licencia con
+   "øQuÈ son las categorÌas?"), se sube el padding-top solo para licencia con
    un valor fijo. Se repite ".license" dentro de la cadena de clases (en vez
    de dejarlo como selector descendiente suelto) porque la regla de abajo
    (".showcase-detail-sidebar .module.module-narrow.module-shallow
-   .module-content") tiene m√°s clases y su "padding" shorthand pisaba este
-   padding-top aunque se declarara despu√©s en el archivo.
+   .module-content") tiene m·s clases y su "padding" shorthand pisaba este
+   padding-top aunque se declarara despuÈs en el archivo.
 
    El line-height:14px de esa misma regla (line-height == font-size) deja las
-   dos l√≠neas del texto de licencia pegadas entre s√≠; el enlace (sin p
+   dos lÌneas del texto de licencia pegadas entre sÌ; el enlace (sin p
    anidado, ver comentario de arriba sobre ".module-content > a") lo hereda
-   directamente de aqu√≠. Se sube a la proporci√≥n est√°ndar del proyecto para
-   p√°rrafos (--edatos-line-height-md, usada p.ej. en .ckanext-showcase-notes)
+   directamente de aquÌ. Se sube a la proporciÛn est·ndar del proyecto para
+   p·rrafos (--edatos-line-height-md, usada p.ej. en .ckanext-showcase-notes)
    en vez de un valor fijo, para que crezca junto al font-size. */
 .showcase-detail-sidebar .module.module-narrow.module-shallow.license .module-content {
     padding-top: var(--edatos-spacing-y-sm, 8px);
     line-height: var(--edatos-line-height-md, 1.5);
 }
 
-/* Aviso legal: contenido de la secci√≥n licencia */
+/* Aviso legal: contenido de la secciÛn licencia */
 .showcase-detail-sidebar .module.module-narrow.module-shallow .module-content {
 	display: flex;
 	min-height: 35px;
@@ -4636,7 +4636,7 @@ li.showcase-card {
 	text-decoration: underline;
 }
 
-/* ---- DATASET DETAIL ‚Äî Sidebar: t√≠tulo del dataset dentro del wrapper ---- */
+/* ---- DATASET DETAIL ó Sidebar: tÌtulo del dataset dentro del wrapper ---- */
 
 .showcase-detail-sidebar #package-info {
 	width: auto;
@@ -4672,13 +4672,13 @@ li.showcase-card {
 	text-decoration: underline;
 }
 
-/* ---- DATASET DETAIL ‚Äî Descripci√≥n: links subrayados ---- */
+/* ---- DATASET DETAIL ó DescripciÛn: links subrayados ---- */
 
 .notes a {
 	text-decoration: underline;
 }
 
-/* ---- DATASET DETAIL ‚Äî Recursos relacionados (showcases vinculados) ---- */
+/* ---- DATASET DETAIL ó Recursos relacionados (showcases vinculados) ---- */
 
 .recursos-relacionados-section {
 	display: flex;
@@ -4707,7 +4707,7 @@ li.showcase-card {
 	box-sizing: border-box;
 }
 
-/* ---- SHOWCASE DETAIL ‚Äî Sidebar: imagen + contador ---- */
+/* ---- SHOWCASE DETAIL ó Sidebar: imagen + contador ---- */
 
 .showcase-sidebar-image-wrapper {
 	display: flex;
@@ -4755,13 +4755,13 @@ li.showcase-card {
 	text-transform: uppercase;
 }
 
-/* ---- SHOWCASE DETAIL ‚Äî Ocultar iconos en links RRSS ---- */
+/* ---- SHOWCASE DETAIL ó Ocultar iconos en links RRSS ---- */
 
 .showcase-detail-sidebar .social .nav-item a i {
 	display: none !important;
 }
 
-/* ---- SHOWCASE DETAIL ‚Äî T√≠tulo principal (bloque conjuntos) ---- */
+/* ---- SHOWCASE DETAIL ó TÌtulo principal (bloque conjuntos) ---- */
 
 .primary .ckanext-showcase-notes ~ h1,
 .primary h1 {
@@ -4773,7 +4773,7 @@ li.showcase-card {
 	line-height: 120%;
 }
 
-/* ---- SHOWCASE DETAIL ‚Äî Descripci√≥n ---- */
+/* ---- SHOWCASE DETAIL ó DescripciÛn ---- */
 
 .ckanext-showcase-notes {
 	color: var(--edatos-color-black-100);
@@ -4783,7 +4783,7 @@ li.showcase-card {
 	line-height: var(--edatos-line-height-md);
 }
 
-/* ---- SHOWCASE DETAIL ‚Äî Bloque etiquetas ---- */
+/* ---- SHOWCASE DETAIL ó Bloque etiquetas ---- */
 
 .showcase-tags-section {
 	margin-bottom: 20px;
@@ -4839,7 +4839,7 @@ li.showcase-card {
 	text-decoration: none;
 }
 
-/* ---- SHOWCASE DETAIL ‚Äî Encabezado secci√≥n recursos (override CKAN) ---- */
+/* ---- SHOWCASE DETAIL ó Encabezado secciÛn recursos (override CKAN) ---- */
 
 .primary:has(.showcase-tags-section) .module-heading {
 	font-size: var(--edatos-font-size-lg);
@@ -4850,7 +4850,7 @@ li.showcase-card {
 	line-height: 26px;
 }
 
-/* ---- SHOWCASE DETAIL ‚Äî Listado de recursos vinculados ---- */
+/* ---- SHOWCASE DETAIL ó Listado de recursos vinculados ---- */
 
 .recursos-list {
 	display: flex;
@@ -4881,7 +4881,7 @@ li.nav-item.recursos-item {
     border: none;
 }
 
-/* Anular margin negativo de CKAN en el anchor y el border que tendr√≠a el anchor */
+/* Anular margin negativo de CKAN en el anchor y el border que tendrÌa el anchor */
 .module.module-narrow .nav-simple .nav-item.recursos-item a {
 	margin: 0;
 	border-bottom: none;
@@ -4906,7 +4906,7 @@ li.nav-item.recursos-item {
 
 /* CKAN core deja este pseudo-elemento como caja invisible (position: absolute,
    width: 25%, z-index: 1) aunque le quitemos el borde. Al ocupar el 25%
-   izquierdo de ".row.wrapper" con z-index por encima del contenido est√°tico
+   izquierdo de ".row.wrapper" con z-index por encima del contenido est·tico
    del sidebar, intercepta hover/click de los enlaces de la barra de filtros
    (p.ej. RECURSOS/COMPARTIR en la vista de recurso). Se oculta del todo,
    igual que ya hace CKAN core con ".wrapper.no-nav::before". */
@@ -4940,7 +4940,7 @@ li.nav-item.recursos-item {
 }
 
 /* ============================================================
-   14. USER PROFILE SIDEBAR ‚Äî Figma: 2.1 Usuario metamac
+   14. USER PROFILE SIDEBAR ó Figma: 2.1 Usuario metamac
    ============================================================ */
 
 #user-info {
@@ -5010,7 +5010,7 @@ li.nav-item.recursos-item {
 	color: var(--edatos-color-white-100, #ffffff);
 }
 
-/* Bloque de estad√≠sticas: header + lista de items con badge */
+/* Bloque de estadÌsticas: header + lista de items con badge */
 .user-stats-section {
 	display: flex;
 	flex-direction: column;
@@ -5169,7 +5169,7 @@ body .page-header .nav-tabs li a {
 }
 
 /* ============================================================
-   16. DATASET EDIT ‚Äî Panel lateral y tabs (Figma node 11515:6405)
+   16. DATASET EDIT ó Panel lateral y tabs (Figma node 11515:6405)
    ============================================================ */
 
 /* Panel lateral: borde y radio como en Figma (.Filtros) */
@@ -5181,33 +5181,33 @@ body .page-header .nav-tabs li a {
     box-sizing: border-box;
 }
 
-/* Quitar bordes propios de m√≥dulos dentro del panel */
+/* Quitar bordes propios de mÛdulos dentro del panel */
 .dataset-edit-secondary .module.module-narrow {
     border: none;
     margin-bottom: 0;
 }
 
-/* Quitar borde de cualquier .module anidado (evita doble rect√°ngulo) */
+/* Quitar borde de cualquier .module anidado (evita doble rect·ngulo) */
 .dataset-edit-secondary .module {
     border: none;
     box-shadow: none;
 }
 
-/* Anular el borde del aside.secondary en edici√≥n ‚Äî .dataset-edit-secondary ya lo gestiona */
+/* Anular el borde del aside.secondary en ediciÛn ó .dataset-edit-secondary ya lo gestiona */
 .secondary:has(.dataset-edit-secondary) {
     border: none;
     background: transparent;
     padding: 0;
 }
 
-/* Eliminar fondo oscuro del bloque context-info en vista de edici√≥n */
+/* Eliminar fondo oscuro del bloque context-info en vista de ediciÛn */
 .dataset-edit-secondary .module.context-info {
     background: transparent;
     border-radius: 0;
     padding: 0;
 }
 
-/* Ocultar iconos en las pesta√±as de edici√≥n (Figma no los muestra) */
+/* Ocultar iconos en las pestaÒas de ediciÛn (Figma no los muestra) */
 .module-content.page-header .nav-tabs li a i.fa {
     display: none;
 }
@@ -5217,7 +5217,7 @@ body .page-header .nav-tabs li a {
    Figma ref: 11816:6262 (Crear Grupo)
    ============================================================ */
 
-/* 1. Labels ‚Äî 18px SemiBold, sin ":" final (Bootstrap a√±ade ":" v√≠a ::after) */
+/* 1. Labels ó 18px SemiBold, sin ":" final (Bootstrap aÒade ":" vÌa ::after) */
 .form-group .form-label,
 .form-group label.control-label {
     font-size: var(--edatos-font-size-lg);
@@ -5236,7 +5236,7 @@ body .page-header .nav-tabs li a {
     color: var(--edatos-color-danger-100);
 }
 
-/* 3. Inputs y textareas ‚Äî borde 0.5px secondary, radius 5px */
+/* 3. Inputs y textareas ó borde 0.5px secondary, radius 5px */
 .form-group input[type="text"],
 .form-group input[type="url"],
 .form-group .form-control,
@@ -5247,7 +5247,7 @@ body .page-header .nav-tabs li a {
     border-radius: var(--edatos-border-radius-sm);
 }
 
-/* 4. Focus ‚Äî borde primary/50, sin box-shadow */
+/* 4. Focus ó borde primary/50, sin box-shadow */
 .form-group input[type="text"]:focus,
 .form-group input[type="url"]:focus,
 .form-group .form-control:focus,
@@ -5259,7 +5259,7 @@ body .page-header .nav-tabs li a {
     outline: none;
 }
 
-/* 5. Bot√≥n Edit slug ‚Üí azul outline (EDITAR) */
+/* 5. BotÛn Edit slug ? azul outline (EDITAR) */
 .slug-preview .btn.btn-default.btn-xs {
     background: transparent;
     background-image: none;
@@ -5306,7 +5306,7 @@ body .page-header .nav-tabs li a {
     color: var(--edatos-color-primary-100, #004678);
 }
 
-/* 8. Sidebar helper (group create/edit) ‚Äî wrapper con borde secondary */
+/* 8. Sidebar helper (group create/edit) ó wrapper con borde secondary */
 .showcase-detail-sidebar {
     border: 0.5px solid var(--edatos-color-secondary-100, #004678);
     border-radius: var(--edatos-border-radius-sm);
@@ -5327,11 +5327,11 @@ body .page-header .nav-tabs li a {
 }
 
 /* ============================================================
-   18. RESOURCE EDIT ‚Äî Botones y barra de sub-tabs
+   18. RESOURCE EDIT ó Botones y barra de sub-tabs
    Figma node 11813:5303
    ============================================================ */
 
-/* Patr√≥n compartido: botones outline primario ‚Äî Resource Edit */
+/* PatrÛn compartido: botones outline primario ó Resource Edit */
 header.module-content.page-header .content_action .btn,
 aside.secondary .module.resources .nav-simple .btn,
 aside.secondary .module-content > a.btn.btn-sm,
@@ -5370,7 +5370,7 @@ header.module-content.page-header .content_action .btn i {
     font-weight: var(--edatos-font-weight-light);
 }
 
-/* Bot√≥n "Administrar" ‚Äî propiedades espec√≠ficas */
+/* BotÛn "Administrar" ó propiedades especÌficas */
 header.module-content.page-header .content_action .btn {
     display: inline-flex;
     align-items: center;
@@ -5380,7 +5380,7 @@ header.module-content.page-header .content_action .btn {
     white-space: nowrap;
 }
 
-/* Bot√≥n "A√±adir nuevo recurso" ‚Äî propiedades espec√≠ficas */
+/* BotÛn "AÒadir nuevo recurso" ó propiedades especÌficas */
 aside.secondary .module-content > a.btn.btn-sm {
     white-space: nowrap;
     font-style: normal;
@@ -5390,7 +5390,7 @@ aside.secondary .module-content > a.btn.btn-sm {
     padding: 5px 10px;
 }
 
-/* Bot√≥n "Quitar" (URL clear) ‚Äî propiedades espec√≠ficas */
+/* BotÛn "Quitar" (URL clear) ó propiedades especÌficas */
 .btn-remove-url {
     padding: 5px 10px;
 }
@@ -5430,9 +5430,9 @@ aside.secondary .module-content > a.btn.btn-sm {
 
 
 /* ================================================================
-   19. PAGINACI√ìN - Adaptaci√≥n al dise√±o EDATOS
+   19. PAGINACI”N - AdaptaciÛn al diseÒo EDATOS
    Scope exclusivo: .pagination-wrapper
-   Compatible: Bootstrap 5 ¬∑ Chrome ¬∑ Firefox ¬∑ Edge ¬∑ Safari
+   Compatible: Bootstrap 5 ∑ Chrome ∑ Firefox ∑ Edge ∑ Safari
    ================================================================ */
 
 /* ------------------------------------------------------------------
@@ -5445,7 +5445,7 @@ aside.secondary .module-content > a.btn.btn-sm {
 }
 
 /* ------------------------------------------------------------------
-   2. LISTA ‚Äî reset Bootstrap y centrado
+   2. LISTA ó reset Bootstrap y centrado
    ------------------------------------------------------------------ */
 .pagination-wrapper .pagination,
 .pagination-wrapper ul.pagination {
@@ -5460,7 +5460,7 @@ aside.secondary .module-content > a.btn.btn-sm {
 }
 
 /* ------------------------------------------------------------------
-   3. ITEMS ‚Äî reset Bootstrap
+   3. ITEMS ó reset Bootstrap
    ------------------------------------------------------------------ */
 .pagination-wrapper .pagination > .page-item,
 .pagination-wrapper .pagination > li {
@@ -5468,7 +5468,7 @@ aside.secondary .module-content > a.btn.btn-sm {
 }
 
 /* ------------------------------------------------------------------
-   4. ENLACE BASE ‚Äî todos los botones
+   4. ENLACE BASE ó todos los botones
    ------------------------------------------------------------------ */
 .pagination-wrapper .pagination .page-item .page-link,
 .pagination-wrapper .pagination li a {
@@ -5492,7 +5492,7 @@ aside.secondary .module-content > a.btn.btn-sm {
 }
 
 /* ------------------------------------------------------------------
-   5. HOVER ‚Äî solo botones no activos y no deshabilitados
+   5. HOVER ó solo botones no activos y no deshabilitados
    ------------------------------------------------------------------ */
 .pagination-wrapper .pagination .page-item:not(.active):not(.disabled) .page-link:hover,
 .pagination-wrapper .pagination li:not(.active):not(.disabled) a:hover {
@@ -5502,7 +5502,7 @@ aside.secondary .module-content > a.btn.btn-sm {
 }
 
 /* ------------------------------------------------------------------
-   6. P√ÅGINA ACTIVA
+   6. P¡GINA ACTIVA
    ------------------------------------------------------------------ */
 .pagination-wrapper .pagination .page-item.active .page-link,
 .pagination-wrapper .pagination li.active a {
@@ -5522,7 +5522,7 @@ aside.secondary .module-content > a.btn.btn-sm {
 }
 
 /* ------------------------------------------------------------------
-   7. ESTADO DISABLED ‚Äî oculta solo botones de navegaci√≥n (chevrons)
+   7. ESTADO DISABLED ó oculta solo botones de navegaciÛn (chevrons)
    ------------------------------------------------------------------ */
 .pagination-wrapper .pagination .page-item.disabled .page-link,
 .pagination-wrapper .pagination li.disabled a {
@@ -5536,7 +5536,7 @@ aside.secondary .module-content > a.btn.btn-sm {
 }
 
 /* ------------------------------------------------------------------
-   7b. ELLIPSIS ‚Äî visible, no interactuable, sin borde
+   7b. ELLIPSIS ó visible, no interactuable, sin borde
    ------------------------------------------------------------------ */
 .pagination-wrapper .pagination .page-item.page-ellipsis .page-link {
     display: block;
@@ -5549,7 +5549,7 @@ aside.secondary .module-content > a.btn.btn-sm {
 }
 
 /* ------------------------------------------------------------------
-   8. BOTONES DE NAVEGACI√ìN (chevrons prev/next)
+   8. BOTONES DE NAVEGACI”N (chevrons prev/next)
    ------------------------------------------------------------------ */
 .pagination-wrapper .pagination .page-item .page-link i,
 .pagination-wrapper .pagination li a i {
@@ -5558,7 +5558,7 @@ aside.secondary .module-content > a.btn.btn-sm {
 }
 
 /* ------------------------------------------------------------------
-   9. FOCUS ‚Äî accesibilidad
+   9. FOCUS ó accesibilidad
    ------------------------------------------------------------------ */
 .pagination-wrapper .pagination .page-item .page-link:focus,
 .pagination-wrapper .pagination li a:focus {
@@ -5573,7 +5573,7 @@ aside.secondary .module-content > a.btn.btn-sm {
 }
 
 /* ------------------------------------------------------------------
-   9. RESPONSIVE ‚Äî tablet (< 768px)
+   9. RESPONSIVE ó tablet (< 768px)
    ------------------------------------------------------------------ */
 @media (max-width: 767.98px) {
     .pagination-wrapper .pagination .page-item .page-link,
@@ -5585,7 +5585,7 @@ aside.secondary .module-content > a.btn.btn-sm {
 }
 
 /* ------------------------------------------------------------------
-   10. RESPONSIVE ‚Äî m√≥vil (< 576px)
+   10. RESPONSIVE ó mÛvil (< 576px)
    ------------------------------------------------------------------ */
 @media (max-width: 575.98px) {
     .pagination-wrapper {
@@ -5601,7 +5601,7 @@ aside.secondary .module-content > a.btn.btn-sm {
 }
 
 /* ================================================================
-   Activity Type Dropdown ‚Äî dise√±o ISTAC (Figma node 12460:12921)
+   Activity Type Dropdown ó diseÒo ISTAC (Figma node 12460:12921)
    Selector de tipo de actividad en la vista "Flujo de Actividad"
    del historial de dataset.
    ================================================================ */
@@ -5620,7 +5620,7 @@ aside.secondary .module-content > a.btn.btn-sm {
     margin-bottom: 4px;
 }
 
-/* Select nativo oculto ‚Äî conservado para compatibilidad con activity-stream.js */
+/* Select nativo oculto ó conservado para compatibilidad con activity-stream.js */
 .activity-type-filter__native {
     position: absolute;
     width: 1px;
@@ -5639,7 +5639,7 @@ aside.secondary .module-content > a.btn.btn-sm {
     display: block;
 }
 
-/* Bot√≥n disparador */
+/* BotÛn disparador */
 .activity-type-dropdown__trigger {
     display: flex;
     align-items: center;
@@ -5658,13 +5658,13 @@ aside.secondary .module-content > a.btn.btn-sm {
     transition: border-radius 0.05s ease;
 }
 
-/* Cuando est√° abierto: radio solo en la parte superior, borde inferior transparente */
+/* Cuando est· abierto: radio solo en la parte superior, borde inferior transparente */
 .activity-type-dropdown.abrir .activity-type-dropdown__trigger {
     border-radius: 5px 5px 0 0;
     border-bottom-color: transparent;
 }
 
-/* Chevron ‚Äî rota 180¬∞ al abrir */
+/* Chevron ó rota 180∞ al abrir */
 .activity-type-dropdown__chevron {
     font-size: 12px;
     flex-shrink: 0;
@@ -5676,7 +5676,7 @@ aside.secondary .module-content > a.btn.btn-sm {
 }
 
 /* ----------------------------------------------------------------
-   Men√∫ desplegable
+   Men˙ desplegable
    ---------------------------------------------------------------- */
 .activity-type-dropdown__menu {
     display: none;
@@ -5698,7 +5698,7 @@ aside.secondary .module-content > a.btn.btn-sm {
 }
 
 /* ----------------------------------------------------------------
-   √çtems del men√∫
+   Õtems del men˙
    ---------------------------------------------------------------- */
 .activity-type-dropdown__item {
     display: flex;
@@ -5730,7 +5730,7 @@ aside.secondary .module-content > a.btn.btn-sm {
 }
 
 /* ----------------------------------------------------------------
-   Responsive ‚Äî m√≥vil
+   Responsive ó mÛvil
    ---------------------------------------------------------------- */
 @media (max-width: 575.98px) {
     .activity-type-dropdown__trigger {
@@ -5743,7 +5743,7 @@ aside.secondary .module-content > a.btn.btn-sm {
 }
 
 /* ----------------------------------------------------------------
-   Showcase add ‚Äî select nativo oculto y layout del formulario
+   Showcase add ó select nativo oculto y layout del formulario
    ---------------------------------------------------------------- */
 .showcase-add-native-select {
     position: absolute;
@@ -5760,7 +5760,7 @@ aside.secondary .module-content > a.btn.btn-sm {
 }
 
 /* ----------------------------------------------------------------
-   Add to group (pesta√±a Categor√≠as) ‚Äî select nativo oculto y layout
+   Add to group (pestaÒa CategorÌas) ó select nativo oculto y layout
    ---------------------------------------------------------------- */
 .add-to-group-native-select {
     position: absolute;

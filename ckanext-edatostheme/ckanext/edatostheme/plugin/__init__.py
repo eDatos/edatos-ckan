@@ -53,6 +53,34 @@ _GROUP_CACHE = {}           # {group_id: (timestamp, dict)}
 _GROUP_CACHE_LOCK = threading.Lock()
 _FREQ_TAGS_CACHE = {}       # {lang: (timestamp, list)}
 _FREQ_TAGS_CACHE_LOCK = threading.Lock()
+
+def get_login_error_msg():
+    """Lee y borra el mensaje de error de login almacenado en sesión.
+    Se muestra una única vez en la página destino del redirect de CAS."""
+    from ckan.common import session
+    import ckan.plugins.toolkit as t
+    msg = session.pop('login_error_msg', None)
+    if msg:
+        session.modified = True
+        msg = t._(msg)
+    return msg
+
+
+def clear_login_error():
+    """Endpoint GET que borra el mensaje de error de login de la sesión."""
+    from ckan.common import session
+    from flask import jsonify
+    session.pop('login_error_msg', None)
+    session.modified = True
+    return jsonify({'ok': True}), 200
+
+
+def new_activities_dummy():
+    """
+    Dummy helper to prevent crashes in CKAN 2.9+ where the
+    h.new_activities() helper from ckanext-dashboard was removed.
+    """
+    return 0
 def edatos_pager(page, **kwargs):
     """Paginación con ventana deslizante de 5 páginas y ellipsis.
 
@@ -197,6 +225,81 @@ def new_activities_dummy():
 _GROUP_CACHE_TTL = 60
 _FREQ_TAGS_CACHE_TTL = 120
 
+
+# (ruta relativa al paquete `ckanext.tracking`, línea sin proteger, línea con guarda)
+_TRACKING_TEMPLATE_GUARDS = (
+    (
+        'templates/package/snippets/resource_item.html',
+        "{{ h.popular('views', res.tracking_summary.total, min=10) }}",
+        "{% if res.tracking_summary %}"
+        "{{ h.popular('views', res.tracking_summary.total, min=10) }}"
+        "{% endif %}",
+    ),
+    (
+        'templates/snippets/package_item.html',
+        "{{ h.popular('recent views', package.tracking_summary.recent, min=10)}}",
+        "{% if package.tracking_summary %}"
+        "{{ h.popular('recent views', package.tracking_summary.recent, min=10)}}"
+        "{% endif %}",
+    ),
+)
+
+
+def patch_tracking_templates_guard():
+    """
+    Parche en caliente sobre dos plantillas de CKAN core (`ckanext.tracking`)
+    que acceden a `res.tracking_summary.total` / `package.tracking_summary.recent`
+    sin comprobar antes si el campo existe.
+
+    Causa raíz: `ckan/ckan/templates/package/base.html` hace
+    `{% set pkg = pkg_dict %}` a nivel de plantilla (afecta a todo el árbol de
+    herencia). En `ckanext.activity`'s `package_history` (vista
+    `/dataset/<id>/history/<activity_id>`), `pkg_dict` se reasigna al
+    snapshot archivado (`activity["data"]["package"]`) — un dict "en bruto"
+    que nunca ha pasado por la dictización enriquecida de `package_show`, así
+    que sus recursos no tienen `tracking_summary`. El resultado es un
+    `jinja2.exceptions.UndefinedError` (HTTP 500) al ver el histórico de
+    cualquier dataset.
+
+    No hay hook de plugin que intercepte ese dict antes del render (la vista
+    llama a `tk.render()` directamente), así que la única forma de arreglarlo
+    sin mantener un fork de CKAN es re-escribir esas dos plantillas en disco
+    en el arranque, añadiendo una guarda `{% if ... %}`. Es idempotente
+    (no vuelve a escribir si ya está parcheado) y falla de forma segura y
+    silenciosa-pero-registrada si el contenido esperado no coincide (p. ej.
+    tras una actualización de CKAN que cambie estas plantillas).
+    """
+    import ckanext.tracking
+
+    tracking_root = os.path.dirname(ckanext.tracking.__file__)
+
+    for rel_path, unsafe_line, safe_line in _TRACKING_TEMPLATE_GUARDS:
+        abs_path = os.path.join(tracking_root, rel_path)
+        try:
+            with codecs.open(abs_path, 'r', encoding='utf8') as f:
+                content = f.read()
+        except (IOError, OSError) as exc:
+            log.warning(
+                'edatostheme: no se pudo leer %s para el parche de '
+                'tracking_summary: %s', abs_path, exc)
+            continue
+
+        if safe_line in content:
+            continue  # ya parcheado en un arranque anterior
+
+        if unsafe_line not in content:
+            log.warning(
+                'edatostheme: no se encontró la línea esperada en %s; no '
+                'se aplica el parche de tracking_summary (¿cambió el '
+                'contenido en una nueva versión de CKAN?)', abs_path)
+            continue
+
+        with codecs.open(abs_path, 'w', encoding='utf8') as f:
+            f.write(content.replace(unsafe_line, safe_line))
+
+        log.info(
+            'edatostheme: parcheada %s para evitar HTTP 500 cuando falta '
+            'tracking_summary (p.ej. el histórico de datasets)', abs_path)
 
 def get_freq_tags(lang='tags_es'):
     """
@@ -738,6 +841,7 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         toolkit.add_template_directory(config_, '../templates')
         toolkit.add_public_directory(config_, '../public')
         toolkit.add_resource('../assets', 'ckanext-edatostheme')
+        patch_tracking_templates_guard()
 
     # IBlueprint
     def get_blueprint(self):
