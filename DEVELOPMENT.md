@@ -1,9 +1,9 @@
-
 ## Modo Debug y Flask-DebugToolbar
 
 ### Descripción general
 
 CKAN soporta Flask-DebugToolbar para depuración en desarrollo. Esta barra de herramientas proporciona:
+
 - **Panel de plantillas**: Muestra todas las plantillas Jinja2 renderizadas en cada petición (fundamental para el desarrollo del tema)
 - **Consultas SQLAlchemy**: Análisis de consultas a la base de datos
 - **Inspección de peticiones/respuestas**: Cabeceras, variables, rutas
@@ -23,23 +23,22 @@ Si se quiere usar una base de datos PostgreSQL externa (host: `ckan-docker-db-1`
 
 #### Configuración del .env
 
-* Se debe de modificar la configuración para las bases de datos, las propiedades son:
+- Se debe de modificar la configuración para las bases de datos, las propiedades son:
   - `CKAN_SQLALCHEMY_URL`
   - `CKAN_DATASTORE_WRITE_URL`
   - `CKAN_DATASTORE_READ_URL`
   - `CKANEXT__XLOADER__JOBS_DB__URI`
 
-* En `dockerfiles/.env` se deben actualizar lo siguiente:
+- En `dockerfiles/.env` se deben actualizar lo siguiente:
   - `CKAN_SITE_URL`
   - `CKANEXT__PAGE_URL`
   - `CKANEXT__DCAT__BASE_URI`
   - `CKANEXT__CAS__APPLICATION_URL`
 
-* Comprobar en la configuración JSON de la extensión **ckanext-edatostheme** (`dockerfiles/src/ckanext-edatostheme/ckanext/edatostheme/etc/config.json`), la propiedad:
+- Comprobar en la configuración JSON de la extensión **ckanext-edatostheme** (`dockerfiles/src/ckanext-edatostheme/ckanext/edatostheme/etc/config.json`), la propiedad:
   - `siteURL` — Debe coincidir con `CKAN_SITE_URL` (ej: `https://192.168.10.110:8443/`)
 
-* Comprobar las rutas de los endpoints en la configuración JSON de las extensiones (`config.json` de edatostheme y edatosscheming) por si han cambiado.
-
+- Comprobar las rutas de los endpoints en la configuración JSON de las extensiones (`config.json` de edatostheme y edatosscheming) por si han cambiado.
 
 Flask-DebugToolbar ya viene instalado en la imagen Docker (`Flask-DebugToolbar 0.16.0`). Si no está presente:
 
@@ -57,6 +56,7 @@ docker compose -f dockerfiles/docker-compose.yml exec -u root ckan sed -i 's/^de
 ```
 
 **Verificar:**
+
 ```bash
 docker compose -f dockerfiles/docker-compose.yml exec ckan grep "^debug" /srv/app/ckan.ini
 # Debería mostrar: debug = true
@@ -105,6 +105,7 @@ docker compose -f dockerfiles/docker-compose.yml ps ckan
 4. El panel mostrará secciones incluyendo **Templates**, **SQLAlchemy**, **Time**, **HTTP Headers**, etc.
 
 **Si la barra no aparece:**
+
 - Forzar recarga: `Ctrl + F5` (limpia la caché)
 - Probar en modo incógnito/privado del navegador
 - Revisar la consola del navegador (`F12` → Consola) en busca de errores JavaScript
@@ -131,11 +132,13 @@ El panel de **Templates** es el más útil para el desarrollo del tema:
 Las plantillas se buscan en este **orden de prioridad** (el orden de las extensiones configuradas importa):
 
 1. **Tu tema** (máxima prioridad):
+
    ```
    /srv/app/src/ckanext-edatostheme/ckanext/edatostheme/templates/
    ```
 
 2. **Otras extensiones**:
+
    ```
    /srv/app/src/ckanext-*/ckanext/*/templates/
    ```
@@ -166,11 +169,11 @@ exit
 
 #### Ejemplos de sobreescritura de plantillas
 
-| Plantilla mostrada en la barra | Ubicación más probable para editar |
-|--------------------------------|------------------------------------|
-| `package/read_base.html` | `/srv/app/src/ckanext-edatostheme/ckanext/edatostheme/templates/package/read_base.html` |
+| Plantilla mostrada en la barra    | Ubicación más probable para editar                                                                     |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `package/read_base.html`          | `/srv/app/src/ckanext-edatostheme/ckanext/edatostheme/templates/package/read_base.html`                |
 | `package/snippets/resources.html` | Comprobar primero el tema, si no en `/srv/app/src/ckan/ckan/templates/package/snippets/resources.html` |
-| `base.html` | Normalmente CKAN core: `/srv/app/src/ckan/ckan/templates/base.html` |
+| `base.html`                       | Normalmente CKAN core: `/srv/app/src/ckan/ckan/templates/base.html`                                    |
 
 ### Comandos de verificación
 
@@ -188,6 +191,7 @@ docker compose -f dockerfiles/docker-compose.yml logs ckan --tail 100 | grep -i 
 ```
 
 Deberían verse entradas en los logs como:
+
 ```
 [ckan.config.middleware] Debug mode is enabled
 ```
@@ -223,6 +227,7 @@ docker compose -f dockerfiles/docker-compose.yml restart ckan
 **Causa 3: Modo multiproceso**
 
 Flask-DebugToolbar no funciona con múltiples workers WSGI. Comprobar la configuración de uWSGI:
+
 ```bash
 docker compose -f dockerfiles/docker-compose.yml exec ckan grep -E "processes|workers" /srv/app/ckan.ini
 ```
@@ -240,6 +245,7 @@ docker compose -f dockerfiles/docker-compose.yml exec ckan cat /srv/app/src/ckan
 ```
 
 Debe coincidir con el valor de `CKAN_SITE_URL` en `dockerfiles/.env`, por ejemplo:
+
 ```json
 "siteURL": "https://192.168.10.110:8443/"
 ```
@@ -305,4 +311,127 @@ docker compose -f dockerfiles/docker-compose.yml logs ckan -f
 
 # Comprobar estado del debug
 docker compose -f dockerfiles/docker-compose.yml exec ckan grep "^debug" /srv/app/ckan.ini
+```
+
+## Base de datos PostgreSQL 18 con restore de un dump (`ckan_default.dump`)
+
+### Descripción general
+
+Para trabajar con una copia de datos real (por ejemplo un dump `ckan_default.dump` exportado de
+otro entorno), existe un stack Docker independiente en `dockerfiles/postgresql18/` que levanta un
+**PostgreSQL 18 persistente** y restaura el dump automáticamente en su primer arranque, sustituyendo
+al servicio `db` (PostgreSQL 16) sin tocar la configuración de CKAN. El dump se generó originalmente
+con PostgreSQL 12; restaurarlo sobre PostgreSQL 18 es el camino de actualización estándar soportado
+por `pg_restore` (más detalle en el README del stack).
+
+El contenedor se une a la misma red externa que usa el stack principal
+(`dockerfiles_ckan-net`) con el alias `db`, así que `CKAN_SQLALCHEMY_URL` y el resto de variables de
+conexión en `.env` siguen funcionando sin cambios. Solo uno de los dos `db` (el PG16 original o
+este PG18) puede estar levantado a la vez, ya que comparten alias de red y puerto `5432`.
+
+Documentación completa (manual paso a paso, verificación, notas de diseño y solución de
+problemas): [`dockerfiles/postgresql18/README.md`](dockerfiles/postgresql18/README.md).
+
+### Requisito
+
+El dump a restaurar debe existir en `herramientas/bbdd/ckan_default.dump` (ver
+[`herramientas/bbdd/README.md`](herramientas/bbdd/README.md); ruta relativa usada por
+`docker-compose.pg18.yml`). Es un dump en formato custom de `pg_dump` (`pg_restore`), no un SQL
+plano.
+
+### Primer arranque (con restore automático)
+
+```powershell
+cd dockerfiles
+
+# 1. Parar el PostgreSQL 16 actual para liberar el alias 'db' y el puerto 5432
+docker compose stop db
+
+# 2. Construir y levantar el PG18 (el restore se ejecuta automáticamente, tarda varios minutos)
+docker compose -f postgresql18/docker-compose.pg18.yml up -d --build
+
+# 3. Seguir el progreso hasta ver "database system is ready to accept connections" y (healthy)
+docker compose -f postgresql18/docker-compose.pg18.yml logs -f db
+
+# 4. Reconectar CKAN y los workers a la nueva BD
+docker compose restart ckan jobs-worker gather-consumer fetch-consumer
+
+# 5. Reindexar Solr: su índice queda desincronizado al cambiar de base de datos
+docker compose exec ckan ckan -c /srv/app/ckan.ini search-index rebuild -c
+```
+
+### Reindexar Solr tras el cambio de base de datos
+
+Solr mantiene su **propio índice**, separado de Postgres. Al conmutar entre el PG16 original y este
+PG18 (o tras rehacer el restore) los datasets indexados quedan desincronizados con la BD activa:
+hay que reconstruir el índice para que las búsquedas y los listados de CKAN reflejen los datos
+reales. Detalle completo en
+[`dockerfiles/postgresql18/README.md`](dockerfiles/postgresql18/README.md#reindexar-solr-tras-el-cambio-de-base-de-datos).
+
+```bash
+# Reindexado completo (limpia el índice y lo reconstruye con los datos de la BD activa)
+docker compose -f dockerfiles/docker-compose.yml exec ckan ckan -c /srv/app/ckan.ini search-index rebuild
+
+# Comprobar consistencia entre BD y Solr
+docker compose -f dockerfiles/docker-compose.yml exec ckan ckan -c /srv/app/ckan.ini search-index check
+```
+
+### Problema conocido: `ckan` en bucle de reinicios al reconectar tras el cambio de BD
+
+Al ejecutar el paso 4 (`docker compose restart ckan ...`) el contenedor `ckan` puede entrar en un
+**bucle de reinicios** (cada 10-40s, sin llegar nunca a `healthy`). Si esto ocurre, cualquier
+`docker compose exec` en curso —incluido el `search-index rebuild` del paso 5— se corta con
+**exit code 137** a mitad de la reindexación.
+
+**No es un problema de Solr ni del cambio de base de datos**: es un bug de idempotencia en
+`dockerfiles/ckan/docker-entrypoint.d/05_setup_dcat_endpoint.sh`. La primera vez que arranca CKAN,
+el script añade una línea a `/srv/app/ckan.ini` escribiendo vía `/tmp` (sin problema). En cualquier
+arranque **posterior** (como el que provoca este `restart`) la línea ya existe y el script usa
+`sed -i` directamente sobre `/srv/app/ckan.ini`, lo que requiere permiso de escritura sobre el
+**directorio** `/srv/app/` — permiso que el usuario `ckan` no tiene (`sed: couldn't open temporary
+file /srv/app/sedXXXXXX: Permission denied`). Al tener `set -e`, ese fallo aborta el arranque y el
+contenedor se reinicia en bucle.
+
+**Fix en caliente** (persiste solo mientras el contenedor esté vivo; se pierde si se recrea desde
+cero):
+
+```powershell
+docker compose -f dockerfiles/docker-compose.yml exec -u root ckan chmod g+w /srv/app
+
+# Confirmar que se estabiliza (RestartCount deja de subir, Health llega a "healthy")
+docker inspect dockerfiles-ckan-1 --format 'RestartCount={{.RestartCount}} Health={{.State.Health.Status}}'
+```
+
+Corrección definitiva pendiente (no aplicada, fuera del alcance de este documento): ajustar el
+permiso de `/srv/app/` en el `Dockerfile` de `ckan`, o hacer que `05_setup_dcat_endpoint.sh` escriba
+siempre vía `/tmp` en lugar de `sed -i` in situ. Detalle completo del diagnóstico en
+[`dockerfiles/postgresql18/README.md`](dockerfiles/postgresql18/README.md#solución-bucle-de-reinicios-de-ckan-sed-permission-denied).
+
+### Referencia rápida de comandos
+
+```bash
+# Día a día: bajar / subir sin perder datos
+docker compose -f dockerfiles/postgresql18/docker-compose.pg18.yml stop
+docker compose -f dockerfiles/postgresql18/docker-compose.pg18.yml start
+
+# Bajar del todo manteniendo el volumen persistente
+docker compose -f dockerfiles/postgresql18/docker-compose.pg18.yml down
+
+# Rehacer el restore desde cero (borra los datos de este PG18)
+docker compose -f dockerfiles/postgresql18/docker-compose.pg18.yml down -v
+docker compose -f dockerfiles/postgresql18/docker-compose.pg18.yml up -d --build
+
+# Volver al PostgreSQL 16 original
+docker compose -f dockerfiles/postgresql18/docker-compose.pg18.yml down
+docker compose -f dockerfiles/docker-compose.yml start db
+docker compose -f dockerfiles/docker-compose.yml restart ckan jobs-worker gather-consumer fetch-consumer
+docker compose -f dockerfiles/docker-compose.yml exec ckan ckan -c /srv/app/ckan.ini search-index rebuild -c
+
+# Verificar versión, tablas restauradas y datos
+docker compose -f dockerfiles/postgresql18/docker-compose.pg18.yml exec db psql -U postgres -c "SELECT version();"
+docker compose -f dockerfiles/postgresql18/docker-compose.pg18.yml exec db psql -U postgres -d ckandb -c "\dt"
+docker compose -f dockerfiles/postgresql18/docker-compose.pg18.yml exec db psql -U postgres -d ckandb -c "SELECT count(*) FROM package;"
+
+# Reindexar Solr (obligatorio tras cualquier cambio de base de datos)
+docker compose -f dockerfiles/docker-compose.yml exec ckan ckan -c /srv/app/ckan.ini search-index rebuild -c
 ```

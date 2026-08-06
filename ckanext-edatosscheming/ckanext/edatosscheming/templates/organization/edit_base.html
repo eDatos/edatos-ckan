@@ -1,6 +1,6 @@
 {% ckan_extends %}
 
-{% block subtitle %}{{ h.get_translated(c.group_dict, "title") }} - {{ _('Organizations') }}{% endblock %}
+{% block subtitle %}{{ h.get_translated(group_dict, "title") }} - {{ _('Organizations') }}{% endblock %}
 
 {% block breadcrumb_content %}
   <li>{% link_for _('Organizations'), controller='organization', action='index', named_route=group_type + '_index' %}</li>
