@@ -8,17 +8,23 @@
     {% block image %}
     <div class="image">
       {% block icon %}
-        <span class="subject-area-icon {{ group.name}}"></span>
+        <span class="group-home-fa-glyph {{ group.name}}"></span>
       {% endblock %}
-    </div>
-    {% endblock %}
-    {% block heading %}
-    <h1 class="heading">
-      {{ h.get_translated(group, 'title') or group.display_name }}
-      {% if group.state == 'deleted' %}
-        [{{ _('Deleted') }}]
+      {% block heading %}
+      <h1 class="heading">
+        {{ h.get_translated(group, 'title') or group.display_name }}
+        {% if group.state == 'deleted' %}
+          [{{ _('Deleted') }}]
+        {% endif %}
+      </h1>
+      {% endblock %}
+      {% if show_nums %}
+      <div class="nums-inner">
+        <span class="nums-label">{{ _('Datasets') }}</span>
+        <span class="nums-count">{{ group.package_count }}</span>
+      </div>
       {% endif %}
-    </h1>
+    </div>
     {% endblock %}
     {% block description %}
     {% if group.description %}

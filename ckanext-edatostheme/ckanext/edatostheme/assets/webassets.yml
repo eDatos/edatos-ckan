@@ -11,5 +11,6 @@ edatostheme-fonts:
 
 edatostheme-js:
   output: ckanext-edatostheme/%(version)s-edatostheme_js.js
-  contents: 
+  contents:
     - js/i18n.js
+    - js/resource-view-inline-toolbar.js

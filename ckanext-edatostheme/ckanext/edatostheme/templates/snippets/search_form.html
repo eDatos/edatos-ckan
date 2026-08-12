@@ -1,0 +1,207 @@
+{% import 'macros/form.html' as form %}
+
+{% set placeholder = placeholder if placeholder else _('Search datasets...') %}
+{% set sorting = sorting if sorting else [(_('Name Ascending'), 'name asc'), (_('Name Descending'), 'name desc')] %}
+{% set search_class = search_class if search_class else 'search-giant' %}
+{% set no_bottom_border = no_bottom_border if no_bottom_border else false %}
+{% set form_id = form_id if form_id else false %}
+
+<form {% if form_id %}id="{{ form_id }}" {% endif %}class="search-form{% if no_bottom_border %} no-bottom-border{% endif %}" method="get">
+
+  {% block search_input %}
+    <div class="input-group search-input-group">
+      <input aria-label="{% block header_site_search_label %}{{ placeholder }}{% endblock %}" id="field-giant-search" type="text" class="form-control input-lg" name="q" value="{{ query }}" autocomplete="off" placeholder="{{ placeholder }}">
+      {% block search_input_button %}
+      <button class="btn btn-secondary btn-lg" type="submit" value="search" aria-label="{{_('Submit')}}">
+        <i class="fa fa-search"></i>
+      </button>
+      {% endblock %}
+    </div>
+  {% endblock %}
+
+  {% block search_search_fields %}
+    {% if fields -%}
+      {% set ns = namespace(clean_fields=[]) %}
+      {% for name, value in fields %}
+        {% if name != 'q' and name != 'sort' %}
+          {% set ns.clean_fields = ns.clean_fields + [(name, value)] %}
+        {% endif %}
+      {% endfor %}
+      <span>{{ form.hidden_from_list(fields=ns.clean_fields) }}</span>
+    {%- endif %}
+  {% endblock %}
+
+  {% block search_sortby %}
+    {% if sorting %}
+      {# Determine the label of the currently selected option #}
+      {% set ns = namespace(current_label='') %}
+      {% for label, value in sorting %}
+        {% if sorting_selected == value %}
+          {% set ns.current_label = label %}
+        {% endif %}
+      {% endfor %}
+      {% if not ns.current_label %}
+        {% set ns.current_label = sorting[0][0] %}
+      {% endif %}
+
+      <div class="form-group control-order-by">
+        <label for="field-order-by" class="sr-only">{{ _('Order by') }}</label>
+
+        {# Hidden native select — keeps form submission and CKAN/HTMX change detection working #}
+        <select id="field-order-by" name="sort"
+                class="form-control form-select sort-select-hidden"
+                aria-hidden="true" tabindex="-1">
+          {% for label, value in sorting %}
+            {% if label and value %}
+              <option value="{{ value }}"{% if sorting_selected == value %} selected="selected"{% endif %}>{{ label }}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+
+        {# Custom dropdown — full visual control, syncs with the hidden select on change #}
+        <div class="sort-custom-dropdown" role="combobox" aria-haspopup="listbox" aria-expanded="false">
+          <button type="button" class="sort-custom-dropdown__trigger" aria-expanded="false" aria-controls="sort-dropdown-menu">
+            <span class="sort-custom-dropdown__current-label">{{ ns.current_label }}</span>
+            <i class="fa-thin fa-chevron-down sort-custom-dropdown__chevron" aria-hidden="true"></i>
+          </button>
+          <ul id="sort-dropdown-menu" class="sort-custom-dropdown__menu" role="listbox" aria-label="{{ _('Order by') }}">
+            {% for label, value in sorting %}
+              {% if label and value %}
+                <li class="sort-custom-dropdown__item"
+                    role="option"
+                    data-value="{{ value }}"
+                    aria-selected="{{ 'true' if sorting_selected == value else 'false' }}">
+                  <span class="sort-custom-dropdown__item-text">{{ label }}</span>
+                </li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+
+        {% block search_sortby_button %}
+        <button class="btn btn-secondary js-hide" type="submit">{{ _('Go') }}</button>
+        {% endblock %}
+      </div>
+    {% endif %}
+  {% endblock %}
+
+  {% block search_title %}
+    <h1>
+    {% if not error %}
+      {% snippet 'snippets/search_result_text.html', query=query, count=count, type=type %}
+    {% else %}
+      Error
+    {% endif %}
+    </h1>
+  {% endblock %}
+
+  {% block search_facets %}
+    {% if facets %}
+      <p class="filter-list">
+        {% for field in facets.fields %}
+          {% set search_facets_items = facets.search.get(field)['items'] if facets.search and field in facets.search else [] %}
+          <span class="facet">{{ facets.titles.get(field) }}:</span>
+          {% for value in facets.fields[field] %}
+            <span class="filtered pill">
+              {%- if facets.translated_fields and (field,value) in facets.translated_fields -%}
+                {{ facets.translated_fields[(field,value)] }}
+              {%- else -%}
+                {{ h.list_dict_filter(search_facets_items, 'name', 'display_name', value) }}
+              {%- endif %}
+              <a href="{{ facets.remove_field(field, value) }}" class="remove" aria-label="{{ _('Remove applied filter: {value}').format(value=value) }}" data-bs-title="{{ _('Remove') }}" data-bs-toggle="tooltip" hx-boost="true"><i class="fa fa-times"></i></a>
+            </span>
+          {% endfor %}
+        {% endfor %}
+      </p>
+      <a class="show-filters btn btn-secondary">{{ _('Filter Results') }}</a>
+    {% endif %}
+  {% endblock %}
+
+</form>
+
+{% if show_empty and count == 0 and not error %}
+  {% trans %}
+    <p class="extra">Please try another search.</p>
+  {% endtrans %}
+{% endif %}
+
+{% if error %}
+  {% trans %}
+    <p id="search-error"><strong>There was an error while searching.</strong> Please try again.</p>
+  {% endtrans %}
+{% endif %}
+
+<script>
+(function () {
+  'use strict';
+
+  function initSortDropdown(dropdown) {
+    if (dropdown.dataset.sortInit) return;
+    dropdown.dataset.sortInit = '1';
+
+    var trigger = dropdown.querySelector('.sort-custom-dropdown__trigger');
+    var menu = dropdown.querySelector('.sort-custom-dropdown__menu');
+    var currentLabel = dropdown.querySelector('.sort-custom-dropdown__current-label');
+    var orderByContainer = dropdown.closest('.control-order-by');
+    var hiddenSelect = orderByContainer ? orderByContainer.querySelector('.sort-select-hidden') : null;
+
+    if (!trigger || !menu || !hiddenSelect) return;
+
+    trigger.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var isOpen = dropdown.classList.contains('abrir');
+      closeAll();
+      if (!isOpen) {
+        dropdown.classList.add('abrir');
+        trigger.setAttribute('aria-expanded', 'true');
+        dropdown.setAttribute('aria-expanded', 'true');
+      }
+    });
+
+    menu.querySelectorAll('.sort-custom-dropdown__item').forEach(function (item) {
+      item.addEventListener('click', function () {
+        var value = item.getAttribute('data-value');
+
+        hiddenSelect.value = value;
+        currentLabel.textContent = item.textContent.trim();
+
+        menu.querySelectorAll('.sort-custom-dropdown__item').forEach(function (i) {
+          i.classList.remove('sort-custom-dropdown__item--selected');
+          i.setAttribute('aria-selected', 'false');
+        });
+        item.classList.add('sort-custom-dropdown__item--selected');
+        item.setAttribute('aria-selected', 'true');
+
+        closeAll();
+
+        // Rebuild URL replacing only the sort parameter to avoid duplicates
+        // caused by hidden fields from form.hidden_from_list(fields=fields)
+        var params = new URLSearchParams(window.location.search);
+        params.set('sort', value);
+        window.location.search = params.toString();
+      });
+    });
+  }
+
+  function closeAll() {
+    document.querySelectorAll('.sort-custom-dropdown.abrir').forEach(function (d) {
+      d.classList.remove('abrir');
+      var t = d.querySelector('.sort-custom-dropdown__trigger');
+      if (t) t.setAttribute('aria-expanded', 'false');
+      d.setAttribute('aria-expanded', 'false');
+    });
+  }
+
+  document.addEventListener('click', closeAll);
+
+  function initAll() {
+    document.querySelectorAll('.sort-custom-dropdown').forEach(initSortDropdown);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAll);
+  } else {
+    initAll();
+  }
+})();
+</script>

@@ -14,11 +14,16 @@
 #}
 {% set url_action = pkg.type ~ ('_resource.edit' if url_is_edit and can_edit else '_resource.read') %}
 {% set url = url or h.url_for(url_action, id=pkg.name, resource_id=res.id) %}
+{% set res_name_translated = h.dge_dataset_form_value(res.name_translated) %}
+{% set res_description_translated = h.dge_dataset_form_value(res.description_translated) %}
+{% set res_display_name = res_name_translated or (res_description_translated.split('.')[0] if res_description_translated else _('Unnamed resource')) %}
 
 <li class="resource-item" data-id="{{ res.id }}">
   {% block resource_item_title %}
-  <a class="heading" href="{{ url }}" title="{{ res.name or res.description }}">
-    {{ h.resource_display_name(res)}}<span class="format-label" property="dc:format" data-format="{{ res.format.lower() or 'data' }}">{{ h.get_translated(res, 'format') }}</span>
+  <a class="heading" href="{{ url }}" title="{{ res_name_translated or res_description_translated }}">
+    <span class="resource-format-icon" property="dc:format" data-format="{{ res.format.lower() or 'data' }}">
+    </span>
+    {{ res_display_name }}
     {% if res.tracking_summary and res.tracking_summary.total > 50 %}
       <span class="popular" title="{{ res.tracking_summary.total }} {{ _('views') }}">{{ _('Popular') }}</span>
     {% endif %}
@@ -28,11 +33,11 @@
   {% if not url_is_edit %}
   <div class="dropdown btn-group">
     <a href="#" class="btn btn-primary dropdown-toggle" type="button" id="dropdownExplorer" data-bs-toggle="dropdown" aria-expanded="false">
-      <i class="fa fa-share"></i>
+      <i class="fa-thin fa-square-up-right"></i>
       {{ _('Explore') }}
-      <span class="caret"></span>
+      <i class="fa-thin fa-chevron-down"></i>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="dropdownExplorer">
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownExplorer">
       {% block resource_item_explore_links %}
         {% block explore_view %}
           <li>

@@ -34,7 +34,15 @@ RUN pip3 install -e 'git+https://github.com/ckan/ckanext-harvest.git@v1.6.1#egg=
 RUN pip3 install -e 'git+https://github.com/ckan/ckanext-scheming.git#egg=ckanext-scheming'
 RUN pip3 install -e 'git+https://github.com/ckan/ckanext-fluent.git#egg=ckanext-fluent'
 
+### Version unificada del proyecto (inyectada por CI desde el tag de GitLab) ###
+# Default VACIO a proposito: si no se pasa --build-arg (build local sin
+# pipeline), cada setup.py debe ver la env var vacia (falsy) para activar su
+# propio fallback de snapshot con fecha, en vez de grabar un placeholder fijo.
+ARG CKAN_EDATOS_VERSION=
+ENV CKAN_EDATOS_VERSION=${CKAN_EDATOS_VERSION}
+
 ### edatosscheming ###
+RUN rm -rf src/ckanext-edatosscheming/*.egg-info
 RUN pip3 install -r src/ckanext-edatosscheming/requirements.txt && \
     pip3 install -e src/ckanext-edatosscheming
 

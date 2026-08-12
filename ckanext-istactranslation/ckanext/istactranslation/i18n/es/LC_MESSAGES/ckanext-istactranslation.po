@@ -3271,8 +3271,8 @@ msgid "E.g. environment"
 msgstr "Ej: ambiente"
 
 #: ckan/templates/home/snippets/search.html:6
-msgid "Search data"
-msgstr "Buscar datos"
+msgid "What data do you need?"
+msgstr "¿Qué datos necesitas?"
 
 #: ckan/templates/home/snippets/search.html:16
 msgid "Popular tags"
@@ -4254,11 +4254,11 @@ msgstr "URL de Trackback"
 
 #: ckan/templates/snippets/facet_list.html:80
 msgid "Show More {facet_type}"
-msgstr "Mostrar Más {facet_type}"
+msgstr "Mostrar más {facet_type}"
 
 #: ckan/templates/snippets/facet_list.html:83
 msgid "Show Only Popular {facet_type}"
-msgstr "Mostrar Solamente Populares {facet_type}"
+msgstr "Mostrar solamente {facet_type} populares"
 
 #: ckan/templates/snippets/facet_list.html:87
 msgid "There are no {facet_type} that match this search"

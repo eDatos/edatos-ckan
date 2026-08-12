@@ -13,18 +13,3 @@
       </p>
     {% endif %}
   {% endblock %}
-
-  {% block search_title %}
-  {% set count = h.edatostheme_get_count_all_datasets() %}
-    <div class="counter-box">
-     <div class="box">
-      <div class="count-all-datasets">
-      {% if count %}
-        <h1>{{ h.localised_number(count) +' ' + _('Datasets') }}</h1>
-      {% else %}
-        <h1> {{ _('No datasets found')  }} </h1>
-      {% endif %}
-      </div>
-     </div>
-    </div>
-  {% endblock %}

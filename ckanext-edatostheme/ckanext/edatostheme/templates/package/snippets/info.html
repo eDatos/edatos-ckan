@@ -16,7 +16,9 @@ Example:
         <div class="module-content">
           {% block package_info_inner %}
             {% block heading %}
-              <h1 class="heading">{{ h.dataset_display_name(pkg) }}</h1>
+              <h1 class="heading">
+                <a href="{{ h.url_for(pkg.type ~ '.read', id=pkg.name) }}">{{ h.dataset_display_name(pkg) }}</a>
+              </h1>
             {% endblock %}
           {% endblock %}
         </div>

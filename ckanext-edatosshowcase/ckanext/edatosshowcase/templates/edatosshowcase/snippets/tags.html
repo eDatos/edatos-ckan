@@ -13,7 +13,7 @@
             <a class="{% block tag_list_item_class_en %}tag{% endblock %}" href="{{ h.url_for(showcase_index_route, tags_es=tag) }}">{{ h.truncate(tag, 22) }}
             </a>
             {% elif lang == 'es' %}
-            <a class="{% block tag_list_item_class_es %}tag{% endblock %}" href="{{ h.url_for(showcase_index_route, tags_en=tag) }}">{{ h.truncate(tag, 22) }}}}
+            <a class="{% block tag_list_item_class_es %}tag{% endblock %}" href="{{ h.url_for(showcase_index_route, tags_en=tag) }}">{{ h.truncate(tag, 22) }}
             </a>
             {% elif lang == 'ca' %}
             <a class="{% block tag_list_item_class_ca %}tag{% endblock %}" href="{{ h.url_for(showcase_index_route, tags_ca=tag) }}">{{ h.truncate(tag, 22) }}

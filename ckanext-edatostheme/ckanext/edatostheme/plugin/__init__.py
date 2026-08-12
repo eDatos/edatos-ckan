@@ -4,32 +4,39 @@ import codecs
 import json
 import logging
 import os
+import time
+import threading
+
+import ckan.lib.base as base
+import ckan.lib.helpers as h
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 import requests
 import ckanext.scheming.helpers as sh
 
+from urllib.parse import urlparse
+
 from bs4 import BeautifulSoup
 from ckan.common import _, request, c
 from collections import OrderedDict
 from ckan.model import Package
-from ckan.model.tag import Tag
 from ckan.lib.plugins import DefaultTranslation
 from ckantoolkit import config, h, _, request, abort
 from flask import Blueprint, current_app
-from flask import request as fr
+from flask import render_template_string
 
+import logging
 log = logging.getLogger(__name__)
 
+_REQUESTS_TIMEOUT = 10      # segundos — timeout para todas las llamadas requests.get
 
+
+abort = base.abort
 dirname = os.path.dirname(__file__)
 CONFIG_FILE_PATH = os.path.join(dirname, '../etc/config.json')
 FOOTER_PATH = os.path.join(dirname, '../templates/footer.html')
-HEADER_PATH = os.path.join(dirname, '../templates/header_meta.html')
 FAVICON_PATH = os.path.join(dirname, '../public/favicon.ico')
 SCRIPT_PATH = os.path.join(dirname, '../assets/js/i18n.js')
-HEADER_WHITE_BAR_PATH = os.path.join(
-    dirname, '../code_templates/header_white_bar.html')
 BURGER_BUTTON_PATH = os.path.join(
     dirname, '../code_templates/burger_button.html')
 SCRIPT_TEMPLATE = os.path.join(dirname, '../code_templates/i18n.js')
@@ -38,30 +45,260 @@ HERE = os.path.abspath(os.path.dirname(__file__))
 I18N_DIR = os.path.join(HERE, "../i18n")
 APP_ID_FOR_ANALYTICS = 'ckan-catalog'
 
+# ---------------------------------------------------------------------------
+# Caché en memoria para helpers costosos (group, freq_tags).
+# TTL por defecto: 60s para grupos, 120s para tags frecuentes.
+# ---------------------------------------------------------------------------
+_GROUP_CACHE = {}           # {group_id: (timestamp, dict)}
+_GROUP_CACHE_LOCK = threading.Lock()
+_FREQ_TAGS_CACHE = {}       # {lang: (timestamp, list)}
+_FREQ_TAGS_CACHE_LOCK = threading.Lock()
+
+def get_login_error_msg():
+    """Lee y borra el mensaje de error de login almacenado en sesión.
+    Se muestra una única vez en la página destino del redirect de CAS."""
+    from ckan.common import session
+    import ckan.plugins.toolkit as t
+    msg = session.pop('login_error_msg', None)
+    if msg:
+        session.modified = True
+        msg = t._(msg)
+    return msg
+
+
+def clear_login_error():
+    """Endpoint GET que borra el mensaje de error de login de la sesión."""
+    from ckan.common import session
+    from flask import jsonify
+    session.pop('login_error_msg', None)
+    session.modified = True
+    return jsonify({'ok': True}), 200
+
+
 def new_activities_dummy():
     """
     Dummy helper to prevent crashes in CKAN 2.9+ where the
     h.new_activities() helper from ckanext-dashboard was removed.
     """
     return 0
+def edatos_pager(page, **kwargs):
+    """Paginación con ventana deslizante de 5 páginas y ellipsis.
+
+    Comportamiento (ejemplo con 117 páginas):
+      pág   1 →       [1*][2][3][4][5] … [117] [»]   (sin «)
+      pág   4 → [«] [1][2][3][4*][5][6] … [117] [»]
+      pág   5 → [«] [1]…[3][4][5*][6][7] … [117] [»]
+      pág   7 → [«] [1]…[5][6][7*][8][9] … [117] [»]
+      pág 114 → [«] [1]…[112][113][114*][115][116][117] [»]
+      pág 116 → [«] [1]…[113][114][115][116*][117] [»]
+      pág 117 → [«] [1]…[113][114][115][116][117*]      (sin »)
+    """
+    from markupsafe import Markup
+    from ckan.lib.helpers import pager_url
+
+    if not page.last_page or page.last_page <= 1:
+        return Markup('')
+
+    first   = page.first_page   # siempre 1
+    last    = page.last_page
+    current = page.page
+
+    WINDOW = 5       # tamaño del bloque deslizante
+    HALF   = WINDOW // 2  # páginas a cada lado (= 2)
+
+    # Generador de URLs: usa el propio de la instancia o el helper de CKAN
+    url_gen = getattr(page, '_url_generator', None) or pager_url
+
+    def make_url(p):
+        params = dict(getattr(page, 'kwargs', {}))
+        params.update(kwargs)
+        params['page'] = p
+        return url_gen(**params)
+
+    # Ventana deslizante centrada en current
+    win_start = max(first, current - HALF)
+    win_end   = min(last,  current + HALF)
+
+    # Si la ventana quedó reducida por un extremo, compensar por el otro
+    if win_end - win_start < WINDOW - 1:
+        if win_start == first:
+            win_end = min(last, win_start + WINDOW - 1)
+        else:
+            win_start = max(first, win_end - WINDOW + 1)
+
+    window_pages = set(range(win_start, win_end + 1))
+    visible = sorted({first, last} | window_pages)
+
+    li_items = []
+
+    # Botón anterior (chevron izquierdo)
+    if page.previous_page:
+        li_items.append(
+            '<li class="page-item">'
+            '<a class="page-link" href="{url}">'
+            '<i class="fa-thin fa-chevrons-left"></i>'
+            '</a></li>'.format(url=make_url(page.previous_page))
+        )
+    else:
+        li_items.append(
+            '<li class="page-item disabled">'
+            '<a class="page-link">'
+            '<i class="fa-thin fa-chevrons-left"></i>'
+            '</a></li>'
+        )
+
+    # Páginas con ellipsis entre huecos
+    prev_num = None
+    for p in visible:
+        if prev_num is not None and p - prev_num > 1:
+            li_items.append(
+                '<li class="page-item page-ellipsis">'
+                '<span class="page-link">&hellip;</span>'
+                '</li>'
+            )
+        if p == current:
+            li_items.append(
+                '<li class="page-item active">'
+                '<a class="page-link">{p}</a>'
+                '</li>'.format(p=p)
+            )
+        else:
+            li_items.append(
+                '<li class="page-item">'
+                '<a class="page-link" href="{url}">{p}</a>'
+                '</li>'.format(url=make_url(p), p=p)
+            )
+        prev_num = p
+
+    # Botón siguiente (chevron derecho)
+    if page.next_page:
+        li_items.append(
+            '<li class="page-item">'
+            '<a class="page-link" href="{url}">'
+            '<i class="fa-thin fa-chevrons-right"></i>'
+            '</a></li>'.format(url=make_url(page.next_page))
+        )
+    else:
+        li_items.append(
+            '<li class="page-item disabled">'
+            '<a class="page-link">'
+            '<i class="fa-thin fa-chevrons-right"></i>'
+            '</a></li>'
+        )
+
+    html = (
+        '<div class="pagination-wrapper">'
+        '<ul class="pagination justify-content-center">'
+        + ''.join(li_items) +
+        '</ul>'
+        '</div>'
+    )
+    return Markup(html)
+
+
+_GROUP_CACHE_TTL = 60
+_FREQ_TAGS_CACHE_TTL = 120
+
+
+# (ruta relativa al paquete `ckanext.tracking`, línea sin proteger, línea con guarda)
+_TRACKING_TEMPLATE_GUARDS = (
+    (
+        'templates/package/snippets/resource_item.html',
+        "{{ h.popular('views', res.tracking_summary.total, min=10) }}",
+        "{% if res.tracking_summary %}"
+        "{{ h.popular('views', res.tracking_summary.total, min=10) }}"
+        "{% endif %}",
+    ),
+    (
+        'templates/snippets/package_item.html',
+        "{{ h.popular('recent views', package.tracking_summary.recent, min=10)}}",
+        "{% if package.tracking_summary %}"
+        "{{ h.popular('recent views', package.tracking_summary.recent, min=10)}}"
+        "{% endif %}",
+    ),
+)
+
+
+def patch_tracking_templates_guard():
+    """
+    Parche en caliente sobre dos plantillas de CKAN core (`ckanext.tracking`)
+    que acceden a `res.tracking_summary.total` / `package.tracking_summary.recent`
+    sin comprobar antes si el campo existe.
+
+    Causa raíz: `ckan/ckan/templates/package/base.html` hace
+    `{% set pkg = pkg_dict %}` a nivel de plantilla (afecta a todo el árbol de
+    herencia). En `ckanext.activity`'s `package_history` (vista
+    `/dataset/<id>/history/<activity_id>`), `pkg_dict` se reasigna al
+    snapshot archivado (`activity["data"]["package"]`) — un dict "en bruto"
+    que nunca ha pasado por la dictización enriquecida de `package_show`, así
+    que sus recursos no tienen `tracking_summary`. El resultado es un
+    `jinja2.exceptions.UndefinedError` (HTTP 500) al ver el histórico de
+    cualquier dataset.
+
+    No hay hook de plugin que intercepte ese dict antes del render (la vista
+    llama a `tk.render()` directamente), así que la única forma de arreglarlo
+    sin mantener un fork de CKAN es re-escribir esas dos plantillas en disco
+    en el arranque, añadiendo una guarda `{% if ... %}`. Es idempotente
+    (no vuelve a escribir si ya está parcheado) y falla de forma segura y
+    silenciosa-pero-registrada si el contenido esperado no coincide (p. ej.
+    tras una actualización de CKAN que cambie estas plantillas).
+    """
+    import ckanext.tracking
+
+    tracking_root = os.path.dirname(ckanext.tracking.__file__)
+
+    for rel_path, unsafe_line, safe_line in _TRACKING_TEMPLATE_GUARDS:
+        abs_path = os.path.join(tracking_root, rel_path)
+        try:
+            with codecs.open(abs_path, 'r', encoding='utf8') as f:
+                content = f.read()
+        except (IOError, OSError) as exc:
+            log.warning(
+                'edatostheme: no se pudo leer %s para el parche de '
+                'tracking_summary: %s', abs_path, exc)
+            continue
+
+        if safe_line in content:
+            continue  # ya parcheado en un arranque anterior
+
+        if unsafe_line not in content:
+            log.warning(
+                'edatostheme: no se encontró la línea esperada en %s; no '
+                'se aplica el parche de tracking_summary (¿cambió el '
+                'contenido en una nueva versión de CKAN?)', abs_path)
+            continue
+
+        with codecs.open(abs_path, 'w', encoding='utf8') as f:
+            f.write(content.replace(unsafe_line, safe_line))
+
+        log.info(
+            'edatostheme: parcheada %s para evitar HTTP 500 cuando falta '
+            'tracking_summary (p.ej. el histórico de datasets)', abs_path)
 
 def get_freq_tags(lang='tags_es'):
     """
-    Obtiene los facets de los datasets (package) usando package_search.
-    Devuelve los 5 tags mas frecuentes en el idioma indicado
-    :param lang: Idioma de los tags a recuperar
+    Obtiene los 5 tags más frecuentes en el idioma indicado.
+    Resultado cacheado en memoria con TTL para evitar un package_search
+    por cada render de la página de inicio.
     """
-    package = toolkit.get_action('package_search')(data_dict = {
+    now = time.time()
+    with _FREQ_TAGS_CACHE_LOCK:
+        cached = _FREQ_TAGS_CACHE.get(lang)
+        if cached and (now - cached[0]) < _FREQ_TAGS_CACHE_TTL:
+            return cached[1]
+
+    package = toolkit.get_action('package_search')(data_dict={
         'rows': 0,
         'facet.field': ['tags_en', 'tags_ca', 'tags_es']
     })
-    
-    items = package["search_facets"][lang]["items"]
+    items = package["search_facets"].get(lang, {}).get("items", [])
     items_ordenados = sorted(items, key=lambda item: item['count'], reverse=True)
-
     tags_limit_5 = [item['display_name'] for item in items_ordenados[:5]]
+
+    with _FREQ_TAGS_CACHE_LOCK:
+        _FREQ_TAGS_CACHE[lang] = (now, tags_limit_5)
     return tags_limit_5
-    
+
 
 def get_tag(tag_id):
     try:
@@ -71,13 +308,36 @@ def get_tag(tag_id):
     except toolkit.ObjectNotFound:
         return None
 
+
 def get_group(group_id):
-    try:
-        group_dict = toolkit.get_action('group_show')(
-            {}, {'id': group_id})
-        return group_dict
-    except toolkit.ObjectNotFound:
-        return None
+    """
+    Devuelve el dict de un grupo. Resultado cacheado por ID con TTL para
+    evitar una acción group_show por cada ítem de faceta o dropdown.
+    """
+    now = time.time()
+    with _GROUP_CACHE_LOCK:
+        cached = _GROUP_CACHE.get(group_id)
+        if cached and (now - cached[0]) < _GROUP_CACHE_TTL:
+            return cached[1]
+
+    group_dict = toolkit.get_action('group_show')(data_dict={'id': group_id})
+
+    with _GROUP_CACHE_LOCK:
+        _GROUP_CACHE[group_id] = (now, group_dict)
+    return group_dict
+
+
+def get_groups_dict():
+    """
+    Devuelve un dict {name: group_dict} con todos los grupos activos,
+    cargados en una sola acción group_list. Úsese en plantillas para
+    evitar el patrón N+1 de get_group por ítem.
+    """
+    groups = toolkit.get_action('group_list')(data_dict={
+        'all_fields': True,
+        'include_extras': True,
+    })
+    return {g['name']: g for g in groups}
 
 def get_license(license_id):
     return Package.get_license_register().get(license_id)
@@ -110,6 +370,11 @@ def get_facet_items_dict(facet, limit=None, exclude_active=False, default_sort=T
             not c.search_facets.get(facet).get('items'):
         return []
 
+    # Calcular el idioma una sola vez fuera del bucle (P2)
+    language = sh.lang()
+    # Convertir params a frozenset una sola vez para evitar reconstructing el iterador por ítem
+    active_params = set(request.params.items())
+
     facets = []
 
     for facet_item in c.search_facets.get(facet)['items']:
@@ -119,12 +384,11 @@ def get_facet_items_dict(facet, limit=None, exclude_active=False, default_sort=T
         display_name = h.get_translated(facet_item, 'name') or facet_item.get('display_name')
         title_translated = facet_item.get('title_translated', {})
 
-        language = sh.lang()
         if language in title_translated:
             display_name = title_translated[language]
 
         facets.append({
-            'active': (facet, facet_item['name']) in request.params.items(),
+            'active': (facet, facet_item['name']) in active_params,
             'name': facet_item['name'],
             'count': facet_item['count'],
             'display_name': display_name
@@ -195,6 +459,29 @@ def get_delink_value():
     return config.get('ckanext.gobcangroups.flag.for.delink', 'load_manual')
 
 
+def get_legal_notice_license():
+    '''Returns the license entry (from the shared license register, see
+    etc/licenses/ckan-licenses.json) configured as this deployment's legal notice,
+    or None if not configured
+    '''
+    license_id = config.get('ckanext.edatostheme.legal_notice_license_id', '')
+    return get_license(license_id) if license_id else None
+
+
+def get_legal_notice_url():
+    '''Returns the legal notice URL for this deployment, or an empty string if not configured
+    '''
+    license = get_legal_notice_license()
+    return license._data.get('url', '') if license else ''
+
+
+def get_legal_notice_label():
+    '''Returns the legal notice link label for this deployment, or an empty string if not configured
+    '''
+    license = get_legal_notice_license()
+    return license._data.get('title', '') if license else ''
+
+
 def abort_redirect():
     abort(403, _(u'Not authorized to see this page'))
 
@@ -209,7 +496,7 @@ def get_url(endpoint, key):
     headers = {
         'Content-Type': 'application/json'
     }
-    header_request = requests.get(url=url, headers=headers).content
+    header_request = requests.get(url=url, headers=headers, timeout=_REQUESTS_TIMEOUT).content
     json_header_request = json.loads(header_request)
 
     return json_header_request['value']
@@ -231,6 +518,15 @@ def get_request_lang(cookie_name):
     if not lang:
         lang = config.get('ckan.locale_default', 'es')
     return lang
+
+
+def get_theme():
+    """
+    Lee el theme del query param '?theme=' y si no existe, de la cookie 'theme'.
+    Solo devuelve el valor si es uno de los temas aceptados.
+    """
+    theme = request.args.get('theme') or request.cookies.get('theme')
+    return theme
 
 
 def save_header(header):
@@ -257,26 +553,72 @@ def get_header_url(json_config):
     endpoint = json_config['metadata']['endpoint']
     header_key = json_config['metadata']['navbarPathKey']
     cookie_key = json_config['metadata'].get('cookieKey')
+    endpoint = json_config['metadata']['endpoint']
     title = json_config['metadata']['appName']
+    navbar_url = get_url(endpoint, header_key)
+    url = "%s?appName=%s&appId=%s&appUrl=%s" % (navbar_url, title, APP_ID_FOR_ANALYTICS, json_config['metadata']['siteURL'])
 
-    header_url = get_url(endpoint, header_key)
+    theme = get_theme()
+    if theme:
+        url = "%s&organisation=%s" % (url, theme)
 
     # Obtener el nombre real de la cookie una sola vez
     cookie_name = get_url(endpoint, cookie_key) if cookie_key else None
     # Idioma del request: cookie > idioma CKAN > locale por defecto
     request_lang = get_request_lang(cookie_name)
 
-    url = "%s?appName=%s&appUrl=%s&appId=%s" % (
-        header_url,
-        title,
-        json_config['metadata']['siteURL'],
-        APP_ID_FOR_ANALYTICS,
-    )
-
     if cookie_name:
         url = "%s&%s=%s" % (url, cookie_name, request_lang)
 
     return url
+
+
+def get_app_style_css_url():
+    """
+    Devuelve la URL del CSS standalone de complementos-apps (estilos
+    generales y variables --edatos-*), leida de la propiedad
+    'metamac.app.style.css.url' en el servicio de metadatos comun.
+
+    Pensado para enlazarse con <link rel="stylesheet"> en paginas sin
+    cabecera (p. ej. el iframe de package/snippets/resource_view_embed.html),
+    que no reciben las variables --edatos-* porque estas se definen dentro
+    del HTML del header/footer externo y esas paginas no lo renderizan.
+    """
+    try:
+        with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
+            json_config = json.loads(config_file.read())
+            endpoint = json_config['metadata']['endpoint']
+            css_key = json_config['metadata']['cssPathKey']
+            url = get_url(endpoint, css_key)
+
+            theme = get_theme()
+            if theme:
+                url = "%s?organisation=%s" % (url, theme)
+
+            return url
+    except Exception as e:
+        log.error("Error al obtener la URL del CSS de complementos-apps: %s", e)
+        return ""
+
+
+def get_app_fontawesome_css_url():
+    """
+    Devuelve la URL del CSS de Font Awesome PRO (peso "Light", usado por los
+    iconos de la barra de DataTables Buttons en la vista de recurso), leida
+    de la propiedad 'fontawesomeCssPath' en config.json y combinada con el
+    host del 'endpoint' del servicio de metadatos comun (este ultimo ya
+    varia por cliente/entorno), para no hardcodear el dominio.
+    """
+    try:
+        with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
+            json_config = json.loads(config_file.read())
+            endpoint = json_config['metadata']['endpoint']
+            path = json_config['metadata']['fontawesomeCssPath']
+            parsed_endpoint = urlparse(endpoint)
+            return "%s://%s%s" % (parsed_endpoint.scheme, parsed_endpoint.netloc, path)
+    except Exception as e:
+        log.error("Error al obtener la URL del CSS de Font Awesome: %s", e)
+        return ""
 
 
 def get_altered_header(header, json_config):
@@ -288,21 +630,12 @@ def get_altered_header(header, json_config):
     :param json_config: Fichero de configuracion cargado como
                         un diccionario JSON
     """
-    container_class = json_config['metadata']['htmlCodeClass']
     alteredHeader = header
 
-    with codecs.open(HEADER_WHITE_BAR_PATH, 'r', encoding='utf8') as white_bar_file:
-        code = white_bar_file.read()
-        # Annadimos los botones en la barra blanca
-        soup = BeautifulSoup(alteredHeader, 'html.parser')
-        container = soup.find(id=container_class)
-        container.append(BeautifulSoup(code, 'html.parser'))
-        alteredHeader = soup.prettify('utf-8')
-
-        # Annadimos el boton hamburguesa
-        soup = BeautifulSoup(alteredHeader, 'html.parser')
-        container = soup.find(
-            class_='d-flex justify-content-end align-items-center')
+    # Annadimos el boton hamburguesa
+    soup = BeautifulSoup(alteredHeader, 'html.parser')
+    container = soup.find(
+        class_='d-flex justify-content-end align-items-center')
 
     if container is not None:
         with codecs.open(BURGER_BUTTON_PATH, 'r', encoding='utf8') as burger_button_file:
@@ -319,8 +652,8 @@ def get_altered_header(header, json_config):
     if div:
         span = div.find('span')
         if span and title.lower() in span.text.strip().lower():
-            span.string = f"{{{{ _('{title}') }}}}"
-            
+            span.string = _(title)
+
     alteredHeader = soup.prettify('utf-8')
 
     alteredHeader = alteredHeader.replace(b'&gt;', b'>').decode('utf8')
@@ -328,31 +661,21 @@ def get_altered_header(header, json_config):
     return alteredHeader
 
 
-def load_header():
+def get_html_header():
     """
-    Carga el header el externo y lo devuelve como HTML listo
-    para inyectar al template. No escribe a disco: cada request obtiene
-    el header en el idioma de la cookie del usuario actual.
-    
-        1. Carga la configuración desde el archivo JSON
-        2. Obtiene la URL del header usando la configuración y el idioma del usuario
-        3. Descarga el header desde la URL obtenida
-        4. Modifica el header para incluir los botones dinámicos
-        5. Renderiza el header con Jinja2 para procesar las expresiones embebidas
-        6. Devuelve el header listo para inyectar en el template
-        
+    Descarga, modifica y devuelve el HTML del header en cada petición,
+    sin caché. No lee ni escribe ficheros en disco.
     """
     try:
         with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
             json_config = json.loads(config_file.read())
-            header = requests.get(url=get_header_url(json_config)).content
-            html = get_altered_header(header=header, json_config=json_config)
-            # Renderizar expresiones Jinja2 embebidas ({{ _('...') }}, etc.)
-            rendered = current_app.jinja_env.from_string(html).render()
-            return rendered
-    except Exception as e:
-        log.error("Error al cargar el header: %s", e)
-        return ""
+        html = requests.get(
+            url=get_header_url(json_config), timeout=_REQUESTS_TIMEOUT).content
+        altered = get_altered_header(header=html, json_config=json_config)
+        return render_template_string(altered)
+    except Exception as exc:
+        log.warning('edatostheme: error al obtener header: %s', exc)
+        return ''
 
 # Map de vistas que se quieren restringir acceso
 REDIRECT_VIEWS = (
@@ -368,6 +691,13 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
     plugins.implements(plugins.ITemplateHelpers)
     plugins.implements(plugins.IPackageController, inherit=True)
     plugins.implements(plugins.IFacets)
+    plugins.implements(plugins.IActions)
+
+    # IActions
+
+    def get_actions(self):
+        from ckanext.edatostheme.actions import status_show
+        return {'status_show': status_show}
 
     # IConfigurer
 
@@ -393,7 +723,7 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         return "%s?appName=%s&appUrl=%s" % (get_url(endpoint, favicon_key),
                                             json_config['metadata']['appName'],
                                             json_config['metadata']['siteURL'])
-        pass
+
 
     def __save_footer(self, footer):
         """
@@ -456,7 +786,8 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
             json_config = json.loads(config_file.read())
             footer = requests.get(
-                url=self.__get_footer_ulr(json_config)).content
+                url=self.__get_footer_ulr(json_config),
+                timeout=_REQUESTS_TIMEOUT).content
 
             footer = footer.decode('utf-8')
 
@@ -469,7 +800,8 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
             json_config = json.loads(config_file.read())
             favicon = requests.get(
-                url=self.__get_favicon_url(json_config)).content
+                url=self.__get_favicon_url(json_config),
+                timeout=_REQUESTS_TIMEOUT).content
             self.__save_favicon(favicon=favicon)
 
     def _i18n_script_filler(self):
@@ -484,13 +816,13 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
     # IConfigurer
 
     def update_config(self, config_):
-        # self._load_header_footer()
         self._load_footer()
         self._load_favicon()
         self._i18n_script_filler()
         toolkit.add_template_directory(config_, '../templates')
         toolkit.add_public_directory(config_, '../public')
         toolkit.add_resource('../assets', 'ckanext-edatostheme')
+        patch_tracking_templates_guard()
 
     # IBlueprint
     def get_blueprint(self):
@@ -499,6 +831,13 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         if REDIRECT_VIEWS:
             for route_, view_, function_ in REDIRECT_VIEWS:
                 edatos.add_url_rule(route_, view_, function_)
+
+        edatos.add_url_rule(
+            '/user/clear_login_error',
+            'clear_login_error',
+            clear_login_error,
+            methods=['GET'],
+        )
 
         return [edatos]
 
@@ -512,14 +851,21 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             'edatostheme_get_count_all_datasets': get_count_all_datasets,
             'package_showcase_list': package_showcase_list,
             'edatostheme_get_delink_value': get_delink_value,
-            'edatos_get_header': load_header,
+            'edatos_get_legal_notice_url': get_legal_notice_url,
+            'edatos_get_legal_notice_label': get_legal_notice_label,
+            'edatos_get_header': get_html_header,
+            'edatos_get_app_style_css_url': get_app_style_css_url,
+            'edatos_get_app_fontawesome_css_url': get_app_fontawesome_css_url,
             'edatos_get_facet_items_dict': get_facet_items_dict,
             'edatos_schema_get_label_for_facet': schema_get_label_for_facet,
             'edatos_get_license': get_license,
             'edatos_get_group': get_group,
+            'edatos_get_groups_dict': get_groups_dict,
             'edatos_get_tag': get_tag,
             'edatos_get_freq_tags': get_freq_tags,
             'new_activities': new_activities_dummy,
+            'edatos_get_login_error_msg': get_login_error_msg,
+            'edatos_pager': edatos_pager,
         }
 
     # ITranslation

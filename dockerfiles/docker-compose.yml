@@ -39,15 +39,17 @@ services:
     volumes:
       - ./src/ckanext-edatostheme/ckanext/edatostheme/etc/config.json:/srv/app/src/ckanext-edatostheme/ckanext/edatostheme/etc/config.json
       - ./src/ckanext-edatosscheming/ckanext/edatosscheming/etc/config.json:/srv/app/src/ckanext-edatosscheming/ckanext/edatosscheming/etc/config.json
+      - ../ckanext-edatostheme/ckanext/edatostheme/assets/styles/custom.css:/srv/app/src/ckanext-edatostheme/ckanext/edatostheme/assets/styles/custom.css
       - ckan_storage:/var/lib/ckan
       - pip_cache:/root/.cache/pip
       - site_packages:/usr/lib/python3.10/site-packages
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:5000/api/action/status_show"]
-      interval: 60s
+      test: ["CMD", "wget", "-qO", "/dev/null", "--post-data=", "http://localhost:5000/api/action/status_show"]
+      interval: 30s
       timeout: 10s
-      retries: 3
+      retries: 5
+      start_period: 120s
   
   jobs-worker:
     build:

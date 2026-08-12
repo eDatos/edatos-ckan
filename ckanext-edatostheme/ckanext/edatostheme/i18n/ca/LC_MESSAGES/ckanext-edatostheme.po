@@ -768,6 +768,10 @@ msgstr "{z}Z"
 msgid "{y}Y"
 msgstr "{y}Y"
 
+#: ckan/lib/helpers.py:1062
+msgid "Search {object_type}s..."
+msgstr "Cercar {object_type}s..."
+
 #: ckan/lib/helpers.py:1817
 msgid "Unknown"
 msgstr "Desconegut"
@@ -2711,8 +2715,20 @@ msgid "E.g. environment"
 msgstr "p.ex. medi ambient"
 
 #: ckan/templates/home/snippets/search.html:6
-msgid "Search data"
-msgstr "Cercar dades"
+msgid "What data do you need?"
+msgstr "Quines dades necessites?"
+
+#: ckanext/edatostheme/templates/home/snippets/search.html
+msgid "Quick access to"
+msgstr "Accés ràpid a"
+
+#: ckanext/edatostheme/templates/home/snippets/search.html
+msgid "open datasets"
+msgstr "conjunts de dades oberts"
+
+#: ckanext/edatostheme/templates/home/snippets/search.html
+msgid "All"
+msgstr "Tots"
 
 #: ckan/templates/home/snippets/search.html:16
 msgid "Popular tags"
@@ -3127,6 +3143,10 @@ msgstr "Editar recurs"
 msgid "Views"
 msgstr "Vistes"
 
+#: ckanext/edatostheme/templates_priority/package/resource_read.html:33
+msgid "Download all"
+msgstr "Descarregar-ho tot"
+
 #: ckan/templates/package/resource_read.html:40
 msgid "API Endpoint"
 msgstr "Punt final de la API"
@@ -3190,6 +3210,14 @@ msgstr ""
 #: ckan/templates/package/resource_read.html:175
 msgid "Additional Information"
 msgstr "Informació addicional"
+
+#: ckanext/edatostheme/templates/package/resource_read.html
+msgid "Metadatos"
+msgstr "Metadades"
+
+#: ckanext/edatostheme/templates_priority/datastore/snippets/dictionary_view.html
+msgid "Diccionario de datos"
+msgstr "Diccionari de dades"
 
 #: ckan/templates/package/resource_read.html:179
 #: ckan/templates/package/snippets/additional_info.html:6
@@ -3645,7 +3673,7 @@ msgstr "Previsualització del recurs"
 
 #: ckan/templates/package/snippets/resources_list.html:14
 msgid "Data and Resources"
-msgstr "Dada i recursos"
+msgstr "Dades"
 
 #: ckan/templates/package/snippets/resources_list.html:31
 msgid "This dataset has no data"
@@ -5438,6 +5466,23 @@ msgstr "Catàleg de dades obertes"
 msgid "Aviso Legal del ISTAC"
 msgstr "Avís legal de l'ISTAC"
 
+#: ckanext/edatostheme/plugin/__init__.py:341
+msgid "Legal notice"
+msgstr "Avís legal"
+
 #: ckanext/template/snippets/facet_list.html:74
 msgid "Aviso Legal del IBESTAT"
 msgstr "Avís legal de l'IBESTAT"
+
+#: ckanext/edatostheme/templates/snippets/social.html
+msgid "Compartir"
+msgstr "Compartir"
+
+#: ckanext/edatostheme/templates/organization/snippets/helper.html:26
+#: ckanext/edatostheme/templates/group/snippets/helper.html:26
+msgid "Licencia"
+msgstr "Llicència"
+
+#: ckanext-cas/ckanext/cas/blueprints.py
+msgid "Exclusive access for administrators"
+msgstr "Accés exclusiu per a persones administradores"

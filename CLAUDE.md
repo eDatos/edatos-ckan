@@ -611,6 +611,16 @@ Configuration loaded from `ckanext/edatostheme/etc/config.json`:
 ckanext.gobcangroups.flag.for.delink = Manual  # Tag name for delinking datasets from GPE
 ```
 
+### Legal Notice Link (per-organisation deployment)
+
+The "Legal notice" link shown in the group/organization sidebar (`templates/group/snippets/helper.html`, `templates/organization/snippets/helper.html`) is configurable per deployment instead of hardcoded to ISTAC, since each organisation (ISTAC, IBESTAT, IECM, DREM, SEMASTAT...) runs its own CKAN instance with its own `ckan.ini`/`.env`. Rather than duplicating the URL/label in a new config key, it reuses the license register each deployment already loads via `ckan.licenses_group_url` (see `etc/licenses/ckan-licenses.json`, which already has one `<org>-aviso-legal` entry per organisation) — the deployment only needs to say *which* license id in that register is its own legal notice:
+
+```ini
+ckanext.edatostheme.legal_notice_license_id = istac-aviso-legal
+```
+
+`get_legal_notice_url()` / `get_legal_notice_label()` (`ckanext-edatostheme/ckanext/edatostheme/plugin/__init__.py`) resolve that id through the existing `get_license()` helper and read `_data['url']` / `_data['title']` off the license entry. There is **no built-in ISTAC fallback**: if the key is unset, both return an empty string and the templates hide the whole "Licencia" section. Every deployment — ISTAC included — must set this key explicitly to show its own legal notice link.
+
 ## Schema Management
 
 Schemas are dynamically generated on CKAN startup:
@@ -722,6 +732,14 @@ Many fields support multilanguage input via the fluent extension pattern:
 - Custom display snippets in `ckanext/edatosscheming/templates/scheming/display_snippets/`
 - Custom form snippets in `ckanext/edatosscheming/templates/scheming/form_snippets/`
 - Primary language is determined from common-metadata service configuration
+
+## Code Language Convention
+
+New code must be written entirely in English going forward — identifiers (variables, functions, classes), comments, and code-facing strings, not just one or the other. This applies across all extensions, not only new files.
+
+Older files still contain Spanish identifiers/comments (e.g. `ckanext-edatostheme/ckanext/edatostheme/code_templates/burger_button.html`: `burgerAbierto`, `abrir_burger`, `cerrar_burger`). There is no dedicated bulk-rename effort planned — migrate opportunistically whenever such a file is touched for another reason, rather than leaving it as-is.
+
+User-facing strings shown in the UI (labels, messages, translations) are unaffected by this convention — they follow the existing multilanguage/i18n mechanisms documented elsewhere in this file.
 
 ## Git Workflow
 
@@ -959,3 +977,69 @@ docker compose logs ckan -f
 # Check debug status
 docker compose exec ckan grep "^debug" /srv/app/ckan.ini
 ```
+
+## Persistent Project Knowledge
+
+### Purpose
+
+Maintain long-term project knowledge to improve continuity across development sessions and enable both humans and AI agents to understand the project's evolution.
+
+After completing any significant task, evaluate whether the work introduces knowledge that should persist beyond the current conversation. If it does, update the appropriate document inside the `docs/` directory before finishing.
+
+### What to Document
+
+Only document information that is expected to remain valuable for future development, such as:
+
+- Architectural decisions and their rationale.
+- Design decisions and trade-offs.
+- Project conventions or coding standards.
+- Adopted patterns or anti-patterns.
+- New dependencies and why they were introduced.
+- Significant changes to the project structure.
+- Reusable implementation strategies.
+- Environment or configuration requirements.
+- Known limitations or technical debt.
+- Problems encountered and how they were resolved.
+- Lessons learned that could prevent future mistakes.
+- Any project-specific knowledge that would help future contributors or AI agents work more effectively.
+
+### Documentation Guidelines
+
+Documentation should be:
+
+- Incremental rather than rewritten from scratch.
+- Concise and focused.
+- Organized by topic within the `docs/` directory.
+- Easy to scan and maintain.
+- Consistent with existing documentation.
+
+Create new documents only when an appropriate one does not already exist.
+
+### What Not to Document
+
+Do **not** document:
+
+- Trivial code changes.
+- Temporary implementation details.
+- Information already documented elsewhere.
+- Experimental work that was discarded.
+- Self-evident code behavior.
+- Session-specific conversation history.
+
+### Decision Rule
+
+Before completing any task, ask yourself:
+
+> "Will this information still be useful to a developer or AI agent in three months?"
+
+If the answer is **yes**, persist it in the appropriate document under `docs/`.
+
+If the answer is **no**, do not create or update documentation.
+
+### Documentation Priority
+
+Prefer updating existing documentation over creating new files.
+
+When creating new documentation, choose descriptive filenames and place them in the most appropriate location within the `docs/` hierarchy.
+
+Documentation should represent enduring project knowledge, not a changelog.
