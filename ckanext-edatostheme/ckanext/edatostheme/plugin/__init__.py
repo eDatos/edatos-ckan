@@ -45,6 +45,14 @@ HERE = os.path.abspath(os.path.dirname(__file__))
 I18N_DIR = os.path.join(HERE, "../i18n")
 APP_ID_FOR_ANALYTICS = 'ckan-catalog'
 
+# Name of the cookie holding the user's chosen language. Its real value comes
+# from the 'cookieKey' property of the common metadata service, but it is
+# resolved once at startup (see EdatosthemePlugin._load_lang_cookie_name)
+# instead of on every page render: the property is deployment-static, and
+# asking for it per request turned into hundreds of thousands of daily calls
+# to the metadata service once crawlers started sweeping the catalogue.
+DEFAULT_LANG_COOKIE_NAME = 'chosenLocale'
+_lang_cookie_name = DEFAULT_LANG_COOKIE_NAME
 # ---------------------------------------------------------------------------
 # Caché en memoria para helpers costosos (group, freq_tags).
 # TTL por defecto: 60s para grupos, 120s para tags frecuentes.
@@ -529,21 +537,6 @@ def get_theme():
     return theme
 
 
-def save_header(header):
-    """
-    Metodo que guarda el header como template
-
-    :param header: Codigo del header en formato string que se va a guardar
-    """
-
-    #header = header.replace(b'&gt;', b'>').decode('utf8')
-    #header = "{% block header_wrapper %}" + header + "{% endblock %}"
-    with codecs.open(HEADER_PATH, 'w', encoding='utf8') as header_file:
-        header_file.truncate(0)
-        header_file.seek(0)
-        header_file.write(header)
-
-
 def get_header_url(json_config):
     """
     Devuelve la URL del header con el idioma del usuario.
@@ -552,8 +545,6 @@ def get_header_url(json_config):
     """
     endpoint = json_config['metadata']['endpoint']
     header_key = json_config['metadata']['navbarPathKey']
-    cookie_key = json_config['metadata'].get('cookieKey')
-    endpoint = json_config['metadata']['endpoint']
     title = json_config['metadata']['appName']
     navbar_url = get_url(endpoint, header_key)
     url = "%s?appName=%s&appId=%s&appUrl=%s" % (navbar_url, title, APP_ID_FOR_ANALYTICS, json_config['metadata']['siteURL'])
@@ -562,8 +553,8 @@ def get_header_url(json_config):
     if theme:
         url = "%s&organisation=%s" % (url, theme)
 
-    # Obtener el nombre real de la cookie una sola vez
-    cookie_name = get_url(endpoint, cookie_key) if cookie_key else None
+    # Cookie name resolved once at startup, not per request
+    cookie_name = _lang_cookie_name
     # Idioma del request: cookie > idioma CKAN > locale por defecto
     request_lang = get_request_lang(cookie_name)
 
@@ -793,6 +784,28 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
 
             self.__save_footer(footer=footer)
 
+    def _load_lang_cookie_name(self):
+        """
+        Resolves the language cookie name from the common metadata service
+        once, at startup, and caches it in the module-level
+        `_lang_cookie_name` so that `get_header_url()` does not have to ask
+        for it on every page render.
+
+        If the metadata service cannot be reached at startup, the module
+        default (`DEFAULT_LANG_COOKIE_NAME`) is kept, so the header still
+        gets a language instead of losing the parameter altogether.
+        """
+        global _lang_cookie_name
+        try:
+            with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
+                metadata = json.loads(config_file.read())['metadata']
+                cookie_key = metadata.get('cookieKey')
+                if cookie_key:
+                    _lang_cookie_name = get_url(metadata['endpoint'], cookie_key)
+        except Exception as e:
+            log.error("Could not resolve the language cookie name, falling back "
+                      "to the default '%s': %s", DEFAULT_LANG_COOKIE_NAME, e)
+
     def _load_favicon(self):
         """
         Metodo que carga el favicon
@@ -818,6 +831,7 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
     def update_config(self, config_):
         self._load_footer()
         self._load_favicon()
+        self._load_lang_cookie_name()
         self._i18n_script_filler()
         toolkit.add_template_directory(config_, '../templates')
         toolkit.add_public_directory(config_, '../public')
