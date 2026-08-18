@@ -14,16 +14,14 @@ import ckan.plugins.toolkit as toolkit
 import requests
 import ckanext.scheming.helpers as sh
 
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urlencode
 
-from bs4 import BeautifulSoup
 from ckan.common import _, request, c
 from collections import OrderedDict
 from ckan.model import Package
 from ckan.lib.plugins import DefaultTranslation
 from ckantoolkit import config, h, _, request, abort
 from flask import Blueprint, current_app
-from flask import render_template_string
 
 import logging
 log = logging.getLogger(__name__)
@@ -37,8 +35,6 @@ CONFIG_FILE_PATH = os.path.join(dirname, '../etc/config.json')
 FOOTER_PATH = os.path.join(dirname, '../templates/footer.html')
 FAVICON_PATH = os.path.join(dirname, '../public/favicon.ico')
 SCRIPT_PATH = os.path.join(dirname, '../assets/js/i18n.js')
-BURGER_BUTTON_PATH = os.path.join(
-    dirname, '../code_templates/burger_button.html')
 SCRIPT_TEMPLATE = os.path.join(dirname, '../code_templates/i18n.js')
 
 HERE = os.path.abspath(os.path.dirname(__file__))
@@ -502,6 +498,59 @@ def get_url(endpoint, key):
     return json_header_request['value']
 
 
+# Keys of the 'metadata' section of config.json whose properties are needed
+# while rendering a page. Their values are deployment-static, so they are
+# resolved once and cached here (warmed at startup by
+# EdatosthemePlugin._warm_metadata_properties) instead of on every render:
+# asking for them per request turned into hundreds of thousands of daily calls
+# to the metadata service once crawlers started sweeping the catalogue.
+_RENDER_TIME_PROPERTIES = ('navbarPathKey', 'cssPathKey')
+_PROPERTY_RETRY_INTERVAL = 60   # seconds between retries of a failed property
+
+_resolved_properties = {}       # {config.json key: property value}
+_property_attempts = {}         # {config.json key: monotonic timestamp}
+
+
+def get_property(metadata_key):
+    """
+    Returns the value of a metadata service property from the module cache, or
+    None if it cannot be resolved.
+
+    The cache is warmed at startup. A property that could not be resolved then
+    is retried on demand, at most once every `_PROPERTY_RETRY_INTERVAL`
+    seconds, so that a metadata service outage neither leaves the header broken
+    until the next CKAN restart nor turns back into a request per render.
+
+    Two concurrent misses may fetch the same property twice; the fetch is
+    idempotent, so it is not worth a lock.
+
+    :param metadata_key: key of the 'metadata' section of config.json holding
+                         the name of the property to resolve
+    """
+    if metadata_key in _resolved_properties:
+        return _resolved_properties[metadata_key]
+
+    now = time.monotonic()
+    last_attempt = _property_attempts.get(metadata_key)
+    if last_attempt is not None and now - last_attempt < _PROPERTY_RETRY_INTERVAL:
+        return None
+    _property_attempts[metadata_key] = now
+
+    try:
+        with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
+            metadata = json.loads(config_file.read())['metadata']
+        property_name = metadata.get(metadata_key)
+        if not property_name:
+            return None
+        _resolved_properties[metadata_key] = get_url(
+            metadata['endpoint'], property_name)
+        return _resolved_properties[metadata_key]
+    except Exception as e:
+        log.error("Could not resolve the metadata property named by '%s': %s",
+                  metadata_key, e)
+        return None
+
+
 def get_request_lang(cookie_name):
     """
     Devuelve el idioma de la cookie si existe, o el idioma resuelto por CKAN, o el locale por defecto.
@@ -529,48 +578,45 @@ def get_theme():
     return theme
 
 
-def save_header(header):
+def get_header_url():
     """
-    Metodo que guarda el header como template
+    Returns the URL of the external header for the current request, so that the
+    browser can fetch it (see assets/js/edatos-header.js) instead of CKAN
+    fetching it while rendering the page. Crawlers do not run JavaScript, so
+    sweeping the catalogue no longer pulls the header once per page.
 
-    :param header: Codigo del header en formato string que se va a guardar
+    The header URL itself comes from the property cache (see `get_property`),
+    so it costs no request. Returns an empty string while the property cannot be
+    resolved, in which case no header is rendered at all.
     """
+    navbar_url = get_property('navbarPathKey')
+    if not navbar_url:
+        return ''
 
-    #header = header.replace(b'&gt;', b'>').decode('utf8')
-    #header = "{% block header_wrapper %}" + header + "{% endblock %}"
-    with codecs.open(HEADER_PATH, 'w', encoding='utf8') as header_file:
-        header_file.truncate(0)
-        header_file.seek(0)
-        header_file.write(header)
+    with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
+        metadata = json.loads(config_file.read())['metadata']
 
+    params = {
+        # The metadata service echoes 'appName' into the header title, so it is
+        # sent already translated. This used to be patched into the returned
+        # HTML server side, with BeautifulSoup, on every render.
+        'appName': _(metadata['appName']),
+        'appId': APP_ID_FOR_ANALYTICS,
+        'appUrl': metadata['siteURL'],
+    }
 
-def get_header_url(json_config):
-    """
-    Devuelve la URL del header con el idioma del usuario.
-    
-    :param json_config: Configuracion cargada como diccionario JSON
-    """
-    endpoint = json_config['metadata']['endpoint']
-    header_key = json_config['metadata']['navbarPathKey']
-    cookie_key = json_config['metadata'].get('cookieKey')
-    endpoint = json_config['metadata']['endpoint']
-    title = json_config['metadata']['appName']
-    navbar_url = get_url(endpoint, header_key)
-    url = "%s?appName=%s&appId=%s&appUrl=%s" % (navbar_url, title, APP_ID_FOR_ANALYTICS, json_config['metadata']['siteURL'])
+    # The language cookie name is still resolved per request here; EDATOS-5900
+    # moves it to startup on its own branch.
+    cookie_key = metadata.get('cookieKey')
+    cookie_name = get_url(metadata['endpoint'], cookie_key) if cookie_key else None
+    if cookie_name:
+        params[cookie_name] = get_request_lang(cookie_name)
 
     theme = get_theme()
     if theme:
-        url = "%s&organisation=%s" % (url, theme)
+        params['organisation'] = theme
 
-    # Obtener el nombre real de la cookie una sola vez
-    cookie_name = get_url(endpoint, cookie_key) if cookie_key else None
-    # Idioma del request: cookie > idioma CKAN > locale por defecto
-    request_lang = get_request_lang(cookie_name)
-
-    if cookie_name:
-        url = "%s&%s=%s" % (url, cookie_name, request_lang)
-
-    return url
+    return "%s?%s" % (navbar_url, urlencode(params))
 
 
 def get_app_style_css_url():
@@ -583,19 +629,21 @@ def get_app_style_css_url():
     cabecera (p. ej. el iframe de package/snippets/resource_view_embed.html),
     que no reciben las variables --edatos-* porque estas se definen dentro
     del HTML del header/footer externo y esas paginas no lo renderizan.
+
+    The property is read from the cache (see `get_property`), not from the
+    metadata service: this helper is called twice per page (base.html and
+    header.html), so resolving it per call meant two extra requests per render.
     """
     try:
-        with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
-            json_config = json.loads(config_file.read())
-            endpoint = json_config['metadata']['endpoint']
-            css_key = json_config['metadata']['cssPathKey']
-            url = get_url(endpoint, css_key)
+        url = get_property('cssPathKey')
+        if not url:
+            return ""
 
-            theme = get_theme()
-            if theme:
-                url = "%s?organisation=%s" % (url, theme)
+        theme = get_theme()
+        if theme:
+            url = "%s?organisation=%s" % (url, theme)
 
-            return url
+        return url
     except Exception as e:
         log.error("Error al obtener la URL del CSS de complementos-apps: %s", e)
         return ""
@@ -620,62 +668,6 @@ def get_app_fontawesome_css_url():
         log.error("Error al obtener la URL del CSS de Font Awesome: %s", e)
         return ""
 
-
-def get_altered_header(header, json_config):
-    """
-    Metodo que modifica el header para hacer que contenga los botones
-    dinamicos que se generan para esta aplicacion en concreto.
-
-    :param header: Codigo HTML del Header que se va a modificar
-    :param json_config: Fichero de configuracion cargado como
-                        un diccionario JSON
-    """
-    alteredHeader = header
-
-    # Annadimos el boton hamburguesa
-    soup = BeautifulSoup(alteredHeader, 'html.parser')
-    container = soup.find(
-        class_='d-flex justify-content-end align-items-center')
-
-    if container is not None:
-        with codecs.open(BURGER_BUTTON_PATH, 'r', encoding='utf8') as burger_button_file:
-            code = burger_button_file.read()
-            container.append(BeautifulSoup(code, 'html.parser'))
-            alteredHeader = soup.prettify('utf-8')
-            
-            
-    # Reemplazar titulo por el titulo con funcion de traduccion
-    title = json_config['metadata']['appName']
-    
-    div = soup.find('div', id='title-bar')
-    
-    if div:
-        span = div.find('span')
-        if span and title.lower() in span.text.strip().lower():
-            span.string = _(title)
-
-    alteredHeader = soup.prettify('utf-8')
-
-    alteredHeader = alteredHeader.replace(b'&gt;', b'>').decode('utf8')
-
-    return alteredHeader
-
-
-def get_html_header():
-    """
-    Descarga, modifica y devuelve el HTML del header en cada petición,
-    sin caché. No lee ni escribe ficheros en disco.
-    """
-    try:
-        with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
-            json_config = json.loads(config_file.read())
-        html = requests.get(
-            url=get_header_url(json_config), timeout=_REQUESTS_TIMEOUT).content
-        altered = get_altered_header(header=html, json_config=json_config)
-        return render_template_string(altered)
-    except Exception as exc:
-        log.warning('edatostheme: error al obtener header: %s', exc)
-        return ''
 
 # Map de vistas que se quieren restringir acceso
 REDIRECT_VIEWS = (
@@ -813,11 +805,21 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             script_content = script_template.read()
             self.__save_script(script_content)
 
+    def _warm_metadata_properties(self):
+        """
+        Resolves at startup the metadata service properties that would
+        otherwise be resolved while rendering a page. Failures are only logged:
+        `get_property` retries them on demand.
+        """
+        for metadata_key in _RENDER_TIME_PROPERTIES:
+            get_property(metadata_key)
+
     # IConfigurer
 
     def update_config(self, config_):
         self._load_footer()
         self._load_favicon()
+        self._warm_metadata_properties()
         self._i18n_script_filler()
         toolkit.add_template_directory(config_, '../templates')
         toolkit.add_public_directory(config_, '../public')
@@ -853,7 +855,7 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             'edatostheme_get_delink_value': get_delink_value,
             'edatos_get_legal_notice_url': get_legal_notice_url,
             'edatos_get_legal_notice_label': get_legal_notice_label,
-            'edatos_get_header': get_html_header,
+            'edatos_get_header_url': get_header_url,
             'edatos_get_app_style_css_url': get_app_style_css_url,
             'edatos_get_app_fontawesome_css_url': get_app_fontawesome_css_url,
             'edatos_get_facet_items_dict': get_facet_items_dict,
