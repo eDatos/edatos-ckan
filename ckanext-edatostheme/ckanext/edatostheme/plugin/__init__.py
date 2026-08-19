@@ -586,37 +586,50 @@ def get_header_url():
     sweeping the catalogue no longer pulls the header once per page.
 
     The header URL itself comes from the property cache (see `get_property`),
-    so it costs no request. Returns an empty string while the property cannot be
-    resolved, in which case no header is rendered at all.
+    so it costs no request. Returns an empty string when it cannot be built, in
+    which case no header is rendered at all: this helper is called from a
+    template, so it must never raise or it takes the whole page down with it.
     """
-    navbar_url = get_property('navbarPathKey')
-    if not navbar_url:
+    try:
+        navbar_url = get_property('navbarPathKey')
+        if not navbar_url:
+            return ''
+
+        with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
+            metadata = json.loads(config_file.read())['metadata']
+
+        params = {
+            # The metadata service echoes 'appName' into the header title, so it
+            # is sent already translated. This used to be patched into the
+            # returned HTML server side, with BeautifulSoup, on every render.
+            'appName': _(metadata['appName']),
+            'appId': APP_ID_FOR_ANALYTICS,
+            'appUrl': metadata['siteURL'],
+        }
+
+        # The language cookie name is still resolved per request here; EDATOS-5900
+        # moves it to startup on its own branch. Its own guard keeps a metadata
+        # service outage from costing more than the language parameter: the
+        # header URL is cached, so the header still loads.
+        try:
+            cookie_key = metadata.get('cookieKey')
+            cookie_name = get_url(metadata['endpoint'], cookie_key) if cookie_key else None
+        except Exception as e:
+            log.warning("Could not resolve the language cookie name, the header "
+                        "is requested without a language: %s", e)
+            cookie_name = None
+
+        if cookie_name:
+            params[cookie_name] = get_request_lang(cookie_name)
+
+        theme = get_theme()
+        if theme:
+            params['organisation'] = theme
+
+        return "%s?%s" % (navbar_url, urlencode(params))
+    except Exception as e:
+        log.error("Error al construir la URL de la cabecera: %s", e)
         return ''
-
-    with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
-        metadata = json.loads(config_file.read())['metadata']
-
-    params = {
-        # The metadata service echoes 'appName' into the header title, so it is
-        # sent already translated. This used to be patched into the returned
-        # HTML server side, with BeautifulSoup, on every render.
-        'appName': _(metadata['appName']),
-        'appId': APP_ID_FOR_ANALYTICS,
-        'appUrl': metadata['siteURL'],
-    }
-
-    # The language cookie name is still resolved per request here; EDATOS-5900
-    # moves it to startup on its own branch.
-    cookie_key = metadata.get('cookieKey')
-    cookie_name = get_url(metadata['endpoint'], cookie_key) if cookie_key else None
-    if cookie_name:
-        params[cookie_name] = get_request_lang(cookie_name)
-
-    theme = get_theme()
-    if theme:
-        params['organisation'] = theme
-
-    return "%s?%s" % (navbar_url, urlencode(params))
 
 
 def get_app_style_css_url():
