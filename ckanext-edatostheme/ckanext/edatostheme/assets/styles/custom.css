@@ -5794,7 +5794,7 @@ aside.secondary .module-content > a.btn.btn-sm {
     margin-bottom: 8px;
 }
 
-/* The external header is injected by the browser (assets/js/edatos-header.js),
+/* The external header is injected by the browser (edatos-external-html.js),
    so it is not part of the initial HTML any more. Reserving its height avoids
    the content below jumping when it arrives; ':empty' stops matching as soon as
    the HTML is injected, so the reservation removes itself.

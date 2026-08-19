@@ -603,7 +603,11 @@ ckanext.cas.verify_certificate = true
 Configuration loaded from `ckanext/edatostheme/etc/config.json`:
 - Contains metadata service endpoints for fetching header/footer
 - Contains available languages configuration
-- Requires `chmod 777` permissions on `templates/header.html` and `templates/footer.html` for dynamic updates
+- The header and the footer are fetched by the browser, not by CKAN (see
+  `assets/js/edatos-external-html.js`), and the favicon is served straight from
+  its remote URL via `ckan.favicon`. Nothing is written to `templates/` or
+  `public/` at startup any more, so the `chmod 777` these files used to need is
+  gone (EDATOS-5901)
 
 ### GobcanGroups Configuration
 
@@ -672,14 +676,6 @@ Database initialization scripts are in `etc/db/common-metadata/postgresql/01-cre
   ```bash
   systemctl restart httpd
   ```
-
-### File Permissions
-
-The theme extension requires specific permissions:
-```bash
-chmod 777 /path/to/ckanext-edatostheme/ckanext/edatostheme/templates/header.html
-chmod 777 /path/to/ckanext-edatostheme/ckanext/edatostheme/templates/footer.html
-```
 
 ### CKAN Version Compatibility
 

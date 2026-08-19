@@ -153,3 +153,71 @@ class TestGetHeaderUrl:
         self._setup(monkeypatch, tmp_path, navbar_url=None)
 
         assert plugin.get_header_url() == ''
+
+
+class TestGetFooterUrl:
+    """The footer is fetched by the browser too, and never written to disk."""
+
+    def _setup(self, monkeypatch, tmp_path, footer_url='http://apps.example/footer.html'):
+        monkeypatch.setattr(plugin, 'CONFIG_FILE_PATH', _write_config(tmp_path, {
+            'endpoint': 'http://metadata.example/api',
+            'appName': 'Open Data Catalog',
+            'siteURL': 'https://example.org/catalogo/',
+        }))
+        monkeypatch.setattr(plugin, 'get_property',
+                            lambda key: footer_url if key == 'footerPathKey' else None)
+        # Identity translation: the real one needs a request context.
+        monkeypatch.setattr(plugin, '_', lambda message: message)
+
+    def test_url_carries_the_app_parameters(self, monkeypatch, tmp_path):
+        self._setup(monkeypatch, tmp_path)
+
+        url = plugin.get_footer_url()
+
+        assert url.startswith('http://apps.example/footer.html?')
+        assert 'appName=Open+Data+Catalog' in url
+        assert 'appId=%s' % plugin.APP_ID_FOR_ANALYTICS in url
+        assert 'appUrl=https%3A%2F%2Fexample.org%2Fcatalogo%2F' in url
+
+    def test_no_metadata_service_call_is_made_per_render(self, monkeypatch, tmp_path):
+        """
+        The whole point of the ticket: building the footer URL must not talk to
+        the metadata service, or moving the download out of startup would just
+        turn one request per boot into one per page.
+        """
+        self._setup(monkeypatch, tmp_path)
+
+        def fail(endpoint, key):
+            raise AssertionError('the metadata service must not be called here')
+
+        monkeypatch.setattr(plugin, 'get_url', fail)
+
+        assert plugin.get_footer_url()
+
+    def test_url_is_empty_when_the_property_cannot_be_resolved(
+            self, monkeypatch, tmp_path):
+        self._setup(monkeypatch, tmp_path, footer_url=None)
+
+        assert plugin.get_footer_url() == ''
+
+
+class TestSetFavicon:
+    """The favicon is served from its remote URL, not downloaded at startup."""
+
+    def test_favicon_url_is_written_into_the_ckan_config(self, monkeypatch):
+        monkeypatch.setattr(plugin, 'get_property',
+                            lambda key: 'http://apps.example/favicon.ico')
+        config = {'ckan.favicon': '/base/images/ckan.ico'}
+
+        plugin.EdatosthemePlugin()._set_favicon(config)
+
+        assert config['ckan.favicon'] == 'http://apps.example/favicon.ico'
+
+    def test_the_default_favicon_is_kept_when_the_url_cannot_be_resolved(
+            self, monkeypatch):
+        monkeypatch.setattr(plugin, 'get_property', lambda key: None)
+        config = {'ckan.favicon': '/base/images/ckan.ico'}
+
+        plugin.EdatosthemePlugin()._set_favicon(config)
+
+        assert config['ckan.favicon'] == '/base/images/ckan.ico'
