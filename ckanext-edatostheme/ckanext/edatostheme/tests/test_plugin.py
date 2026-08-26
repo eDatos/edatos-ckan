@@ -24,20 +24,6 @@ reset the database:
 
         # ...
 
-For functional tests that involve requests to the application, you can use the
-`app` fixture:
-
-    from ckan.plugins import toolkit
-
-    def test_some_endpoint(app):
-
-        url = toolkit.url_for('myblueprint.some_endpoint')
-
-        response = app.get(url)
-
-        assert response.status_code == 200
-
-
 To temporary patch the CKAN configuration for the duration of a test you can use:
 
     import pytest
@@ -66,43 +52,172 @@ def _write_config(tmp_path, metadata):
     return str(config_file)
 
 
-def test_lang_cookie_name_is_resolved_at_startup(monkeypatch, tmp_path):
-    """The cookie name is fetched once at startup, not on every render."""
-    monkeypatch.setattr(plugin, '_lang_cookie_name', 'stale')
-    monkeypatch.setattr(plugin, 'CONFIG_FILE_PATH', _write_config(tmp_path, {
-        'endpoint': 'http://metadata.example/api',
-        'cookieKey': 'metamac.internationalization.cookieId',
-    }))
-    calls = []
-
-    def fake_get_url(endpoint, key):
-        calls.append((endpoint, key))
-        return 'chosenLocale'
-
-    monkeypatch.setattr(plugin, 'get_url', fake_get_url)
-
-    plugin.EdatosthemePlugin()._load_lang_cookie_name()
-
-    assert plugin._lang_cookie_name == 'chosenLocale'
-    assert calls == [('http://metadata.example/api',
-                      'metamac.internationalization.cookieId')]
+def _clear_property_cache(monkeypatch):
+    monkeypatch.setattr(plugin, '_resolved_properties', {})
+    monkeypatch.setattr(plugin, '_property_attempts', {})
 
 
-def test_lang_cookie_name_falls_back_when_metadata_service_is_down(
-        monkeypatch, tmp_path):
-    """A metadata service outage at startup must not drop the cookie name."""
-    monkeypatch.setattr(plugin, '_lang_cookie_name',
-                        plugin.DEFAULT_LANG_COOKIE_NAME)
-    monkeypatch.setattr(plugin, 'CONFIG_FILE_PATH', _write_config(tmp_path, {
-        'endpoint': 'http://metadata.example/api',
-        'cookieKey': 'metamac.internationalization.cookieId',
-    }))
+class TestGetProperty:
+    """`get_property` must hit the metadata service once, not once per render."""
 
-    def boom(endpoint, key):
-        raise IOError('metadata service unreachable')
+    def test_property_is_fetched_once_and_then_cached(self, monkeypatch, tmp_path):
+        _clear_property_cache(monkeypatch)
+        monkeypatch.setattr(plugin, 'CONFIG_FILE_PATH', _write_config(tmp_path, {
+            'endpoint': 'http://metadata.example/api',
+            'cookieKey': 'metamac.internationalization.cookieId',
+        }))
+        calls = []
+        monkeypatch.setattr(plugin, 'get_url', lambda endpoint, key: (
+            calls.append((endpoint, key)) or 'chosenLocale'))
 
-    monkeypatch.setattr(plugin, 'get_url', boom)
+        assert plugin.get_property('cookieKey') == 'chosenLocale'
+        assert plugin.get_property('cookieKey') == 'chosenLocale'
 
-    plugin.EdatosthemePlugin()._load_lang_cookie_name()
+        assert calls == [('http://metadata.example/api',
+                          'metamac.internationalization.cookieId')]
 
-    assert plugin._lang_cookie_name == plugin.DEFAULT_LANG_COOKIE_NAME
+    def test_failure_is_not_retried_until_the_interval_has_passed(
+            self, monkeypatch, tmp_path):
+        _clear_property_cache(monkeypatch)
+        monkeypatch.setattr(plugin, 'CONFIG_FILE_PATH', _write_config(tmp_path, {
+            'endpoint': 'http://metadata.example/api',
+            'cookieKey': 'metamac.internationalization.cookieId',
+        }))
+        calls = []
+
+        def failing_get_url(endpoint, key):
+            calls.append(key)
+            raise IOError('metadata service unreachable')
+
+        monkeypatch.setattr(plugin, 'get_url', failing_get_url)
+
+        now = [1000.0]
+        monkeypatch.setattr(plugin.time, 'monotonic', lambda: now[0])
+
+        assert plugin.get_property('cookieKey') is None
+        assert plugin.get_property('cookieKey') is None
+        assert len(calls) == 1, 'a failed property must not be retried per render'
+
+        now[0] += plugin._PROPERTY_RETRY_INTERVAL + 1
+        assert plugin.get_property('cookieKey') is None
+        assert len(calls) == 2, 'a failed property must be retried eventually'
+
+    def test_missing_key_in_config_resolves_to_nothing(self, monkeypatch, tmp_path):
+        _clear_property_cache(monkeypatch)
+        monkeypatch.setattr(plugin, 'CONFIG_FILE_PATH', _write_config(tmp_path, {
+            'endpoint': 'http://metadata.example/api',
+        }))
+        monkeypatch.setattr(plugin, 'get_url', lambda endpoint, key: 'unexpected')
+
+        assert plugin.get_property('cookieKey') is None
+
+
+class TestGetHeaderUrl:
+    """The header URL is built server side for the browser to fetch."""
+
+    def _setup(self, monkeypatch, tmp_path, navbar_url='http://apps.example/header.html',
+               lang='en', theme=None):
+        monkeypatch.setattr(plugin, 'CONFIG_FILE_PATH', _write_config(tmp_path, {
+            'endpoint': 'http://metadata.example/api',
+            'appName': 'Open Data Catalog',
+            'siteURL': 'https://example.org/catalogo/',
+            'cookieKey': 'metamac.internationalization.cookieId',
+        }))
+        monkeypatch.setattr(plugin, 'get_property',
+                            lambda key: navbar_url if key == 'navbarPathKey' else None)
+        monkeypatch.setattr(plugin, 'get_request_lang', lambda cookie_name: lang)
+        monkeypatch.setattr(plugin, 'get_theme', lambda: theme)
+        # Identity translation: the real one needs a request context.
+        monkeypatch.setattr(plugin, '_', lambda message: message)
+        monkeypatch.setattr(plugin, 'get_url', lambda endpoint, key: 'chosenLocale')
+
+    def test_url_carries_the_app_and_language_parameters(self, monkeypatch, tmp_path):
+        self._setup(monkeypatch, tmp_path, lang='en')
+
+        url = plugin.get_header_url()
+
+        assert url.startswith('http://apps.example/header.html?')
+        assert 'appName=Open+Data+Catalog' in url
+        assert 'appId=%s' % plugin.APP_ID_FOR_ANALYTICS in url
+        assert 'appUrl=https%3A%2F%2Fexample.org%2Fcatalogo%2F' in url
+        assert 'chosenLocale=en' in url
+        assert 'organisation' not in url
+
+    def test_theme_is_passed_as_organisation(self, monkeypatch, tmp_path):
+        self._setup(monkeypatch, tmp_path, theme='ibestat')
+
+        assert 'organisation=ibestat' in plugin.get_header_url()
+
+    def test_url_is_empty_when_the_property_cannot_be_resolved(
+            self, monkeypatch, tmp_path):
+        self._setup(monkeypatch, tmp_path, navbar_url=None)
+
+        assert plugin.get_header_url() == ''
+
+
+class TestGetFooterUrl:
+    """The footer is fetched by the browser too, and never written to disk."""
+
+    def _setup(self, monkeypatch, tmp_path, footer_url='http://apps.example/footer.html'):
+        monkeypatch.setattr(plugin, 'CONFIG_FILE_PATH', _write_config(tmp_path, {
+            'endpoint': 'http://metadata.example/api',
+            'appName': 'Open Data Catalog',
+            'siteURL': 'https://example.org/catalogo/',
+        }))
+        monkeypatch.setattr(plugin, 'get_property',
+                            lambda key: footer_url if key == 'footerPathKey' else None)
+        # Identity translation: the real one needs a request context.
+        monkeypatch.setattr(plugin, '_', lambda message: message)
+
+    def test_url_carries_the_app_parameters(self, monkeypatch, tmp_path):
+        self._setup(monkeypatch, tmp_path)
+
+        url = plugin.get_footer_url()
+
+        assert url.startswith('http://apps.example/footer.html?')
+        assert 'appName=Open+Data+Catalog' in url
+        assert 'appId=%s' % plugin.APP_ID_FOR_ANALYTICS in url
+        assert 'appUrl=https%3A%2F%2Fexample.org%2Fcatalogo%2F' in url
+
+    def test_no_metadata_service_call_is_made_per_render(self, monkeypatch, tmp_path):
+        """
+        The whole point of the ticket: building the footer URL must not talk to
+        the metadata service, or moving the download out of startup would just
+        turn one request per boot into one per page.
+        """
+        self._setup(monkeypatch, tmp_path)
+
+        def fail(endpoint, key):
+            raise AssertionError('the metadata service must not be called here')
+
+        monkeypatch.setattr(plugin, 'get_url', fail)
+
+        assert plugin.get_footer_url()
+
+    def test_url_is_empty_when_the_property_cannot_be_resolved(
+            self, monkeypatch, tmp_path):
+        self._setup(monkeypatch, tmp_path, footer_url=None)
+
+        assert plugin.get_footer_url() == ''
+
+
+class TestSetFavicon:
+    """The favicon is served from its remote URL, not downloaded at startup."""
+
+    def test_favicon_url_is_written_into_the_ckan_config(self, monkeypatch):
+        monkeypatch.setattr(plugin, 'get_property',
+                            lambda key: 'http://apps.example/favicon.ico')
+        config = {'ckan.favicon': '/base/images/ckan.ico'}
+
+        plugin.EdatosthemePlugin()._set_favicon(config)
+
+        assert config['ckan.favicon'] == 'http://apps.example/favicon.ico'
+
+    def test_the_default_favicon_is_kept_when_the_url_cannot_be_resolved(
+            self, monkeypatch):
+        monkeypatch.setattr(plugin, 'get_property', lambda key: None)
+        config = {'ckan.favicon': '/base/images/ckan.ico'}
+
+        plugin.EdatosthemePlugin()._set_favicon(config)
+
+        assert config['ckan.favicon'] == '/base/images/ckan.ico'

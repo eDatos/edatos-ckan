@@ -33,13 +33,7 @@ Es recomendable realizar la instalación explicada en los pasos ``Development in
 
 4. Rellenar las URL y propiedades de configuración del fichero ``/ckanext/edatostheme/etc/config.json``
 
-5. Modificar los permisos de los ficheros header y footer
-
-     * chmod 777 chmod 777 /servers/catalogo/ckan/default/src/ckanext-edatostheme/ckanext/edatostheme/templates/header.html
-     * chmod 777 chmod 777 /servers/catalogo/ckan/default/src/ckanext-edatostheme/ckanext/edatostheme/templates/footer.html
-
-
-6. La propiedad ``ckanext.gobcangroups.flag.for.delink`` de la extensión ckanext-gobcangroups es usada para ocultar de las plantillas las etiquetas para los datasets desvinculados del GPE.
+5. La propiedad ``ckanext.gobcangroups.flag.for.delink`` de la extensión ckanext-gobcangroups es usada para ocultar de las plantillas las etiquetas para los datasets desvinculados del GPE.
 
 7. Reiniciar el servicio Apache estando como root::
 
