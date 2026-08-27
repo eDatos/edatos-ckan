@@ -5,8 +5,7 @@
 {% block primary %}
   <article class="module">
     <div class="module-content">
-      <h1>Acceso denegado</h1>
-	  <p>Debe loguearse para acceder</p>
+      {% snippet "user/snippets/not_logged_message.html" %}
     </div>
   </article>
 {% endblock %}

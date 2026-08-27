@@ -1,0 +1,25 @@
+{% ckan_extends %}
+
+{% block breadcrumb_content %}
+  {% if current_user and current_user.is_authenticated %}
+    {{ super() }}
+  {% endif %}
+{% endblock %}
+
+{% block secondary_content %}
+  {% if current_user and current_user.is_authenticated %}
+    {{ super() }}
+  {% endif %}
+{% endblock %}
+
+{% block primary_content %}
+  {% if current_user and current_user.is_authenticated %}
+    {{ super() }}
+  {% else %}
+    <article class="module">
+      <div class="module-content">
+        {% snippet "user/snippets/not_logged_message.html" %}
+      </div>
+    </article>
+  {% endif %}
+{% endblock %}
