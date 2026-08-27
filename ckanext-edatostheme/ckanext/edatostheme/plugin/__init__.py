@@ -17,7 +17,7 @@ import ckanext.scheming.helpers as sh
 from urllib.parse import urlparse
 
 from bs4 import BeautifulSoup
-from ckan.common import _, request, c
+from ckan.common import _, request, c, current_user
 from collections import OrderedDict
 from ckan.model import Package
 from ckan.lib.plugins import DefaultTranslation
@@ -486,6 +486,30 @@ def abort_redirect():
     abort(403, _(u'Not authorized to see this page'))
 
 
+def handle_not_authorized(error):
+    """App-wide handler for ckan.logic.NotAuthorized.
+
+    Some core views (e.g. ckanext.activity's group/organization activity
+    views) only wrap their initial lookup call in try/except, not the
+    subsequent auth-checked action call — fine in stock CKAN, where both
+    checks are identical, but our activity auth override
+    (see ckanext.edatostheme.auth) makes them diverge, so NotAuthorized can
+    now propagate uncaught from those views and crash with a raw 500
+    instead of CKAN's normal, translated 403 page (which only handles
+    HTTPException, not this plain exception). Registered app-wide via
+    Blueprint.app_errorhandler so it also covers any other unguarded
+    call site, not just this one.
+    """
+    message = str(error) or _(u'Not authorized to see this page')
+    extra_vars = {
+        'code': 403,
+        'content': message,
+        'name': _(u'Forbidden'),
+        'show_login_redirect_link': not current_user.is_authenticated,
+    }
+    return base.render('error_document_template.html', extra_vars), 403
+
+
 def get_url(endpoint, key):
     """
     Metodo generico que devolvera la URL del header o footer segun la clave que se pase
@@ -692,12 +716,29 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
     plugins.implements(plugins.IPackageController, inherit=True)
     plugins.implements(plugins.IFacets)
     plugins.implements(plugins.IActions)
+    plugins.implements(plugins.IAuthFunctions)
 
     # IActions
 
     def get_actions(self):
         from ckanext.edatostheme.actions import status_show
         return {'status_show': status_show}
+
+    # IAuthFunctions
+
+    def get_auth_functions(self):
+        from ckanext.edatostheme.auth import (
+            package_activity_list,
+            group_activity_list,
+            organization_activity_list,
+            user_activity_list,
+        )
+        return {
+            'package_activity_list': package_activity_list,
+            'group_activity_list': group_activity_list,
+            'organization_activity_list': organization_activity_list,
+            'user_activity_list': user_activity_list,
+        }
 
     # IConfigurer
 
@@ -838,6 +879,8 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             clear_login_error,
             methods=['GET'],
         )
+
+        edatos.app_errorhandler(toolkit.NotAuthorized)(handle_not_authorized)
 
         return [edatos]
 

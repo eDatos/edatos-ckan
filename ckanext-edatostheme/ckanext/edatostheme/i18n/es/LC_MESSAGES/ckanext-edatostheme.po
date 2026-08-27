@@ -1178,7 +1178,7 @@ msgstr "No hay descargas disponibles"
 #: ckan/controllers/package.py:1296
 #, python-format
 msgid "Unauthorized to read dataset %s"
-msgstr "No estás autorizado a leer el conjunto de datos %s"
+msgstr "No puedes acceder al flujo de actividad del conjunto de datos %s"
 
 #: ckan/controllers/package.py:1404
 #, python-format
