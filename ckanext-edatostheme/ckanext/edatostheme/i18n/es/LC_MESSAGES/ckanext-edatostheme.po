@@ -1178,7 +1178,11 @@ msgstr "No hay descargas disponibles"
 #: ckan/controllers/package.py:1296
 #, python-format
 msgid "Unauthorized to read dataset %s"
-msgstr "No puedes acceder al flujo de actividad del conjunto de datos %s"
+msgstr "No estás autorizado a leer el conjunto de datos %s"
+
+#: ckanext/edatostheme/actions.py
+msgid "You must log in to see the Activity Stream."
+msgstr "Debes iniciar sesión para ver el flujo de actividad."
 
 #: ckan/controllers/package.py:1404
 #, python-format

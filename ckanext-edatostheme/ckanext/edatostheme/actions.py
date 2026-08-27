@@ -87,7 +87,7 @@ def _activity_list_for_anonymous(action_name, original_action, context, data_dic
     toolkit.check_access(action_name, context, data_dict)
     if not context.get('user'):
         h.flash_error(
-            toolkit._(u'Debes iniciar sesión para ver el flujo de actividad.'))
+            toolkit._(u'You must log in to see the Activity Stream.'))
         return []
     return original_action(context, data_dict)
 
