@@ -27,7 +27,9 @@
   {{ h.build_nav(dataset_type ~ '.read', _('Dataset'), id=pkg.name) }}
   {{ h.build_nav(dataset_type ~ '.groups', h.humanize_entity_type('group', default_group_type, 'content tab') or _('Groups'), id=pkg.name) }}
   {{ h.build_nav(showcase_dataset_showcase_list_route, _('Showcases-dataset'), id=pkg.name) }}
-  {{ h.build_nav('activity.package_activity', _('Activity Stream'), id=pkg.id if is_activity_archive else pkg.name) }}
+  {% if current_user.is_authenticated %}
+    {{ h.build_nav('activity.package_activity', _('Activity Stream'), id=pkg.id if is_activity_archive else pkg.name) }}
+  {% endif %}
 {% endblock %}
 
 {% block secondary_content %}

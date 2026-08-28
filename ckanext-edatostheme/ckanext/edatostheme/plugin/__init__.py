@@ -16,7 +16,7 @@ import ckanext.scheming.helpers as sh
 
 from urllib.parse import urlparse, urlencode
 
-from ckan.common import _, request, c
+from ckan.common import _, request, c, current_user
 from collections import OrderedDict
 from ckan.model import Package
 from ckan.lib.plugins import DefaultTranslation
@@ -488,6 +488,34 @@ def abort_redirect():
     abort(403, _(u'Not authorized to see this page'))
 
 
+# Per-revision activity detail endpoints (history/changes diffs). Unlike
+# package_activity_list et al. (see actions.py), these render a single
+# activity id with no "empty" fallback to show instead, and raising
+# NotAuthorized here would hit the same problem that moved those actions
+# off that approach: any 403 is intercepted by the reverse proxy in
+# deployment and swapped for a generic infra error page. A blueprint
+# before_request redirect sidesteps that, since a redirect isn't a status
+# the proxy intercepts.
+ANONYMOUS_RESTRICTED_ACTIVITY_ENDPOINTS = frozenset((
+    'activity.package_history',
+    'activity.package_changes',
+    'activity.package_changes_multiple',
+    'activity.group_changes',
+    'activity.organization_changes',
+    'activity.group_changes_multiple',
+    'activity.organization_changes_multiple',
+))
+
+
+def redirect_anonymous_from_activity_detail():
+    if request.endpoint not in ANONYMOUS_RESTRICTED_ACTIVITY_ENDPOINTS:
+        return None
+    if current_user.is_authenticated:
+        return None
+    h.flash_error(_(u'You must log in to see the Activity Stream.'))
+    return h.redirect_to('user.login')
+
+
 def get_url(endpoint, key):
     """
     Metodo generico que devolvera la URL del header o footer segun la clave que se pase
@@ -749,12 +777,23 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
     plugins.implements(plugins.IPackageController, inherit=True)
     plugins.implements(plugins.IFacets)
     plugins.implements(plugins.IActions)
-
     # IActions
 
     def get_actions(self):
-        from ckanext.edatostheme.actions import status_show
-        return {'status_show': status_show}
+        from ckanext.edatostheme.actions import (
+            status_show,
+            package_activity_list,
+            group_activity_list,
+            organization_activity_list,
+            user_activity_list,
+        )
+        return {
+            'status_show': status_show,
+            'package_activity_list': package_activity_list,
+            'group_activity_list': group_activity_list,
+            'organization_activity_list': organization_activity_list,
+            'user_activity_list': user_activity_list,
+        }
 
     def __save_script(self, script_content):
         """
@@ -855,6 +894,14 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             clear_login_error,
             methods=['GET'],
         )
+
+        # Guards ckanext.activity's own blueprint, registered by a
+        # different plugin — before_app_request on our own (not-yet-
+        # registered) blueprint runs for every request app-wide, which is
+        # the only reliable attachment point regardless of plugin load
+        # order (Flask forbids calling before_request on a blueprint that
+        # has already been registered to the app).
+        edatos.before_app_request(redirect_anonymous_from_activity_detail)
 
         return [edatos]
 
