@@ -1,5 +1,18 @@
 {% block header_meta_menu %}
-    {{ h.edatos_get_header() | safe }}
+    {#
+      The external header is fetched by the browser, not by CKAN: see
+      assets/js/edatos-external-html.js. Crawlers do not run JavaScript, so
+      sweeping the catalogue no longer makes CKAN pull the header from
+      complementos-apps once per page. The trade-off is that clients without
+      JavaScript get no institutional header.
+
+      The container is a <div> and not a <header>: the injected HTML brings its
+      own <header>, and two of them would expose two 'banner' landmarks.
+    #}
+    {% set edatos_header_url = h.edatos_get_header_url() %}
+    {% if edatos_header_url %}
+      <div id="edatos-header" data-edatos-html-url="{{ edatos_header_url }}"></div>
+    {% endif %}
     {% set edatos_css_url = h.edatos_get_app_style_css_url() %}
     {% if edatos_css_url %}
       {#
@@ -8,7 +21,11 @@
         su propio <link> a theme.css sin '?organisation=', y al insertarse
         despues del <head> gana la cascada sobre el de base.html. Repetirlo
         aqui, despues del header, asegura que la version con organisation
-        gane.
+        gane. La cabecera que sirve complementos-apps hoy ya no enlaza
+        theme.css (solo Font Awesome), asi que ese conflicto no se da; si
+        volviera a enlazarlo, al inyectarse ahora desde el navegador caeria en
+        el <body> y ganaria la cascada pase lo que pase, y habria que filtrar
+        ese <link> del HTML recibido en edatos-external-html.js.
       #}
       <link rel="stylesheet" href="{{ edatos_css_url }}">
     {% endif %}
