@@ -21,6 +21,7 @@ from ckan.common import _, request, c, current_user
 from collections import OrderedDict
 from ckan.model import Package
 from ckan.lib.plugins import DefaultTranslation
+from ckan.logic.auth import restrict_anon
 from ckantoolkit import config, h, _, request, abort
 from flask import Blueprint, current_app
 from flask import render_template_string
@@ -525,6 +526,37 @@ def redirect_anonymous_from_restricted_endpoints():
     return h.redirect_to('user.login')
 
 
+@toolkit.auth_allow_anonymous_access
+def member_list_auth(context, data_dict):
+    '''Deny anonymous access to the member list of a group or organization.
+
+    ckan.auth.public_user_details = false already closes the members pages,
+    but only because the view calls member_list with object_type='user': the
+    action's second _check_access('group_show', ...) then skips the success
+    shortcut in group_show's auth (ckan/logic/auth/get.py), which is only
+    taken when the request is NOT about users.
+
+    Calling the action without that argument takes the shortcut and returns
+    every member anyway, users included - so
+    /api/3/action/member_list?id=<group> leaked user ids and roles to
+    anonymous visitors even with the config in place. core's own member_list
+    auth cannot stop it: it is `return {'success': True}`.
+
+    restrict_anon decides on context['user'], the username string, which is
+    the only reliable signal here. Do NOT be tempted to drop the decorator
+    and let authz.is_authorized reject anonymous requests on its own: that
+    check is `not context.get('auth_user_obj')`, and the API view
+    (ckan/views/api.py) sets auth_user_obj to Flask-Login's anonymous user,
+    which is a truthy object - so the request sails straight through and the
+    action returns 200. Same truthiness trap that made the old
+    `{% if current_user %}` template guards useless.
+
+    Logged-in users get core's behaviour; the action's own group_show check
+    still guards private groups downstream.
+    '''
+    return restrict_anon(context)
+
+
 def get_url(endpoint, key):
     """
     Metodo generico que devolvera la URL del header o footer segun la clave que se pase
@@ -731,12 +763,18 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
     plugins.implements(plugins.IPackageController, inherit=True)
     plugins.implements(plugins.IFacets)
     plugins.implements(plugins.IActions)
+    plugins.implements(plugins.IAuthFunctions)
 
     # IActions
 
     def get_actions(self):
         from ckanext.edatostheme.actions import status_show
         return {'status_show': status_show}
+
+    # IAuthFunctions
+
+    def get_auth_functions(self):
+        return {'member_list': member_list_auth}
 
     # IConfigurer
 
