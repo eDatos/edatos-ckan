@@ -510,10 +510,39 @@ def abort_redirect():
 # manage_members is absent on purpose: core already requires
 # group_edit_permissions there.
 ANONYMOUS_RESTRICTED_ENDPOINTS = frozenset((
+    # Own user pages.
+    'user.index',
+    'user.read',
+    'user.read_organizations',
+    'user.read_groups',
+    'user.followers',
     'user.api_tokens',
     'user.api_token_revoke',
+    # Member lists.
     'group.members',
     'organization.members',
+    # Activity detail: actor names and full revision diffs. Closed by
+    # ckan.auth.public_activity_stream_detail = false, which also aborts 403.
+    'activity.user_activity',
+    'activity.package_changes',
+    'activity.group_changes',
+    'activity.organization_changes',
+    'activity.package_changes_multiple',
+    'activity.group_changes_multiple',
+    'activity.organization_changes_multiple',
+    'activity.package_history',
+    'activity.resource_history',
+))
+
+# Endpoints an anonymous visitor must always reach, or the redirect above
+# turns into a loop. Kept as an explicit list so the test can assert the two
+# sets never overlap.
+ANONYMOUS_REQUIRED_ENDPOINTS = frozenset((
+    'user.login',
+    'user.register',
+    'user.request_reset',
+    'user.perform_reset',
+    'user.logged_out_page',
 ))
 
 

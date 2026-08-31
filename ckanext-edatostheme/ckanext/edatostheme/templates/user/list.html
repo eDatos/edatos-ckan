@@ -1,9 +1,1 @@
-{% block logueado_acceso_ %}
-    {% if current_user and current_user.is_authenticated %}
-        {% snippet "user/snippets/list.html", page=page %}
-    {% else %}
-        {% snippet "user/error_not_logged.html" %}
-    {% endif %}
-{% endblock %}
-
-
+{% snippet "user/snippets/list.html", page=page %}

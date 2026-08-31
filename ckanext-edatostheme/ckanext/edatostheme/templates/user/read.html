@@ -1,10 +1,1 @@
-{% block logueado_acceso_user %}
-{% set user = user_dict %}
-    {% if current_user and current_user.is_authenticated and user_dict %}
-        {% snippet "user/snippets/read.html", user_dict=user %}
-    {% else %}
-        {% snippet "user/error_not_logged.html" %}
-    {% endif %}
-
-{% endblock %}
-
+{% snippet "user/snippets/read.html", user_dict=user_dict %}
