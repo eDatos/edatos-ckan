@@ -17,7 +17,7 @@ import ckanext.scheming.helpers as sh
 from urllib.parse import urlparse
 
 from bs4 import BeautifulSoup
-from ckan.common import _, request, c
+from ckan.common import _, request, c, current_user
 from collections import OrderedDict
 from ckan.model import Package
 from ckan.lib.plugins import DefaultTranslation
@@ -486,6 +486,40 @@ def abort_redirect():
     abort(403, _(u'Not authorized to see this page'))
 
 
+# Endpoints that leak user information to anonymous visitors, for two
+# different reasons:
+#
+# - user.api_tokens/api_token_revoke (ckan/views/user.py) do check_access
+#   and abort(403). That 403 is intercepted by the reverse proxy in
+#   deployment and swapped for a generic infra error page, so anonymous
+#   users hit a confusing "no access" screen instead of being sent to login.
+# - group.members/organization.members (ckan/views/group.py, members())
+#   only check_access('group_show'), which is public, and their templates
+#   render h.linked_user() per member: avatar, display name and a link to
+#   /user/<name>. No auth check anywhere on that path, and
+#   ckan.auth.public_user_details doesn't reach it (it only gates
+#   user_show/user_list). manage_members needs group_edit_permissions, so
+#   it is already safe.
+#
+# A blueprint before_request redirect covers both, since a redirect isn't a
+# status the proxy intercepts.
+ANONYMOUS_RESTRICTED_ENDPOINTS = frozenset((
+    'user.api_tokens',
+    'user.api_token_revoke',
+    'group.members',
+    'organization.members',
+))
+
+
+def redirect_anonymous_from_restricted_endpoints():
+    if request.endpoint not in ANONYMOUS_RESTRICTED_ENDPOINTS:
+        return None
+    if current_user.is_authenticated:
+        return None
+    h.flash_error(_(u'You must log in to see this page.'))
+    return h.redirect_to('user.login')
+
+
 def get_url(endpoint, key):
     """
     Metodo generico que devolvera la URL del header o footer segun la clave que se pase
@@ -838,6 +872,11 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             clear_login_error,
             methods=['GET'],
         )
+
+        # Guards core's own user/group/organization blueprints:
+        # before_app_request on our own blueprint runs for every request
+        # app-wide, regardless of which plugin registered the target endpoint.
+        edatos.before_app_request(redirect_anonymous_from_restricted_endpoints)
 
         return [edatos]
 
