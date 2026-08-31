@@ -486,23 +486,28 @@ def abort_redirect():
     abort(403, _(u'Not authorized to see this page'))
 
 
-# Endpoints that leak user information to anonymous visitors, for two
-# different reasons:
+# Endpoints holding user information that anonymous visitors should not see.
 #
-# - user.api_tokens/api_token_revoke (ckan/views/user.py) do check_access
-#   and abort(403). That 403 is intercepted by the reverse proxy in
-#   deployment and swapped for a generic infra error page, so anonymous
-#   users hit a confusing "no access" screen instead of being sent to login.
-# - group.members/organization.members (ckan/views/group.py, members())
-#   only check_access('group_show'), which is public, and their templates
-#   render h.linked_user() per member: avatar, display name and a link to
-#   /user/<name>. No auth check anywhere on that path, and
-#   ckan.auth.public_user_details doesn't reach it (it only gates
-#   user_show/user_list). manage_members needs group_edit_permissions, so
-#   it is already safe.
+# This guard is NOT the access control - it is the user experience.
 #
-# A blueprint before_request redirect covers both, since a redirect isn't a
-# status the proxy intercepts.
+# The access control is ckan.auth.public_user_details = false, which denies
+# user_show/user_list/user_autocomplete and, through group_show
+# (ckan/logic/auth/get.py: the success shortcut is skipped when the request
+# carries object_type='user' or include_users), also member_list and the
+# members views. Set it in the deployment environment, not in ckan.ini:
+# envvars overrides the file with CKAN__AUTH__PUBLIC_USER_DETAILS.
+#
+# What that config produces is abort(403), and in deployment the reverse
+# proxy intercepts a 403 and swaps it for a generic infra error page - so
+# anonymous users hit a confusing "no access" screen instead of being sent
+# to login. Same story for api_tokens, which core already gates.
+#
+# Hence this before_request redirect: a redirect isn't a status the proxy
+# intercepts. Removing it does not reopen the data, it just makes the
+# rejection look like an infrastructure failure.
+#
+# manage_members is absent on purpose: core already requires
+# group_edit_permissions there.
 ANONYMOUS_RESTRICTED_ENDPOINTS = frozenset((
     'user.api_tokens',
     'user.api_token_revoke',
