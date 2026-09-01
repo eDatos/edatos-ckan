@@ -17,7 +17,7 @@ import ckanext.scheming.helpers as sh
 from urllib.parse import urlparse
 
 from bs4 import BeautifulSoup
-from ckan.common import _, request, c, current_user
+from ckan.common import _, request, c
 from collections import OrderedDict
 from ckan.model import Package
 from ckan.lib.plugins import DefaultTranslation
@@ -487,74 +487,6 @@ def abort_redirect():
     abort(403, _(u'Not authorized to see this page'))
 
 
-# Endpoints holding user information that anonymous visitors should not see.
-#
-# This guard is NOT the access control - it is the user experience.
-#
-# The access control is ckan.auth.public_user_details = false, which denies
-# user_show/user_list/user_autocomplete and, through group_show
-# (ckan/logic/auth/get.py: the success shortcut is skipped when the request
-# carries object_type='user' or include_users), also member_list and the
-# members views. Set it in the deployment environment, not in ckan.ini:
-# envvars overrides the file with CKAN__AUTH__PUBLIC_USER_DETAILS.
-#
-# What that config produces is abort(403), and in deployment the reverse
-# proxy intercepts a 403 and swaps it for a generic infra error page - so
-# anonymous users hit a confusing "no access" screen instead of being sent
-# to login. Same story for api_tokens, which core already gates.
-#
-# Hence this before_request redirect: a redirect isn't a status the proxy
-# intercepts. Removing it does not reopen the data, it just makes the
-# rejection look like an infrastructure failure.
-#
-# manage_members is absent on purpose: core already requires
-# group_edit_permissions there.
-ANONYMOUS_RESTRICTED_ENDPOINTS = frozenset((
-    # Own user pages.
-    'user.index',
-    'user.read',
-    'user.read_organizations',
-    'user.read_groups',
-    'user.followers',
-    'user.api_tokens',
-    'user.api_token_revoke',
-    # Member lists.
-    'group.members',
-    'organization.members',
-    # Activity detail: actor names and full revision diffs. Closed by
-    # ckan.auth.public_activity_stream_detail = false, which also aborts 403.
-    'activity.user_activity',
-    'activity.package_changes',
-    'activity.group_changes',
-    'activity.organization_changes',
-    'activity.package_changes_multiple',
-    'activity.group_changes_multiple',
-    'activity.organization_changes_multiple',
-    'activity.package_history',
-    'activity.resource_history',
-))
-
-# Endpoints an anonymous visitor must always reach, or the redirect above
-# turns into a loop. Kept as an explicit list so the test can assert the two
-# sets never overlap.
-ANONYMOUS_REQUIRED_ENDPOINTS = frozenset((
-    'user.login',
-    'user.register',
-    'user.request_reset',
-    'user.perform_reset',
-    'user.logged_out_page',
-))
-
-
-def redirect_anonymous_from_restricted_endpoints():
-    if request.endpoint not in ANONYMOUS_RESTRICTED_ENDPOINTS:
-        return None
-    if current_user.is_authenticated:
-        return None
-    h.flash_error(_(u'You must log in to see this page.'))
-    return h.redirect_to('user.login')
-
-
 @toolkit.auth_allow_anonymous_access
 def member_list_auth(context, data_dict):
     '''Deny anonymous access to the member list of a group or organization.
@@ -944,11 +876,6 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             clear_login_error,
             methods=['GET'],
         )
-
-        # Guards core's own user/group/organization blueprints:
-        # before_app_request on our own blueprint runs for every request
-        # app-wide, regardless of which plugin registered the target endpoint.
-        edatos.before_app_request(redirect_anonymous_from_restricted_endpoints)
 
         return [edatos]
 
