@@ -929,6 +929,159 @@ docker compose exec ckan python3 -c "import flask_debugtoolbar; print('Flask-Deb
 4. **Reload page** to see changes (templates auto-reload in debug mode)
 5. **Verify changes** using the toolbar
 
+# AI Development Workflow
+
+Este repositorio utiliza un flujo de desarrollo basado en especificaciones.
+
+No debes comenzar implementaciones inmediatamente.
+
+Siempre debes determinar primero en qué fase del flujo se encuentra la tarea.
+
+---
+
+# Workflow
+
+## Fase 0 - Inicialización
+
+Al comenzar cualquier conversación:
+
+1. Leer `PROJECT_CONTEXT.md`.
+2. Buscar la carpeta `specs/`.
+3. Identificar si la petición corresponde a:
+
+   * una nueva funcionalidad,
+   * una mejora,
+   * una corrección,
+   * una refactorización,
+   * una revisión.
+
+No escribir código durante esta fase.
+
+---
+
+## Fase 1 - Discovery
+
+Si se trata de una nueva funcionalidad o de un cambio importante:
+
+1. Crear una nueva especificación utilizando la plantilla.
+2. Inspeccionar el repositorio.
+3. Identificar implementaciones similares.
+4. Detectar:
+
+   * plugins implicados,
+   * actions,
+   * auth,
+   * blueprints,
+   * templates,
+   * helpers,
+   * validators,
+   * modelos,
+   * migraciones.
+
+Después comenzar una entrevista técnica.
+
+Las preguntas deben hacerse una por una.
+
+Cada pregunta debe depender de la respuesta anterior.
+
+No formular preguntas cuya respuesta pueda obtenerse leyendo el repositorio.
+
+---
+
+## Fase 2 - Comprensión
+
+Cuando exista suficiente contexto:
+
+Generar un resumen con:
+
+* Problema.
+* Objetivo.
+* Restricciones.
+* Riesgos.
+* Componentes afectados.
+* Suposiciones.
+* Información pendiente.
+
+Preguntar si el resumen es correcto.
+
+No continuar hasta recibir confirmación.
+
+---
+
+## Fase 3 - Diseño
+
+Proponer una o varias soluciones.
+
+Para cada solución indicar:
+
+* ventajas,
+* inconvenientes,
+* impacto,
+* complejidad,
+* riesgos.
+
+Recomendar una.
+
+Esperar aprobación.
+
+No escribir código.
+
+---
+
+## Fase 4 - Implementación
+
+Solo comenzar cuando el usuario lo indique explícitamente.
+
+Antes de modificar archivos:
+
+* explicar el plan,
+* indicar qué archivos se modificarán,
+* justificar cada cambio.
+
+Durante la implementación:
+
+* respetar la arquitectura existente,
+* evitar duplicidades,
+* reutilizar componentes,
+* seguir las convenciones del proyecto.
+
+---
+
+## Fase 5 - Revisión
+
+Una vez terminada la implementación:
+
+Revisar:
+
+* calidad del código,
+* compatibilidad,
+* seguridad,
+* rendimiento,
+* mantenibilidad,
+* deuda técnica.
+
+Proponer mejoras si existen.
+
+---
+
+# Reglas generales
+
+Nunca asumir información que pueda verificarse.
+
+Siempre inspeccionar primero el código existente.
+
+Si existe una implementación similar, reutilizar su patrón.
+
+Preguntar únicamente aquello que no pueda deducirse del repositorio.
+
+No generar código hasta completar Discovery y Diseño.
+
+Priorizar mantener la coherencia del proyecto frente a introducir soluciones nuevas.
+
+Si detectas que el usuario intenta saltarse el flujo, recuérdale en qué fase se encuentra la tarea y confirma que desea continuar.
+
+El objetivo principal no es escribir código rápidamente, sino comprender correctamente el problema y producir una solución consistente con la arquitectura del proyecto.
+
 #### Editing Templates from Host Machine
 
 Templates in these directories are mounted from the host:
@@ -1043,3 +1196,28 @@ Prefer updating existing documentation over creating new files.
 When creating new documentation, choose descriptive filenames and place them in the most appropriate location within the `docs/` hierarchy.
 
 Documentation should represent enduring project knowledge, not a changelog.
+
+Estructura obligatoria: una línea de asunto, línea en blanco y una lista de viñetas con un cambio por línea.
+
+```
+CODIGO_TAREA: (TIPO_DE_CAMBIO) - Breve descripción del cambio
+
+- Cambio 1
+- Cambio 2
+- ...
+```
+
+- **`CODIGO_TAREA`**: identificador de la tarea en el gestor (`ISTACID-91`), el mismo que da nombre a la rama.
+- **`TIPO_DE_CAMBIO`**: entre paréntesis y en minúsculas — `feat` (funcionalidad nueva), `fix` (corrección), `ref` (refactor o ajuste sin cambio funcional), `doc`, `test`, `chore` (dependencias, scripts, infraestructura).
+- **Breve descripción**: una sola línea en español que resume el commit completo, sin punto final.
+- **Viñetas**: una por cambio (agrupando por área, no un fichero por línea), redactadas en pasiva refleja («Se añade…», «Se unifica…»), explicando el qué y el por qué, con ficheros y símbolos entre backticks. Sin punto final.
+
+Ejemplo:
+
+```
+ISTACID-91: (feat) - Se añade la página de variaciones del IPC y la API REST v1
+
+- Se crea la página `/variaciones` con el formulario de periodo inicial y final, su callback y el enlace en la navegación del shell eDatos
+- Se expone la API REST v1 (`GET /api/v1/ipc/variation` y `GET /api/v1/ipc/metadata`) con validación de parámetros en castellano, CORS y cabeceras de caché
+- Se presenta y aplica la tasa con 1 decimal en `ipc_service`, conservando el valor sin redondear en `variation_pct_raw`, para replicar al calculador oficial del INE
+```

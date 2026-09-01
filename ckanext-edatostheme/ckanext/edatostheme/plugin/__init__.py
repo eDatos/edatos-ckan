@@ -547,11 +547,20 @@ ANONYMOUS_REQUIRED_ENDPOINTS = frozenset((
 
 
 def redirect_anonymous_from_restricted_endpoints():
+    '''Send anonymous visitors to login instead of letting CKAN abort(403).
+
+    Deliberately without a flash message. flash_error() queues the message in
+    the session and expects the next rendered page to consume it, but
+    user.login hands the request over to the external CAS server
+    (ckanext-cas/blueprints.py), so nothing in CKAN ever renders it. The
+    message then surfaced on whatever unrelated page the visitor loaded next -
+    "You must log in to see this page." on top of a public group listing.
+    The login page it lands on already says what is needed.
+    '''
     if request.endpoint not in ANONYMOUS_RESTRICTED_ENDPOINTS:
         return None
     if current_user.is_authenticated:
         return None
-    h.flash_error(_(u'You must log in to see this page.'))
     return h.redirect_to('user.login')
 
 

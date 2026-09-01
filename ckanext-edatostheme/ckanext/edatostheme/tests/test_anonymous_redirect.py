@@ -23,11 +23,25 @@ endpoint to the frozenset without covering it here is not possible.
 import pytest
 
 from ckan.plugins import toolkit
+from ckan.tests import factories
 
 from ckanext.edatostheme.plugin import (
     ANONYMOUS_REQUIRED_ENDPOINTS,
     ANONYMOUS_RESTRICTED_ENDPOINTS,
 )
+
+
+@pytest.fixture()
+def clean_db(reset_db, migrate_db_for):
+    """Override core's clean_db to also apply ckanext-activity's migrations.
+
+    reset_db() replays core alembic only, which recreates the pre-2.10
+    `activity` table with no `permission_labels` column, so any factory call
+    blows up on activity insert. Same workaround as
+    ckanext/activity/tests/conftest.py in core.
+    """
+    reset_db()
+    migrate_db_for('activity')
 
 
 # url_for needs *some* value for the placeholders; the guard matches on the
@@ -82,3 +96,29 @@ def test_login_flow_stays_reachable(app, endpoint):
 
 def test_restricted_and_required_never_overlap():
     assert not (ANONYMOUS_RESTRICTED_ENDPOINTS & ANONYMOUS_REQUIRED_ENDPOINTS)
+
+
+@pytest.mark.ckan_config('ckan.plugins', 'activity edatostheme')
+@pytest.mark.usefixtures('with_plugins', 'clean_db')
+def test_guard_leaves_no_pending_flash_message(app):
+    """The guard must not queue a flash message before redirecting.
+
+    flash_error() parks the message in the session for the next rendered page
+    to consume, but user.login hands the request to the external CAS server,
+    so CKAN never renders it. It then surfaced on whatever page the visitor
+    loaded next - "You must log in to see this page." on top of a public group
+    listing.
+
+    Note the single reused client: app.get() builds a fresh one per call
+    (ckan/tests/helpers.py), so no cookies, no session, and the bug cannot
+    reproduce. Getting this wrong makes the test pass against broken code.
+    """
+    group = factories.Group()
+    client = app.test_client()
+
+    client.get(toolkit.url_for('user.index'), follow_redirects=False)
+    response = client.get(toolkit.url_for('group.read', id=group['name']))
+
+    body = response.get_data(as_text=True)
+    assert 'must log in' not in body
+    assert 'alert-error' not in body
