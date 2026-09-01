@@ -13,4 +13,5 @@ edatostheme-js:
   output: ckanext-edatostheme/%(version)s-edatostheme_js.js
   contents:
     - js/i18n.js
+    - js/edatos-external-html.js
     - js/resource-view-inline-toolbar.js

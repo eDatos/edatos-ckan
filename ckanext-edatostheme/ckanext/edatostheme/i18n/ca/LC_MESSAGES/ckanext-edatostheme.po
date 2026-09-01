@@ -527,6 +527,10 @@ msgstr "No hi ha descàrregues disponibles"
 msgid "Unauthorized to read dataset %s"
 msgstr "No teniu autorització per a llegir el conjunt de dades %s"
 
+#: ckanext/edatostheme/actions.py
+msgid "You must log in to see the Activity Stream."
+msgstr "Heu d'iniciar sessió per veure el flux d'activitat."
+
 #: ckan/controllers/package.py:1428 ckan/views/resource.py:553
 #, python-format
 msgid "Unauthorized to read resource %s"

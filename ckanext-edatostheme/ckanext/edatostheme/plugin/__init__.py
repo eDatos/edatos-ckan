@@ -14,7 +14,7 @@ import ckan.plugins.toolkit as toolkit
 import requests
 import ckanext.scheming.helpers as sh
 
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urlencode
 
 from bs4 import BeautifulSoup
 from ckan.common import _, request, c, current_user
@@ -24,7 +24,6 @@ from ckan.lib.plugins import DefaultTranslation
 from ckan.logic.auth import restrict_anon
 from ckantoolkit import config, h, _, request, abort
 from flask import Blueprint, current_app
-from flask import render_template_string
 
 import logging
 log = logging.getLogger(__name__)
@@ -35,17 +34,21 @@ _REQUESTS_TIMEOUT = 10      # segundos — timeout para todas las llamadas reque
 abort = base.abort
 dirname = os.path.dirname(__file__)
 CONFIG_FILE_PATH = os.path.join(dirname, '../etc/config.json')
-FOOTER_PATH = os.path.join(dirname, '../templates/footer.html')
-FAVICON_PATH = os.path.join(dirname, '../public/favicon.ico')
 SCRIPT_PATH = os.path.join(dirname, '../assets/js/i18n.js')
-BURGER_BUTTON_PATH = os.path.join(
-    dirname, '../code_templates/burger_button.html')
 SCRIPT_TEMPLATE = os.path.join(dirname, '../code_templates/i18n.js')
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 I18N_DIR = os.path.join(HERE, "../i18n")
 APP_ID_FOR_ANALYTICS = 'ckan-catalog'
 
+# Name of the cookie holding the user's chosen language. Its real value comes
+# from the 'cookieKey' property of the common metadata service, but it is
+# resolved once at startup (see EdatosthemePlugin._load_lang_cookie_name)
+# instead of on every page render: the property is deployment-static, and
+# asking for it per request turned into hundreds of thousands of daily calls
+# to the metadata service once crawlers started sweeping the catalogue.
+DEFAULT_LANG_COOKIE_NAME = 'chosenLocale'
+_lang_cookie_name = DEFAULT_LANG_COOKIE_NAME
 # ---------------------------------------------------------------------------
 # Caché en memoria para helpers costosos (group, freq_tags).
 # TTL por defecto: 60s para grupos, 120s para tags frecuentes.
@@ -611,6 +614,67 @@ def get_url(endpoint, key):
     return json_header_request['value']
 
 
+# Keys of the 'metadata' section of config.json whose properties are needed to
+# serve a page. Their values are deployment-static, so they are resolved once
+# and cached here (loaded at startup by
+# EdatosthemePlugin._load_metadata_properties) instead of on every render:
+# asking for them per request turned into hundreds of thousands of daily calls
+# to the metadata service once crawlers started sweeping the catalogue.
+_PRELOADED_PROPERTIES = ('navbarPathKey', 'footerPathKey', 'cssPathKey',
+                         'favicon')
+_PROPERTY_RETRY_INTERVAL = 60   # seconds between retries of a failed property
+
+_resolved_properties = {}       # {config.json key: property value}
+_property_attempts = {}         # {config.json key: monotonic timestamp}
+
+
+def read_metadata():
+    """
+    Returns the 'metadata' section of config.json.
+    """
+    with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
+        return json.loads(config_file.read())['metadata']
+
+
+def get_property(metadata_key):
+    """
+    Returns the value of a metadata service property from the module cache, or
+    None if it cannot be resolved.
+
+    The cache is filled at startup. A property that could not be resolved then
+    is retried on demand, at most once every `_PROPERTY_RETRY_INTERVAL`
+    seconds, so that a metadata service outage neither leaves the header broken
+    until the next CKAN restart nor turns back into a request per render.
+
+    Two concurrent misses may fetch the same property twice; the fetch is
+    idempotent, so it is not worth a lock.
+
+    :param metadata_key: key of the 'metadata' section of config.json holding
+                         the name of the property to resolve
+    """
+    if metadata_key in _resolved_properties:
+        return _resolved_properties[metadata_key]
+
+    now = time.monotonic()
+    last_attempt = _property_attempts.get(metadata_key)
+    if last_attempt is not None and now - last_attempt < _PROPERTY_RETRY_INTERVAL:
+        return None
+    _property_attempts[metadata_key] = now
+
+    try:
+        metadata = read_metadata()
+        property_name = metadata.get(metadata_key)
+        if not property_name:
+            return None
+        _resolved_properties[metadata_key] = get_url(
+            metadata['endpoint'], property_name)
+        return _resolved_properties[metadata_key]
+    except Exception as e:
+        log.error("Could not resolve the metadata property named by '%s': %s",
+                  metadata_key, e)
+        return None
+
+
 def get_request_lang(cookie_name):
     """
     Devuelve el idioma de la cookie si existe, o el idioma resuelto por CKAN, o el locale por defecto.
@@ -638,48 +702,96 @@ def get_theme():
     return theme
 
 
-def save_header(header):
+def get_app_params(metadata):
     """
-    Metodo que guarda el header como template
+    Returns the parameters that identify this application to the external
+    header and footer of complementos-apps.
 
-    :param header: Codigo del header en formato string que se va a guardar
+    :param metadata: 'metadata' section of config.json
     """
+    return {
+        # The metadata service echoes 'appName' into the header title, so it is
+        # sent already translated. This used to be patched into the returned
+        # HTML server side, with BeautifulSoup, on every render.
+        'appName': _(metadata['appName']),
+        'appId': APP_ID_FOR_ANALYTICS,
+        'appUrl': metadata['siteURL'],
+    }
 
-    #header = header.replace(b'&gt;', b'>').decode('utf8')
-    #header = "{% block header_wrapper %}" + header + "{% endblock %}"
-    with codecs.open(HEADER_PATH, 'w', encoding='utf8') as header_file:
-        header_file.truncate(0)
-        header_file.seek(0)
-        header_file.write(header)
 
-
-def get_header_url(json_config):
+def get_header_url():
     """
-    Devuelve la URL del header con el idioma del usuario.
-    
-    :param json_config: Configuracion cargada como diccionario JSON
+    Returns the URL of the external header for the current request, so that the
+    browser can fetch it (see assets/js/edatos-external-html.js) instead of CKAN
+    fetching it while rendering the page. Crawlers do not run JavaScript, so
+    sweeping the catalogue no longer pulls the header once per page.
+
+    The header URL itself comes from the property cache (see `get_property`),
+    so it costs no request. Returns an empty string when it cannot be built, in
+    which case no header is rendered at all: this helper is called from a
+    template, so it must never raise or it takes the whole page down with it.
     """
-    endpoint = json_config['metadata']['endpoint']
-    header_key = json_config['metadata']['navbarPathKey']
-    cookie_key = json_config['metadata'].get('cookieKey')
-    endpoint = json_config['metadata']['endpoint']
-    title = json_config['metadata']['appName']
-    navbar_url = get_url(endpoint, header_key)
-    url = "%s?appName=%s&appId=%s&appUrl=%s" % (navbar_url, title, APP_ID_FOR_ANALYTICS, json_config['metadata']['siteURL'])
+    try:
+        navbar_url = get_property('navbarPathKey')
+        if not navbar_url:
+            return ''
 
-    theme = get_theme()
-    if theme:
-        url = "%s&organisation=%s" % (url, theme)
+        metadata = read_metadata()
+        params = get_app_params(metadata)
 
-    # Obtener el nombre real de la cookie una sola vez
-    cookie_name = get_url(endpoint, cookie_key) if cookie_key else None
-    # Idioma del request: cookie > idioma CKAN > locale por defecto
-    request_lang = get_request_lang(cookie_name)
+        # The language cookie name is still resolved per request here; EDATOS-5900
+        # moves it to startup on its own branch. Its own guard keeps a metadata
+        # service outage from costing more than the language parameter: the
+        # header URL is cached, so the header still loads.
+        try:
+            cookie_key = metadata.get('cookieKey')
+            cookie_name = get_url(metadata['endpoint'], cookie_key) if cookie_key else None
+        except Exception as e:
+            log.warning("Could not resolve the language cookie name, the header "
+                        "is requested without a language: %s", e)
+            cookie_name = None
 
-    if cookie_name:
-        url = "%s&%s=%s" % (url, cookie_name, request_lang)
+        if cookie_name:
+            params[cookie_name] = get_request_lang(cookie_name)
 
-    return url
+        theme = get_theme()
+        if theme:
+            params['organisation'] = theme
+
+        return "%s?%s" % (navbar_url, urlencode(params))
+    except Exception as e:
+        log.error("Error al construir la URL de la cabecera: %s", e)
+        return ''
+
+
+def get_footer_url():
+    """
+    Returns the URL of the external footer, fetched by the browser exactly like
+    the header (see assets/js/edatos-external-html.js).
+
+    It used to be downloaded at startup and written over `templates/footer.html`,
+    which is why the deployment needed that file to be world writable. Nothing
+    is written to disk any more.
+
+    Unlike the header, no language or organisation parameter is sent: the
+    startup download did not send them either, and adding the language here
+    would mean resolving the cookie name from the metadata service on every
+    render, which is exactly the cost this ticket removes. EDATOS-5900 caches
+    that name at startup and can then add it to both URLs.
+
+    Returns an empty string when it cannot be built, in which case no footer is
+    rendered at all: this helper is called from a template, so it must never
+    raise or it takes the whole page down with it.
+    """
+    try:
+        footer_url = get_property('footerPathKey')
+        if not footer_url:
+            return ''
+
+        return "%s?%s" % (footer_url, urlencode(get_app_params(read_metadata())))
+    except Exception as e:
+        log.error("Error al construir la URL del pie de pagina: %s", e)
+        return ''
 
 
 def get_app_style_css_url():
@@ -692,19 +804,21 @@ def get_app_style_css_url():
     cabecera (p. ej. el iframe de package/snippets/resource_view_embed.html),
     que no reciben las variables --edatos-* porque estas se definen dentro
     del HTML del header/footer externo y esas paginas no lo renderizan.
+
+    The property is read from the cache (see `get_property`), not from the
+    metadata service: this helper is called twice per page (base.html and
+    header.html), so resolving it per call meant two extra requests per render.
     """
     try:
-        with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
-            json_config = json.loads(config_file.read())
-            endpoint = json_config['metadata']['endpoint']
-            css_key = json_config['metadata']['cssPathKey']
-            url = get_url(endpoint, css_key)
+        url = get_property('cssPathKey')
+        if not url:
+            return ""
 
-            theme = get_theme()
-            if theme:
-                url = "%s?organisation=%s" % (url, theme)
+        theme = get_theme()
+        if theme:
+            url = "%s?organisation=%s" % (url, theme)
 
-            return url
+        return url
     except Exception as e:
         log.error("Error al obtener la URL del CSS de complementos-apps: %s", e)
         return ""
@@ -730,62 +844,6 @@ def get_app_fontawesome_css_url():
         return ""
 
 
-def get_altered_header(header, json_config):
-    """
-    Metodo que modifica el header para hacer que contenga los botones
-    dinamicos que se generan para esta aplicacion en concreto.
-
-    :param header: Codigo HTML del Header que se va a modificar
-    :param json_config: Fichero de configuracion cargado como
-                        un diccionario JSON
-    """
-    alteredHeader = header
-
-    # Annadimos el boton hamburguesa
-    soup = BeautifulSoup(alteredHeader, 'html.parser')
-    container = soup.find(
-        class_='d-flex justify-content-end align-items-center')
-
-    if container is not None:
-        with codecs.open(BURGER_BUTTON_PATH, 'r', encoding='utf8') as burger_button_file:
-            code = burger_button_file.read()
-            container.append(BeautifulSoup(code, 'html.parser'))
-            alteredHeader = soup.prettify('utf-8')
-            
-            
-    # Reemplazar titulo por el titulo con funcion de traduccion
-    title = json_config['metadata']['appName']
-    
-    div = soup.find('div', id='title-bar')
-    
-    if div:
-        span = div.find('span')
-        if span and title.lower() in span.text.strip().lower():
-            span.string = _(title)
-
-    alteredHeader = soup.prettify('utf-8')
-
-    alteredHeader = alteredHeader.replace(b'&gt;', b'>').decode('utf8')
-
-    return alteredHeader
-
-
-def get_html_header():
-    """
-    Descarga, modifica y devuelve el HTML del header en cada petición,
-    sin caché. No lee ni escribe ficheros en disco.
-    """
-    try:
-        with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
-            json_config = json.loads(config_file.read())
-        html = requests.get(
-            url=get_header_url(json_config), timeout=_REQUESTS_TIMEOUT).content
-        altered = get_altered_header(header=html, json_config=json_config)
-        return render_template_string(altered)
-    except Exception as exc:
-        log.warning('edatostheme: error al obtener header: %s', exc)
-        return ''
-
 # Map de vistas que se quieren restringir acceso
 REDIRECT_VIEWS = (
     # route, view, function    
@@ -806,8 +864,20 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
     # IActions
 
     def get_actions(self):
-        from ckanext.edatostheme.actions import status_show
-        return {'status_show': status_show}
+        from ckanext.edatostheme.actions import (
+            status_show,
+            package_activity_list,
+            group_activity_list,
+            organization_activity_list,
+            user_activity_list,
+        )
+        return {
+            'status_show': status_show,
+            'package_activity_list': package_activity_list,
+            'group_activity_list': group_activity_list,
+            'organization_activity_list': organization_activity_list,
+            'user_activity_list': user_activity_list,
+        }
 
     # IAuthFunctions
 
@@ -894,31 +964,6 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
 
             return updated_script
 
-    def _load_footer(self):
-        """
-        Metodo que carga las templates para FOOTER
-        """
-        with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
-            json_config = json.loads(config_file.read())
-            footer = requests.get(
-                url=self.__get_footer_ulr(json_config),
-                timeout=_REQUESTS_TIMEOUT).content
-
-            footer = footer.decode('utf-8')
-
-            self.__save_footer(footer=footer)
-
-    def _load_favicon(self):
-        """
-        Metodo que carga el favicon
-        """
-        with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
-            json_config = json.loads(config_file.read())
-            favicon = requests.get(
-                url=self.__get_favicon_url(json_config),
-                timeout=_REQUESTS_TIMEOUT).content
-            self.__save_favicon(favicon=favicon)
-
     def _i18n_script_filler(self):
         """
         Metodo que incrusta en el script de i18n los valores de la config
@@ -928,11 +973,40 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             script_content = script_template.read()
             self.__save_script(script_content)
 
+    def _load_metadata_properties(self):
+        """
+        Resolves at startup the metadata service properties that would
+        otherwise be resolved while serving a page.
+
+        This is the only thing the metadata service is needed for at startup:
+        the header, the footer and the favicon used to be downloaded here and
+        written to disk, and an outage of the service took the whole boot down
+        with it. Now nothing but this cache is filled, and a failure is not
+        fatal: it is logged, and `get_property` retries it on demand.
+        """
+        for metadata_key in _PRELOADED_PROPERTIES:
+            get_property(metadata_key)
+
+    def _set_favicon(self, config_):
+        """
+        Points CKAN at the favicon served by complementos-apps.
+
+        It used to be downloaded at startup and written over
+        `public/favicon.ico`; letting the browser fetch it from its own URL
+        removes both the request and the file. The default of `ckan.favicon` is
+        kept when the URL cannot be resolved, so the site is never left without
+        one.
+        """
+        favicon_url = get_property('favicon')
+        if favicon_url:
+            config_['ckan.favicon'] = favicon_url
+
     # IConfigurer
 
     def update_config(self, config_):
-        self._load_footer()
-        self._load_favicon()
+        self._load_metadata_properties()
+        self._set_favicon(config_)
+        self._load_lang_cookie_name()
         self._i18n_script_filler()
         toolkit.add_template_directory(config_, '../templates')
         toolkit.add_public_directory(config_, '../public')
@@ -973,7 +1047,8 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             'edatostheme_get_delink_value': get_delink_value,
             'edatos_get_legal_notice_url': get_legal_notice_url,
             'edatos_get_legal_notice_label': get_legal_notice_label,
-            'edatos_get_header': get_html_header,
+            'edatos_get_header_url': get_header_url,
+            'edatos_get_footer_url': get_footer_url,
             'edatos_get_app_style_css_url': get_app_style_css_url,
             'edatos_get_app_fontawesome_css_url': get_app_fontawesome_css_url,
             'edatos_get_facet_items_dict': get_facet_items_dict,
