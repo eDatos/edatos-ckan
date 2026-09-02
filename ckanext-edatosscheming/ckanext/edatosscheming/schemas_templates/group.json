@@ -17,7 +17,7 @@
             "form_snippet": "multiple_required_language_text.html",
             "validators": "tags_html_detected multiple_one_value multiple_required_language fluent_text",
             "output_validators": "fluent_text_output",
-            "required_language": "FILL_REQUIRED_LANGUAGE",
+            "required_language": "es",
             "fluent_form_placeholder": {
                 "en": {
                     "en": "Name or title of the category in English.",

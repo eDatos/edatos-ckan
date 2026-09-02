@@ -15,7 +15,7 @@
             "preset": "fluent_core_translated",
             "display_snippet": "multilanguage_text.html",
             "form_snippet": "multiple_required_language_text.html",
-            "required_language": "FILL_REQUIRED_LANGUAGE",
+            "required_language": "es",
             "validators": "tags_html_detected multiple_one_value multiple_required_language fluent_text",
             "output_validators": "fluent_text_output",
             "fluent_form_placeholder": {
@@ -129,7 +129,7 @@
             "form_snippet": "multiple_required_language_markdown.html",
             "validators": "tags_html_detected multiple_one_value multiple_required_language fluent_text",
             "output_validators": "fluent_text_output",
-            "required_language": "FILL_REQUIRED_LANGUAGE",
+            "required_language": "es",
             "fluent_form_placeholder": {
                 "en": {
                     "en": "Detailed description of the collection in English.",
