@@ -206,7 +206,7 @@ def process_package(package_id):
         # estuviera almacenado en el paquete. Si no se envía, package_patch
         # mezcla el patch con el valor ya existente, y si ese valor no es un
         # dict válido, el validador copy_fluent_keywords_to_tags del esquema
-        # revienta con un 500 al ejecutarse sobre datos no normalizados.
+        # falla con un 500 al ejecutarse sobre datos no normalizados.
         package['multilingual_tags'] = {'es': tag_names}
 
         resources = packageg.get('resources', '')
