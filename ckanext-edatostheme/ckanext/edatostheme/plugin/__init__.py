@@ -16,10 +16,12 @@ import ckanext.scheming.helpers as sh
 
 from urllib.parse import urlparse, urlencode
 
+from bs4 import BeautifulSoup
 from ckan.common import _, request, c, current_user
 from collections import OrderedDict
 from ckan.model import Package
 from ckan.lib.plugins import DefaultTranslation
+from ckan.logic.auth import restrict_anon
 from ckantoolkit import config, h, _, request, abort
 from flask import Blueprint, current_app
 
@@ -488,32 +490,112 @@ def abort_redirect():
     abort(403, _(u'Not authorized to see this page'))
 
 
-# Per-revision activity detail endpoints (history/changes diffs). Unlike
-# package_activity_list et al. (see actions.py), these render a single
-# activity id with no "empty" fallback to show instead, and raising
-# NotAuthorized here would hit the same problem that moved those actions
-# off that approach: any 403 is intercepted by the reverse proxy in
-# deployment and swapped for a generic infra error page. A blueprint
-# before_request redirect sidesteps that, since a redirect isn't a status
-# the proxy intercepts.
-ANONYMOUS_RESTRICTED_ACTIVITY_ENDPOINTS = frozenset((
-    'activity.package_history',
+# Endpoints holding user information that anonymous visitors should not see.
+#
+# This guard is NOT the access control - it is the user experience.
+#
+# The access control is ckan.auth.public_user_details = false, which denies
+# user_show/user_list/user_autocomplete and, through group_show
+# (ckan/logic/auth/get.py: the success shortcut is skipped when the request
+# carries object_type='user' or include_users), also member_list and the
+# members views. Set it in the deployment environment, not in ckan.ini:
+# envvars overrides the file with CKAN__AUTH__PUBLIC_USER_DETAILS.
+#
+# What that config produces is abort(403), and in deployment the reverse
+# proxy intercepts a 403 and swaps it for a generic infra error page - so
+# anonymous users hit a confusing "no access" screen instead of being sent
+# to login. Same story for api_tokens, which core already gates.
+#
+# Hence this before_request redirect: a redirect isn't a status the proxy
+# intercepts. Removing it does not reopen the data, it just makes the
+# rejection look like an infrastructure failure.
+#
+# manage_members is absent on purpose: core already requires
+# group_edit_permissions there.
+ANONYMOUS_RESTRICTED_ENDPOINTS = frozenset((
+    # Own user pages.
+    'user.index',
+    'user.read',
+    'user.read_organizations',
+    'user.read_groups',
+    'user.followers',
+    'user.api_tokens',
+    'user.api_token_revoke',
+    # Member lists.
+    'group.members',
+    'organization.members',
+    # Activity detail: actor names and full revision diffs. Closed by
+    # ckan.auth.public_activity_stream_detail = false, which also aborts 403.
+    'activity.user_activity',
     'activity.package_changes',
-    'activity.package_changes_multiple',
     'activity.group_changes',
     'activity.organization_changes',
+    'activity.package_changes_multiple',
     'activity.group_changes_multiple',
     'activity.organization_changes_multiple',
+    'activity.package_history',
+    'activity.resource_history',
+))
+
+# Endpoints an anonymous visitor must always reach, or the redirect above
+# turns into a loop. Kept as an explicit list so the test can assert the two
+# sets never overlap.
+ANONYMOUS_REQUIRED_ENDPOINTS = frozenset((
+    'user.login',
+    'user.register',
+    'user.request_reset',
+    'user.perform_reset',
+    'user.logged_out_page',
 ))
 
 
-def redirect_anonymous_from_activity_detail():
-    if request.endpoint not in ANONYMOUS_RESTRICTED_ACTIVITY_ENDPOINTS:
+def redirect_anonymous_from_restricted_endpoints():
+    '''Send anonymous visitors to login instead of letting CKAN abort(403).
+
+    Deliberately without a flash message. flash_error() queues the message in
+    the session and expects the next rendered page to consume it, but
+    user.login hands the request over to the external CAS server
+    (ckanext-cas/blueprints.py), so nothing in CKAN ever renders it. The
+    message then surfaced on whatever unrelated page the visitor loaded next -
+    "You must log in to see this page." on top of a public group listing.
+    The login page it lands on already says what is needed.
+    '''
+    if request.endpoint not in ANONYMOUS_RESTRICTED_ENDPOINTS:
         return None
     if current_user.is_authenticated:
         return None
-    h.flash_error(_(u'You must log in to see the Activity Stream.'))
     return h.redirect_to('user.login')
+
+
+@toolkit.auth_allow_anonymous_access
+def member_list_auth(context, data_dict):
+    '''Deny anonymous access to the member list of a group or organization.
+
+    ckan.auth.public_user_details = false already closes the members pages,
+    but only because the view calls member_list with object_type='user': the
+    action's second _check_access('group_show', ...) then skips the success
+    shortcut in group_show's auth (ckan/logic/auth/get.py), which is only
+    taken when the request is NOT about users.
+
+    Calling the action without that argument takes the shortcut and returns
+    every member anyway, users included - so
+    /api/3/action/member_list?id=<group> leaked user ids and roles to
+    anonymous visitors even with the config in place. core's own member_list
+    auth cannot stop it: it is `return {'success': True}`.
+
+    restrict_anon decides on context['user'], the username string, which is
+    the only reliable signal here. Do NOT be tempted to drop the decorator
+    and let authz.is_authorized reject anonymous requests on its own: that
+    check is `not context.get('auth_user_obj')`, and the API view
+    (ckan/views/api.py) sets auth_user_obj to Flask-Login's anonymous user,
+    which is a truthy object - so the request sails straight through and the
+    action returns 200. Same truthiness trap that made the old
+    `{% if current_user %}` template guards useless.
+
+    Logged-in users get core's behaviour; the action's own group_show check
+    still guards private groups downstream.
+    '''
+    return restrict_anon(context)
 
 
 def get_url(endpoint, key):
@@ -777,6 +859,8 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
     plugins.implements(plugins.IPackageController, inherit=True)
     plugins.implements(plugins.IFacets)
     plugins.implements(plugins.IActions)
+    plugins.implements(plugins.IAuthFunctions)
+
     # IActions
 
     def get_actions(self):
@@ -794,6 +878,55 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             'organization_activity_list': organization_activity_list,
             'user_activity_list': user_activity_list,
         }
+
+    # IAuthFunctions
+
+    def get_auth_functions(self):
+        return {'member_list': member_list_auth}
+
+    # IConfigurer
+
+    def __get_footer_ulr(self, json_config):
+        """
+        Metodo que devuelve la URL del footer
+        :param json_config: Fichero de configuracion cargado como un diccionario JSON
+        """
+        footer_key = json_config['metadata']['footerPathKey']
+        endpoint = json_config['metadata']['endpoint']
+        return "%s?appName=%s&appUrl=%s" % (get_url(endpoint, footer_key),
+                                            json_config['metadata']['appName'],
+                                            json_config['metadata']['siteURL'])
+
+    def __get_favicon_url(self, json_config):
+        """
+        Metodo que devuelve la URL del favicon
+        :param
+            json_config: Fichero de configuracion cargado como diccionario JSON
+        """
+        favicon_key = json_config['metadata']['favicon']
+        endpoint = json_config['metadata']['endpoint']
+        return "%s?appName=%s&appUrl=%s" % (get_url(endpoint, favicon_key),
+                                            json_config['metadata']['appName'],
+                                            json_config['metadata']['siteURL'])
+
+
+    def __save_footer(self, footer):
+        """
+        Metodo que guarda el footer como template
+
+        :param footer: Codigo del footer en formato string que se va a guardar
+        """
+        with codecs.open(FOOTER_PATH, 'w', encoding='utf8') as footer_file:
+            footer_file.write(footer)
+
+    def __save_favicon(self, favicon):
+        """
+        Metodo para guardar el favicon
+
+        :param favicon: Imagen descargada a guardar en la extension
+        """
+        with open(FAVICON_PATH, 'wb') as favicon_file:
+            favicon_file.write(favicon)
 
     def __save_script(self, script_content):
         """
@@ -895,13 +1028,10 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             methods=['GET'],
         )
 
-        # Guards ckanext.activity's own blueprint, registered by a
-        # different plugin — before_app_request on our own (not-yet-
-        # registered) blueprint runs for every request app-wide, which is
-        # the only reliable attachment point regardless of plugin load
-        # order (Flask forbids calling before_request on a blueprint that
-        # has already been registered to the app).
-        edatos.before_app_request(redirect_anonymous_from_activity_detail)
+        # Guards core's own user/group/organization blueprints:
+        # before_app_request on our own blueprint runs for every request
+        # app-wide, regardless of which plugin registered the target endpoint.
+        edatos.before_app_request(redirect_anonymous_from_restricted_endpoints)
 
         return [edatos]
 
