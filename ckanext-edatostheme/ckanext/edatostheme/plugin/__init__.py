@@ -41,14 +41,6 @@ HERE = os.path.abspath(os.path.dirname(__file__))
 I18N_DIR = os.path.join(HERE, "../i18n")
 APP_ID_FOR_ANALYTICS = 'ckan-catalog'
 
-# Name of the cookie holding the user's chosen language. Its real value comes
-# from the 'cookieKey' property of the common metadata service, but it is
-# resolved once at startup (see EdatosthemePlugin._load_lang_cookie_name)
-# instead of on every page render: the property is deployment-static, and
-# asking for it per request turned into hundreds of thousands of daily calls
-# to the metadata service once crawlers started sweeping the catalogue.
-DEFAULT_LANG_COOKIE_NAME = 'chosenLocale'
-_lang_cookie_name = DEFAULT_LANG_COOKIE_NAME
 # ---------------------------------------------------------------------------
 # Caché en memoria para helpers costosos (group, freq_tags).
 # TTL por defecto: 60s para grupos, 120s para tags frecuentes.
@@ -324,7 +316,10 @@ def get_group(group_id):
         if cached and (now - cached[0]) < _GROUP_CACHE_TTL:
             return cached[1]
 
-    group_dict = toolkit.get_action('group_show')(data_dict={'id': group_id})
+    try:
+        group_dict = toolkit.get_action('group_show')(data_dict={'id': group_id})
+    except toolkit.ObjectNotFound:
+        return None
 
     with _GROUP_CACHE_LOCK:
         _GROUP_CACHE[group_id] = (now, group_dict)
@@ -1006,7 +1001,6 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
     def update_config(self, config_):
         self._load_metadata_properties()
         self._set_favicon(config_)
-        self._load_lang_cookie_name()
         self._i18n_script_filler()
         toolkit.add_template_directory(config_, '../templates')
         toolkit.add_public_directory(config_, '../public')
