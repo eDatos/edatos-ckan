@@ -14,16 +14,16 @@ import ckan.plugins.toolkit as toolkit
 import requests
 import ckanext.scheming.helpers as sh
 
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urlencode
 
 from bs4 import BeautifulSoup
-from ckan.common import _, request, c
+from ckan.common import _, request, c, current_user
 from collections import OrderedDict
 from ckan.model import Package
 from ckan.lib.plugins import DefaultTranslation
+from ckan.logic.auth import restrict_anon
 from ckantoolkit import config, h, _, request, abort
 from flask import Blueprint, current_app
-from flask import render_template_string
 
 import logging
 log = logging.getLogger(__name__)
@@ -34,11 +34,7 @@ _REQUESTS_TIMEOUT = 10      # segundos — timeout para todas las llamadas reque
 abort = base.abort
 dirname = os.path.dirname(__file__)
 CONFIG_FILE_PATH = os.path.join(dirname, '../etc/config.json')
-FOOTER_PATH = os.path.join(dirname, '../templates/footer.html')
-FAVICON_PATH = os.path.join(dirname, '../public/favicon.ico')
 SCRIPT_PATH = os.path.join(dirname, '../assets/js/i18n.js')
-BURGER_BUTTON_PATH = os.path.join(
-    dirname, '../code_templates/burger_button.html')
 SCRIPT_TEMPLATE = os.path.join(dirname, '../code_templates/i18n.js')
 
 HERE = os.path.abspath(os.path.dirname(__file__))
@@ -320,7 +316,10 @@ def get_group(group_id):
         if cached and (now - cached[0]) < _GROUP_CACHE_TTL:
             return cached[1]
 
-    group_dict = toolkit.get_action('group_show')(data_dict={'id': group_id})
+    try:
+        group_dict = toolkit.get_action('group_show')(data_dict={'id': group_id})
+    except toolkit.ObjectNotFound:
+        return None
 
     with _GROUP_CACHE_LOCK:
         _GROUP_CACHE[group_id] = (now, group_dict)
@@ -486,6 +485,114 @@ def abort_redirect():
     abort(403, _(u'Not authorized to see this page'))
 
 
+# Endpoints holding user information that anonymous visitors should not see.
+#
+# This guard is NOT the access control - it is the user experience.
+#
+# The access control is ckan.auth.public_user_details = false, which denies
+# user_show/user_list/user_autocomplete and, through group_show
+# (ckan/logic/auth/get.py: the success shortcut is skipped when the request
+# carries object_type='user' or include_users), also member_list and the
+# members views. Set it in the deployment environment, not in ckan.ini:
+# envvars overrides the file with CKAN__AUTH__PUBLIC_USER_DETAILS.
+#
+# What that config produces is abort(403), and in deployment the reverse
+# proxy intercepts a 403 and swaps it for a generic infra error page - so
+# anonymous users hit a confusing "no access" screen instead of being sent
+# to login. Same story for api_tokens, which core already gates.
+#
+# Hence this before_request redirect: a redirect isn't a status the proxy
+# intercepts. Removing it does not reopen the data, it just makes the
+# rejection look like an infrastructure failure.
+#
+# manage_members is absent on purpose: core already requires
+# group_edit_permissions there.
+ANONYMOUS_RESTRICTED_ENDPOINTS = frozenset((
+    # Own user pages.
+    'user.index',
+    'user.read',
+    'user.read_organizations',
+    'user.read_groups',
+    'user.followers',
+    'user.api_tokens',
+    'user.api_token_revoke',
+    # Member lists.
+    'group.members',
+    'organization.members',
+    # Activity detail: actor names and full revision diffs. Closed by
+    # ckan.auth.public_activity_stream_detail = false, which also aborts 403.
+    'activity.user_activity',
+    'activity.package_changes',
+    'activity.group_changes',
+    'activity.organization_changes',
+    'activity.package_changes_multiple',
+    'activity.group_changes_multiple',
+    'activity.organization_changes_multiple',
+    'activity.package_history',
+    'activity.resource_history',
+))
+
+# Endpoints an anonymous visitor must always reach, or the redirect above
+# turns into a loop. Kept as an explicit list so the test can assert the two
+# sets never overlap.
+ANONYMOUS_REQUIRED_ENDPOINTS = frozenset((
+    'user.login',
+    'user.register',
+    'user.request_reset',
+    'user.perform_reset',
+    'user.logged_out_page',
+))
+
+
+def redirect_anonymous_from_restricted_endpoints():
+    '''Send anonymous visitors to login instead of letting CKAN abort(403).
+
+    Deliberately without a flash message. flash_error() queues the message in
+    the session and expects the next rendered page to consume it, but
+    user.login hands the request over to the external CAS server
+    (ckanext-cas/blueprints.py), so nothing in CKAN ever renders it. The
+    message then surfaced on whatever unrelated page the visitor loaded next -
+    "You must log in to see this page." on top of a public group listing.
+    The login page it lands on already says what is needed.
+    '''
+    if request.endpoint not in ANONYMOUS_RESTRICTED_ENDPOINTS:
+        return None
+    if current_user.is_authenticated:
+        return None
+    return h.redirect_to('user.login')
+
+
+@toolkit.auth_allow_anonymous_access
+def member_list_auth(context, data_dict):
+    '''Deny anonymous access to the member list of a group or organization.
+
+    ckan.auth.public_user_details = false already closes the members pages,
+    but only because the view calls member_list with object_type='user': the
+    action's second _check_access('group_show', ...) then skips the success
+    shortcut in group_show's auth (ckan/logic/auth/get.py), which is only
+    taken when the request is NOT about users.
+
+    Calling the action without that argument takes the shortcut and returns
+    every member anyway, users included - so
+    /api/3/action/member_list?id=<group> leaked user ids and roles to
+    anonymous visitors even with the config in place. core's own member_list
+    auth cannot stop it: it is `return {'success': True}`.
+
+    restrict_anon decides on context['user'], the username string, which is
+    the only reliable signal here. Do NOT be tempted to drop the decorator
+    and let authz.is_authorized reject anonymous requests on its own: that
+    check is `not context.get('auth_user_obj')`, and the API view
+    (ckan/views/api.py) sets auth_user_obj to Flask-Login's anonymous user,
+    which is a truthy object - so the request sails straight through and the
+    action returns 200. Same truthiness trap that made the old
+    `{% if current_user %}` template guards useless.
+
+    Logged-in users get core's behaviour; the action's own group_show check
+    still guards private groups downstream.
+    '''
+    return restrict_anon(context)
+
+
 def get_url(endpoint, key):
     """
     Metodo generico que devolvera la URL del header o footer segun la clave que se pase
@@ -500,6 +607,67 @@ def get_url(endpoint, key):
     json_header_request = json.loads(header_request)
 
     return json_header_request['value']
+
+
+# Keys of the 'metadata' section of config.json whose properties are needed to
+# serve a page. Their values are deployment-static, so they are resolved once
+# and cached here (loaded at startup by
+# EdatosthemePlugin._load_metadata_properties) instead of on every render:
+# asking for them per request turned into hundreds of thousands of daily calls
+# to the metadata service once crawlers started sweeping the catalogue.
+_PRELOADED_PROPERTIES = ('navbarPathKey', 'footerPathKey', 'cssPathKey',
+                         'favicon')
+_PROPERTY_RETRY_INTERVAL = 60   # seconds between retries of a failed property
+
+_resolved_properties = {}       # {config.json key: property value}
+_property_attempts = {}         # {config.json key: monotonic timestamp}
+
+
+def read_metadata():
+    """
+    Returns the 'metadata' section of config.json.
+    """
+    with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
+        return json.loads(config_file.read())['metadata']
+
+
+def get_property(metadata_key):
+    """
+    Returns the value of a metadata service property from the module cache, or
+    None if it cannot be resolved.
+
+    The cache is filled at startup. A property that could not be resolved then
+    is retried on demand, at most once every `_PROPERTY_RETRY_INTERVAL`
+    seconds, so that a metadata service outage neither leaves the header broken
+    until the next CKAN restart nor turns back into a request per render.
+
+    Two concurrent misses may fetch the same property twice; the fetch is
+    idempotent, so it is not worth a lock.
+
+    :param metadata_key: key of the 'metadata' section of config.json holding
+                         the name of the property to resolve
+    """
+    if metadata_key in _resolved_properties:
+        return _resolved_properties[metadata_key]
+
+    now = time.monotonic()
+    last_attempt = _property_attempts.get(metadata_key)
+    if last_attempt is not None and now - last_attempt < _PROPERTY_RETRY_INTERVAL:
+        return None
+    _property_attempts[metadata_key] = now
+
+    try:
+        metadata = read_metadata()
+        property_name = metadata.get(metadata_key)
+        if not property_name:
+            return None
+        _resolved_properties[metadata_key] = get_url(
+            metadata['endpoint'], property_name)
+        return _resolved_properties[metadata_key]
+    except Exception as e:
+        log.error("Could not resolve the metadata property named by '%s': %s",
+                  metadata_key, e)
+        return None
 
 
 def get_request_lang(cookie_name):
@@ -529,48 +697,96 @@ def get_theme():
     return theme
 
 
-def save_header(header):
+def get_app_params(metadata):
     """
-    Metodo que guarda el header como template
+    Returns the parameters that identify this application to the external
+    header and footer of complementos-apps.
 
-    :param header: Codigo del header en formato string que se va a guardar
+    :param metadata: 'metadata' section of config.json
     """
+    return {
+        # The metadata service echoes 'appName' into the header title, so it is
+        # sent already translated. This used to be patched into the returned
+        # HTML server side, with BeautifulSoup, on every render.
+        'appName': _(metadata['appName']),
+        'appId': APP_ID_FOR_ANALYTICS,
+        'appUrl': metadata['siteURL'],
+    }
 
-    #header = header.replace(b'&gt;', b'>').decode('utf8')
-    #header = "{% block header_wrapper %}" + header + "{% endblock %}"
-    with codecs.open(HEADER_PATH, 'w', encoding='utf8') as header_file:
-        header_file.truncate(0)
-        header_file.seek(0)
-        header_file.write(header)
 
-
-def get_header_url(json_config):
+def get_header_url():
     """
-    Devuelve la URL del header con el idioma del usuario.
-    
-    :param json_config: Configuracion cargada como diccionario JSON
+    Returns the URL of the external header for the current request, so that the
+    browser can fetch it (see assets/js/edatos-external-html.js) instead of CKAN
+    fetching it while rendering the page. Crawlers do not run JavaScript, so
+    sweeping the catalogue no longer pulls the header once per page.
+
+    The header URL itself comes from the property cache (see `get_property`),
+    so it costs no request. Returns an empty string when it cannot be built, in
+    which case no header is rendered at all: this helper is called from a
+    template, so it must never raise or it takes the whole page down with it.
     """
-    endpoint = json_config['metadata']['endpoint']
-    header_key = json_config['metadata']['navbarPathKey']
-    cookie_key = json_config['metadata'].get('cookieKey')
-    endpoint = json_config['metadata']['endpoint']
-    title = json_config['metadata']['appName']
-    navbar_url = get_url(endpoint, header_key)
-    url = "%s?appName=%s&appId=%s&appUrl=%s" % (navbar_url, title, APP_ID_FOR_ANALYTICS, json_config['metadata']['siteURL'])
+    try:
+        navbar_url = get_property('navbarPathKey')
+        if not navbar_url:
+            return ''
 
-    theme = get_theme()
-    if theme:
-        url = "%s&organisation=%s" % (url, theme)
+        metadata = read_metadata()
+        params = get_app_params(metadata)
 
-    # Obtener el nombre real de la cookie una sola vez
-    cookie_name = get_url(endpoint, cookie_key) if cookie_key else None
-    # Idioma del request: cookie > idioma CKAN > locale por defecto
-    request_lang = get_request_lang(cookie_name)
+        # The language cookie name is still resolved per request here; EDATOS-5900
+        # moves it to startup on its own branch. Its own guard keeps a metadata
+        # service outage from costing more than the language parameter: the
+        # header URL is cached, so the header still loads.
+        try:
+            cookie_key = metadata.get('cookieKey')
+            cookie_name = get_url(metadata['endpoint'], cookie_key) if cookie_key else None
+        except Exception as e:
+            log.warning("Could not resolve the language cookie name, the header "
+                        "is requested without a language: %s", e)
+            cookie_name = None
 
-    if cookie_name:
-        url = "%s&%s=%s" % (url, cookie_name, request_lang)
+        if cookie_name:
+            params[cookie_name] = get_request_lang(cookie_name)
 
-    return url
+        theme = get_theme()
+        if theme:
+            params['organisation'] = theme
+
+        return "%s?%s" % (navbar_url, urlencode(params))
+    except Exception as e:
+        log.error("Error al construir la URL de la cabecera: %s", e)
+        return ''
+
+
+def get_footer_url():
+    """
+    Returns the URL of the external footer, fetched by the browser exactly like
+    the header (see assets/js/edatos-external-html.js).
+
+    It used to be downloaded at startup and written over `templates/footer.html`,
+    which is why the deployment needed that file to be world writable. Nothing
+    is written to disk any more.
+
+    Unlike the header, no language or organisation parameter is sent: the
+    startup download did not send them either, and adding the language here
+    would mean resolving the cookie name from the metadata service on every
+    render, which is exactly the cost this ticket removes. EDATOS-5900 caches
+    that name at startup and can then add it to both URLs.
+
+    Returns an empty string when it cannot be built, in which case no footer is
+    rendered at all: this helper is called from a template, so it must never
+    raise or it takes the whole page down with it.
+    """
+    try:
+        footer_url = get_property('footerPathKey')
+        if not footer_url:
+            return ''
+
+        return "%s?%s" % (footer_url, urlencode(get_app_params(read_metadata())))
+    except Exception as e:
+        log.error("Error al construir la URL del pie de pagina: %s", e)
+        return ''
 
 
 def get_app_style_css_url():
@@ -583,19 +799,21 @@ def get_app_style_css_url():
     cabecera (p. ej. el iframe de package/snippets/resource_view_embed.html),
     que no reciben las variables --edatos-* porque estas se definen dentro
     del HTML del header/footer externo y esas paginas no lo renderizan.
+
+    The property is read from the cache (see `get_property`), not from the
+    metadata service: this helper is called twice per page (base.html and
+    header.html), so resolving it per call meant two extra requests per render.
     """
     try:
-        with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
-            json_config = json.loads(config_file.read())
-            endpoint = json_config['metadata']['endpoint']
-            css_key = json_config['metadata']['cssPathKey']
-            url = get_url(endpoint, css_key)
+        url = get_property('cssPathKey')
+        if not url:
+            return ""
 
-            theme = get_theme()
-            if theme:
-                url = "%s?organisation=%s" % (url, theme)
+        theme = get_theme()
+        if theme:
+            url = "%s?organisation=%s" % (url, theme)
 
-            return url
+        return url
     except Exception as e:
         log.error("Error al obtener la URL del CSS de complementos-apps: %s", e)
         return ""
@@ -621,62 +839,6 @@ def get_app_fontawesome_css_url():
         return ""
 
 
-def get_altered_header(header, json_config):
-    """
-    Metodo que modifica el header para hacer que contenga los botones
-    dinamicos que se generan para esta aplicacion en concreto.
-
-    :param header: Codigo HTML del Header que se va a modificar
-    :param json_config: Fichero de configuracion cargado como
-                        un diccionario JSON
-    """
-    alteredHeader = header
-
-    # Annadimos el boton hamburguesa
-    soup = BeautifulSoup(alteredHeader, 'html.parser')
-    container = soup.find(
-        class_='d-flex justify-content-end align-items-center')
-
-    if container is not None:
-        with codecs.open(BURGER_BUTTON_PATH, 'r', encoding='utf8') as burger_button_file:
-            code = burger_button_file.read()
-            container.append(BeautifulSoup(code, 'html.parser'))
-            alteredHeader = soup.prettify('utf-8')
-            
-            
-    # Reemplazar titulo por el titulo con funcion de traduccion
-    title = json_config['metadata']['appName']
-    
-    div = soup.find('div', id='title-bar')
-    
-    if div:
-        span = div.find('span')
-        if span and title.lower() in span.text.strip().lower():
-            span.string = _(title)
-
-    alteredHeader = soup.prettify('utf-8')
-
-    alteredHeader = alteredHeader.replace(b'&gt;', b'>').decode('utf8')
-
-    return alteredHeader
-
-
-def get_html_header():
-    """
-    Descarga, modifica y devuelve el HTML del header en cada petición,
-    sin caché. No lee ni escribe ficheros en disco.
-    """
-    try:
-        with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
-            json_config = json.loads(config_file.read())
-        html = requests.get(
-            url=get_header_url(json_config), timeout=_REQUESTS_TIMEOUT).content
-        altered = get_altered_header(header=html, json_config=json_config)
-        return render_template_string(altered)
-    except Exception as exc:
-        log.warning('edatostheme: error al obtener header: %s', exc)
-        return ''
-
 # Map de vistas que se quieren restringir acceso
 REDIRECT_VIEWS = (
     # route, view, function    
@@ -692,12 +854,30 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
     plugins.implements(plugins.IPackageController, inherit=True)
     plugins.implements(plugins.IFacets)
     plugins.implements(plugins.IActions)
+    plugins.implements(plugins.IAuthFunctions)
 
     # IActions
 
     def get_actions(self):
-        from ckanext.edatostheme.actions import status_show
-        return {'status_show': status_show}
+        from ckanext.edatostheme.actions import (
+            status_show,
+            package_activity_list,
+            group_activity_list,
+            organization_activity_list,
+            user_activity_list,
+        )
+        return {
+            'status_show': status_show,
+            'package_activity_list': package_activity_list,
+            'group_activity_list': group_activity_list,
+            'organization_activity_list': organization_activity_list,
+            'user_activity_list': user_activity_list,
+        }
+
+    # IAuthFunctions
+
+    def get_auth_functions(self):
+        return {'member_list': member_list_auth}
 
     # IConfigurer
 
@@ -779,31 +959,6 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
 
             return updated_script
 
-    def _load_footer(self):
-        """
-        Metodo que carga las templates para FOOTER
-        """
-        with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
-            json_config = json.loads(config_file.read())
-            footer = requests.get(
-                url=self.__get_footer_ulr(json_config),
-                timeout=_REQUESTS_TIMEOUT).content
-
-            footer = footer.decode('utf-8')
-
-            self.__save_footer(footer=footer)
-
-    def _load_favicon(self):
-        """
-        Metodo que carga el favicon
-        """
-        with codecs.open(CONFIG_FILE_PATH, 'r', encoding='utf8') as config_file:
-            json_config = json.loads(config_file.read())
-            favicon = requests.get(
-                url=self.__get_favicon_url(json_config),
-                timeout=_REQUESTS_TIMEOUT).content
-            self.__save_favicon(favicon=favicon)
-
     def _i18n_script_filler(self):
         """
         Metodo que incrusta en el script de i18n los valores de la config
@@ -813,11 +968,39 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             script_content = script_template.read()
             self.__save_script(script_content)
 
+    def _load_metadata_properties(self):
+        """
+        Resolves at startup the metadata service properties that would
+        otherwise be resolved while serving a page.
+
+        This is the only thing the metadata service is needed for at startup:
+        the header, the footer and the favicon used to be downloaded here and
+        written to disk, and an outage of the service took the whole boot down
+        with it. Now nothing but this cache is filled, and a failure is not
+        fatal: it is logged, and `get_property` retries it on demand.
+        """
+        for metadata_key in _PRELOADED_PROPERTIES:
+            get_property(metadata_key)
+
+    def _set_favicon(self, config_):
+        """
+        Points CKAN at the favicon served by complementos-apps.
+
+        It used to be downloaded at startup and written over
+        `public/favicon.ico`; letting the browser fetch it from its own URL
+        removes both the request and the file. The default of `ckan.favicon` is
+        kept when the URL cannot be resolved, so the site is never left without
+        one.
+        """
+        favicon_url = get_property('favicon')
+        if favicon_url:
+            config_['ckan.favicon'] = favicon_url
+
     # IConfigurer
 
     def update_config(self, config_):
-        self._load_footer()
-        self._load_favicon()
+        self._load_metadata_properties()
+        self._set_favicon(config_)
         self._i18n_script_filler()
         toolkit.add_template_directory(config_, '../templates')
         toolkit.add_public_directory(config_, '../public')
@@ -839,6 +1022,11 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             methods=['GET'],
         )
 
+        # Guards core's own user/group/organization blueprints:
+        # before_app_request on our own blueprint runs for every request
+        # app-wide, regardless of which plugin registered the target endpoint.
+        edatos.before_app_request(redirect_anonymous_from_restricted_endpoints)
+
         return [edatos]
 
     # ITemplateHelpers
@@ -853,7 +1041,8 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
             'edatostheme_get_delink_value': get_delink_value,
             'edatos_get_legal_notice_url': get_legal_notice_url,
             'edatos_get_legal_notice_label': get_legal_notice_label,
-            'edatos_get_header': get_html_header,
+            'edatos_get_header_url': get_header_url,
+            'edatos_get_footer_url': get_footer_url,
             'edatos_get_app_style_css_url': get_app_style_css_url,
             'edatos_get_app_fontawesome_css_url': get_app_fontawesome_css_url,
             'edatos_get_facet_items_dict': get_facet_items_dict,

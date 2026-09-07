@@ -14,8 +14,8 @@
 #}
 {% set url_action = pkg.type ~ ('_resource.edit' if url_is_edit and can_edit else '_resource.read') %}
 {% set url = url or h.url_for(url_action, id=pkg.name, resource_id=res.id) %}
-{% set res_name_translated = h.dge_dataset_form_value(res.name_translated) %}
-{% set res_description_translated = h.dge_dataset_form_value(res.description_translated) %}
+{% set res_name_translated = h.get_translated(res, 'name') %}
+{% set res_description_translated = h.get_translated(res, 'description') %}
 {% set res_display_name = res_name_translated or (res_description_translated.split('.')[0] if res_description_translated else _('Unnamed resource')) %}
 
 <li class="resource-item" data-id="{{ res.id }}">

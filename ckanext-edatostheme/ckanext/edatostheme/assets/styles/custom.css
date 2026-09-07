@@ -1632,7 +1632,6 @@ li.nav-item:hover {
 .module-narrow .nav-item > a .badge,
 .nav-facet .item-count.badge {
 	display: inline-flex;
-	padding: 0;
 	justify-content: center;
 	align-items: center;
 	border-radius: var(--edatos-border-radius-sm);
@@ -1641,7 +1640,6 @@ li.nav-item:hover {
 	font-size: var(--edatos-font-size-xs);
 	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 14px;
-	width: 24px;
 	height: 24px;
 	min-width: 24px;
 	flex-shrink: 0;
@@ -5792,4 +5790,14 @@ aside.secondary .module-content > a.btn.btn-sm {
 
 .add-to-group .activity-type-dropdown {
     margin-bottom: 8px;
+}
+
+/* The external header is injected by the browser (edatos-external-html.js),
+   so it is not part of the initial HTML any more. Reserving its height avoids
+   the content below jumping when it arrives; ':empty' stops matching as soon as
+   the HTML is injected, so the reservation removes itself.
+   The variable defaults to 0 (no reservation, no visible gap): set it to the
+   measured height of the institutional header for this deployment. */
+#edatos-header:empty {
+    min-height: var(--edatos-header-reserved-height, 0);
 }

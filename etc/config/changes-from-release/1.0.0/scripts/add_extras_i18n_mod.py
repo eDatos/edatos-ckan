@@ -201,8 +201,13 @@ def process_package(package_id):
         # copy_fluent_keywords_to_tags sincroniza la lista core `tags` automáticamente,
         # así que NO se incluye `package['tags']` para evitar conflictos.
         tag_names = valid_tag_names(packageg.get('tags'))
-        if tag_names:
-            package['multilingual_tags'] = {'es': tag_names}
+        # Se envía siempre, incluso vacío ({'es': []}), para sobrescribir
+        # cualquier valor previo de multilingual_tags mal formado que ya
+        # estuviera almacenado en el paquete. Si no se envía, package_patch
+        # mezcla el patch con el valor ya existente, y si ese valor no es un
+        # dict válido, el validador copy_fluent_keywords_to_tags del esquema
+        # falla con un 500 al ejecutarse sobre datos no normalizados.
+        package['multilingual_tags'] = {'es': tag_names}
 
         resources = packageg.get('resources', '')
         resources_dict = []

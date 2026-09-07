@@ -25,10 +25,6 @@ COPY --chown=ckan:ckan ["etc/dcat custom profile/gobcan_profile.py", "/tmp/gobca
 
 
 
-## edatos plugins actualizamos permisos 
-RUN chmod 777 src/ckanext-edatostheme/ckanext/edatostheme/templates/header.html && \
-    chmod 777 src/ckanext-edatostheme/ckanext/edatostheme/templates/footer.html
-
 ### XLoader ###
 RUN pip3 install -e 'git+https://github.com/ckan/ckanext-xloader.git@2.2.0#egg=ckanext-xloader' && \
     pip3 install -r ${APP_DIR}/src/ckanext-xloader/requirements.txt && \

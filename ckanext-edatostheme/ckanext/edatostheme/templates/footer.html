@@ -1,0 +1,19 @@
+{#
+  The external footer is fetched by the browser, not by CKAN: see
+  assets/js/edatos-external-html.js.
+
+  This file used to be an empty placeholder that the plugin overwrote at startup
+  with the HTML downloaded from complementos-apps, which is why the deployment
+  needed it to be world writable (chmod 777). Nothing writes it any more.
+
+  The trade-off is that clients without JavaScript, crawlers included, get no
+  institutional footer, and therefore neither the legal notice nor the
+  accessibility statement it links to.
+
+  The container is a <div> and not a <footer>: the injected HTML brings its own,
+  and two of them would expose two 'contentinfo' landmarks.
+#}
+{% set edatos_footer_url = h.edatos_get_footer_url() %}
+{% if edatos_footer_url %}
+  <div id="edatos-footer" data-edatos-html-url="{{ edatos_footer_url }}"></div>
+{% endif %}
