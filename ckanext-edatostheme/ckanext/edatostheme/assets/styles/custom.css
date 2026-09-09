@@ -1941,15 +1941,12 @@ h1.dataset-title {
 	padding-right: 0;
 }
 
-/* --- Resource read: el sidebar Formatos/Compartir debe quedar junto al
-   título+tabla (pre_primary, .module-resource), no junto a Metadatos
-   (.primary). ".module-resource" solo existe en resource_read.html, así que
-   sirve como ancla para no afectar a ninguna otra vista con sidebar (la
-   clase "no-nav" del core no se aplica aquí en esta versión de CKAN).
-   Ver specs/fix-resource-view-formats-sidebar-alignment.md */
+/* Resource read: module-resource ocupa el 100% y pasa a su propia fila;
+   secondary y primary (sin "order") comparten la siguiente, con el sidebar
+   a la izquierda de Metadatos. ".module-resource" solo existe aquí. */
 .row.wrapper > .module-resource {
-	order: 0;
-	flex: 1 1 0;
+	flex: 1 1 100%;
+	width: 100%;
 	min-width: 0;
 	padding: 0;
 }
@@ -1963,33 +1960,13 @@ h1.dataset-title {
 	padding: 1.5rem 0;
 }
 
-/* z-index: ".module-resource" ya trae "position:relative; z-index:5" (regla
-   genérica ".module" del core de CKAN); sin superar ese valor aquí, se pinta
-   por encima y tapa el dropdown-menu del wrench cuando este se despliega
-   (su position:absolute se sale de los ~289px del sidebar). */
-/* El "margin-left:10px" genérico de ".row.wrapper > .secondary" (línea ~1995,
-   pensado para la sidebar de facetas de la búsqueda de datasets) suma un
-   hueco extra a la izquierda del sidebar aquí, por encima del padding
-   estándar de la card -- Figma (nodo 12933:7928) no lo contempla: el sidebar
-   debe arrancar en el mismo padding que el resto de la card, y el hueco de
-   20px va hacia el título/tabla (a su derecha), no a la izquierda. Se anula
-   ese margen y se añade "margin-right" (token "--edatos-spacing-x-sm" del
-   sistema de diseño, en vez del 10px suelto que ya usa el "gap" genérico de
-   ".row.wrapper" para el mismo valor) para llevar el hueco hacia el
-   título/tabla a los 20px de Figma solo en esta página. Ver
-   specs/fix-resource-view-formats-sidebar-alignment.md */
+/* Hueco de 20px hacia Metadatos (Figma 12933:7928): se anula el
+   margin-left genérico del sidebar y se pone margin-right en su lugar. */
 .row.wrapper > .module-resource ~ .secondary {
-	order: -1;
 	position: relative;
 	z-index: 6;
 	margin-left: 0;
 	margin-right: var(--edatos-spacing-x-sm, 10px);
-}
-
-.row.wrapper > .module-resource ~ .primary {
-	order: 1;
-	flex: 1 1 100%;
-	width: 100%;
 }
 
 /* --- Sidebar modules: con recuadro (fondo blanco + borde) --- */
@@ -3768,11 +3745,6 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 /* ============================================================
    8. RESOURCE READ — Sidebar (filtro_recursos) + Metadata
    ============================================================ */
-
-/* --- Gap entre sidebar y contenido principal --- */
-.module-resource ~ .primary {
-	padding-left: 20px;
-}
 
 /* Fix: cuando el sidebar usa .showcase-detail-sidebar, ese div ya tiene su propio borde;
    se elimina el borde duplicado del .secondary exterior */
