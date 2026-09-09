@@ -3781,6 +3781,10 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 	border-radius: var(--edatos-border-radius-xs);
 }
 
+.module-resource ~ .secondary .module-heading + .nav-simple {
+	padding-top: 10px;
+}
+
 /* --- Items de recurso (no activo) ---
    ">a" (hijo directo) en vez de "a": el <li> también contiene el dropdown
    wrench (.dropdown > .dropdown-menu > li > a.dropdown-item); con el
