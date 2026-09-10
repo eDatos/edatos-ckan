@@ -2118,9 +2118,6 @@ section.module.additional-info {
 	border-radius: var(--edatos-border-radius-sm) var(--edatos-border-radius-sm) var(--edatos-border-radius-sm) var(--edatos-border-radius-sm);
 	overflow: hidden;
 	margin-right: 0;
-	border-left: 1px solid var(--edatos-color-gray-20, #CCCCCC);
-	border-right: 1px solid var(--edatos-color-gray-20, #CCCCCC);
-	border-bottom: 1px solid var(--edatos-color-gray-20, #CCCCCC);
 }
 
 section.module.additional-info .module-content table,
