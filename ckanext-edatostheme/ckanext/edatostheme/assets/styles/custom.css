@@ -1942,8 +1942,7 @@ h1.dataset-title {
 }
 
 /* Resource read: module-resource ocupa el 100% y pasa a su propia fila;
-   secondary y primary (sin "order") comparten la siguiente, con el sidebar
-   a la izquierda de Metadatos. ".module-resource" solo existe aquí. */
+   primary comparte la siguiente. ".module-resource" solo existe aquí. */
 .row.wrapper > .module-resource {
 	flex: 1 1 100%;
 	width: 100%;
@@ -1960,13 +1959,51 @@ h1.dataset-title {
 	padding: 1.5rem 0;
 }
 
-/* Hueco de 20px hacia Metadatos (Figma 12933:7928): se anula el
-   margin-left genérico del sidebar y se pone margin-right en su lugar. */
+/* El sidebar Formatos/Compartir ahora vive dentro de .primary (ver
+   resource_read.html, .resource-metadata-row), así que el .secondary real
+   que renderiza page.html queda siempre vacío en esta página. La solución
+   de fondo es que templates/page.html deje de pintar el <aside> cuando
+   "secondary_content" está vacío -- pero esa plantilla no está montada en
+   vivo en el contenedor (solo custom.css lo está, ver
+   dockerfiles/docker-compose.yml) y necesita un rebuild de la imagen para
+   desplegarse. Esta regla se deja como red de seguridad mientras tanto (y
+   por si "secondary_content" no queda perfectamente vacío en algún caso). */
 .row.wrapper > .module-resource ~ .secondary {
-	position: relative;
-	z-index: 6;
-	margin-left: 0;
-	margin-right: var(--edatos-spacing-x-sm, 10px);
+	display: none !important;
+}
+
+/* Fila Formatos/Compartir + Metadatos dentro de .primary. NO depender de
+   la clase Bootstrap "row" (custom.css es el único fichero de la extensión
+   montado en vivo en el contenedor -- ver dockerfiles/docker-compose.yml;
+   "templates/" se hornea en la imagen y solo se actualiza con un rebuild,
+   así que las clases "row"/"col-md-*" que se hayan podido añadir en la
+   plantilla no llegan a desplegarse hasta entonces). "display:flex" propio
+   en vez de heredarlo de ".row", reparto de ancho explícito 25/75 y
+   "align-items:flex-start" para que ambas cabeceras queden al mismo nivel
+   sin depender del "stretch" por defecto. */
+.resource-metadata-row {
+	display: flex;
+	align-items: flex-start;
+	flex-wrap: nowrap;
+}
+
+/* Bootstrap aplica "padding-right: calc(var(--bs-gutter-x) * 0.5)" a
+   cualquier hijo directo de ".row" (".row > *", main.css) en cuanto la
+   plantilla lleve la clase "row" (ver page.html); se anula aquí para que
+   el hueco entre sidebar y Metadatos lo controle solo nuestro layout. */
+.resource-metadata-row > * {
+	padding-right: 0;
+}
+
+.resource-metadata-row > .secondary {
+	flex: 0 0 25%;
+	max-width: 25%;
+}
+
+.resource-metadata-row > .additional-info {
+	flex: 0 0 75%;
+	max-width: 75%;
+	min-width: 0;
 }
 
 /* --- Sidebar modules: con recuadro (fondo blanco + borde) --- */
@@ -3756,7 +3793,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 
 /* --- Sidebar: contenedor con borde (filtro_recursos) — read y edit --- */
 .secondary:has(.module.context-info),
-.module-resource ~ .secondary {
+.resource-metadata-row .secondary {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -3764,11 +3801,18 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 	border-radius: var(--edatos-border-radius-sm);
 	border: none;
 	background: var(--edatos-color-white-100, #FFF);
-	align-self: flex-start;
+}
+
+/* CKAN core reordena ".secondary" en móvil (".main .secondary { order: 2 }",
+   ver _layout.scss) pensado para cuando es hijo directo de ".wrapper"; aquí
+   es descendiente de ".resource-metadata-row" (un flex distinto), así que
+   sin esto heredaría igualmente ese order y se movería después de Metadatos. */
+.resource-metadata-row .secondary {
+	order: 0;
 }
 
 /* --- Módulos dentro del sidebar: sin estilo propio --- */
-.module-resource ~ .secondary .module.module-narrow {
+.resource-metadata-row .secondary .module.module-narrow {
 	background: transparent;
 	border: none;
 	margin: 0;
@@ -3776,13 +3820,13 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 }
 
 /* --- Cabeceras de sección (RECURSOS, COMPARTIR): sin borde inferior --- */
-.module-resource ~ .secondary .module-heading {
+.resource-metadata-row .secondary .module-heading {
 	border-bottom: none;
 	border-radius: var(--edatos-border-radius-xs);
 }
 
-.module-resource ~ .secondary .module-heading + .nav-simple {
-	padding-top: 10px;
+.resource-metadata-row .secondary .module-heading + .nav-simple {
+	padding-top: var(--edatos-spacing-y-2xs);
 }
 
 /* --- Items de recurso (no activo) ---
@@ -3790,7 +3834,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
    wrench (.dropdown > .dropdown-menu > li > a.dropdown-item); con el
    combinador descendente estas reglas se colaban dentro del menú desplegable
    y le pisaban el estilo (ver bloque ".dropdown-menu" en ZONA de dropdowns). */
-.module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item > a {
+.resource-metadata-row .secondary .module.module-narrow .nav-simple .nav-item > a {
 	font-size: var(--edatos-font-size-sm);
 	font-weight: var(--edatos-font-weight-regular);
 	line-height: 14px;
@@ -3799,11 +3843,11 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 	border-top: none;
 }
 
-.module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item:first-child > a {
+.resource-metadata-row .secondary .module.module-narrow .nav-simple .nav-item:first-child > a {
 	border-top: none;
 }
 
-.module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item > a:hover {
+.resource-metadata-row .secondary .module.module-narrow .nav-simple .nav-item > a:hover {
 	background: var(--edatos-color-primary-5, #E5ECF1);
 }
 
@@ -3811,7 +3855,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
    propio; al desplegarse, el menú (position:absolute) sobresale hacia abajo
    sobre los <li> siguientes, que al ser posteriores en el DOM se pintan por
    encima y lo tapan. Elevamos solo el <li> que tiene el menú abierto. */
-.module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item:has(.dropdown-menu.show) {
+.resource-metadata-row .secondary .module.module-narrow .nav-simple .nav-item:has(.dropdown-menu.show) {
 	position: relative;
 	z-index: 10;
 }
@@ -3819,27 +3863,27 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 /* --- Al hacer hover, ocultar la línea divisoria propia y la del item anterior
    (misma línea que separa ambos), igual que en el sidebar de filtros de
    búsqueda (ver ZONA 8b, .filters .nav-item:not(.active):hover) --- */
-.module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item:not(.active):hover {
+.resource-metadata-row .secondary .module.module-narrow .nav-simple .nav-item:not(.active):hover {
 	border-bottom-color: transparent;
 }
 
-.module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item:has(+ .nav-item:hover) {
+.resource-metadata-row .secondary .module.module-narrow .nav-simple .nav-item:has(+ .nav-item:hover) {
 	border-bottom-color: transparent;
 }
 
 /* Item activo: ocultar su propia línea inferior y la del item anterior
    (misma línea que separa ambos), igual que en el sidebar de filtros
    de búsqueda (ver ZONA 8b) */
-.module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item.active {
+.resource-metadata-row .secondary .module.module-narrow .nav-simple .nav-item.active {
 	border-bottom-color: transparent;
 }
 
-.module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item:has(+ .nav-item.active) {
+.resource-metadata-row .secondary .module.module-narrow .nav-simple .nav-item:has(+ .nav-item.active) {
 	border-bottom-color: transparent;
 }
 
 /* --- Item de recurso activo: forma de flecha --- */
-.module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item.active a {
+.resource-metadata-row .secondary .module.module-narrow .nav-simple .nav-item.active a {
 	background-color: var(--edatos-color-primary-50, #4D7EA0);
 	color: var(--edatos-color-white-100, #FFF);
 	font-size: var(--edatos-font-size-sm);
@@ -3859,7 +3903,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 /* El wrapper ".dropdown" del botón es position:absolute (queda fuera del
    flex del <li>), por lo que sin esto se pega al borde superior del item en
    vez de quedar centrado con el texto del formato. */
-.module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item .dropdown.position-absolute {
+.resource-metadata-row .secondary .module.module-narrow .nav-simple .nav-item .dropdown.position-absolute {
 	top: 50%;
 	transform: translateY(-50%);
 }
@@ -3868,7 +3912,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
    ".dropdown-menu" (ver arriba), para que quede con el mismo aire que
    "OPCIONES" en vez de quedar justo al ancho del texto más largo. Escopado a
    este dropdown para no afectar a "OPCIONES"/"Explorar", que ya se ven bien. */
-.module-resource ~ .secondary .module.module-narrow .nav-simple .dropdown-menu {
+.resource-metadata-row .secondary .module.module-narrow .nav-simple .dropdown-menu {
 	min-width: 185px;
 	/* El genérico ".dropdown-menu" (ver arriba) aplana la esquina superior
 	   DERECHA porque "OPCIONES"/"Explorar" despliegan "bottom-end" (alineados
@@ -3884,7 +3928,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 	margin-top: -2px !important;
 }
 
-.module-resource ~ .secondary .module.module-narrow .nav-simple .dropdown-menu li a {
+.resource-metadata-row .secondary .module.module-narrow .nav-simple .dropdown-menu li a {
 	padding-right: 20px;
 	margin: 8px;
 }
@@ -3894,7 +3938,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
    de quedar centrado con aire simétrico (mismo problema ya documentado para
    "Explorar" en #dataset-resources, ver ZONA 5). width:auto deja que el
    modelo de caja de bloque normal reste los márgenes por los dos lados. */
-.module-resource ~ .secondary .module.module-narrow .nav-simple .dropdown-menu li a.dropdown-item {
+.resource-metadata-row .secondary .module.module-narrow .nav-simple .dropdown-menu li a.dropdown-item {
 	width: auto;
 }
 
@@ -3926,8 +3970,8 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 }
 
 /* --- Enlace social (COMPARTIR items) --- */
-.module-resource ~ .secondary .module.social .nav-item a,
-.module-resource ~ .secondary .module.social .nav a {
+.resource-metadata-row .secondary .module.social .nav-item a,
+.resource-metadata-row .secondary .module.social .nav a {
 	color: var(--edatos-color-secondary-100, #004678);
 	font-size: var(--edatos-font-size-sm);
 	font-weight: var(--edatos-font-weight-regular);
