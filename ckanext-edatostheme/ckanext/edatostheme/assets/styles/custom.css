@@ -2555,16 +2555,18 @@ a.metadatos-tag:hover {
 /* --- Resource view: layout de botones pantalla completa e incrustar --- */
 .resource-view .actions {
 	display: flex;
-	justify-content: flex-end;
+	justify-content: flex-start;
 	align-items: flex-start;
 	gap: 10px;
 }
 
+/* Sin "width" fijo: un ancho más estrecho que el glifo (a font-size:20px)
+   descentraba el icono dentro del botón en vez de recortarlo simétrico.
+   El centrado real lo da el "justify-content/align-items:center" del
+   ".btn" (ver regla de abajo). */
 .resource-view .actions .btn i,
 .resource-view .actions a.btn i {
 	font-size: 20px;
-	width: 16px;
-	text-align: center;
 	flex-shrink: 0;
 }
 
