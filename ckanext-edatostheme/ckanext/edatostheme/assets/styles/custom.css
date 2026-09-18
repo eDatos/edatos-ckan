@@ -1753,7 +1753,6 @@ h1.dataset-title {
 	padding: 20px;
 	background: var(--edatos-color-gray-5, #F2F2F2);
 	border-radius: 0 0 var(--edatos-border-radius-sm, 5px) var(--edatos-border-radius-sm, 5px); /* exacto: 0.3125rem = 5px, coherente con el radio superior de section#dataset-resources > h2 */
-	overflow: hidden;
 }
 
 #dataset-resources li.resource-item {
@@ -1781,11 +1780,24 @@ h1.dataset-title {
 
 /* --- ZONA 5: Botón EXPLORAR/DESCARGAR (.btn-primary en recursos) --- */
 
-/* Alineación derecha: sobreescribe el posicionamiento de Popper.js */
+/* Posicionamiento del menú: colgado siempre debajo del botón, alineado a la
+   derecha y pegado (sin el "margin-top: .125rem" de Bootstrap), para que las
+   esquinas queden conectadas con el botón (ver ".btn-primary.dropdown-
+   toggle.show" más abajo). El toggle lleva "data-bs-display=static" (ver
+   resource_item.html), así que Bootstrap desactiva Popper del todo: no
+   escribe ningún estilo inline y nunca hace flip hacia arriba.
+   "bottom: auto !important" es la guarda de ese caso: si alguna vez volviera
+   a activarse Popper y éste hiciera flip a placement "top", escribiría
+   inline "bottom: 0" (ver mapToStyles en vendor/popper.js); combinado con el
+   "top: 100%" de aquí, el menú quedaría sobre-restringido a altura 0 y, por
+   el "overflow: hidden" de ".dropdown-menu", invisible -- exactamente el bug
+   que aparecía con el último recurso de la lista antes de este fix. */
 #dataset-resources .dropdown-menu.show {
 	left: auto !important;
 	right: 0 !important;
 	top: 100% !important;
+	bottom: auto !important;
+	margin-top: 0 !important;
 	transform: none !important;
 }
 
@@ -2186,9 +2198,6 @@ section.additional-info.module table td:first-child {
     font-size: var(--edatos-font-size-md);
     font-style: normal;
     line-height: 26px;
-	border-bottom: 1px solid var(--edatos-color-gray-5, #F2F2F2);
-	border-left: 1px solid var(--edatos-color-gray-5, #F2F2F2);
-    border-right: 1px solid var(--edatos-color-gray-5, #F2F2F2);
 	background-color: var(--edatos-color-white-100, #FFF) !important;
 }
 
@@ -2224,10 +2233,17 @@ section.additional-info.module > table {
 	margin: 0;
 }
 
-/* --- "Mostrar más / Hide" link (table-toggle-more module) --- */
+/* --- "Mostrar más / Hide" link (table-toggle-more module) ---
+   Es la última fila de la tabla: la regla genérica ".additional-info table
+   tbody tr td" le añade un border-bottom (y left/right) igual que al resto
+   de celdas, pero aquí queda un trazo recto justo antes de la esquina
+   redondeada del contenedor (".additional-info", border-radius +
+   overflow:hidden) en vez de dejar que sea esa esquina la que cierre. Se
+   anula para que solo se vea el redondeo. */
 .additional-info .toggle-more-controls td {
 	padding: 5px;
 	text-align: center;
+	border: none;
 }
 
 a.toggle-show.toggle-show-more,
@@ -4004,9 +4020,16 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 	font-weight: var(--edatos-font-weight-semibold);
 }
 
-/* --- Show more / Show less --- */
+/* --- Show more / Show less ---
+   Fila real generada por el módulo core "table-toggle-more.js":
+   "tr.toggle-show.toggle-show-more > td" (no ".toggle-more-controls", esa
+   clase no aparece en el DOM de esta tabla). Es la última fila; sin esto
+   hereda el border-bottom/left/right genérico de ".additional-info table
+   tbody tr td" y deja un trazo recto justo antes de la esquina redondeada
+   del contenedor (".additional-info", border-radius + overflow:hidden). */
 .module-resource ~ .primary .toggle-show.toggle-show-more td {
 	padding: 0;
+	border: none;
 }
 .module-resource ~ .primary .toggle-show.toggle-show-more small {
 	display: flex;
