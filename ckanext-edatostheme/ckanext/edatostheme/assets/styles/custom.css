@@ -4031,6 +4031,10 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 	padding: 0;
 	border: none;
 }
+
+.module-resource ~ .primary .toggle-show.toggle-show-more {
+	border-width: 0;
+}
 .module-resource ~ .primary .toggle-show.toggle-show-more small {
 	display: flex;
 	width: 100%;
