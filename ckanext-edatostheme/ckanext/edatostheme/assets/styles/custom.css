@@ -2574,6 +2574,7 @@ a.metadatos-tag:hover {
 	justify-content: flex-start;
 	align-items: flex-start;
 	gap: 10px;
+	padding-bottom: var(--edatos-spacing-y-xs, 5px);
 }
 
 /* Sin "width" fijo: un ancho más estrecho que el glifo (a font-size:20px)
@@ -4047,7 +4048,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 	justify-content: center;
 	align-items: center;
 	gap: 10px;
-	border-radius: var(--edatos-border-radius-sm);
+	border-radius: 0 0 var(--edatos-border-radius-sm) var(--edatos-border-radius-sm);
 	background: var(--edatos-color-gray-5, #F2F2F2);
 	color: var(--edatos-color-primary-100, #004678);
 	font-size: var(--edatos-font-size-sm);
