@@ -1561,12 +1561,25 @@ li.nav-item:hover {
 }
 
 .module.module-narrow .nav-simple .nav-item.active > a {
-	background-color: var(--edatos-color-primary-50, #3a5a8c);
-	color: var(--edatos-color-white-100, #FFF);
+	--active-arrow-depth: 12px;
+	position: relative;
+	background-color: var(--edatos-color-primary-100, #004678);
+	color: var(--edatos-color-primary-100, #004678);
 	font-weight: var(--edatos-font-weight-semibold);
 	width: 100%;
 	border-radius: var(--edatos-border-radius-sm) 0 0 var(--edatos-border-radius-sm);
-	clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%);
+	clip-path: polygon(0 0, calc(100% - var(--active-arrow-depth)) 0, 100% 50%, calc(100% - var(--active-arrow-depth)) 100%, 0 100%);
+}
+
+/* clip-path cuts a regular border at the arrow tip */
+.module.module-narrow .nav-simple .nav-item.active > a::after {
+	content: '';
+	position: absolute;
+	inset: 1px;
+	z-index: -1;
+	background-color: var(--edatos-color-white-100, #FFF);
+	border-radius: inherit;
+	clip-path: inherit;
 }
 
 .module.module-narrow .nav-simple .nav-item.active > a .badge {
@@ -1579,7 +1592,7 @@ li.nav-item:hover {
 	flex-shrink: 0;
 	display: flex;
 	align-items: center;
-	color: var(--edatos-color-white-100, #FFF);
+	color: var(--edatos-color-primary-100, #004678);
 	position: static;
 	left: 0;
 	float: none;
@@ -2369,8 +2382,9 @@ div.ckanext-showcase-image-container {
 }
 
 a.metadatos-tag:hover {
-	background: var(--edatos-color-primary-50, #4D7EA0);
-	color: var(--edatos-color-white-100, #FFF);
+	background: var(--edatos-color-white-100, #FFF);
+	border-color: var(--edatos-color-primary-100, #004678);
+	color: var(--edatos-color-primary-100, #004678);
 	text-decoration: none;
 }
 
@@ -3918,13 +3932,11 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 
 /* --- Item de recurso activo: forma de flecha --- */
 .resource-metadata-row .secondary .module.module-narrow .nav-simple .nav-item.active a {
-	background-color: var(--edatos-color-primary-50, #4D7EA0);
-	color: var(--edatos-color-white-100, #FFF);
+	--active-arrow-depth: 10px;
 	font-size: var(--edatos-font-size-sm);
 	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 14px;
 	border-bottom: none;
-	clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%);
 }
 
 /* --- Botones acción recurso (wrench + dropdown): azul en lugar de rojo heredado --- */
