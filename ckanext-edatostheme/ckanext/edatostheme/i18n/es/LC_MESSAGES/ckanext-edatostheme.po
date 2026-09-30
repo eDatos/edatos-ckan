@@ -4922,3 +4922,8 @@ msgstr "Compartir"
 #: ckanext-cas/ckanext/cas/blueprints.py
 msgid "Exclusive access for administrators"
 msgstr "Acceso exclusivo para personas administradoras"
+
+#: ckan/views/dataset.py:426 ckan/views/dataset.py:440
+#: ckan/views/dataset.py:915 ckan/views/dataset.py:942
+msgid "Dataset not found or you have no permission to view it"
+msgstr "El conjunto de datos no se encontró o no posee permiso para verlo"

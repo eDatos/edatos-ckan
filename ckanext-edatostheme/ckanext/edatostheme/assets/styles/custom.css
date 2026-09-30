@@ -2204,10 +2204,6 @@ section.additional-info.module table td:first-child {
 .additional-info table tbody tr th {
 	font-weight: var(--edatos-font-weight-semibold);
 	color: var(--edatos-color-gray-60);
-	border-bottom: 1px solid var(--edatos-color-gray-5, #F2F2F2);
-	border-left: 1px solid var(--edatos-color-gray-5, #F2F2F2);
-	border-right: 1px solid var(--edatos-color-gray-5, #F2F2F2);
-	background: var(--edatos-color-white-100, #FFF) !important;
 	padding: 5px 20px;
 }
 
