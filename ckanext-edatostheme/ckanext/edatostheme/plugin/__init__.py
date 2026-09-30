@@ -544,6 +544,29 @@ ANONYMOUS_REQUIRED_ENDPOINTS = frozenset((
 ))
 
 
+def redirect_trailing_slash():
+    '''Redirect an unmatched URL with a trailing slash to the same URL without it.
+
+    Flask's strict_slashes=True (default) returns 404 for paths like
+    /dataset/<id>/ because the route is defined as /dataset/<id>. Routes that
+    are defined with the slash (e.g. /dataset/) match and are left alone.
+    Unmatched paths fall into the catch-all 'static' endpoint, so that one
+    counts as "not matched".
+    The reverse proxy strips ckan.root_path and CKAN clears SCRIPT_NAME, so
+    neither request.url nor request.path carries the /catalogo/<lang> prefix;
+    the target is built with h.url_for, which adds it back.
+    '''
+    from flask import redirect
+    from urllib.parse import quote
+    if (request.endpoint in (None, 'static')
+            and request.path != '/'
+            and request.path.endswith('/')):
+        new_url = h.url_for(quote(request.path.rstrip('/')))
+        if request.query_string:
+            new_url += '?' + request.query_string.decode('utf-8')
+        return redirect(new_url, 301)
+
+
 def redirect_anonymous_from_restricted_endpoints():
     '''Send anonymous visitors to login instead of letting CKAN abort(403).
 
@@ -1025,6 +1048,7 @@ class EdatosthemePlugin(plugins.SingletonPlugin, DefaultTranslation):
         # Guards core's own user/group/organization blueprints:
         # before_app_request on our own blueprint runs for every request
         # app-wide, regardless of which plugin registered the target endpoint.
+        edatos.before_app_request(redirect_trailing_slash)
         edatos.before_app_request(redirect_anonymous_from_restricted_endpoints)
 
         return [edatos]
