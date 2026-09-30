@@ -855,7 +855,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 
 .search-filters .filter-tag:hover {
 	border: 1px solid var(--edatos-color-primary-100);
-    background: var(--edatos-color-primary-10);
+    background: var(--edatos-color-primary-5);
     color: var(--edatos-color-primary-100);
 	text-align: center;
 	text-decoration: none;
