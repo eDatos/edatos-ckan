@@ -288,6 +288,8 @@ def get_freq_tags(lang='tags_es'):
         'facet.field': ['tags_en', 'tags_ca', 'tags_es']
     })
     items = package["search_facets"].get(lang, {}).get("items", [])
+    delink = get_delink_value()
+    items = [item for item in items if item['name'] != delink]
     items_ordenados = sorted(items, key=lambda item: item['count'], reverse=True)
     tags_limit_5 = [item['display_name'] for item in items_ordenados[:5]]
 
