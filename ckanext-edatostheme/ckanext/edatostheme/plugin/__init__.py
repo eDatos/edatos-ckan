@@ -457,7 +457,9 @@ def package_showcase_list(context):
 def get_delink_value():
     '''Returns the delink value
     '''
-    return config.get('ckanext.gobcangroups.flag.for.delink', 'load_manual')
+    value = config.get('ckanext.gobcangroups.flag.for.delink', 'load_manual')
+    # .env values may carry a trailing CR (CRLF files) or surrounding quotes
+    return value.strip().strip('"\'').strip()
 
 
 def get_legal_notice_license():
