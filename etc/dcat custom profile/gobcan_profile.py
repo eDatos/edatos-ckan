@@ -281,18 +281,20 @@ class GobCanProfile(RDFProfile):
         delink_tag = config.get(
             'ckanext.gobcangroups.flag.for.delink', 'Manual')
 
-        for tag in dataset_dict.get('tags', []):
-            if tag["name"] == delink_tag:
-                g.remove((dataset_ref, DCAT.keyword, Literal(delink_tag)))
-                
+        # The base profile already added the plain (language-less) keywords from `tags`
+        g.remove((dataset_ref, DCAT.keyword, Literal(delink_tag)))
+
+        # The delink tag must never be serialized, whatever the source of the keywords
         # Tag:multilingual_tags
         if 'multilingual_tags' in dataset_dict:
             for lang in dataset_dict["multilingual_tags"]:
                 for value in dataset_dict["multilingual_tags"][lang]:
-                    g.add((dataset_ref, DCAT.keyword, Literal(value, lang=lang)))
+                    if value != delink_tag:
+                        g.add((dataset_ref, DCAT.keyword, Literal(value, lang=lang)))
         else:
             for tag in dataset_dict.get("tags", []):
-                g.add((dataset_ref, DCAT.keyword, Literal(tag["name"])))
+                if tag["name"] != delink_tag:
+                    g.add((dataset_ref, DCAT.keyword, Literal(tag["name"])))
 
         # Frequency
         frequency = self._get_dataset_value(dataset_dict, 'frequency')
