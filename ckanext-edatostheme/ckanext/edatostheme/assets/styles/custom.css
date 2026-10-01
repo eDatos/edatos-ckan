@@ -4359,6 +4359,16 @@ a.tag:hover {
 	top: 0 !important;
 }
 
+/* The external eDatos header (#edatosNavbarId) uses z-index: 100000, above
+   Bootstrap's default modal (1060) and backdrop (1050), so it covered them. */
+body .modal-backdrop {
+	z-index: 100001;
+}
+
+body .modal {
+	z-index: 100002;
+}
+
 i.fa.fa-search {
     font-size: 16px;
     width: 16px;
