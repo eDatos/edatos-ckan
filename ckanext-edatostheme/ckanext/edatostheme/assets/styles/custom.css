@@ -1225,7 +1225,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	font-weight: var(--edatos-font-weight-semibold);
 }
 .search-form .input-group.search-input-group input[name="q"]::placeholder {
-	color: var(--edatos-color-gray-20);
+	color: var(--edatos-color-gray-60);
 	font-weight: var(--edatos-font-weight-semibold);
 	font-variation-settings: "wght" 600;
 }
