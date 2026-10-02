@@ -3735,7 +3735,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link {
 	font-weight: var(--edatos-font-weight-light, 300);
 	line-height: 1;
 	text-decoration: none;
-	color: var(--edatos-color-gray-40, #999999);
+	color: var(--edatos-color-gray-60, #666666);
 	background-color: transparent;
 	border: 1px solid var(--edatos-color-gray-40, #999999);
 	border-radius: var(--edatos-border-radius-sm, 4px);
@@ -3766,7 +3766,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item.next.disabled .page-li
 
 div.dataTables_wrapper div.dataTables_paginate .page-item.disabled:not(.previous):not(.next) .page-link {
 	display: block;
-	color: var(--edatos-color-gray-40, #999999);
+	color: var(--edatos-color-gray-60, #666666);
 	border-color: transparent;
 	background-color: transparent;
 	pointer-events: none;
@@ -5585,7 +5585,7 @@ aside.secondary .module-content > a.btn.btn-sm {
     font-weight: var(--edatos-font-weight-light);
     line-height: 1;
     text-decoration: none;
-    color: var(--edatos-color-gray-40);
+    color: var(--edatos-color-gray-60);
     background-color: transparent;
     border: 1px solid var(--edatos-color-gray-40);
     border-radius: var(--edatos-border-radius-sm, 4px);
@@ -5643,7 +5643,7 @@ aside.secondary .module-content > a.btn.btn-sm {
    ------------------------------------------------------------------ */
 .pagination-wrapper .pagination .page-item.page-ellipsis .page-link {
     display: block;
-    color: var(--edatos-color-gray-40);
+    color: var(--edatos-color-gray-60);
     border-color: transparent;
     background-color: transparent;
     pointer-events: none;
