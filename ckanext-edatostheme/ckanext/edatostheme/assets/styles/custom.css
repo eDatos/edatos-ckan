@@ -2078,7 +2078,7 @@ h1.dataset-title {
 }
 
 #package-info .module-content .heading a:hover {
-	color: var(--edatos-color-light-blue-100);
+	color: var(--edatos-links-color);
 	text-decoration: underline;
 }
 
