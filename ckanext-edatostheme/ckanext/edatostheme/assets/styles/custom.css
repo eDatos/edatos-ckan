@@ -2371,7 +2371,7 @@ div.ckanext-showcase-image-container {
 	border-radius: 30px;
 	border: 1px solid var(--edatos-color-primary-50, #4D7EA0);
 	background: var(--edatos-color-white-100, #FFF);
-	color: var(--edatos-color-primary-50, #4D7EA0);
+	color: var(--edatos-color-primary-100, #000);
 	font-size: var(--edatos-font-size-xs);
 	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 24px;
@@ -4911,7 +4911,7 @@ li.showcase-card {
 	border-radius: 30px;
 	border: 1px solid var(--edatos-color-primary-50, #4D7EA0);
 	background: var(--edatos-color-white-100, #FFF);
-	color: var(--edatos-color-primary-50, #4D7EA0);
+	color: var(--edatos-color-primary-100, #000);
 	font-size: var(--edatos-font-size-xs);
 	font-style: normal;
 	font-weight: var(--edatos-font-weight-semibold);
