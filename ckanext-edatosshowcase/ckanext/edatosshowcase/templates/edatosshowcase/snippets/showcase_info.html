@@ -15,7 +15,12 @@ Example:
             <h3 class="module-heading"><i class="fa fa-sitemap"></i> {{ _('Datasets in Showcase') }}</h2>
                 {% if showcase_pkgs %}
                     <ul class="nav nav-simple recursos-list">
-                        {% for package in showcase_pkgs %}
+                        {% set ns = namespace(sortable=[]) %}
+                        {% for pkg_item in showcase_pkgs %}
+                            {% set _ = ns.sortable.append({'sort_key': (h.get_translated(pkg_item, 'title') or '')|lower, 'pkg': pkg_item}) %}
+                        {% endfor %}
+                        {% for sortable_item in ns.sortable|sort(attribute='sort_key', reverse=true) %}
+                            {% set package = sortable_item.pkg %}
                             {% set truncate_title = truncate_title or 80 %}
                 {% set counter= loop.index0 + 1  %}
                 {% set title = counter ~ ". " ~ h.get_translated(package, 'title') %}
