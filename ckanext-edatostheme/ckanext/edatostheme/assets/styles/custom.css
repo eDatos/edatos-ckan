@@ -1281,7 +1281,7 @@ h2.dataset-heading {
 }
 
 .dataset-heading a {
-	color: var(--edatos-color-secondary-100);
+	color: var(--edatos-color-dark-blue-100);
 	text-decoration: none;
 }
 
@@ -1765,7 +1765,7 @@ h1.dataset-title {
 	display: flex;
 	align-items: flex-end;
 	gap: 8px;
-	color: var(--edatos-color-black-100);
+	color: var(--edatos-color-dark-blue-100);
 	font-size: var(--edatos-font-size-md);
 	font-style: normal;
 	font-weight: var(--edatos-font-weight-regular);
@@ -1776,7 +1776,6 @@ h1.dataset-title {
 
 .resource-item .heading:hover {
 	text-decoration: underline;
-	color: var(--edatos-color-secondary-100, #004678);
 }
 
 /* --- ZONA 5: Botón EXPLORAR/DESCARGAR (.btn-primary en recursos) --- */
@@ -3734,7 +3733,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 
 .module-resource .module-content p.text-muted.ellipsis a,
 .module-resource .module-content p.text-muted.break-word a {
-	color: var(--edatos-color-primary-100, #004678);
+	color: var(--edatos-color-dark-blue-100, #004678);
 	font-weight: var(--edatos-font-weight-light);
 	text-decoration: none;
 }
@@ -4569,6 +4568,7 @@ li.showcase-card {
 .license .module-content > a,
 .license .module-content > span {
     padding: 0;
+	color: var(--edatos-color-dark-blue-100);
 }
 
 /* El padding-top compartido (5px, en la regla de abajo) se queda corto
@@ -5800,4 +5800,12 @@ aside.secondary .module-content > a.btn.btn-sm {
    measured height of the institutional header for this deployment. */
 #edatos-header:empty {
     min-height: var(--edatos-header-reserved-height, 0);
+}
+
+a {
+	color: var(--edatos-color-dark-blue-100);
+}
+
+a:hover {
+	text-decoration: underline;
 }
