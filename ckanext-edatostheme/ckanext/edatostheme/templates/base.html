@@ -6,15 +6,6 @@
 
 
 {%- block styles %}
-   {# FOUC contingency: the whole page is
-      greyscaled until theme.css (complementos-apps) is applied, so a page
-      painted without it never shows the blue fallbacks of custom.css or the
-      CKAN defaults. Inline because it must exist before the first paint and
-      cannot depend on a stylesheet that may be the one failing; the class is
-      added from JavaScript so that clients without it are never stuck grey.
-      Released by the script in "head_extras" below. #}
-   <style>html.edatos-styles-pending{filter:grayscale(100%)}</style>
-   <script>document.documentElement.classList.add('edatos-styles-pending');</script>
    {{ super() }}
    {% asset 'ckanext-edatostheme/edatostheme-css' %}
    {% asset 'ckanext-edatostheme/edatostheme-fonts' %}
@@ -41,30 +32,4 @@
    {% if edatos_fontawesome_url %}
      <link rel="stylesheet" id="edatos-fontawesome-pro" href="{{ edatos_fontawesome_url }}">
    {% endif %}
-{% endblock %}
-
-{%- block head_extras %}
-   {{ super() }}
-   {# Releases the greyscale set in "styles" once theme.css is applied, detected
-      through --edatos-color-gray-50, which only theme.css defines (custom.css
-      must never define it). A synchronous script in <head> waits for the
-      stylesheets before it and runs before <body> is parsed, so a normal load
-      never paints a grey frame. If theme.css is missing or failed, the page
-      stays grey until it arrives late (e.g. the <link> in header.html); there
-      is no timeout on purpose. #}
-   <script>
-     (function () {
-       var root = document.documentElement;
-       function release() {
-         if (getComputedStyle(root).getPropertyValue('--edatos-color-gray-50').trim()) {
-           root.classList.remove('edatos-styles-pending');
-           document.removeEventListener('load', release, true);
-           window.removeEventListener('load', release);
-         }
-       }
-       document.addEventListener('load', release, true);
-       window.addEventListener('load', release);
-       release();
-     })();
-   </script>
 {% endblock %}
