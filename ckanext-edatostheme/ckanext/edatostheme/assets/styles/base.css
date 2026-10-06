@@ -1,0 +1,155 @@
+/* Organisation-neutral defaults of the --edatos-* design tokens, copied from
+   base.jsp of complementos-apps. Always check and update them against the
+   source of truth:
+   https: //git.arte-consultores.com/istac/complementos-apps/-/blob/EDATOS-5965-Correcciones-de-accesibilidad-Alisios/src/main/webapp/assets/css/base.jsp
+
+   Bundled before custom.css (see webassets.yml), so the page has them from the
+   first paint while the complementos-apps stylesheet (theme.css, with the
+   organisation colours) has not arrived, or if it fails.
+   :where() has zero specificity, so the :root of theme.css always wins even
+   though theme.css comes earlier in the cascade (it is linked in the "styles"
+   block of templates/base.html, before the webassets). */
+:where(:root) {
+  /* Organization specific */
+  --edatos-color-primary-100: var(--edatos-color-gray-60);
+  --edatos-color-primary-100-filter: var(--edatos-color-gray-60-filter);
+  --edatos-color-primary-50: var(--edatos-color-gray-40);
+  --edatos-color-primary-50-filter: var(--edatos-color-gray-40-filter);
+  --edatos-color-primary-10: var(--edatos-color-gray-20);
+  --edatos-color-primary-5: var(--edatos-color-gray-5);
+  --edatos-color-primary-5-filter: var(--edatos-color-gray-5-filter);
+
+  --edatos-color-secondary-100: var(--edatos-color-primary-100);
+  --edatos-color-secondary-100-filter: var(--edatos-color-primary-100-filter);
+
+  --edatos-color-brand-100: var(--edatos-color-primary-100);
+  --edatos-links-color: var(--edatos-color-dark-blue-100);
+  --edatos-icon-background-color: var(--edatos-color-primary-100);
+  --edatos-color-accent-100: #5F5B5B;
+  --edatos-icon-color-primary-100-filter: var(--edatos-color-primary-100-filter);
+  --edatos-icon-color-secondary-100-filter: var(--edatos-color-secondary-100-filter);
+  --edatos-icon-color-filter: var(--edatos-color-white-100-filter);
+
+  --edatos-color-danger-100: #C1271A;
+  --edatos-color-danger-25: #E5B3AE;
+  --edatos-color-success-100: var(--edatos-color-green-100);
+  --edatos-color-success-25: var(--edatos-color-green-25);
+  --edatos-color-warning-100: #D14905;
+  --edatos-color-warning-25: #EEC3B0;
+  /* End organization specific */
+
+  --edatos-font-family: 'Open Sans', 'Trebuchet MS', Arial, sans-serif;
+  --edatos-font-family-app-names: 'Blogger Sans';
+
+  --edatos-font-weight-light: 300;
+  --edatos-font-weight-regular: 400;
+  --edatos-font-weight-semibold: 600;
+  --edatos-font-weight-bold: 700;
+
+  --edatos-font-size-title: var(--edatos-font-size-md);
+
+  --edatos-font-size-2xl: max(50px, 3.125rem);
+  --edatos-font-size-xxl: var(--edatos-font-size-2xl);
+  /* Deprecated, use --edatos-font-size-2xl instead */
+  --edatos-font-size-xl: max(36px, 2.25rem);
+  --edatos-font-size-lg: max(18px, 1.125rem);
+  --edatos-font-size-md: max(16px, 1rem);
+  --edatos-font-size-m: var(--edatos-font-size-md);
+  /* Deprecated, use --edatos-font-size-md instead */
+  --edatos-font-size-sm: max(14px, 0.875rem);
+  --edatos-font-size-s: var(--edatos-font-size-sm);
+  /* Deprecated, use --edatos-font-size-sm instead */
+  --edatos-font-size-xs: max(12px, 0.75rem);
+  --edatos-font-size-2xs: max(10px, 0.625rem);
+  --edatos-font-size-xxs: var(--edatos-font-size-2xs);
+  /* Deprecated, use --edatos-font-size-2xs instead */
+
+  --edatos-line-height-lg: 2;
+  --edatos-line-height-md: 1.5;
+  --edatos-line-height-xs: 1;
+
+  --edatos-color-light-blue-100: #009BD7;
+  --edatos-color-light-blue-50: #66C3E7;
+  --edatos-color-light-blue-50-filter: brightness(0) saturate(100%) invert(77%) sepia(82%) saturate(1430%) hue-rotate(169deg) brightness(92%) contrast(96%);
+  --edatos-color-light-blue-25: #B2E1F3;
+  --edatos-color-light-blue-10: #D8F0F9;
+  --edatos-color-light-blue-5: #EBF7FC;
+  --edatos-color-dark-blue-100-filter: brightness(0) saturate(100%) invert(13%) sepia(93%) saturate(3861%) hue-rotate(186deg) brightness(95%) contrast(102%);
+  --edatos-color-dark-blue-100: #004678;
+  --edatos-color-dark-blue-50-filter: invert(49%) sepia(5%) saturate(4522%) hue-rotate(162deg) brightness(92%) contrast(80%);
+  --edatos-color-dark-blue-50: #4D7EA0;
+  --edatos-color-dark-blue-25: #99B5C9;
+  --edatos-color-dark-blue-10: #CCDAE4;
+  --edatos-color-dark-blue-5: #E5ECF1;
+  --edatos-color-purple-100: #AF46A8;
+  --edatos-color-purple-50: #CF90CB;
+  --edatos-color-purple-25: #E7C7E5;
+  --edatos-color-green-100: #026C34;
+  --edatos-color-green-50: #66BE8F;
+  --edatos-color-green-25: #C0DACD;
+  --edatos-color-sand-100: #A18979;
+  --edatos-color-sand-50: #C7B8AF;
+  --edatos-color-sand-25: #E3DCD7;
+  --edatos-color-orange-100: #E95000;
+  --edatos-color-orange-50: #F29666;
+  --edatos-color-orange-25: #F8CAB2;
+  --edatos-color-yellow-100: #F0A82D;
+  --edatos-color-yellow-50: #F6CB81;
+  --edatos-color-yellow-25: #FBE5C0;
+  --edatos-color-red-100: #BB1709;
+  --edatos-color-red-50: #F9928B;
+  --edatos-color-red-25: #FCC9C5;
+  --edatos-color-black-100: #000000;
+  --edatos-color-black-100-filter: brightness(0) saturate(100%);
+  --edatos-color-gray-80: #5F5F5E;
+  --edatos-color-gray-80-filter: invert(38%) sepia(0%) saturate(1%) hue-rotate(109deg) brightness(91%) contrast(82%);
+  --edatos-color-gray-60: #666666;
+  --edatos-color-gray-60-filter: brightness(0) saturate(100%) invert(39%) sepia(0%) saturate(14%) hue-rotate(135deg) brightness(98%) contrast(83%);
+  --edatos-color-gray-40: #999999;
+  --edatos-color-gray-40-filter: invert(67%) sepia(0%) saturate(0%) hue-rotate(229deg) brightness(92%) contrast(85%);
+  --edatos-color-gray-20: #E7E7E7;
+  --edatos-color-gray-5: #F3F3F3;
+  --edatos-color-gray-5-filter: brightness(0) saturate(100%) invert(98%) sepia(0%) saturate(647%) hue-rotate(323deg) brightness(116%) contrast(91%);
+  --edatos-color-white-100: #FFFFFF;
+  --edatos-color-white-100-filter: brightness(100);
+
+  --edatos-spacing-x-page: 36px;
+
+  --edatos-spacing-x-2xs: 0.125rem;
+  --edatos-spacing-x-xs: 0.375rem;
+  --edatos-spacing-x-sm: 0.5rem;
+  --edatos-spacing-x-lg: 1.25rem;
+  --edatos-spacing-x-m: var(--edatos-spacing-x-lg);
+  /* Deprecated, use --edatos-spacing-x-lg instead */
+  --edatos-spacing-x-xl: 2rem;
+  --edatos-spacing-x-l: var(--edatos-spacing-x-xl);
+  /* Deprecated, use --edatos-spacing-x-xl instead */
+
+  --edatos-spacing-y-2xs: 0.188rem;
+  --edatos-spacing-y-xs: 0.375rem;
+  --edatos-spacing-y-sm: 0.5rem;
+  --edatos-spacing-y-lg: 1rem;
+  --edatos-spacing-y-l: var(--edatos-spacing-y-lg);
+  /* Deprecated, use --edatos-spacing-y-lg instead */
+  --edatos-spacing-y-xl: 2rem;
+
+  --edatos-navbar-icon-size: 26px;
+  --edatos-navbar-logo-size: 28px;
+  --edatos-separator-width: 50px;
+  --edatos-separator-min-height: 44px;
+  --edatos-app-image-border-radius: 0px;
+
+  --edatos-border-radius-xs: 0.1875rem;
+  --edatos-border-radius-sm: 0.3125rem;
+  --edatos-border-radius-md: 0.5rem;
+  --border-radius-sm: var(--edatos-border-radius-sm);
+  /* Deprecated, use --edatos-border-radius-sm instead */
+  --border-radius-m: var(--edatos-border-radius-md);
+  /* Deprecated, use --edatos-border-radius-md instead */
+
+  --edatos-border-width-xs: 1px;
+  --edatos-border-width-sm: 2px;
+
+  --edatos-max-container-width: 1240px;
+  --edatos-max-text-descriptions-width: calc(2*var(--edatos-max-container-width)/3);
+}

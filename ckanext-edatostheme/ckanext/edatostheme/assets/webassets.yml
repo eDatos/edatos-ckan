@@ -1,6 +1,7 @@
 edatostheme-css:
   output: ckanext-edatostheme/%(version)s-edatostheme_css.css
-  contents: 
+  contents:
+    - styles/base.css
     - styles/custom.css
     - styles/subject-area-icons.css
 

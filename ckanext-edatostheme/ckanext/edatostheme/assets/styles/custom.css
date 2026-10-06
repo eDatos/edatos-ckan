@@ -5,7 +5,7 @@
 /* The --edatos-* variables and base styles come from complementos-apps
    (Alisio Design). Always check them and keep them up to date
    against the source:
-   https: //git.arte-consultores.com/istac/complementos-apps/-/blob/071a78e764b6f7de5bedacc7543a0084cbadad0e/src/main/webapp/assets/css/base.jsp
+   Check the base.css file
    Use its tokens instead of hardcoded values, preferring the
    organisation-specific aliases (e.g. --edatos-color-primary-100 rather
    than --edatos-color-gray-60). */
