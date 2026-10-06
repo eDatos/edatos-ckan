@@ -2,6 +2,14 @@
    0. DESIGN TOKENS — Variables CSS
    ============================================================ */
 
+/* The --edatos-* variables and base styles come from complementos-apps
+   (Alisio Design). Always check them and keep them up to date
+   against the source:
+   https: //git.arte-consultores.com/istac/complementos-apps/-/blob/071a78e764b6f7de5bedacc7543a0084cbadad0e/src/main/webapp/assets/css/base.jsp
+   Use its tokens instead of hardcoded values, preferring the
+   organisation-specific aliases (e.g. --edatos-color-primary-100 rather
+   than --edatos-color-gray-60). */
+
 :root {
   /* Bootstrap consume esta variable internamente en su CSS compilado;
      no se llama con var() en este fichero, pero debe seguir aquí. */
@@ -1281,7 +1289,7 @@ h2.dataset-heading {
 }
 
 .dataset-heading a {
-	color: var(--edatos-color-dark-blue-100);
+	color: var(--edatos-links-color);
 	text-decoration: none;
 }
 
@@ -1765,7 +1773,7 @@ h1.dataset-title {
 	display: flex;
 	align-items: flex-end;
 	gap: 8px;
-	color: var(--edatos-color-dark-blue-100);
+	color: var(--edatos-links-color);
 	font-size: var(--edatos-font-size-md);
 	font-style: normal;
 	font-weight: var(--edatos-font-weight-regular);
@@ -3733,7 +3741,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 
 .module-resource .module-content p.text-muted.ellipsis a,
 .module-resource .module-content p.text-muted.break-word a {
-	color: var(--edatos-color-dark-blue-100, #004678);
+	color: var(--edatos-links-color, #004678);
 	font-weight: var(--edatos-font-weight-light);
 	text-decoration: none;
 }
@@ -4568,7 +4576,7 @@ li.showcase-card {
 .license .module-content > a,
 .license .module-content > span {
     padding: 0;
-	color: var(--edatos-color-dark-blue-100);
+	color: var(--edatos-links-color);
 }
 
 /* El padding-top compartido (5px, en la regla de abajo) se queda corto
@@ -5803,7 +5811,7 @@ aside.secondary .module-content > a.btn.btn-sm {
 }
 
 a {
-	color: var(--edatos-color-dark-blue-100);
+	color: var(--edatos-links-color);
 }
 
 a:hover {
