@@ -11,8 +11,13 @@
    {% asset 'ckanext-edatostheme/edatostheme-fonts' %}
    {% asset 'ckanext-edatostheme/edatostheme-js' %}
    {% set edatos_css_url = h.edatos_get_app_style_css_url() %}
+   <style>html.edatos-theme-pending body{visibility:hidden}</style>
+   <script>document.documentElement.classList.add('edatos-theme-pending');</script>
    {% if edatos_css_url %}
-     <link rel="stylesheet" href="{{ edatos_css_url }}">
+     <link rel="preload" as="style" href="{{ edatos_css_url }}">
+     <link rel="stylesheet" href="{{ edatos_css_url }}" media="print"
+           onload="this.onload=null;this.media='all';document.documentElement.classList.remove('edatos-theme-pending');">
+     <noscript><link rel="stylesheet" href="{{ edatos_css_url }}"></noscript>
    {% endif %}
    {# Font Awesome PRO (peso "Light", usado por los iconos de la barra de
       DataTables Buttons en la vista de recurso -- ver

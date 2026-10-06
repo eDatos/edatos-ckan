@@ -25,8 +25,9 @@
         theme.css (solo Font Awesome), asi que ese conflicto no se da; si
         volviera a enlazarlo, al inyectarse ahora desde el navegador caeria en
         el <body> y ganaria la cascada pase lo que pase, y habria que filtrar
-        ese <link> del HTML recibido en edatos-external-html.js.
       #}
-      <link rel="stylesheet" href="{{ edatos_css_url }}">
+      <link rel="stylesheet" href="{{ edatos_css_url }}" media="print"
+            onload="this.onload=null;this.media='all';">
+      <noscript><link rel="stylesheet" href="{{ edatos_css_url }}"></noscript>
     {% endif %}
 {% endblock header_meta_menu %}
