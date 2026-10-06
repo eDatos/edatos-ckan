@@ -2,6 +2,30 @@
    0. DESIGN TOKENS — Variables CSS
    ============================================================ */
 
+/* Neutral (grey) baseline for the colour tokens defined by theme.css
+   (complementos-apps, base.jsp). It only applies while theme.css has not
+   loaded, has failed or is not linked at all, so that the page renders grey
+   instead of the blue hardcoded fallbacks below (#004678, #007fb0...).
+   :where() has zero specificity, so the :root of theme.css always wins even
+   though theme.css comes earlier in the cascade. Values mirror the
+   organisation-neutral defaults of base.jsp.
+   Do NOT define --edatos-color-gray-50 here: base.html uses it as the
+   sentinel that tells whether theme.css is applied
+   (see docs/theming-fouc-contingency.md). */
+:where(:root) {
+  --edatos-color-primary-100: #747070;
+  --edatos-color-primary-50: #B8B8B8;
+  --edatos-color-primary-10: #E7E7E7;
+  --edatos-color-primary-5: #F3F3F3;
+  --edatos-color-secondary-100: #747070;
+  --edatos-color-accent-100: #5F5B5B;
+  --edatos-color-light-blue-100: #747070;
+  --edatos-color-dark-blue-100: #333333;
+  --edatos-color-dark-blue-25: #CCCCCC;
+  --edatos-color-danger-100: #666666;
+  --edatos-color-danger-25: #CCCCCC;
+}
+
 :root {
   /* Bootstrap consume esta variable internamente en su CSS compilado;
      no se llama con var() en este fichero, pero debe seguir aquí. */
