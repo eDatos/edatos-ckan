@@ -1,4 +1,7 @@
 -- =====================================================================
+-- Ejecución: Este script de normalización se ha ejecutado en PRO ISTAC
+--            y no debe ser ejecutado en otros entornos
+--
 -- Normalización de etiquetas (es) en package_extra.value ->> 'es'
 -- Generado a partir de package_extra_202609221336usuarioAPIkey.csv
 -- Supuesto: package_extra.value es TEXT que contiene un JSON válido

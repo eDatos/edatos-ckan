@@ -1,4 +1,7 @@
 -- =====================================================================
+-- Ejecución: Este script de normalización se ha ejecutado en PRO ISTAC
+--            y no debe ser ejecutado en otros entornos
+--
 -- Normalizacion a minusculas del texto intermedio para 38 etiquetas
 -- revisadas manualmente de la lista de "mayusculas internas".
 -- Regla aplicada: se mantiene mayuscula solo la primera letra de la
