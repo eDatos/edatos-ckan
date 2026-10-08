@@ -1,12 +1,12 @@
 /* ============================================================
-   0. DESIGN TOKENS — Variables CSS
+   0. VARIABLES CSS
    ============================================================ */
 
 /* The --edatos-* variables and base styles come from complementos-apps
    (Alisio Design). Always check them and keep them up to date
    against the source:
    Check the base.css file
-   Use its tokens instead of hardcoded values, preferring the
+   Use its variables instead of hardcoded values, preferring the
    organisation-specific aliases (e.g. --edatos-color-primary-100 rather
    than --edatos-color-gray-60). */
 
@@ -23,7 +23,7 @@
   --spacing-md: 16px;
   --spacing-lg: 24px;
 
-  /* Sombras — Alisio no define tokens de shadow */
+  /* Sombras — Alisio no define variables de sombra */
   --shadow-card: 0 2px 4px rgba(0, 0, 0, 0.10);
   --shadow-dropdown: 0 2px 8px rgba(0, 0, 0, 0.12);
 
@@ -35,7 +35,7 @@
   --transition-fast: 0.15s ease;
   --transition-base: 0.2s ease;
 
-  /* Tokens CKAN propios */
+  /* Variables CKAN propias */
   --ckan-font-size-heading: 24px;
   --ckan-border-radius-card: 10px;
   --ckan-divider-on-dark: rgba(255, 255, 255, 0.3);
@@ -1980,7 +1980,7 @@ h1.dataset-title {
    estándar de la card -- Figma (nodo 12933:7928) no lo contempla: el sidebar
    debe arrancar en el mismo padding que el resto de la card, y el hueco de
    20px va hacia el título/tabla (a su derecha), no a la izquierda. Se anula
-   ese margen y se añade "margin-right" (token "--edatos-spacing-x-sm" del
+   ese margen y se añade "margin-right" (variable "--edatos-spacing-x-sm" del
    sistema de diseño, en vez del 10px suelto que ya usa el "gap" genérico de
    ".row.wrapper" para el mismo valor) para llevar el hueco hacia el
    título/tabla a los 20px de Figma solo en esta página. Ver
@@ -3599,8 +3599,8 @@ div.dataTables_wrapper div.dataTables_scrollBody::-webkit-scrollbar-thumb {
    lenguaje de bordes claro que aquí se traduce a CSS real: marco exterior con borde + radio,
    cabecera con fondo blanco (no el gris/azulado de Bootstrap) y texto en negrita, celdas de
    cuerpo con borde solo horizontal (sin separadores verticales entre columnas) y sin franjas
-   de fila alternas. Los tokens de color (`--edatos-color-gray-60/-40/-80/-white-100`) son los
-   mismos que usa ese canvas (se leen ahí en runtime vía "getComputedStyle"), así que no son
+   de fila alternas. Las variables de color (`--edatos-color-gray-60/-40/-80/-white-100`) son las
+   mismas que usa ese canvas (se leen ahí en runtime vía "getComputedStyle"), así que no son
    una aproximación: son las mismas variables del sistema de diseño. */
 div.dataTables_wrapper div.dataTables_scroll.dtfc-has-left {
 	border: var(--edatos-border-width-xs, 1px) solid var(--edatos-color-gray-60, #666666);
