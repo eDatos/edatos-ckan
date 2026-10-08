@@ -93,6 +93,10 @@
     color: var(--edatos-color-secondary-100);
 }
 
+.group-home-card-link:hover .group-home-fa-glyph::before {
+    color: var(--edatos-color-white-100, #fff);
+}
+
 .group-home-fa-glyph.ciencia-y-tecnologia::before  { content: '\f0c3'; } /* flask */
 .group-home-fa-glyph.comercio::before               { content: '\f07a'; } /* cart-shopping */
 .group-home-fa-glyph.cultura-ocio::before           { content: '\f630'; } /* theater-masks */
