@@ -1409,7 +1409,7 @@ h2.dataset-heading {
 }
 
 #group-info .image {
-	background-color: var(--edatos-color-secondary-100);
+	background-color: var(--edatos-color-primary-5);
 	border-radius: var(--ckan-border-radius-card);
 	margin: 0;
 	padding: 30px 14px;
@@ -1429,7 +1429,7 @@ h2.dataset-heading {
 #group-info .image .heading {
 	font-size: var(--ckan-font-size-heading);
 	font-weight: var(--edatos-font-weight-semibold);
-	color: var(--edatos-color-white-100, #ffffff);
+	color: var(--edatos-color-secundary-100);
 	margin: 0;
 	line-height: 110%;
 	align-self: stretch;
@@ -1450,7 +1450,7 @@ h2.dataset-heading {
 
 #group-info .nums-inner .nums-label {
 	font-size: var(--edatos-font-size-xs);
-	color: var(--edatos-color-white-100, #ffffff);
+	color: var(--edatos-color-secundary-100);
 	font-weight: var(--edatos-font-weight-regular);
 	line-height: 16px;
 }
@@ -1458,7 +1458,7 @@ h2.dataset-heading {
 #group-info .nums-inner .nums-count {
 	font-size: 28px;
 	font-weight: var(--edatos-font-weight-semibold);
-	color: var(--edatos-color-white-100, #ffffff);
+	color: var(--edatos-color-secundary-100);
 	line-height: 120%;
 	text-transform: uppercase;
 }

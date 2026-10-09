@@ -90,7 +90,11 @@
 .group-home-fa-glyph::before {
     font-family: "Font Awesome 6 Pro" !important;
     font-weight: 100 !important;
-    color: inherit !important;
+    color: var(--edatos-color-secondary-100);
+}
+
+.group-home-card-link:hover .group-home-fa-glyph::before {
+    color: var(--edatos-color-white-100, #fff);
 }
 
 .group-home-fa-glyph.ciencia-y-tecnologia::before  { content: '\f0c3'; } /* flask */
