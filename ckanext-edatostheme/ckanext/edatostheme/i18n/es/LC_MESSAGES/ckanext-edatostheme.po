@@ -4831,6 +4831,30 @@ msgstr "Los administradores del sistema pueden administrar administradores de co
 msgid "Edit showcase"
 msgstr "Editar colección"
 
+#: ckanext/edatosshowcase/templates/edatosshowcase/edit_base.html:49
+msgid "Manage datasets"
+msgstr "Administrar conjuntos de datos"
+
+#: ckanext/showcase/utils.py:173
+msgid "The dataset has been added to the showcase."
+msgid_plural "The datasets have been added to the showcase."
+msgstr[0] "El conjunto de datos se ha añadido a la colección."
+msgstr[1] "Los conjuntos de datos se han añadido a la colección."
+
+#: ckanext/showcase/utils.py:141
+msgid "The dataset has been removed from the showcase."
+msgid_plural "The datasets have been removed from the showcase."
+msgstr[0] "El conjunto de datos se ha eliminado de la colección."
+msgstr[1] "Los conjuntos de datos se han eliminado de la colección."
+
+#: ckanext/showcase/utils.py:551
+msgid "User '{user_name}' not found."
+msgstr "No se ha encontrado el usuario '{user_name}'."
+
+#: ckanext/showcase/utils.py:555
+msgid "The user is now a Showcase Admin"
+msgstr "El usuario ahora es administrador de colecciones"
+
 #: ckanext/showcase/templates/showcase/new_package_form.html:63
 msgid "Update Showcase"
 msgstr "Actualizar colección"
@@ -4922,3 +4946,8 @@ msgstr "Compartir"
 #: ckanext-cas/ckanext/cas/blueprints.py
 msgid "Exclusive access for administrators"
 msgstr "Acceso exclusivo para personas administradoras"
+
+#: ckan/views/dataset.py:426 ckan/views/dataset.py:440
+#: ckan/views/dataset.py:915 ckan/views/dataset.py:942
+msgid "Dataset not found or you have no permission to view it"
+msgstr "El conjunto de datos no se encontró o no posee permiso para verlo"

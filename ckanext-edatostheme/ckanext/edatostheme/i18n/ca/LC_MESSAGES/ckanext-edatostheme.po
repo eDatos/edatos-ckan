@@ -5402,6 +5402,30 @@ msgstr "Els administradors del sistema poden administrar administradors de col·
 msgid "Edit showcase"
 msgstr "Editar col·lecció"
 
+#: ckanext/edatosshowcase/templates/edatosshowcase/edit_base.html:49
+msgid "Manage datasets"
+msgstr "Administrar conjunts de dades"
+
+#: ckanext/showcase/utils.py:173
+msgid "The dataset has been added to the showcase."
+msgid_plural "The datasets have been added to the showcase."
+msgstr[0] "El conjunt de dades s'ha afegit a la col·lecció."
+msgstr[1] "Els conjunts de dades s'han afegit a la col·lecció."
+
+#: ckanext/showcase/utils.py:141
+msgid "The dataset has been removed from the showcase."
+msgid_plural "The datasets have been removed from the showcase."
+msgstr[0] "El conjunt de dades s'ha eliminat de la col·lecció."
+msgstr[1] "Els conjunts de dades s'han eliminat de la col·lecció."
+
+#: ckanext/showcase/utils.py:551
+msgid "User '{user_name}' not found."
+msgstr "No s'ha trobat l'usuari '{user_name}'."
+
+#: ckanext/showcase/utils.py:555
+msgid "The user is now a Showcase Admin"
+msgstr "L'usuari ara és administrador de col·leccions"
+
 #: ckanext/showcase/templates/showcase/new_package_form.html:63
 msgid "Update Showcase"
 msgstr "Actualitzar col·lecció"

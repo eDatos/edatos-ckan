@@ -609,6 +609,15 @@ Configuration loaded from `ckanext/edatostheme/etc/config.json`:
   `public/` at startup any more, so the `chmod 777` these files used to need is
   gone (EDATOS-5901)
 
+### Styling Conventions (edatostheme)
+
+`ckanext-edatostheme/ckanext/edatostheme/assets/styles/custom.css` does not define its own design tokens — it consumes `--edatos-*` CSS custom properties (colors, spacing, font sizes/weights, line-heights) that come from `base.jsp` ("Alisio Design System"), a shared stylesheet owned by another repo:
+
+- Canonical source: https://git.arte-consultores.com/istac/complementos-apps/-/blob/develop/src/main/webapp/assets/css/base.jsp
+- Idea: consider keeping a local copy of `base.jsp` under this repo (e.g. `docs/`) so its token values are easy to check while editing styles, instead of relying on an ad-hoc path outside the repo.
+
+When touching, modifying, or adding styles in `custom.css` (or any other edatostheme stylesheet), prefer reusing the existing `--edatos-*` tokens and rules already defined in `base.jsp` over inventing new ad-hoc values — check the token's real value there before relying on a `var(--edatos-*, fallback)` fallback, since fallbacks hardcoded in `custom.css` don't always match the actual token value (e.g. `--edatos-spacing-y-sm` / `--edatos-spacing-x-sm` are `0.5rem` = 8px in `base.jsp`, not the `10px` some fallbacks assume).
+
 ### GobcanGroups Configuration
 
 ```ini

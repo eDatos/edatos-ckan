@@ -145,77 +145,81 @@
 {% block primary_content %}
   {% block resource_additional_information %}
     {% if res %}
-      <section class="module additional-info">
-        <div class="module-heading metadata-heading">{{ _('Metadatos') }}</div>
-        {% block resource_additional_information_inner %}
-        <div class="module-content">
-          <table class="table table-bordered table-condensed" data-module="table-toggle-more">
-            <thead>
-              <tr>
-                <th scope="col">{{ _('Field') }}</th>
-                <th scope="col">{{ _('Value') }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">{{ _('Data last updated') }}</th>
-                <td>{{ h.render_datetime(res.last_modified) or h.render_datetime(res.created) or _('unknown') }}</td>
-              </tr>
-              <tr>
-                <th scope="row">{{ _('Metadata last updated') }}</th>
-                <td>{{ h.render_datetime(res.metadata_modified) or h.render_datetime(res.created) or _('unknown') }}</td>
-              </tr>
-              <tr>
-                <th scope="row">{{ _('Created') }}</th>
-                <td>{{ h.render_datetime(res.created) or _('unknown') }}</td>
-              </tr>
-              <tr>
-                <th scope="row">{{ _('Format') }}</th>
-                <td>{{ res.format or res.mimetype_inner or res.mimetype or _('unknown') }}</td>
-              </tr>
-              <tr>
-                <th scope="row">{{ _('License') }}</th>
-                <td>{% snippet "snippets/license.html", pkg_dict=pkg, text_only=True %}</td>
-              </tr>
-              {% for key, value in h.format_resource_items(res.items()) %}
-                {% if key == "datastore active"%}
-                      <tr class="toggle-more"><th scope="row">{{ _("datastore active") }}</th><td>{{ value }}</td></tr>
-                  {% endif%}
-                  {% if key == "has views"%}
-                      <tr class="toggle-more"><th scope="row">{{ _("has views") }}</th><td>{{ value }}</td></tr>
-                  {% endif%}
-                  {% if key == "last modified"%}
-                      <tr class="toggle-more"><th scope="row">{{ _("last modified") }}</th><td>{{ value }}</td></tr>
-                  {% endif%}
-                  {% if key == "on same domain"%}
-                      <tr class="toggle-more"><th scope="row">{{ _("on same domain") }}</th><td>{{ value }}</td></tr>
-                  {% endif%}
-                  {% if key == "state"%}
-                      <tr class="toggle-more"><th scope="row">{{ _("state") }}</th><td>{{ value }}</td></tr>
-                  {% endif%}
-                  {% if key == "id"%}
-                      <tr class="toggle-more"><th scope="row">{{ _("id") }}</th><td>{{ value }}</td></tr>
-                  {% endif%}
-                {% if key not in ('created', 'metadata modified', 'last modified', 'format') %}
-                  <tr class="toggle-more"><th scope="row">{{ key | capitalize }}</th><td>{{ value }}</td></tr>
-                {% endif %}
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
+      <div class="resource-metadata-row row">
+        {% block resource_sidebar %}
+          <aside class="secondary col-md-3">
+            <div class="showcase-detail-sidebar">
+              {% block resources_list %}
+                {% snippet "package/snippets/resources.html", pkg=pkg, active=res.id, action='read' %}
+              {% endblock %}
+
+              {% snippet "snippets/social.html" %}
+            </div>
+          </aside>
         {% endblock %}
-      </section>
+        <section class="module additional-info col-md-9">
+          <div class="module-heading metadata-heading">{{ _('Metadatos') }}</div>
+          {% block resource_additional_information_inner %}
+          <div class="module-content">
+            <table class="table table-bordered table-condensed" data-module="table-toggle-more">
+              <thead>
+                <tr>
+                  <th scope="col">{{ _('Field') }}</th>
+                  <th scope="col">{{ _('Value') }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">{{ _('Data last updated') }}</th>
+                  <td>{{ h.render_datetime(res.last_modified) or h.render_datetime(res.created) or _('unknown') }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">{{ _('Metadata last updated') }}</th>
+                  <td>{{ h.render_datetime(res.metadata_modified) or h.render_datetime(res.created) or _('unknown') }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">{{ _('Created') }}</th>
+                  <td>{{ h.render_datetime(res.created) or _('unknown') }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">{{ _('Format') }}</th>
+                  <td>{{ res.format or res.mimetype_inner or res.mimetype or _('unknown') }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">{{ _('License') }}</th>
+                  <td>{% snippet "snippets/license.html", pkg_dict=pkg, text_only=True %}</td>
+                </tr>
+                {% for key, value in h.format_resource_items(res.items()) %}
+                  {% if key == "datastore active"%}
+                        <tr class="toggle-more"><th scope="row">{{ _("datastore active") }}</th><td>{{ value }}</td></tr>
+                    {% endif%}
+                    {% if key == "has views"%}
+                        <tr class="toggle-more"><th scope="row">{{ _("has views") }}</th><td>{{ value }}</td></tr>
+                    {% endif%}
+                    {% if key == "last modified"%}
+                        <tr class="toggle-more"><th scope="row">{{ _("last modified") }}</th><td>{{ value }}</td></tr>
+                    {% endif%}
+                    {% if key == "on same domain"%}
+                        <tr class="toggle-more"><th scope="row">{{ _("on same domain") }}</th><td>{{ value }}</td></tr>
+                    {% endif%}
+                    {% if key == "state"%}
+                        <tr class="toggle-more"><th scope="row">{{ _("state") }}</th><td>{{ value }}</td></tr>
+                    {% endif%}
+                    {% if key == "id"%}
+                        <tr class="toggle-more"><th scope="row">{{ _("id") }}</th><td>{{ value }}</td></tr>
+                    {% endif%}
+                  {% if key not in ('created', 'metadata modified', 'last modified', 'format') %}
+                    <tr class="toggle-more"><th scope="row">{{ key | capitalize }}</th><td>{{ value }}</td></tr>
+                  {% endif %}
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          {% endblock %}
+        </section>
+      </div>
     {% endif %}
   {% endblock %}
 {% endblock %}
 
-{% block secondary_content %}
-
-  <div class="showcase-detail-sidebar">
-    {% block resources_list %}
-      {% snippet "package/snippets/resources.html", pkg=pkg, active=res.id, action='read' %}
-    {% endblock %}
-
-    {% snippet "snippets/social.html" %}
-  </div>
-{% endblock %}
+{% block secondary_content %}{% endblock %}
