@@ -10,7 +10,7 @@ _Se deberá realizar primero la actualización de la versión 1.0.0 a la 2.0.0 y
 
 _Los scripts SQL se ejecutan manualmente contra la base de datos de CKAN, previa copia de seguridad. No actualizan el índice de Solr, por lo que después hay que reindexar con `ckan -c /srv/app/ckan.ini search-index rebuild`. Las variables de entorno se configuran en el `.env` de cada cliente y entorno del proyecto ckan-stack._
 
-## 4.2.0 a 4.3.0-SNAPSHOT
+## 4.2.0 a 4.2.1-SNAPSHOT
 
 - Los siguientes scripts SQL de normalización de etiquetas ya se han ejecutado en PRO ISTAC y **no deben ejecutarse en ningún otro entorno**. Se incluyen solo como registro de los cambios realizados en los datos:
 
