@@ -2369,9 +2369,9 @@ div.ckanext-showcase-image-container {
 	padding: 10px;
 	gap: 5px;
 	border-radius: 30px;
-	border: 1px solid var(--edatos-color-primary-50, #4D7EA0);
-	background: var(--edatos-color-white-100, #FFF);
-	color: var(--edatos-color-primary-100, #000);
+	border: 1px solid var(--edatos-color-secondary-100, #004678);
+	background: var(--edatos-color-secondary-100, #004678);
+	color: var(--edatos-color-white-100, #FFF);
 	font-size: var(--edatos-font-size-xs);
 	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 24px;
