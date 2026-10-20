@@ -1,6 +1,14 @@
 /* ============================================================
-   0. DESIGN TOKENS — Variables CSS
+   0. VARIABLES CSS
    ============================================================ */
+
+/* The --edatos-* variables and base styles come from complementos-apps
+   (Alisio Design). Always check them and keep them up to date
+   against the source:
+   Check the base.css file
+   Use its variables instead of hardcoded values, preferring the
+   organisation-specific aliases (e.g. --edatos-color-primary-100 rather
+   than --edatos-color-gray-60). */
 
 :root {
   /* Bootstrap consume esta variable internamente en su CSS compilado;
@@ -15,7 +23,7 @@
   --spacing-md: 16px;
   --spacing-lg: 24px;
 
-  /* Sombras — Alisio no define tokens de shadow */
+  /* Sombras — Alisio no define variables de sombra */
   --shadow-card: 0 2px 4px rgba(0, 0, 0, 0.10);
   --shadow-dropdown: 0 2px 8px rgba(0, 0, 0, 0.12);
 
@@ -27,7 +35,7 @@
   --transition-fast: 0.15s ease;
   --transition-base: 0.2s ease;
 
-  /* Tokens CKAN propios */
+  /* Variables CKAN propias */
   --ckan-font-size-heading: 24px;
   --ckan-border-radius-card: 10px;
   --ckan-divider-on-dark: rgba(255, 255, 255, 0.3);
@@ -1281,7 +1289,7 @@ h2.dataset-heading {
 }
 
 .dataset-heading a {
-	color: var(--edatos-color-secondary-100);
+	color: var(--edatos-links-color);
 	text-decoration: none;
 }
 
@@ -1777,7 +1785,7 @@ h1.dataset-title {
 	display: flex;
 	align-items: flex-end;
 	gap: 8px;
-	color: var(--edatos-color-black-100);
+	color: var(--edatos-links-color);
 	font-size: var(--edatos-font-size-md);
 	font-style: normal;
 	font-weight: var(--edatos-font-weight-regular);
@@ -1788,7 +1796,6 @@ h1.dataset-title {
 
 .resource-item .heading:hover {
 	text-decoration: underline;
-	color: var(--edatos-color-secondary-100, #004678);
 }
 
 /* --- ZONA 5: Botón EXPLORAR/DESCARGAR (.btn-primary en recursos) --- */
@@ -3654,8 +3661,8 @@ div.dataTables_wrapper div.dataTables_scrollBody::-webkit-scrollbar-thumb {
    lenguaje de bordes claro que aquí se traduce a CSS real: marco exterior con borde + radio,
    cabecera con fondo blanco (no el gris/azulado de Bootstrap) y texto en negrita, celdas de
    cuerpo con borde solo horizontal (sin separadores verticales entre columnas) y sin franjas
-   de fila alternas. Los tokens de color (`--edatos-color-gray-60/-40/-80/-white-100`) son los
-   mismos que usa ese canvas (se leen ahí en runtime vía "getComputedStyle"), así que no son
+   de fila alternas. Las variables de color (`--edatos-color-gray-60/-40/-80/-white-100`) son las
+   mismas que usa ese canvas (se leen ahí en runtime vía "getComputedStyle"), así que no son
    una aproximación: son las mismas variables del sistema de diseño. */
 div.dataTables_wrapper div.dataTables_scroll.dtfc-has-left {
 	border: var(--edatos-border-width-xs, 1px) solid var(--edatos-color-gray-60, #666666);
@@ -3796,7 +3803,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 
 .module-resource .module-content p.text-muted.ellipsis a,
 .module-resource .module-content p.text-muted.break-word a {
-	color: var(--edatos-color-primary-100, #004678);
+	color: var(--edatos-links-color, #004678);
 	font-weight: var(--edatos-font-weight-light);
 	text-decoration: none;
 }
@@ -4656,6 +4663,7 @@ li.showcase-card {
 .license .module-content > a,
 .license .module-content > span {
     padding: 0;
+	color: var(--edatos-links-color);
 }
 
 /* El padding-top compartido (5px, en la regla de abajo) se queda corto
@@ -5887,4 +5895,12 @@ aside.secondary .module-content > a.btn.btn-sm {
    measured height of the institutional header for this deployment. */
 #edatos-header:empty {
     min-height: var(--edatos-header-reserved-height, 0);
+}
+
+a {
+	color: var(--edatos-links-color);
+}
+
+a:hover {
+	text-decoration: underline;
 }
