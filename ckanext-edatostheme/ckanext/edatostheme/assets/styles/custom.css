@@ -1,6 +1,14 @@
 /* ============================================================
-   0. DESIGN TOKENS — Variables CSS
+   0. VARIABLES CSS
    ============================================================ */
+
+/* The --edatos-* variables and base styles come from complementos-apps
+   (Alisio Design). Always check them and keep them up to date
+   against the source:
+   Check the base.css file
+   Use its variables instead of hardcoded values, preferring the
+   organisation-specific aliases (e.g. --edatos-color-primary-100 rather
+   than --edatos-color-gray-60). */
 
 :root {
   /* Bootstrap consume esta variable internamente en su CSS compilado;
@@ -15,7 +23,7 @@
   --spacing-md: 16px;
   --spacing-lg: 24px;
 
-  /* Sombras — Alisio no define tokens de shadow */
+  /* Sombras — Alisio no define variables de sombra */
   --shadow-card: 0 2px 4px rgba(0, 0, 0, 0.10);
   --shadow-dropdown: 0 2px 8px rgba(0, 0, 0, 0.12);
 
@@ -27,7 +35,7 @@
   --transition-fast: 0.15s ease;
   --transition-base: 0.2s ease;
 
-  /* Tokens CKAN propios */
+  /* Variables CKAN propias */
   --ckan-font-size-heading: 24px;
   --ckan-border-radius-card: 10px;
   --ckan-divider-on-dark: rgba(255, 255, 255, 0.3);
@@ -855,7 +863,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 
 .search-filters .filter-tag:hover {
 	border: 1px solid var(--edatos-color-primary-100);
-    background: var(--edatos-color-primary-10);
+    background: var(--edatos-color-primary-5);
     color: var(--edatos-color-primary-100);
 	text-align: center;
 	text-decoration: none;
@@ -1225,7 +1233,7 @@ li.nav:has(.dropdown-menu.abrir) .btn.btn-navbar i.fa-chevron-down {
 	font-weight: var(--edatos-font-weight-semibold);
 }
 .search-form .input-group.search-input-group input[name="q"]::placeholder {
-	color: var(--edatos-color-gray-20);
+	color: var(--edatos-color-gray-60);
 	font-weight: var(--edatos-font-weight-semibold);
 	font-variation-settings: "wght" 600;
 }
@@ -1281,7 +1289,7 @@ h2.dataset-heading {
 }
 
 .dataset-heading a {
-	color: var(--edatos-color-secondary-100);
+	color: var(--edatos-links-color);
 	text-decoration: none;
 }
 
@@ -1409,7 +1417,7 @@ h2.dataset-heading {
 }
 
 #group-info .image {
-	background-color: var(--edatos-color-secondary-100);
+	background-color: var(--edatos-color-primary-5);
 	border-radius: var(--ckan-border-radius-card);
 	margin: 0;
 	padding: 30px 14px;
@@ -1429,7 +1437,7 @@ h2.dataset-heading {
 #group-info .image .heading {
 	font-size: var(--ckan-font-size-heading);
 	font-weight: var(--edatos-font-weight-semibold);
-	color: var(--edatos-color-white-100, #ffffff);
+	color: var(--edatos-color-secundary-100);
 	margin: 0;
 	line-height: 110%;
 	align-self: stretch;
@@ -1450,7 +1458,7 @@ h2.dataset-heading {
 
 #group-info .nums-inner .nums-label {
 	font-size: var(--edatos-font-size-xs);
-	color: var(--edatos-color-white-100, #ffffff);
+	color: var(--edatos-color-secundary-100);
 	font-weight: var(--edatos-font-weight-regular);
 	line-height: 16px;
 }
@@ -1458,7 +1466,7 @@ h2.dataset-heading {
 #group-info .nums-inner .nums-count {
 	font-size: 28px;
 	font-weight: var(--edatos-font-weight-semibold);
-	color: var(--edatos-color-white-100, #ffffff);
+	color: var(--edatos-color-secundary-100);
 	line-height: 120%;
 	text-transform: uppercase;
 }
@@ -1561,12 +1569,25 @@ li.nav-item:hover {
 }
 
 .module.module-narrow .nav-simple .nav-item.active > a {
-	background-color: var(--edatos-color-primary-50, #3a5a8c);
-	color: var(--edatos-color-white-100, #FFF);
+	--active-arrow-depth: 12px;
+	position: relative;
+	background-color: var(--edatos-color-primary-100, #004678);
+	color: var(--edatos-color-primary-100, #004678);
 	font-weight: var(--edatos-font-weight-semibold);
 	width: 100%;
 	border-radius: var(--edatos-border-radius-sm) 0 0 var(--edatos-border-radius-sm);
-	clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%);
+	clip-path: polygon(0 0, calc(100% - var(--active-arrow-depth)) 0, 100% 50%, calc(100% - var(--active-arrow-depth)) 100%, 0 100%);
+}
+
+/* clip-path cuts a regular border at the arrow tip */
+.module.module-narrow .nav-simple .nav-item.active > a::after {
+	content: '';
+	position: absolute;
+	inset: 1px;
+	z-index: -1;
+	background-color: var(--edatos-color-white-100, #FFF);
+	border-radius: inherit;
+	clip-path: inherit;
 }
 
 .module.module-narrow .nav-simple .nav-item.active > a .badge {
@@ -1579,7 +1600,7 @@ li.nav-item:hover {
 	flex-shrink: 0;
 	display: flex;
 	align-items: center;
-	color: var(--edatos-color-white-100, #FFF);
+	color: var(--edatos-color-primary-100, #004678);
 	position: static;
 	left: 0;
 	float: none;
@@ -1753,7 +1774,6 @@ h1.dataset-title {
 	padding: 20px;
 	background: var(--edatos-color-gray-5, #F2F2F2);
 	border-radius: 0 0 var(--edatos-border-radius-sm, 5px) var(--edatos-border-radius-sm, 5px); /* exacto: 0.3125rem = 5px, coherente con el radio superior de section#dataset-resources > h2 */
-	overflow: hidden;
 }
 
 #dataset-resources li.resource-item {
@@ -1765,7 +1785,7 @@ h1.dataset-title {
 	display: flex;
 	align-items: flex-end;
 	gap: 8px;
-	color: var(--edatos-color-black-100);
+	color: var(--edatos-links-color);
 	font-size: var(--edatos-font-size-md);
 	font-style: normal;
 	font-weight: var(--edatos-font-weight-regular);
@@ -1776,16 +1796,28 @@ h1.dataset-title {
 
 .resource-item .heading:hover {
 	text-decoration: underline;
-	color: var(--edatos-color-secondary-100, #004678);
 }
 
 /* --- ZONA 5: Botón EXPLORAR/DESCARGAR (.btn-primary en recursos) --- */
 
-/* Alineación derecha: sobreescribe el posicionamiento de Popper.js */
+/* Posicionamiento del menú: colgado siempre debajo del botón, alineado a la
+   derecha y pegado (sin el "margin-top: .125rem" de Bootstrap), para que las
+   esquinas queden conectadas con el botón (ver ".btn-primary.dropdown-
+   toggle.show" más abajo). El toggle lleva "data-bs-display=static" (ver
+   resource_item.html), así que Bootstrap desactiva Popper del todo: no
+   escribe ningún estilo inline y nunca hace flip hacia arriba.
+   "bottom: auto !important" es la guarda de ese caso: si alguna vez volviera
+   a activarse Popper y éste hiciera flip a placement "top", escribiría
+   inline "bottom: 0" (ver mapToStyles en vendor/popper.js); combinado con el
+   "top: 100%" de aquí, el menú quedaría sobre-restringido a altura 0 y, por
+   el "overflow: hidden" de ".dropdown-menu", invisible -- exactamente el bug
+   que aparecía con el último recurso de la lista antes de este fix. */
 #dataset-resources .dropdown-menu.show {
 	left: auto !important;
 	right: 0 !important;
 	top: 100% !important;
+	bottom: auto !important;
+	margin-top: 0 !important;
 	transform: none !important;
 }
 
@@ -1941,15 +1973,11 @@ h1.dataset-title {
 	padding-right: 0;
 }
 
-/* --- Resource read: el sidebar Formatos/Compartir debe quedar junto al
-   título+tabla (pre_primary, .module-resource), no junto a Metadatos
-   (.primary). ".module-resource" solo existe en resource_read.html, así que
-   sirve como ancla para no afectar a ninguna otra vista con sidebar (la
-   clase "no-nav" del core no se aplica aquí en esta versión de CKAN).
-   Ver specs/fix-resource-view-formats-sidebar-alignment.md */
+/* Resource read: module-resource ocupa el 100% y pasa a su propia fila;
+   primary comparte la siguiente. ".module-resource" solo existe aquí. */
 .row.wrapper > .module-resource {
-	order: 0;
-	flex: 1 1 0;
+	flex: 1 1 100%;
+	width: 100%;
 	min-width: 0;
 	padding: 0;
 }
@@ -1963,33 +1991,73 @@ h1.dataset-title {
 	padding: 1.5rem 0;
 }
 
-/* z-index: ".module-resource" ya trae "position:relative; z-index:5" (regla
-   genérica ".module" del core de CKAN); sin superar ese valor aquí, se pinta
-   por encima y tapa el dropdown-menu del wrench cuando este se despliega
-   (su position:absolute se sale de los ~289px del sidebar). */
-/* El "margin-left:10px" genérico de ".row.wrapper > .secondary" (línea ~1995,
-   pensado para la sidebar de facetas de la búsqueda de datasets) suma un
-   hueco extra a la izquierda del sidebar aquí, por encima del padding
-   estándar de la card -- Figma (nodo 12933:7928) no lo contempla: el sidebar
-   debe arrancar en el mismo padding que el resto de la card, y el hueco de
-   20px va hacia el título/tabla (a su derecha), no a la izquierda. Se anula
-   ese margen y se añade "margin-right" (token "--edatos-spacing-x-sm" del
-   sistema de diseño, en vez del 10px suelto que ya usa el "gap" genérico de
-   ".row.wrapper" para el mismo valor) para llevar el hueco hacia el
-   título/tabla a los 20px de Figma solo en esta página. Ver
-   specs/fix-resource-view-formats-sidebar-alignment.md */
+/* El sidebar Formatos/Compartir ahora vive dentro de .primary (ver
+   resource_read.html, .resource-metadata-row), así que el .secondary real
+   que renderiza page.html queda siempre vacío en esta página. La solución
+   de fondo es que templates/page.html deje de pintar el <aside> cuando
+   "secondary_content" está vacío -- pero esa plantilla no está montada en
+   vivo en el contenedor (solo custom.css lo está, ver
+   dockerfiles/docker-compose.yml) y necesita un rebuild de la imagen para
+   desplegarse. Esta regla se deja como red de seguridad mientras tanto (y
+   por si "secondary_content" no queda perfectamente vacío en algún caso). */
 .row.wrapper > .module-resource ~ .secondary {
-	order: -1;
-	position: relative;
-	z-index: 6;
-	margin-left: 0;
-	margin-right: var(--edatos-spacing-x-sm, 10px);
+	display: none !important;
 }
 
-.row.wrapper > .module-resource ~ .primary {
-	order: 1;
-	flex: 1 1 100%;
-	width: 100%;
+/* Fila Formatos/Compartir + Metadatos dentro de .primary. NO depender de
+   la clase Bootstrap "row" (custom.css es el único fichero de la extensión
+   montado en vivo en el contenedor -- ver dockerfiles/docker-compose.yml;
+   "templates/" se hornea en la imagen y solo se actualiza con un rebuild,
+   así que las clases "row"/"col-md-*" que se hayan podido añadir en la
+   plantilla no llegan a desplegarse hasta entonces). "display:flex" propio
+   en vez de heredarlo de ".row", reparto de ancho explícito 25/75 y
+   "align-items:flex-start" para que ambas cabeceras queden al mismo nivel
+   sin depender del "stretch" por defecto. */
+.resource-metadata-row {
+	display: flex;
+	align-items: flex-start;
+	flex-wrap: nowrap;
+}
+
+/* Bootstrap aplica "padding-right: calc(var(--bs-gutter-x) * 0.5)" a
+   cualquier hijo directo de ".row" (".row > *", main.css) en cuanto la
+   plantilla lleve la clase "row" (ver page.html); se anula aquí para que
+   el hueco entre sidebar y Metadatos lo controle solo nuestro layout. */
+.resource-metadata-row > * {
+	padding-right: 0;
+}
+
+.resource-metadata-row > .secondary {
+	flex: 0 0 25%;
+	max-width: 25%;
+}
+
+.resource-metadata-row > .additional-info {
+	flex: 0 0 75%;
+	max-width: 75%;
+	min-width: 0;
+}
+
+@media (max-width: 767.98px) {
+	.row.wrapper:has(> .module-resource) {
+		flex-direction: column;
+	}
+
+	.resource-metadata-row {
+		flex-direction: column;
+		flex-wrap: wrap;
+	}
+
+	.resource-metadata-row > .secondary,
+	.resource-metadata-row > .additional-info {
+		flex: 1 1 100%;
+		max-width: 100%;
+	}
+
+	.resource-metadata-row .showcase-detail-sidebar {
+		width: 100%;
+		flex-shrink: 1;
+	}
 }
 
 /* --- Sidebar modules: con recuadro (fondo blanco + borde) --- */
@@ -2017,7 +2085,7 @@ h1.dataset-title {
 }
 
 #package-info .module-content .heading a:hover {
-	color: var(--edatos-color-light-blue-100);
+	color: var(--edatos-links-color);
 	text-decoration: underline;
 }
 
@@ -2104,9 +2172,6 @@ section.module.additional-info {
 	border-radius: var(--edatos-border-radius-sm) var(--edatos-border-radius-sm) var(--edatos-border-radius-sm) var(--edatos-border-radius-sm);
 	overflow: hidden;
 	margin-right: 0;
-	border-left: 1px solid var(--edatos-color-gray-20, #CCCCCC);
-	border-right: 1px solid var(--edatos-color-gray-20, #CCCCCC);
-	border-bottom: 1px solid var(--edatos-color-gray-20, #CCCCCC);
 }
 
 section.module.additional-info .module-content table,
@@ -2153,19 +2218,12 @@ section.additional-info.module table td:first-child {
     font-size: var(--edatos-font-size-md);
     font-style: normal;
     line-height: 26px;
-	border-bottom: 1px solid var(--edatos-color-gray-5, #F2F2F2);
-	border-left: 1px solid var(--edatos-color-gray-5, #F2F2F2);
-    border-right: 1px solid var(--edatos-color-gray-5, #F2F2F2);
 	background-color: var(--edatos-color-white-100, #FFF) !important;
 }
 
 .additional-info table tbody tr th {
 	font-weight: var(--edatos-font-weight-semibold);
 	color: var(--edatos-color-gray-60);
-	border-bottom: 1px solid var(--edatos-color-gray-5, #F2F2F2);
-	border-left: 1px solid var(--edatos-color-gray-5, #F2F2F2);
-	border-right: 1px solid var(--edatos-color-gray-5, #F2F2F2);
-	background: var(--edatos-color-white-100, #FFF) !important;
 	padding: 5px 20px;
 }
 
@@ -2191,10 +2249,17 @@ section.additional-info.module > table {
 	margin: 0;
 }
 
-/* --- "Mostrar más / Hide" link (table-toggle-more module) --- */
+/* --- "Mostrar más / Hide" link (table-toggle-more module) ---
+   Es la última fila de la tabla: la regla genérica ".additional-info table
+   tbody tr td" le añade un border-bottom (y left/right) igual que al resto
+   de celdas, pero aquí queda un trazo recto justo antes de la esquina
+   redondeada del contenedor (".additional-info", border-radius +
+   overflow:hidden) en vez de dejar que sea esa esquina la que cierre. Se
+   anula para que solo se vea el redondeo. */
 .additional-info .toggle-more-controls td {
 	padding: 5px;
 	text-align: center;
+	border: none;
 }
 
 a.toggle-show.toggle-show-more,
@@ -2311,9 +2376,9 @@ div.ckanext-showcase-image-container {
 	padding: 10px;
 	gap: 5px;
 	border-radius: 30px;
-	border: 1px solid var(--edatos-color-primary-50, #4D7EA0);
-	background: var(--edatos-color-white-100, #FFF);
-	color: var(--edatos-color-primary-50, #4D7EA0);
+	border: 1px solid var(--edatos-color-secondary-100, #004678);
+	background: var(--edatos-color-secondary-100, #004678);
+	color: var(--edatos-color-white-100, #FFF);
 	font-size: var(--edatos-font-size-xs);
 	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 24px;
@@ -2324,8 +2389,9 @@ div.ckanext-showcase-image-container {
 }
 
 a.metadatos-tag:hover {
-	background: var(--edatos-color-primary-50, #4D7EA0);
-	color: var(--edatos-color-white-100, #FFF);
+	background: var(--edatos-color-white-100, #FFF);
+	border-color: var(--edatos-color-primary-100, #004678);
+	color: var(--edatos-color-primary-100, #004678);
 	text-decoration: none;
 }
 
@@ -2522,16 +2588,19 @@ a.metadatos-tag:hover {
 /* --- Resource view: layout de botones pantalla completa e incrustar --- */
 .resource-view .actions {
 	display: flex;
-	justify-content: flex-end;
+	justify-content: flex-start;
 	align-items: flex-start;
 	gap: 10px;
+	padding-bottom: var(--edatos-spacing-y-xs, 5px);
 }
 
+/* Sin "width" fijo: un ancho más estrecho que el glifo (a font-size:20px)
+   descentraba el icono dentro del botón en vez de recortarlo simétrico.
+   El centrado real lo da el "justify-content/align-items:center" del
+   ".btn" (ver regla de abajo). */
 .resource-view .actions .btn i,
 .resource-view .actions a.btn i {
 	font-size: 20px;
-	width: 16px;
-	text-align: center;
 	flex-shrink: 0;
 }
 
@@ -3592,8 +3661,8 @@ div.dataTables_wrapper div.dataTables_scrollBody::-webkit-scrollbar-thumb {
    lenguaje de bordes claro que aquí se traduce a CSS real: marco exterior con borde + radio,
    cabecera con fondo blanco (no el gris/azulado de Bootstrap) y texto en negrita, celdas de
    cuerpo con borde solo horizontal (sin separadores verticales entre columnas) y sin franjas
-   de fila alternas. Los tokens de color (`--edatos-color-gray-60/-40/-80/-white-100`) son los
-   mismos que usa ese canvas (se leen ahí en runtime vía "getComputedStyle"), así que no son
+   de fila alternas. Las variables de color (`--edatos-color-gray-60/-40/-80/-white-100`) son las
+   mismas que usa ese canvas (se leen ahí en runtime vía "getComputedStyle"), así que no son
    una aproximación: son las mismas variables del sistema de diseño. */
 div.dataTables_wrapper div.dataTables_scroll.dtfc-has-left {
 	border: var(--edatos-border-width-xs, 1px) solid var(--edatos-color-gray-60, #666666);
@@ -3673,7 +3742,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link {
 	font-weight: var(--edatos-font-weight-light, 300);
 	line-height: 1;
 	text-decoration: none;
-	color: var(--edatos-color-gray-40, #999999);
+	color: var(--edatos-color-gray-60, #666666);
 	background-color: transparent;
 	border: 1px solid var(--edatos-color-gray-40, #999999);
 	border-radius: var(--edatos-border-radius-sm, 4px);
@@ -3704,7 +3773,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item.next.disabled .page-li
 
 div.dataTables_wrapper div.dataTables_paginate .page-item.disabled:not(.previous):not(.next) .page-link {
 	display: block;
-	color: var(--edatos-color-gray-40, #999999);
+	color: var(--edatos-color-gray-60, #666666);
 	border-color: transparent;
 	background-color: transparent;
 	pointer-events: none;
@@ -3734,7 +3803,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 
 .module-resource .module-content p.text-muted.ellipsis a,
 .module-resource .module-content p.text-muted.break-word a {
-	color: var(--edatos-color-primary-100, #004678);
+	color: var(--edatos-links-color, #004678);
 	font-weight: var(--edatos-font-weight-light);
 	text-decoration: none;
 }
@@ -3769,11 +3838,6 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
    8. RESOURCE READ — Sidebar (filtro_recursos) + Metadata
    ============================================================ */
 
-/* --- Gap entre sidebar y contenido principal --- */
-.module-resource ~ .primary {
-	padding-left: 20px;
-}
-
 /* Fix: cuando el sidebar usa .showcase-detail-sidebar, ese div ya tiene su propio borde;
    se elimina el borde duplicado del .secondary exterior */
 .secondary:has(.showcase-detail-sidebar) {
@@ -3784,7 +3848,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 
 /* --- Sidebar: contenedor con borde (filtro_recursos) — read y edit --- */
 .secondary:has(.module.context-info),
-.module-resource ~ .secondary {
+.resource-metadata-row .secondary {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -3792,11 +3856,18 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 	border-radius: var(--edatos-border-radius-sm);
 	border: none;
 	background: var(--edatos-color-white-100, #FFF);
-	align-self: flex-start;
+}
+
+/* CKAN core reordena ".secondary" en móvil (".main .secondary { order: 2 }",
+   ver _layout.scss) pensado para cuando es hijo directo de ".wrapper"; aquí
+   es descendiente de ".resource-metadata-row" (un flex distinto), así que
+   sin esto heredaría igualmente ese order y se movería después de Metadatos. */
+.resource-metadata-row .secondary {
+	order: 0;
 }
 
 /* --- Módulos dentro del sidebar: sin estilo propio --- */
-.module-resource ~ .secondary .module.module-narrow {
+.resource-metadata-row .secondary .module.module-narrow {
 	background: transparent;
 	border: none;
 	margin: 0;
@@ -3804,9 +3875,13 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 }
 
 /* --- Cabeceras de sección (RECURSOS, COMPARTIR): sin borde inferior --- */
-.module-resource ~ .secondary .module-heading {
+.resource-metadata-row .secondary .module-heading {
 	border-bottom: none;
 	border-radius: var(--edatos-border-radius-xs);
+}
+
+.resource-metadata-row .secondary .module-heading + .nav-simple {
+	padding-top: var(--edatos-spacing-y-2xs);
 }
 
 /* --- Items de recurso (no activo) ---
@@ -3814,7 +3889,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
    wrench (.dropdown > .dropdown-menu > li > a.dropdown-item); con el
    combinador descendente estas reglas se colaban dentro del menú desplegable
    y le pisaban el estilo (ver bloque ".dropdown-menu" en ZONA de dropdowns). */
-.module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item > a {
+.resource-metadata-row .secondary .module.module-narrow .nav-simple .nav-item > a {
 	font-size: var(--edatos-font-size-sm);
 	font-weight: var(--edatos-font-weight-regular);
 	line-height: 14px;
@@ -3823,11 +3898,11 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 	border-top: none;
 }
 
-.module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item:first-child > a {
+.resource-metadata-row .secondary .module.module-narrow .nav-simple .nav-item:first-child > a {
 	border-top: none;
 }
 
-.module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item > a:hover {
+.resource-metadata-row .secondary .module.module-narrow .nav-simple .nav-item > a:hover {
 	background: var(--edatos-color-primary-5, #E5ECF1);
 }
 
@@ -3835,7 +3910,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
    propio; al desplegarse, el menú (position:absolute) sobresale hacia abajo
    sobre los <li> siguientes, que al ser posteriores en el DOM se pintan por
    encima y lo tapan. Elevamos solo el <li> que tiene el menú abierto. */
-.module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item:has(.dropdown-menu.show) {
+.resource-metadata-row .secondary .module.module-narrow .nav-simple .nav-item:has(.dropdown-menu.show) {
 	position: relative;
 	z-index: 10;
 }
@@ -3843,34 +3918,32 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 /* --- Al hacer hover, ocultar la línea divisoria propia y la del item anterior
    (misma línea que separa ambos), igual que en el sidebar de filtros de
    búsqueda (ver ZONA 8b, .filters .nav-item:not(.active):hover) --- */
-.module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item:not(.active):hover {
+.resource-metadata-row .secondary .module.module-narrow .nav-simple .nav-item:not(.active):hover {
 	border-bottom-color: transparent;
 }
 
-.module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item:has(+ .nav-item:hover) {
+.resource-metadata-row .secondary .module.module-narrow .nav-simple .nav-item:has(+ .nav-item:hover) {
 	border-bottom-color: transparent;
 }
 
 /* Item activo: ocultar su propia línea inferior y la del item anterior
    (misma línea que separa ambos), igual que en el sidebar de filtros
    de búsqueda (ver ZONA 8b) */
-.module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item.active {
+.resource-metadata-row .secondary .module.module-narrow .nav-simple .nav-item.active {
 	border-bottom-color: transparent;
 }
 
-.module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item:has(+ .nav-item.active) {
+.resource-metadata-row .secondary .module.module-narrow .nav-simple .nav-item:has(+ .nav-item.active) {
 	border-bottom-color: transparent;
 }
 
 /* --- Item de recurso activo: forma de flecha --- */
-.module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item.active a {
-	background-color: var(--edatos-color-primary-50, #4D7EA0);
-	color: var(--edatos-color-white-100, #FFF);
+.resource-metadata-row .secondary .module.module-narrow .nav-simple .nav-item.active a {
+	--active-arrow-depth: 10px;
 	font-size: var(--edatos-font-size-sm);
 	font-weight: var(--edatos-font-weight-semibold);
 	line-height: 14px;
 	border-bottom: none;
-	clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%);
 }
 
 /* --- Botones acción recurso (wrench + dropdown): azul en lugar de rojo heredado --- */
@@ -3883,7 +3956,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 /* El wrapper ".dropdown" del botón es position:absolute (queda fuera del
    flex del <li>), por lo que sin esto se pega al borde superior del item en
    vez de quedar centrado con el texto del formato. */
-.module-resource ~ .secondary .module.module-narrow .nav-simple .nav-item .dropdown.position-absolute {
+.resource-metadata-row .secondary .module.module-narrow .nav-simple .nav-item .dropdown.position-absolute {
 	top: 50%;
 	transform: translateY(-50%);
 }
@@ -3892,7 +3965,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
    ".dropdown-menu" (ver arriba), para que quede con el mismo aire que
    "OPCIONES" en vez de quedar justo al ancho del texto más largo. Escopado a
    este dropdown para no afectar a "OPCIONES"/"Explorar", que ya se ven bien. */
-.module-resource ~ .secondary .module.module-narrow .nav-simple .dropdown-menu {
+.resource-metadata-row .secondary .module.module-narrow .nav-simple .dropdown-menu {
 	min-width: 185px;
 	/* El genérico ".dropdown-menu" (ver arriba) aplana la esquina superior
 	   DERECHA porque "OPCIONES"/"Explorar" despliegan "bottom-end" (alineados
@@ -3908,7 +3981,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 	margin-top: -2px !important;
 }
 
-.module-resource ~ .secondary .module.module-narrow .nav-simple .dropdown-menu li a {
+.resource-metadata-row .secondary .module.module-narrow .nav-simple .dropdown-menu li a {
 	padding-right: 20px;
 	margin: 8px;
 }
@@ -3918,7 +3991,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
    de quedar centrado con aire simétrico (mismo problema ya documentado para
    "Explorar" en #dataset-resources, ver ZONA 5). width:auto deja que el
    modelo de caja de bloque normal reste los márgenes por los dos lados. */
-.module-resource ~ .secondary .module.module-narrow .nav-simple .dropdown-menu li a.dropdown-item {
+.resource-metadata-row .secondary .module.module-narrow .nav-simple .dropdown-menu li a.dropdown-item {
 	width: auto;
 }
 
@@ -3950,8 +4023,8 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 }
 
 /* --- Enlace social (COMPARTIR items) --- */
-.module-resource ~ .secondary .module.social .nav-item a,
-.module-resource ~ .secondary .module.social .nav a {
+.resource-metadata-row .secondary .module.social .nav-item a,
+.resource-metadata-row .secondary .module.social .nav a {
 	color: var(--edatos-color-secondary-100, #004678);
 	font-size: var(--edatos-font-size-sm);
 	font-weight: var(--edatos-font-weight-regular);
@@ -3963,9 +4036,20 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 	font-weight: var(--edatos-font-weight-semibold);
 }
 
-/* --- Show more / Show less --- */
+/* --- Show more / Show less ---
+   Fila real generada por el módulo core "table-toggle-more.js":
+   "tr.toggle-show.toggle-show-more > td" (no ".toggle-more-controls", esa
+   clase no aparece en el DOM de esta tabla). Es la última fila; sin esto
+   hereda el border-bottom/left/right genérico de ".additional-info table
+   tbody tr td" y deja un trazo recto justo antes de la esquina redondeada
+   del contenedor (".additional-info", border-radius + overflow:hidden). */
 .module-resource ~ .primary .toggle-show.toggle-show-more td {
 	padding: 0;
+	border: none;
+}
+
+.module-resource ~ .primary .toggle-show.toggle-show-more {
+	border-width: 0;
 }
 .module-resource ~ .primary .toggle-show.toggle-show-more small {
 	display: flex;
@@ -3979,7 +4063,7 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link:focus-visib
 	justify-content: center;
 	align-items: center;
 	gap: 10px;
-	border-radius: var(--edatos-border-radius-sm);
+	border-radius: 0 0 var(--edatos-border-radius-sm) var(--edatos-border-radius-sm);
 	background: var(--edatos-color-gray-5, #F2F2F2);
 	color: var(--edatos-color-primary-100, #004678);
 	font-size: var(--edatos-font-size-sm);
@@ -4289,9 +4373,19 @@ a.tag:hover {
 	box-shadow: inset 0 1px 0 var(--edatos-color-light-blue-100);
 }
 
-.modal.fade.in {
-	margin-top: 0;
-	top: 0;
+.modal {
+	margin-top: 0 !important;
+	top: 0 !important;
+}
+
+/* The external eDatos header (#edatosNavbarId) uses z-index: 100000, above
+   Bootstrap's default modal (1060) and backdrop (1050), so it covered them. */
+body .modal-backdrop {
+	z-index: 100001;
+}
+
+body .modal {
+	z-index: 100002;
 }
 
 i.fa.fa-search {
@@ -4569,6 +4663,7 @@ li.showcase-card {
 .license .module-content > a,
 .license .module-content > span {
     padding: 0;
+	color: var(--edatos-links-color);
 }
 
 /* El padding-top compartido (5px, en la regla de abajo) se queda corto
@@ -4824,7 +4919,7 @@ li.showcase-card {
 	border-radius: 30px;
 	border: 1px solid var(--edatos-color-primary-50, #4D7EA0);
 	background: var(--edatos-color-white-100, #FFF);
-	color: var(--edatos-color-primary-50, #4D7EA0);
+	color: var(--edatos-color-primary-100, #000);
 	font-size: var(--edatos-font-size-xs);
 	font-style: normal;
 	font-weight: var(--edatos-font-weight-semibold);
@@ -5498,7 +5593,7 @@ aside.secondary .module-content > a.btn.btn-sm {
     font-weight: var(--edatos-font-weight-light);
     line-height: 1;
     text-decoration: none;
-    color: var(--edatos-color-gray-40);
+    color: var(--edatos-color-gray-60);
     background-color: transparent;
     border: 1px solid var(--edatos-color-gray-40);
     border-radius: var(--edatos-border-radius-sm, 4px);
@@ -5556,7 +5651,7 @@ aside.secondary .module-content > a.btn.btn-sm {
    ------------------------------------------------------------------ */
 .pagination-wrapper .pagination .page-item.page-ellipsis .page-link {
     display: block;
-    color: var(--edatos-color-gray-40);
+    color: var(--edatos-color-gray-60);
     border-color: transparent;
     background-color: transparent;
     pointer-events: none;
@@ -5800,4 +5895,12 @@ aside.secondary .module-content > a.btn.btn-sm {
    measured height of the institutional header for this deployment. */
 #edatos-header:empty {
     min-height: var(--edatos-header-reserved-height, 0);
+}
+
+a {
+	color: var(--edatos-links-color);
+}
+
+a:hover {
+	text-decoration: underline;
 }
