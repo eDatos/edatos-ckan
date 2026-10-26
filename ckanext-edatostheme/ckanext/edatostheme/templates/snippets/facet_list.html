@@ -38,7 +38,6 @@ Dictionary with search facets
 #}
 {% block facet_list %}
     {% set hide_empty = hide_empty or false %}
-    {% set delink = h.edatostheme_get_delink_value() %}
     {% with items = items or h.get_facet_items_dict(name, search_facets or c.search_facets) %}
 	{% if items or not hide_empty %}
 	    {% block facet_list_item %}
@@ -51,6 +50,8 @@ Dictionary with search facets
 			</h2>
 		    {% endblock %}
 		    {% block facet_list_items %}
+			{# Must be set here: nested blocks do not see variables set in the enclosing block #}
+			{% set delink = h.edatostheme_get_delink_value() %}
 			{% with items = items or h.get_facet_items_dict(name, search_facets) %}
 			    {% if items %}
 				<nav aria-label="{{ title }}">

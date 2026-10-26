@@ -288,6 +288,8 @@ def get_freq_tags(lang='tags_es'):
         'facet.field': ['tags_en', 'tags_ca', 'tags_es']
     })
     items = package["search_facets"].get(lang, {}).get("items", [])
+    delink = get_delink_value()
+    items = [item for item in items if item['name'] != delink]
     items_ordenados = sorted(items, key=lambda item: item['count'], reverse=True)
     tags_limit_5 = [item['display_name'] for item in items_ordenados[:5]]
 
@@ -455,7 +457,9 @@ def package_showcase_list(context):
 def get_delink_value():
     '''Returns the delink value
     '''
-    return config.get('ckanext.gobcangroups.flag.for.delink', 'load_manual')
+    value = config.get('ckanext.gobcangroups.flag.for.delink', 'load_manual')
+    # .env values may carry a trailing CR (CRLF files) or surrounding quotes
+    return value.strip().strip('"\'').strip()
 
 
 def get_legal_notice_license():
