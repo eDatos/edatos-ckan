@@ -9,8 +9,9 @@
     </thead>
     <tbody>
       {% block package_additional_info_edatos %}
+        {% set delink = h.edatostheme_get_delink_value() %}
         {% if pkg_dict.multilingual_tags %}
-          {% set current_lang_tags = h.scheming_language_text(pkg_dict.multilingual_tags) %}
+          {% set current_lang_tags = h.scheming_language_text(pkg_dict.multilingual_tags) | reject('equalto', delink) | list %}
           {% if current_lang_tags %}
             {% set lang = h.lang() %}
             <tr>
@@ -29,14 +30,17 @@
             </tr>
           {% endif %}
         {% elif pkg_dict.tags %}
-          <tr>
-            <th scope="row" class="dataset-label">{{ _('Keywords') }}</th>
-            <td class="dataset-details">
-              {% for tag in pkg_dict.tags %}
-                <a href="{{ h.url_for('dataset.search', tags=tag.name) }}" class="metadatos-tag">{{ tag.display_name }}</a>
-              {% endfor %}
-            </td>
-          </tr>
+          {% set visible_tags = pkg_dict.tags | rejectattr('name', 'equalto', delink) | list %}
+          {% if visible_tags %}
+            <tr>
+              <th scope="row" class="dataset-label">{{ _('Keywords') }}</th>
+              <td class="dataset-details">
+                {% for tag in visible_tags %}
+                  <a href="{{ h.url_for('dataset.search', tags=tag.name) }}" class="metadatos-tag">{{ tag.display_name }}</a>
+                {% endfor %}
+              </td>
+            </tr>
+          {% endif %}
         {% endif %}
 
 {#
